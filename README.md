@@ -3,6 +3,9 @@
 Basic math expression parser built with [Point•Free's](https://www.pointfree.co/) 
 [swift-parsing](https://github.com/pointfreeco/swift-parsing) package.
 
+NOTE: currently, this uses a fork of that fixes a parsing bug involving floating-point literals that have a trailing
+'e' or 'E' specifier.
+
 ```
 let parser = MathParser()
 let evaluator = parser.parse('4 * sin(t * π) + 2 * sin(t * π)')
