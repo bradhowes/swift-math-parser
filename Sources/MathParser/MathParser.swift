@@ -28,8 +28,7 @@ where Operator: Parser, Operand: Parser,
       Operator.Output == (Operand.Output, Operand.Output) -> Operand.Output
 {
   @usableFromInline
-  let _parser: (inout Operand.Input) -> Operand.Output?
-  let name: String
+  let parser: (inout Operand.Input) -> Operand.Output?
 
   /**
    Construct new parser
@@ -40,11 +39,10 @@ where Operator: Parser, Operand: Parser,
    precedence level
    */
   @inlinable
-  public init(_ name: String, operator: Operator, associativity: Associativity, higher operand: Operand) {
-    self.name = name
+  public init(operator: Operator, associativity: Associativity, higher operand: Operand) {
     switch associativity {
-    case .left: self._parser = { Self.leftAssociative(input: &$0, operand: operand, operator: `operator`) }
-    case .right: self._parser = { Self.rightAssociative(input: &$0, operand: operand, operator: `operator`) }
+    case .left: self.parser = { Self.leftAssociative(input: &$0, operand: operand, operator: `operator`) }
+    case .right: self.parser = { Self.rightAssociative(input: &$0, operand: operand, operator: `operator`) }
     }
   }
 
@@ -58,7 +56,7 @@ where Operator: Parser, Operand: Parser,
    */
   @inlinable
   public func parse(_ input: inout Operand.Input) -> Operand.Output? {
-    self._parser(&input)
+    self.parser(&input)
   }
 
   @usableFromInline
@@ -172,7 +170,6 @@ public class MathParser {
 
   /// Parser for addition / subtraction operations. This is the starting point of precedence-involved parsing.
   private lazy var additionAndSubtraction: AnyParser<Substring.UTF8View, Token> = InfixOperator(
-    "+ -",
     operator: Skip(Whitespace())
       .take(OneOfMany(
         "+".utf8.map { { Self.join(lhs: $0, rhs: $1, op: (+)) } },
@@ -188,7 +185,6 @@ public class MathParser {
   /// operand parsing to specifically recognize and allow such expressions in the stream of parsed tokens. This would
   /// then allow stuff like `2(a + b)` which is not recognized here because there is no space between `2` and `(`.
   private lazy var multiplicationAndDivision: AnyParser<Substring.UTF8View, Token> = InfixOperator(
-    "* /",
 //    operator: Skip(Whitespace())
 //      .take(OneOfMany(
 //        "*".utf8.map { { Self.join(lhs: $0, rhs: $1, op: (*)) } },
@@ -207,7 +203,6 @@ public class MathParser {
 
   /// Parser for exponentiation operation. Higher precedence than * /
   private lazy var exponent: AnyParser<Substring.UTF8View, Token> = InfixOperator(
-    "^",
     operator: Skip(Whitespace())
       .take("^".utf8.map { { Self.join(lhs: $0, rhs: $1, op: (pow)) } }),
     associativity: .left,
