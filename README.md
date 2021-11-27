@@ -11,7 +11,7 @@ let v2 = evaluator.eval("t", value: 0.5) // 6.0
 let v3 = evaluator.eval("t", value: 1.0) // 0.0
 ```
 
-The parser will return nil if it is unable to completely parse the expression.
+The parser will return `nil` if it is unable to completely parse the expression.
 
 By default, the expression parser and evaluator handle the following symbols and functions:
 
