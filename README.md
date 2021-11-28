@@ -31,3 +31,19 @@ If a symbol or function does not exist during an `eval` call, the final result w
 during parsing, it will be replaced with the symbol value. Otherwise, it will be resolved during a future `eval` call.
 Same for function calls -- if the function is known during parsing _and_ the argument is a known value, then it will be
 replaced with the function result. Otherwise, the function call will take place during an `eval` call.
+
+## Implied Multiplication
+
+One of the original goals of this parser was to be able to accept a Wolfram Alpha math expression more or less as-is
+-- for instance the definition https://www.wolframalpha.com/input/?i=Sawsbuck+Winter+Form%E2%80%90like+curve -- without
+any editing. Here is the start of the textual representation from the above link:
+
+```
+x(t) = ((-2/9 sin(11/7 - 4 t) + 78/11 sin(t + 11/7) + 2/7 sin(2 t + 8/5) ...
+```
+
+Skipping over the assignment one can readily see that the representation includes implied multiplication between terms 
+when there are no explicit math operators present (eg `-2/9` __x__ `sin(11/7 - 4` __x__ `t)`). There is support for this
+sort of operation in the parser that can be enabled by setting `enableImpliedMultiplication` when creating a new
+`MathParser` instance (it defaults to `false`). Note that when enabled, an expression such as `2^3 2^4` would be 
+considered a valid expression, resolving to `2^3 * 2^4 = 128`.

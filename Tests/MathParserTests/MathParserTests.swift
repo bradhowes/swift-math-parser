@@ -68,6 +68,12 @@ final class MathParserTests: XCTestCase {
   }
 
   func testImpliedMultiply() {
+    // Default is disabled
+    XCTAssertNil(parser.parse("2 pi"))
+    XCTAssertNil(parser.parse("2 sin(pi / 2)"))
+    XCTAssertNil(parser.parse("2 (1 + 2)"))
+
+    let parser = MathParser(enableImpliedMultiplication: true)
     XCTAssertEqual(2 * .pi, parser.parse("2 pi")?.eval())
     XCTAssertEqual(2 * sin(.pi / 2), parser.parse("2 sin(pi / 2)")?.eval())
     XCTAssertEqual(2 * (1 + 2), parser.parse("2 (1 + 2)")?.eval())

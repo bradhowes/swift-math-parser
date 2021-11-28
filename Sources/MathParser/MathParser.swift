@@ -138,6 +138,7 @@ public class MathParser {
 
   /// Default symbols to use for parsing.
   public static let defaultSymbols: [String: Double] = ["pi": .pi, "π": .pi, "e": Darwin.M_E]
+
   /// Default functions to use for parsing.
   public static let defaultFunctions: [String: (Double) -> Double] = [
     "sin": sin, "cos": cos, "tan": tan,
@@ -153,6 +154,8 @@ public class MathParser {
     return .mathOp(lhs, rhs, op)
   }
 
+  private typealias TokenParser = AnyParser<Substring.UTF8View, Token>
+
   /// Symbol mapping to use during parsing and perhaps evaluation
   public let symbols: SymbolMap
 
@@ -165,11 +168,16 @@ public class MathParser {
   /// Parser for remaining parts of identifier
   private let remaining = Prefix { $0.isNumber || $0.isLetter }
 
+  /// Parser for a numeric constant
+  private let constant: TokenParser = Skip(Whitespace())
+    .take(Double.parser().map { Token.constant($0) })
+    .eraseToAnyParser()
+
   /// Parser for identifier
   private lazy var identifier = firstLetter.take(remaining).map { ($0.0 + $0.1) }
 
   /// Parser for addition / subtraction operations. This is the starting point of precedence-involved parsing.
-  private lazy var additionAndSubtraction: AnyParser<Substring.UTF8View, Token> = InfixOperator(
+  private lazy var additionAndSubtraction: TokenParser = InfixOperator(
     operator: Skip(Whitespace())
       .take(OneOfMany(
         "+".utf8.map { { Self.join(lhs: $0, rhs: $1, op: (+)) } },
@@ -179,44 +187,47 @@ public class MathParser {
     higher: multiplicationAndDivision
   ).eraseToAnyParser()
 
+  private let enableImpliedMultiplication: Bool
+
   /// Parser for multiplication / division operations. Higher precedence than + -
   /// NOTE: slight hack to support common math idiom of two values `X Y` indicating an implied multiplication. This is
   /// probably not the best way to do this, but I _don't_ think it can lead to invalid results. Better would be to redo
   /// operand parsing to specifically recognize and allow such expressions in the stream of parsed tokens. This would
   /// then allow stuff like `2(a + b)` which is not recognized here because there is no space between `2` and `(`.
-  private lazy var multiplicationAndDivision: AnyParser<Substring.UTF8View, Token> = InfixOperator(
-//    operator: Skip(Whitespace())
-//      .take(OneOfMany(
-//        "*".utf8.map { { Self.join(lhs: $0, rhs: $1, op: (*)) } },
-//        "/".utf8.map { { Self.join(lhs: $0, rhs: $1, op: (/)) } }
-//      )),
-    operator: OneOfMany(
+  private lazy var multiplicationAndDivision: TokenParser = InfixOperator(
+    operator:
+      enableImpliedMultiplication ?
+    Conditional.first(
+      OneOfMany(
+        Skip(Whitespace())
+          .take("*".utf8.map { { Self.join(lhs: $0, rhs: $1, op: (*)) } }).eraseToAnyParser(),
+        Skip(Whitespace())
+          .take("/".utf8.map { { Self.join(lhs: $0, rhs: $1, op: (/)) } }).eraseToAnyParser(),
+        " ".utf8.map({ { Self.join(lhs: $0, rhs: $1, op: (*)) } }).eraseToAnyParser()
+      )
+    )
+    : Conditional.second(
       Skip(Whitespace())
-        .take("*".utf8.map { { Self.join(lhs: $0, rhs: $1, op: (*)) } }).eraseToAnyParser(),
-      Skip(Whitespace())
-        .take("/".utf8.map { { Self.join(lhs: $0, rhs: $1, op: (/)) } }).eraseToAnyParser(),
-      " ".utf8.map({ { Self.join(lhs: $0, rhs: $1, op: (*)) } }).eraseToAnyParser()
+        .take(OneOfMany(
+          "*".utf8.map { { Self.join(lhs: $0, rhs: $1, op: (*)) } },
+          "/".utf8.map { { Self.join(lhs: $0, rhs: $1, op: (/)) } }
+        ))
     ),
     associativity: .left,
     higher: exponent
   ).eraseToAnyParser()
 
   /// Parser for exponentiation operation. Higher precedence than * /
-  private lazy var exponent: AnyParser<Substring.UTF8View, Token> = InfixOperator(
+  private lazy var exponent: TokenParser = InfixOperator(
     operator: Skip(Whitespace())
       .take("^".utf8.map { { Self.join(lhs: $0, rhs: $1, op: (pow)) } }),
     associativity: .left,
     higher: operand
   ).eraseToAnyParser()
 
-  /// Parser for a numeric constant
-  private lazy var constant: AnyParser<Substring.UTF8View, Token> = Skip(Whitespace())
-    .take(Double.parser().map { Token.constant($0) })
-    .eraseToAnyParser()
-
   /// Parser for a symbol. If symbol exists during parse, parser returns `.constant`. Otherwise, parser returns
   /// `.symbol` for later evaluation when the symbol is known.
-  private lazy var symbolOrVariable: AnyParser<Substring.UTF8View, Token> = identifier
+  private lazy var symbolOrVariable: TokenParser = identifier
     .utf8
     .map { name in
       let name = String(name)
@@ -228,7 +239,7 @@ public class MathParser {
     .eraseToAnyParser()
 
   /// Parser for expression in parentheses
-  private lazy var parenthetical: AnyParser<Substring.UTF8View, Token> = Skip(Whitespace())
+  private lazy var parenthetical: TokenParser = Skip(Whitespace())
     .take("(".utf8)
     .take(Lazy { self.additionAndSubtraction })
     .skip(Whitespace())
@@ -239,7 +250,7 @@ public class MathParser {
   /// Parser for a single argument function call (eg `sin`). If it function is known and argument is `.constant`, the
   /// function will be called and the parser returns `.constant` with the value. Otherwise, parser returns `.function`
   /// for later evaluation when the function and/or argument is known.
-  private lazy var function: AnyParser<Substring.UTF8View, Token> = identifier
+  private lazy var function: TokenParser = identifier
     .utf8
     .take(parenthetical)
     .map { tuple in
@@ -253,7 +264,7 @@ public class MathParser {
     .eraseToAnyParser()
 
   /// Parser for an operand of an expression.
-  private lazy var operand: AnyParser<Substring.UTF8View, Token> = OneOfMany(
+  private lazy var operand: TokenParser = OneOfMany(
     function,
     parenthetical,
     constant,
@@ -261,7 +272,7 @@ public class MathParser {
   ).eraseToAnyParser()
 
   /// Parser for a math expression. Checks that there is nothing remaining to be parsed.
-  private lazy var expression: AnyParser<Substring.UTF8View, Token> = additionAndSubtraction
+  private lazy var expression: TokenParser = additionAndSubtraction
     .skip(Whitespace())
     .skip(End())
     .eraseToAnyParser()
@@ -272,13 +283,14 @@ public class MathParser {
    - parameter symbols: optional mapping of names to constants. If not given, `defaultSymbols` will be used
    - parameter functions: optional mapping of names to functions. If not given, `defaultFunctions` will be used
    */
-  public init(symbols: SymbolMap? = nil, functions: FunctionMap? = nil) {
+  public init(symbols: SymbolMap? = nil, functions: FunctionMap? = nil, enableImpliedMultiplication: Bool = false) {
     self.symbols = symbols ?? { Self.defaultSymbols[$0] }
     self.functions = functions ?? { Self.defaultFunctions[$0] }
+    self.enableImpliedMultiplication = enableImpliedMultiplication
   }
 
   /**
-   Evaluator of parsing tokens.
+   Evaluator of parsed tokens.
    */
   public struct Evaluator {
     private let token: Token
