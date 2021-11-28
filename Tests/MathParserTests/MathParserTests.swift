@@ -29,7 +29,9 @@ final class MathParserTests: XCTestCase {
   }
 
   func testOrderOfOperations() {
-    XCTAssertEqual(1 + 2 * 3 / 4 - pow(5, 6), parser.parse(" 1 + 2 * 3 / 4 - 5 ^ 6")?.eval())
+    let expected: Double = 1 + 2 * 3 / 4 - pow(5, 6)
+    let actual = parser.parse(" 1 + 2 * 3 / 4 - 5 ^ 6")
+    XCTAssertEqual(expected, actual?.eval())
   }
 
   func testParentheses() {
@@ -40,7 +42,9 @@ final class MathParserTests: XCTestCase {
   }
 
   func testNestedParentheses() {
-    XCTAssertEqual(((1 + 2) * (3 + 4)) / pow(5, 1 + 3), parser.parse("((1 + 2) * (3 + 4)) / 5 ^ (1 + 3)")?.eval())
+    let expected: Double = ((1 + 2) * (3 + 4)) / pow(5, 1 + 3)
+    let actual = parser.parse("((1 + 2) * (3 + 4)) / 5 ^ (1 + 3)")
+    XCTAssertEqual(expected, actual?.eval())
   }
 
   func testMissingClosingParenthesis() {
