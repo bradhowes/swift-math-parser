@@ -1,3 +1,5 @@
+// Copyright © 2021 Brad Howes. All rights reserved.
+
 import XCTest
 @testable import MathParser
 
@@ -61,7 +63,7 @@ final class MathParserTests: XCTestCase {
   }
 
   func testSymbolNotFound() {
-    XCTAssertTrue(parser.parse("(1 + 2 * pip) ^ 2")?.eval().isNaN ?? false)
+    XCTAssertTrue(parser.parse("(1 + 2 * pip) ^ 2")!.eval().isNaN)
   }
 
   func testFunctionFound() {
@@ -69,7 +71,7 @@ final class MathParserTests: XCTestCase {
   }
 
   func testFunctionNotFound() {
-    XCTAssertTrue(parser.parse(" sinc(2 * pi)")?.eval().isNaN ?? false)
+    XCTAssertTrue(parser.parse(" sinc(2 * pi)")!.eval().isNaN)
   }
 
   func testImpliedMultiply() {
