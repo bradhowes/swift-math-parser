@@ -25,6 +25,6 @@ jobs:
         auth: ${{ secrets.GIST_UPDATE }}
         gistID: ad941184ed256708952a2057fc5d7bb4
         filename: test.json
-        label: Hello
-        message: World
-        color: orange
+        label: COV
+        message: 100%
+        color: green
