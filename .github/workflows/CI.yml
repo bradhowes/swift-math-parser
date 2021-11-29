@@ -11,21 +11,21 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build
       run: swift build -v
-    - name: Run tests
+    - name: Run Tests
       run: swift test -v --enable-code-coverage
-    - name: Test Cov 1
+    - name: Generat Test Coverage
       run: |
         set -x
         XCTEST_PATH="$(find . -name '*.xctest')"
         set -- $(xcrun llvm-cov report ${XCTEST_PATH}/Contents/MacOS/*PackageTests -instr-profile .build/debug/codecov/default.profdata -ignore-filename-regex='.build/|Tests/' | tail -1)
         echo "$4" > .build/debug/codecov/percentage.txt
         echo "PERCENTAGE=$4" >> $GITHUB_ENV
-    - name: Create COV Badge
+    - name: Create Coverage Badge
       uses: schneegans/dynamic-badges-action@v1.1.0
       with:
         auth: ${{ secrets.GIST_UPDATE }}
         gistID: ad941184ed256708952a2057fc5d7bb4
-        filename: test.json
+        filename: swift-math-parser-coverage.json
         label: Coverage
         message: ${{ env.PERCENTAGE }}
         color: success
