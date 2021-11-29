@@ -1,16 +1,12 @@
 name: CI
-
 on:
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-
 jobs:
   build:
-
     runs-on: macos-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Build
@@ -19,6 +15,7 @@ jobs:
       run: swift test -v --enable-code-coverage
     - name: Test Cov 1
       run: |
+        set -x
         XCTEST_PATH="$(find . -name '*.xctest')"
         set -- $(xcrun llvm-cov report ${XCTEST_PATH}/Contents/MacOS/*PackageTests -instr-profile .build/debug/codecov/default.profdata -ignore-filename-regex='.build/|Tests/' | tail -1)
         echo "$4" > .build/debug/codecov/percentage.txt
