@@ -19,3 +19,12 @@ jobs:
       run: swift test -v --enable-code-coverage
     - name: Test coverage
       uses: maxep/spm-lcov-action@0.3.1
+    - name: Create COV Badge
+      uses: schneegans/dynamic-badges-action@v1.1.0
+      with:
+        auth: ${{ secrets.GIST_UPDATE }}
+        gistID: ad941184ed256708952a2057fc5d7bb4
+        filename: test.json
+        label: Hello
+        message: World
+        color: orange
