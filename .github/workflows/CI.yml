@@ -20,8 +20,6 @@ jobs:
         set -- $(xcrun llvm-cov report ${XCTEST_PATH}/Contents/MacOS/*PackageTests -instr-profile .build/debug/codecov/default.profdata -ignore-filename-regex='.build/|Tests/' | tail -1)
         echo "$4" > .build/debug/codecov/percentage.txt
         echo "PERCENTAGE=$4" >> $GITHUB_ENV
-    - name: Test Cov 2
-      uses: maxep/spm-lcov-action@0.3.1
     - name: Create COV Badge
       uses: schneegans/dynamic-badges-action@v1.1.0
       with:
