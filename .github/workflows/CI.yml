@@ -31,6 +31,6 @@ jobs:
         auth: ${{ secrets.GIST_UPDATE }}
         gistID: ad941184ed256708952a2057fc5d7bb4
         filename: test.json
-        label: COV
+        label: Test Coverage
         message: ${{ env.PERCENTAGE }}
-        color: green
+        color: success
