@@ -8,14 +8,9 @@ import Darwin.C
 import Glibc
 #endif
 
-private enum Associativity {
-  case left
-  case right
-}
-
 /**
- Parser for infix operators. Takes a parser for operators to recognize and a parser for values to use with the
- operator which could include operations that are of higher precedence than those parsed by the first parser.
+ Parser for left-associative infix operators. Takes a parser for operators to recognize and a parser for values to use
+ with the operator which could include operations that are of higher precedence than those parsed by the first parser.
 
  NOTE: this parser will succeed if it can parse at least one operand value. This can be problematic if you want to
  have an `orElse` case for a failed binary expression.
@@ -34,16 +29,12 @@ where Operator: Parser, Operand: Parser,
    Construct new parser
 
    - parameter operator: the parser that recognizes valid operators at a certain precedence level
-   - parameter associativity: the associativity for these operators
    - parameter operand: the parser for values to provide to the operator that may include operations at a higher
    precedence level
    */
   @inlinable
-  public init(operator: Operator, associativity: Associativity, higher operand: Operand) {
-    switch associativity {
-    case .left: self.parser = { Self.leftAssociative(input: &$0, operand: operand, operator: `operator`) }
-    case .right: self.parser = { Self.rightAssociative(input: &$0, operand: operand, operator: `operator`) }
-    }
+  init(operator: Operator, higher operand: Operand) {
+    self.parser = { Self.leftAssociative(input: &$0, operand: operand, operator: `operator`) }
   }
 
   /**
@@ -55,7 +46,7 @@ where Operator: Parser, Operand: Parser,
    - returns: the next output value found in the stream, or nil if no match
    */
   @inlinable
-  public func parse(_ input: inout Operand.Input) -> Operand.Output? {
+  func parse(_ input: inout Operand.Input) -> Operand.Output? {
     self.parser(&input)
   }
 
@@ -72,22 +63,6 @@ where Operator: Parser, Operand: Parser,
     }
     input = rest
     return lhs
-  }
-
-  @usableFromInline
-  static func rightAssociative(input: inout Operand.Input, operand: Operand, operator: Operator) -> Operand.Output? {
-    var lhs: [(Operand.Output, Operator.Output)] = []
-    while let rhs = operand.parse(&input) {
-      guard let operation = `operator`.parse(&input)
-      else {
-        return lhs.reversed().reduce(rhs) { rhs, pair in
-          let (lhs, operation) = pair
-          return operation(lhs, rhs)
-        }
-      }
-      lhs.append((rhs, operation))
-    }
-    return nil
   }
 }
 
@@ -114,7 +89,6 @@ public class MathParser {
     case constant(Double)
     case variable(String)
     indirect case function(String, Token)
-    indirect case parenthetical(Token)
     indirect case mathOp(Token, Token, (Double, Double) -> Double)
 
     /**
@@ -127,10 +101,9 @@ public class MathParser {
     public func eval(_ variables: @escaping SymbolMap, _ functions: @escaping FunctionMap) -> Double {
       let resolve: (Token) -> Double = { $0.eval(variables, functions) }
       switch self {
-      case .constant(let value):           return value
-      case .variable(let name):            return variables(name) ?? .nan
-      case .function(let name, let arg):   return functions(name)?(resolve(arg)) ?? .nan
-      case .parenthetical(let token):      return resolve(token)
+      case .constant(let value):              return value
+      case .variable(let name):               return variables(name) ?? .nan
+      case .function(let name, let arg):      return functions(name)?(resolve(arg)) ?? .nan
       case .mathOp(let lhs, let rhs, let op): return op(resolve(lhs), resolve(rhs))
       }
     }
@@ -147,6 +120,12 @@ public class MathParser {
     "sqrt": sqrt
   ]
 
+  /// Symbol mapping to use during parsing and perhaps evaluation
+  public let symbols: SymbolMap
+
+  /// Function mapping to use during parsing and perhaps evaluation
+  public let functions: FunctionMap
+
   private static func join(lhs: Token, rhs: Token, op: @escaping (Double, Double) -> Double) -> Token {
     if case let .constant(lhs) = lhs, case let .constant(rhs) = rhs {
       return .constant(op(lhs, rhs))
@@ -156,20 +135,16 @@ public class MathParser {
 
   private typealias TokenParser = AnyParser<Substring.UTF8View, Token>
 
-  /// Symbol mapping to use during parsing and perhaps evaluation
-  public let symbols: SymbolMap
-
-  /// Function mapping to use during parsing and perhaps evaluation
-  public let functions: FunctionMap
+  private let ignoreSpaces = Skip(Whitespace())
 
   /// Parser for start of identifier
-  private let firstLetter = Skip(Whitespace()).pullback(\.utf8).take(Prefix(1) { $0.isLetter })
+  private lazy var firstLetter = ignoreSpaces.pullback(\.utf8).take(Prefix(1) { $0.isLetter })
 
   /// Parser for remaining parts of identifier
   private let remaining = Prefix { $0.isNumber || $0.isLetter }
 
   /// Parser for a numeric constant
-  private let constant: TokenParser = Skip(Whitespace())
+  private lazy var constant: TokenParser = ignoreSpaces
     .take(Double.parser().map { Token.constant($0) })
     .eraseToAnyParser()
 
@@ -178,12 +153,11 @@ public class MathParser {
 
   /// Parser for addition / subtraction operations. This is the starting point of precedence-involved parsing.
   private lazy var additionAndSubtraction: TokenParser = InfixOperator(
-    operator: Skip(Whitespace())
+    operator: ignoreSpaces
       .take(OneOfMany(
         "+".utf8.map { { Self.join(lhs: $0, rhs: $1, op: (+)) } },
         "-".utf8.map { { Self.join(lhs: $0, rhs: $1, op: (-)) } }
       )),
-    associativity: .left,
     higher: multiplicationAndDivision
   ).eraseToAnyParser()
 
@@ -199,29 +173,27 @@ public class MathParser {
       enableImpliedMultiplication ?
     Conditional.first(
       OneOfMany(
-        Skip(Whitespace())
+        ignoreSpaces
           .take("*".utf8.map { { Self.join(lhs: $0, rhs: $1, op: (*)) } }).eraseToAnyParser(),
-        Skip(Whitespace())
+        ignoreSpaces
           .take("/".utf8.map { { Self.join(lhs: $0, rhs: $1, op: (/)) } }).eraseToAnyParser(),
         " ".utf8.map({ { Self.join(lhs: $0, rhs: $1, op: (*)) } }).eraseToAnyParser()
       )
     )
     : Conditional.second(
-      Skip(Whitespace())
+      ignoreSpaces
         .take(OneOfMany(
           "*".utf8.map { { Self.join(lhs: $0, rhs: $1, op: (*)) } },
           "/".utf8.map { { Self.join(lhs: $0, rhs: $1, op: (/)) } }
         ))
     ),
-    associativity: .left,
     higher: exponent
   ).eraseToAnyParser()
 
   /// Parser for exponentiation operation. Higher precedence than * /
   private lazy var exponent: TokenParser = InfixOperator(
-    operator: Skip(Whitespace())
+    operator: ignoreSpaces
       .take("^".utf8.map { { Self.join(lhs: $0, rhs: $1, op: (pow)) } }),
-    associativity: .left,
     higher: operand
   ).eraseToAnyParser()
 
@@ -239,7 +211,7 @@ public class MathParser {
     .eraseToAnyParser()
 
   /// Parser for expression in parentheses
-  private lazy var parenthetical: TokenParser = Skip(Whitespace())
+  private lazy var parenthetical: TokenParser = ignoreSpaces
     .take("(".utf8)
     .take(Lazy { self.additionAndSubtraction })
     .skip(Whitespace())
@@ -247,19 +219,21 @@ public class MathParser {
     .map { $0.1 }
     .eraseToAnyParser()
 
-  /// Parser for a single argument function call (eg `sin`). If it function is known and argument is `.constant`, the
-  /// function will be called and the parser returns `.constant` with the value. Otherwise, parser returns `.function`
-  /// for later evaluation when the function and/or argument is known.
+  /// Parser for a single argument function call (eg `sin`). If function is known and argument is `.constant`, the
+  /// function is called and the parser returns `.constant` with the result. Otherwise, parser returns `.function`
+  /// for later evaluation when the function and argument is known.
   private lazy var function: TokenParser = identifier
     .utf8
     .take(parenthetical)
     .map { tuple in
       let name = String(tuple.0)
-      guard let function = self.functions(name) else { return .function(name, tuple.1) }
-      switch tuple.1 {
-      case .constant(let value): return .constant(function(value))
-      default: return .function(name, tuple.1)
+      let token = tuple.1
+      guard let function = self.functions(name),
+            case .constant(let value) = token
+      else {
+        return .function(name, token)
       }
+      return .constant(function(value))
     }
     .eraseToAnyParser()
 
@@ -282,6 +256,7 @@ public class MathParser {
 
    - parameter symbols: optional mapping of names to constants. If not given, `defaultSymbols` will be used
    - parameter functions: optional mapping of names to functions. If not given, `defaultFunctions` will be used
+   - parameter enableImpliedMultiplication: if true treat expressions like `2 π` as valid and same as `2 * π`
    */
   public init(symbols: SymbolMap? = nil, functions: FunctionMap? = nil, enableImpliedMultiplication: Bool = false) {
     self.symbols = symbols ?? { Self.defaultSymbols[$0] }

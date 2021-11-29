@@ -79,9 +79,9 @@ final class MathParserTests: XCTestCase {
     XCTAssertNil(parser.parse("2 (1 + 2)"))
 
     let parser = MathParser(enableImpliedMultiplication: true)
-    XCTAssertEqual(2 * .pi, parser.parse("2 pi")?.eval())
-    XCTAssertEqual(2 * sin(.pi / 2), parser.parse("2 sin(pi / 2)")?.eval())
-    XCTAssertEqual(2 * (1 + 2), parser.parse("2 (1 + 2)")?.eval())
+    XCTAssertEqual(2.0 * .pi * 3.0, parser.parse("2 pi * 3")?.eval())
+    XCTAssertEqual(2.0 * sin(.pi / 2), parser.parse("2 sin(pi / 2)")?.eval())
+    XCTAssertEqual(2.0 * (1 + 2), parser.parse("2 (1 + 2)")?.eval())
   }
 
   func testVariables() {
@@ -106,6 +106,14 @@ final class MathParserTests: XCTestCase {
     XCTAssertEqual(-4.0, eval(at: 1.0), accuracy: 1e-5)
   }
 
+  func testFunctions() {
+    let token = parser.parse("(foo(t * pi))")!
+    XCTAssertNotNil(token)
+    XCTAssertTrue(token.eval().isNaN)
+    // At this point pi has been resolved, leaving t and foo.
+    XCTAssertEqual(3.0 * .pi, token.eval(symbols: {_ in 1.0}, functions: {_ in {$0 * 3.0}}), accuracy: 1e-5)
+  }
+
   func testReadMe() {
     let parser = MathParser()
     let evaluator = parser.parse("4 * sin(t * π) + 2 * sin(t * π)")
@@ -115,5 +123,8 @@ final class MathParserTests: XCTestCase {
     XCTAssertEqual(6.0, v2, accuracy: 1e-5)
     let v3 = evaluator!.eval("t", value: 1.0) // 0.0
     XCTAssertEqual(0.0, v3, accuracy: 1e-5) // 0.0
+
+    let v4 = evaluator!.eval("u", value: 1.0) // 0.0
+    XCTAssertTrue(v4.isNaN)
   }
 }
