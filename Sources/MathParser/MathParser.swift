@@ -14,7 +14,7 @@ import Glibc
  General-purpose parser for simple math expressions made up of the common operations as well as single argument
  functions like `sqrt` and `sin` and named variables / symbols. For instance, the expression `4 * sin(t * pi)` is
  legal and references the `sin` function, the `pi` constant, and an unknown variable `t`. Parsing a legal expression
- results in a `MathParser.Evaluator` that can be used to obtain actual results from the expression, such as when the
+ results in an `Evaluator` that can be used to obtain Double results from the expression, such as when the
  value for `t` is known.
  */
 final public class MathParser {
