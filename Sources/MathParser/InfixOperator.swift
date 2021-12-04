@@ -11,6 +11,7 @@ import Parsing
  have an `orElse` case for a failed binary expression.
 
  Based on InfixOperator found in the Arithmetic perf test of https://github.com/pointfreeco/swift-parsing
+ If you want support for right-associative operators, check there for a nice implementation.
  */
 internal struct InfixOperator<Operator, Operand>: Parser
 where Operator: Parser, Operand: Parser,
@@ -34,8 +35,7 @@ where Operator: Parser, Operand: Parser,
 
   /**
    Implementation of Parser method. Looks for "operand operator operand" sequences, but also succeeds on just a
-   sole initial "operand" parse for the left-hand or right-hand side of the expression (depending on the associativity
-   value given in the constructor).
+   sole initial "operand" parse for the left-hand side of the expression.
 
    - parameter input: the input stream to parse
    - returns: the next output value found in the stream, or nil if no match
