@@ -11,8 +11,7 @@ let package = Package(
             targets: ["MathParser"]),
     ],
     dependencies: [
-        // NOTE: depending on my fork until new release from Point•Free with my PR to fix Double exponent parsing.
-      .package(name: "swift-parsing", url: "https://github.com/bradhowes/swift-parsing", from: "0.3.2"),
+      .package(name: "swift-parsing", url: "https://github.com/pointfreeco/swift-parsing", from: "0.4.0"),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
