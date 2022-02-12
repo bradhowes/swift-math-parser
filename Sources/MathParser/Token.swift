@@ -30,6 +30,7 @@ public enum Token {
    - parameter functions: optional mapping to use to resolve functions
    - returns: result of evaluation. May be NaN if unresolved symbol or function still exists
    */
+  @inlinable
   public func eval(_ variables: @escaping MathParser.SymbolMap, _ functions: @escaping MathParser.FunctionMap) -> Double {
     let resolve: (Token) -> Double = { $0.eval(variables, functions) }
     switch self {
