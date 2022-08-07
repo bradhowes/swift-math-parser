@@ -49,4 +49,4 @@ Skipping over the assignment one can readily see that the representation include
 when there are no explicit math operators present (eg `-2/9` __x__ `sin(11/7 - 4` __x__ `t)`). There is support for this
 sort of operation in the parser that can be enabled by setting `enableImpliedMultiplication` when creating a new
 `MathParser` instance (it defaults to `false`). Note that when enabled, an expression such as `2^3 2^4` would be
-considered a valid expression, resolving to `2^3 * 2^4 = 128`.
+considered a valid expression, resolving to `2^3 * 2^4 = 128`, and `4sin(t(pi))` would become `4 * sin(t * pi)`.
