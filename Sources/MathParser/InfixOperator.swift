@@ -50,6 +50,8 @@ where Operator: Parser, Operand: Parser,
     var lhs = try self.operand.parse(&input)
     var rest = input
     while true {
+
+      // If we can handle a missing operator, try for another operand
       if let implied = self.implied {
         do {
           let rhs = try self.operand.parse(&input)
@@ -60,6 +62,8 @@ where Operator: Parser, Operand: Parser,
           input = rest
         }
       }
+
+      // Parse operator followed by operand.
       do {
         let operation = try self.operator.parse(&input)
         let rhs = try self.operand.parse(&input)
