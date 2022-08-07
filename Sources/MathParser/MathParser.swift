@@ -42,128 +42,136 @@ final public class MathParser {
   /// Function mapping to use during parsing and perhaps evaluation
   public let functions: FunctionMap
 
-  private static func join(lhs: Token, rhs: Token, op: @escaping (Double, Double) -> Double) -> Token {
-    if case let .constant(lhs) = lhs, case let .constant(rhs) = rhs {
-      return .constant(op(lhs, rhs))
-    }
-    return .mathOp(lhs, rhs, op)
+  /// Parser for start of identifier (constant, variable, function)
+  private lazy var identifierStart = Parse  {
+    Prefix(1) { $0.isLetter }
   }
 
-  private typealias TokenParser = AnyParser<Substring.UTF8View, Token>
-
-  private let ignoreSpaces = Skip(Whitespace())
-
-  /// Parser for start of identifier
-  private lazy var firstLetter = ignoreSpaces.pullback(\.utf8).take(Prefix(1) { $0.isLetter })
-
-  /// Parser for remaining parts of identifier
-  private let remaining = Prefix { $0.isNumber || $0.isLetter }
-
-  /// Parser for a numeric constant
-  private lazy var constant: TokenParser = ignoreSpaces
-    .take(Double.parser().map { Token.constant($0) })
-    .eraseToAnyParser()
+  /// Parser for remaining parts of identifier (constant, variable, function)
+  private lazy var identifierRemaining = Parse {
+    Prefix { $0.isNumber || $0.isLetter }
+  }
 
   /// Parser for identifier
-  private lazy var identifier = firstLetter.take(remaining).map { ($0.0 + $0.1) }
+  private lazy var identifier = Parse {
+    identifierStart
+    identifierRemaining
+  }.map { $0.0 + $0.1 }
 
-  /// Parser for addition / subtraction operations. This is the starting point of precedence-involved parsing.
-  private lazy var additionAndSubtraction: TokenParser = InfixOperator(
-    operator: ignoreSpaces
-      .take(OneOfMany(
-        "+".utf8.map { { Self.join(lhs: $0, rhs: $1, op: (+)) } },
-        "-".utf8.map { { Self.join(lhs: $0, rhs: $1, op: (-)) } }
-      )),
+  /// Type of the parser that returns a Token
+  private typealias TokenParser = AnyParser<Substring, Token>
+
+  /// Parser for a numeric constant
+  private lazy var constant = Double.parser(of: Substring.self).map { Token.constant($0) }
+
+  /// Parser for addition / subtraction operator.
+  private lazy var additionOrSubtractionOperator = Parse {
+    ignoreSpaces
+    OneOf {
+      "+".map { { tokenReducer(lhs: $0, rhs: $1, op: (+)) } }
+      "-".map { { tokenReducer(lhs: $0, rhs: $1, op: (-)) } }
+    }
+  }
+
+  /// Parser for valid addition / subtraction operations. This is the starting point of precedence-involved parsing.
+  private lazy var additionAndSubtraction: TokenParser = LeftAssociativeInfixOperation(
+    additionOrSubtractionOperator,
     higher: multiplicationAndDivision
   ).eraseToAnyParser()
 
+  /// When true, two parsed operands in a row implies multiplication
   private let enableImpliedMultiplication: Bool
 
-  /// Parser for multiplication / division operations. Higher precedence than + -
-  /// NOTE: slight hack to support common math idiom of two values `X Y` indicating an implied multiplication. This is
-  /// probably not the best way to do this, but I _don't_ think it can lead to invalid results. Better would be to redo
-  /// operand parsing to specifically recognize and allow such expressions in the stream of parsed tokens. This would
-  /// then allow stuff like `2(a + b)` which is not recognized here because there is no space between `2` and `(`.
-  private lazy var multiplicationAndDivision: TokenParser = InfixOperator(
-    operator:
-      enableImpliedMultiplication ?
-    Conditional.first(
-      OneOfMany(
-        ignoreSpaces
-          .take("*".utf8.map { { Self.join(lhs: $0, rhs: $1, op: (*)) } }).eraseToAnyParser(),
-        ignoreSpaces
-          .take("/".utf8.map { { Self.join(lhs: $0, rhs: $1, op: (/)) } }).eraseToAnyParser(),
-        " ".utf8.map({ { Self.join(lhs: $0, rhs: $1, op: (*)) } }).eraseToAnyParser()
-      )
-    )
-    : Conditional.second(
-      ignoreSpaces
-        .take(OneOfMany(
-          "*".utf8.map { { Self.join(lhs: $0, rhs: $1, op: (*)) } },
-          "/".utf8.map { { Self.join(lhs: $0, rhs: $1, op: (/)) } }
-        ))
-    ),
-    higher: exponent
-  ).eraseToAnyParser()
+  /// Parser for multiplication / division operator.
+  private lazy var multiplicationOrDivisionOperator = Parse {
+    ignoreSpaces
+    OneOf {
+      "*".map { { tokenReducer(lhs: $0, rhs: $1, op: (*)) } }
+      "/".map { { tokenReducer(lhs: $0, rhs: $1, op: (/)) } }
+    }
+  }
+
+  /// Parser for valid multiplication / division operations. Higher precedence than + and -
+  /// If `enableImpliedMultiplication` is `true` then one can list two operands together
+  /// like `2x` and have it treated as a multiplication of `2` and the value in `x`.
+  private lazy var multiplicationAndDivision = LeftAssociativeInfixOperation(
+    multiplicationOrDivisionOperator,
+    higher: exponentiation,
+    implied: enableImpliedMultiplication ? { tokenReducer(lhs: $0, rhs: $1, op: (*)) } : nil
+  )
+
+  /// Parser for exponentiation (power) operator
+  private lazy var exponentiationOperator = Parse {
+    ignoreSpaces
+    "^".map { { tokenReducer(lhs: $0, rhs: $1, op: (pow)) } }
+  }
 
   /// Parser for exponentiation operation. Higher precedence than * /
-  private lazy var exponent: TokenParser = InfixOperator(
-    operator: ignoreSpaces
-      .take("^".utf8.map { { Self.join(lhs: $0, rhs: $1, op: (pow)) } }),
+  private lazy var exponentiation = LeftAssociativeInfixOperation(
+    exponentiationOperator,
     higher: operand
-  ).eraseToAnyParser()
+  )
 
-  /// Parser for a symbol. If symbol exists during parse, parser returns `.constant`. Otherwise, parser returns
-  /// `.symbol` for later evaluation when the symbol is known.
-  private lazy var symbolOrVariable: TokenParser = identifier
-    .utf8
-    .map { name in
-      let name = String(name)
-      guard let value = self.symbols(name) else { return .variable(name) }
-      return .constant(value)
-    }
-    .eraseToAnyParser()
+  /// Parser for a symbol. If symbol exists during parse, parser returns `.constant` token. Otherwise, parser returns
+  /// `.symbol` token for later evaluation when the symbol is known.
+  private lazy var symbolOrVariable = Parse {
+    identifier
+  }.map { (name: Substring) -> Token in
+    let name = String(name)
+    guard let value = self.symbols(name) else { return .variable(name) }
+    return .constant(value)
+  }
 
-  /// Parser for expression in parentheses
-  private lazy var parenthetical: TokenParser = ignoreSpaces
-    .take("(".utf8)
-    .take(Lazy { self.additionAndSubtraction })
-    .skip(Whitespace())
-    .take(")".utf8)
-    .map { $0.1 }
-    .eraseToAnyParser()
+  /// Parser for expression in parentheses. Use Lazy due to recursive nature of this definition.
+  private lazy var parenthetical = Lazy {
+    "("
+    self.additionAndSubtraction
+    ignoreSpaces
+    ")"
+  }
 
-  /// Parser for a single argument function call (eg `sin`). If function is known and argument is `.constant`, the
-  /// function is called and the parser returns `.constant` with the result. Otherwise, parser returns `.function`
-  /// for later evaluation when the function and argument is known.
-  private lazy var function: TokenParser = identifier
-    .utf8
-    .take(parenthetical)
-    .map { tuple in
-      let name = String(tuple.0)
-      let token = tuple.1
-      guard let function = self.functions(name),
-            case .constant(let value) = token
-      else {
-        return .function(name, token)
+  /// Parser for a single argument function call (eg `sin`). There are three Token types that this will resolve to:
+  ///
+  /// * `.constant` -- when function is already known and argument is `.constant`, this holds the result of calling the
+  ///   function on the constant value.
+  /// * `.function` -- token for later evaluation when the function and argument is known.
+  /// * `.mathOp` -- implied multiplication operation when `enableImpliedMultiplication` is `true`.
+  private lazy var function = Parse {
+    identifier
+    parenthetical
+  }.map { (tuple) -> Token in
+    let name = String(tuple.0)
+    let token = tuple.1
+    if let resolved = self.functions(name) {
+      if case .constant(let value) = token {
+        return .constant(resolved(value))
       }
-      return .constant(function(value))
+      return .function(name, token)
     }
-    .eraseToAnyParser()
+    if self.enableImpliedMultiplication {
+      return tokenReducer(lhs: .variable(name), rhs: token, op: (*))
+    }
+    return .function(name, token)
+  }
 
-  /// Parser for an operand of an expression.
-  private lazy var operand: TokenParser = OneOfMany(
-    function,
-    parenthetical,
-    constant,
-    symbolOrVariable
-  ).eraseToAnyParser()
+  /// Parser for an operand of an expression. Note that order is important: a function is made up of an identifier
+  /// followed by a parenthetical expression, so it must be before `parenthetical` and `symbolOrVariable`.
+  private lazy var operand = Parse {
+    ignoreSpaces
+    OneOf {
+      function
+      parenthetical
+      symbolOrVariable
+      constant
+    }
+  }
 
   /// Parser for a math expression. Checks that there is nothing remaining to be parsed.
-  private lazy var expression: TokenParser = additionAndSubtraction
-    .skip(Whitespace())
-    .skip(End())
-    .eraseToAnyParser()
+  private lazy var expression = Parse {
+    additionAndSubtraction
+    ignoreSpaces
+    End()
+  }
 
   /**
    Construct new parser
@@ -189,7 +197,19 @@ extension MathParser {
    valid.
    */
   public func parse(_ text: String) -> Evaluator? {
-    guard let token = expression.parse(text) else { return nil }
+    guard let token = try? expression.parse(text) else { return nil }
     return Evaluator(token: token, symbols: self.symbols, functions: self.functions)
   }
+}
+
+fileprivate let ignoreSpaces = Skip { Optionally { Prefix { $0.isWhitespace } } }
+
+/// All of our basic math operations reduce two inputs into one output.
+fileprivate typealias Operation = (Double, Double) -> Double
+
+fileprivate func tokenReducer(lhs: Token, rhs: Token, op: @escaping Operation) -> Token {
+  if case let .constant(lhs) = lhs, case let .constant(rhs) = rhs {
+    return .constant(op(lhs, rhs))
+  }
+  return .mathOp(lhs, rhs, op)
 }

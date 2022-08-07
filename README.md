@@ -6,10 +6,10 @@
 
 # swift-math-parser
 
-Basic math expression parser built with [Point•Free's](https://www.pointfree.co/) 
+Basic math expression parser built with [Point•Free's](https://www.pointfree.co/)
 [swift-parsing](https://github.com/pointfreeco/swift-parsing) package.
 
-```
+```swift
 let parser = MathParser()
 let evaluator = parser.parse('4 * sin(t * π) + 2 * sin(t * π)')
 let v1 = evaluator.eval("t", value: 0.0) // => 0.0
@@ -45,8 +45,8 @@ any editing. Here is the start of the textual representation from the above link
 x(t) = ((-2/9 sin(11/7 - 4 t) + 78/11 sin(t + 11/7) + 2/7 sin(2 t + 8/5) ...
 ```
 
-Skipping over the assignment one can readily see that the representation includes implied multiplication between terms 
+Skipping over the assignment one can readily see that the representation includes implied multiplication between terms
 when there are no explicit math operators present (eg `-2/9` __x__ `sin(11/7 - 4` __x__ `t)`). There is support for this
 sort of operation in the parser that can be enabled by setting `enableImpliedMultiplication` when creating a new
-`MathParser` instance (it defaults to `false`). Note that when enabled, an expression such as `2^3 2^4` would be 
+`MathParser` instance (it defaults to `false`). Note that when enabled, an expression such as `2^3 2^4` would be
 considered a valid expression, resolving to `2^3 * 2^4 = 128`.
