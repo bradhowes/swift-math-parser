@@ -16,8 +16,11 @@ public enum Token {
   /// Unresolved variable/symbol during parse
   case variable(String)
 
-  /// Unresolved function and/or unresolved argument during parse
-  indirect case function(String, Token)
+  /// Unresolved 1-arg function and/or unresolved argument during parse
+  indirect case function1(String, Token)
+
+  /// Unresolved 2-arg function and/or unresolved arguments during parse
+  indirect case function2(String, Token, Token)
 
   /// Unresolved math operation due to one or both operands being unresolved during parse
   indirect case mathOp(Token, Token, (Double, Double) -> Double)
@@ -30,13 +33,38 @@ public enum Token {
    - parameter functions: optional mapping to use to resolve functions
    - returns: result of evaluation. May be NaN if unresolved symbol or function still exists
    */
+  @available(*, deprecated, message: "Migrate to the new eval() to support 2-argument function calls.")
   @inlinable
-  public func eval(_ variables: @escaping MathParser.SymbolMap, _ functions: @escaping MathParser.FunctionMap) -> Double {
+  public func eval(_ variables: @escaping MathParser.SymbolMap,
+                   _ functions: @escaping MathParser.UnaryFunctionMap) -> Double {
     let resolve: (Token) -> Double = { $0.eval(variables, functions) }
     switch self {
-    case .constant(let value):              return value
-    case .variable(let name):               return variables(name) ?? .nan
-    case .function(let name, let arg):      return functions(name)?(resolve(arg)) ?? .nan
+    case .constant(let value): return value
+    case .variable(let name): return variables(name) ?? .nan
+    case .function1(let name, let arg): return functions(name)?(resolve(arg)) ?? .nan
+    case .function2: return .nan
+    case .mathOp(let lhs, let rhs, let op): return op(resolve(lhs), resolve(rhs))
+    }
+  }
+
+  /**
+   Evaluate the token to obtain a Double value. Resolves variables and functions using the given mappings. If there
+   remain unresolved tokens, the result will be a NaN.
+
+   - parameter variables: optional mapping to use to resolve symbols
+   - parameter functions: optional mapping to use to resolve functions
+   - returns: result of evaluation. May be NaN if unresolved symbol or function still exists
+   */
+  @inlinable
+  public func eval(_ variables: @escaping MathParser.SymbolMap,
+                   _ unaryFunctions: @escaping MathParser.UnaryFunctionMap,
+                   _ binaryFunctions: @escaping MathParser.BinaryFunctionMap) -> Double {
+    let resolve: (Token) -> Double = { $0.eval(variables, unaryFunctions, binaryFunctions) }
+    switch self {
+    case .constant(let value): return value
+    case .variable(let name): return variables(name) ?? .nan
+    case .function1(let name, let arg): return unaryFunctions(name)?(resolve(arg)) ?? .nan
+    case .function2(let name, let arg1, let arg2): return binaryFunctions(name)?(resolve(arg1), resolve(arg2)) ?? .nan
     case .mathOp(let lhs, let rhs, let op): return op(resolve(lhs), resolve(rhs))
     }
   }

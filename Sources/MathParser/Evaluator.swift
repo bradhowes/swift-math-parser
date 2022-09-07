@@ -11,19 +11,24 @@ public struct Evaluator {
   @usableFromInline
   internal let symbols: MathParser.SymbolMap
   @usableFromInline
-  internal let functions: MathParser.FunctionMap
+  internal let unaryFunctions: MathParser.UnaryFunctionMap
+  @usableFromInline
+  internal let binaryFunctions: MathParser.BinaryFunctionMap
 
   /**
    Construct new evaluator.
 
    - parameter token: the token to evaluate
    - parameter symbols: the mapping of names to constants to use during evaluation
-   - parameter functions: the mapping of names to functions to use during evaluation
+   - parameter unaryFunctions: the mapping of names to functions to use during evaluation
    */
-  internal init(token: Token, symbols: @escaping MathParser.SymbolMap, functions: @escaping MathParser.FunctionMap) {
+  internal init(token: Token, symbols: @escaping MathParser.SymbolMap,
+                unaryFunctions: @escaping MathParser.UnaryFunctionMap,
+                binaryFunctions: @escaping MathParser.BinaryFunctionMap) {
     self.token = token
     self.symbols = symbols
-    self.functions = functions
+    self.unaryFunctions = unaryFunctions
+    self.binaryFunctions = binaryFunctions
   }
 
   /**
@@ -33,8 +38,10 @@ public struct Evaluator {
    - parameter functions: optional mapping of names to functions to use during evaluation
    */
   @inlinable
-  public func eval(symbols: MathParser.SymbolMap? = nil, functions: MathParser.FunctionMap? = nil) -> Double {
-    token.eval(symbols ?? self.symbols, functions ?? self.functions)
+  public func eval(symbols: MathParser.SymbolMap? = nil,
+                   unaryFunctions: MathParser.UnaryFunctionMap? = nil,
+                   binaryFunctions: MathParser.BinaryFunctionMap? = nil) -> Double {
+    token.eval(symbols ?? self.symbols, unaryFunctions ?? self.unaryFunctions, binaryFunctions ?? self.binaryFunctions)
   }
 
   /**
@@ -45,6 +52,6 @@ public struct Evaluator {
    */
   @inlinable
   public func eval(_ name: String, value: Double) -> Double {
-    token.eval({$0 == name ? value : symbols(name)}, functions)
+    token.eval({$0 == name ? value : symbols(name)}, unaryFunctions, binaryFunctions)
   }
 }

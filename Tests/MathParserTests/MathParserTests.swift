@@ -54,6 +54,7 @@ final class MathParserTests: XCTestCase {
     XCTAssertEqual(1, parser.parse(" (1) ")?.eval())
     XCTAssertEqual(1, parser.parse("((1))")?.eval())
     XCTAssertNil(parser.parse(" () ")?.eval())
+    XCTAssertEqual(parser.parse(" ( ( 8 + 9) *3) ")?.eval(), (8+9)*3)
   }
 
   func testNestedParentheses() {
@@ -82,8 +83,16 @@ final class MathParserTests: XCTestCase {
     XCTAssertEqual(sin(2 * .pi), parser.parse(" sin(2 * pi)")?.eval())
   }
 
-  func testFunctionNotFound() {
+  func testFunction2Found() {
+    XCTAssertEqual(pow(2 * .pi, 3.4), parser.parse(" pow(2 * pi, 3.4)")?.eval())
+  }
+
+  func testFunction1NotFound() {
     XCTAssertTrue(parser.parse(" sinc(2 * pi)")!.eval().isNaN)
+  }
+
+  func testFunction2NotFound() {
+    XCTAssertTrue(parser.parse(" blah(2 * pi, 3.4)")!.eval().isNaN)
   }
 
   func testImpliedMultiply() {
@@ -99,6 +108,7 @@ final class MathParserTests: XCTestCase {
     XCTAssertEqual(2.0 * (1 + 2), parser.parse("2(1 + 2)")?.eval())
     XCTAssertEqual(2.0 * .pi, parser.parse("2pi")?.eval())
     XCTAssertEqual(2.0 * 3, parser.parse("(3)2")?.eval())
+    XCTAssertNil(parser.parse("2(3, 4)"))
   }
 
   func testVariables() {
@@ -111,11 +121,11 @@ final class MathParserTests: XCTestCase {
 
     var tv: Double = 0.0
     let symbols: MathParser.SymbolMap = {_ in tv}
-    let functions: MathParser.FunctionMap = {_ in cos}
+    let unaryFunctions: MathParser.UnaryFunctionMap = {_ in cos}
 
     func eval(at t: Double) -> Double {
       tv = t
-      return token.eval(symbols: symbols, functions: functions)
+      return token.eval(symbols: symbols, unaryFunctions: unaryFunctions)
     }
 
     XCTAssertEqual(4.0, eval(at: 0.0), accuracy: 1e-5)
@@ -134,11 +144,11 @@ final class MathParserTests: XCTestCase {
 
     var tv: Double = 0.0
     let symbols: MathParser.SymbolMap = {_ in tv}
-    let functions: MathParser.FunctionMap = {_ in cos}
+    let unaryFunctions: MathParser.UnaryFunctionMap = {_ in cos}
 
     func eval(at t: Double) -> Double {
       tv = t
-      return token.eval(symbols: symbols, functions: functions)
+      return token.eval(symbols: symbols, unaryFunctions: unaryFunctions)
     }
 
     XCTAssertEqual(4.0, eval(at: 0.0), accuracy: 1e-5)
@@ -151,7 +161,17 @@ final class MathParserTests: XCTestCase {
     XCTAssertNotNil(token)
     XCTAssertTrue(token.eval().isNaN)
     // At this point pi has been resolved, leaving t and foo.
-    XCTAssertEqual(3.0 * .pi, token.eval(symbols: {_ in 1.0}, functions: {_ in {$0 * 3.0}}), accuracy: 1e-5)
+    XCTAssertEqual(3.0 * .pi, token.eval(symbols: {_ in 1.0}, unaryFunctions: {_ in {$0 * 3.0}}), accuracy: 1e-5)
+  }
+
+  func testFunctions2() {
+    let token = parser.parse("( foo(t * pi , 2 * pi  ))")!
+    XCTAssertNotNil(token)
+    XCTAssertTrue(token.eval().isNaN)
+    // At this point pi has been resolved, leaving t and foo.
+    XCTAssertEqual(((1.5 * .pi) + (2.0 * .pi)) * 3,
+                   token.eval(symbols: {_ in 1.5}, binaryFunctions: {_ in {($0 + $1) * 3.0}}),
+                   accuracy: 1e-5)
   }
 
   func testReadMe() {
@@ -163,7 +183,6 @@ final class MathParserTests: XCTestCase {
     XCTAssertEqual(6.0, v2, accuracy: 1e-5)
     let v3 = evaluator!.eval("t", value: 1.0) // 0.0
     XCTAssertEqual(0.0, v3, accuracy: 1e-5) // 0.0
-
     let v4 = evaluator!.eval("u", value: 1.0) // 0.0
     XCTAssertTrue(v4.isNaN)
   }

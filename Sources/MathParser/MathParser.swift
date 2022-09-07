@@ -23,24 +23,37 @@ final public class MathParser {
   public typealias SymbolMap = (String) -> Double?
 
   /// Mapping of names to an optional transform function
-  public typealias FunctionMap = (String) -> ((Double) -> Double)?
+  public typealias UnaryFunctionMap = (String) -> ((Double) -> Double)?
+
+  /// Mapping of names to an optional transform function
+  public typealias BinaryFunctionMap = (String) -> ((Double, Double) -> Double)?
 
   /// Default symbols to use for parsing.
   public static let defaultSymbols: [String: Double] = ["pi": .pi, "π": .pi, "e": Darwin.M_E]
 
-  /// Default functions to use for parsing.
-  public static let defaultFunctions: [String: (Double) -> Double] = [
+  /// Default 1-ary functions to use for parsing.
+  public static let defaultUnaryFunctions: [String: (Double) -> Double] = [
     "sin": sin, "cos": cos, "tan": tan,
     "log10": log10, "ln": log, "loge": log, "log2": log2, "exp": exp,
     "ceil": ceil, "floor": floor, "round": round,
-    "sqrt": sqrt
+    "sqrt": sqrt, "cbrt": cbrt
+  ]
+
+  /// Default 2-ary functions to use for parsing.
+  public static let defaultBinaryFunctions: [String: (Double, Double) -> Double] = [
+    "atan2": atan2,
+    "hypot": hypot,
+    "pow": pow // Redundant since we support x^b expressions
   ]
 
   /// Symbol mapping to use during parsing and perhaps evaluation
   public let symbols: SymbolMap
 
   /// Function mapping to use during parsing and perhaps evaluation
-  public let functions: FunctionMap
+  public let unaryFunctions: UnaryFunctionMap
+
+  /// Function mapping to use during parsing and perhaps evaluation
+  public let binaryFunctions: BinaryFunctionMap
 
   /// Parser for start of identifier (constant, variable, function)
   private lazy var identifierStart = Parse  {
@@ -130,28 +143,63 @@ final public class MathParser {
     ")"
   }
 
-  /// Parser for a single argument function call (eg `sin`). There are three Token types that this will resolve to:
-  ///
-  /// * `.constant` -- when function is already known and argument is `.constant`, this holds the result of calling the
-  ///   function on the constant value.
-  /// * `.function` -- token for later evaluation when the function and argument is known.
-  /// * `.mathOp` -- implied multiplication operation when `enableImpliedMultiplication` is `true`.
-  private lazy var function = Parse {
+  /// Parser for function call of 1 parameter. Use Lazy due to recursive nature of this definition.
+  private lazy var functionArgs1 = Lazy {
+    self.additionAndSubtraction
+    ignoreSpaces
+  }
+
+  /// Parser for a single argument function call (eg `sin`).
+  private lazy var function1 = Parse {
     identifier
-    parenthetical
+    "("
+    functionArgs1
+    ")"
   }.map { (tuple) -> Token in
     let name = String(tuple.0)
     let token = tuple.1
-    if let resolved = self.functions(name) {
+    if let resolved = self.unaryFunctions(name) {
+      // Known function name
       if case .constant(let value) = token {
+        // Known constant value -- evaluate function with it and return new constant value
         return .constant(resolved(value))
       }
-      return .function(name, token)
+      return .function1(name, token)
     }
-    if self.enableImpliedMultiplication {
-      return tokenReducer(lhs: .variable(name), rhs: token, op: (*))
+
+    // We don't know the function at this time, should we treat as a variable multiplying a parenthetical expression?
+    return self.enableImpliedMultiplication ? tokenReducer(lhs: .variable(name), rhs: token, op: (*)) :
+      .function1(name, token)
+  }
+
+  /// Parser for function call of 2 parameters. Use Lazy due to recursive nature of this definition.
+  private lazy var functionArgs2 = Lazy {
+    self.additionAndSubtraction
+    ignoreSpaces
+    ","
+    ignoreSpaces
+    self.additionAndSubtraction
+    ignoreSpaces
+  }
+
+  /// Parser for a single argument function call (eg `atan2`).
+  private lazy var function2 = Parse {
+    identifier
+    "("
+    functionArgs2
+    ")"
+  }.map { (tuple) -> Token in
+    let name = String(tuple.0)
+    let arg1 = tuple.1.0
+    let arg2 = tuple.1.1
+    if let resolved = self.binaryFunctions(name),
+       case .constant(let value1) = arg1,
+       case .constant(let value2) = arg2 {
+      // Known constant values -- evaluate function with it and return new constant value
+      return .constant(resolved(value1, value2))
     }
-    return .function(name, token)
+    // Cannot reduce to a value at this time
+    return .function2(name, arg1, arg2)
   }
 
   /// Parser for an operand of an expression. Note that order is important: a function is made up of an identifier
@@ -159,7 +207,8 @@ final public class MathParser {
   private lazy var operand = Parse {
     ignoreSpaces
     OneOf {
-      function
+      function2
+      function1
       parenthetical
       symbolOrVariable
       constant
@@ -174,15 +223,36 @@ final public class MathParser {
   }
 
   /**
-   Construct new parser
+   Construct new parser. Only supports unary functions
 
    - parameter symbols: optional mapping of names to constants. If not given, `defaultSymbols` will be used
-   - parameter functions: optional mapping of names to functions. If not given, `defaultFunctions` will be used
-   - parameter enableImpliedMultiplication: if true treat expressions like `2 π` as valid and same as `2 * π`
+   - parameter functions: optional mapping of names to 1-ary functions. If not given, `defaultUnaryFunctions` will be used
+   - parameter enableImpliedMultiplication: if true treat expressions like `2π` as valid and same as `2 * π`
    */
-  public init(symbols: SymbolMap? = nil, functions: FunctionMap? = nil, enableImpliedMultiplication: Bool = false) {
+  public init(symbols: SymbolMap? = nil,
+              functions: UnaryFunctionMap? = nil,
+              enableImpliedMultiplication: Bool = false) {
     self.symbols = symbols ?? { Self.defaultSymbols[$0] }
-    self.functions = functions ?? { Self.defaultFunctions[$0] }
+    self.unaryFunctions = functions ?? { Self.defaultUnaryFunctions[$0] }
+    self.binaryFunctions = { Self.defaultBinaryFunctions[$0] }
+    self.enableImpliedMultiplication = enableImpliedMultiplication
+  }
+
+  /**
+   Construct new parser that supports unary and binary functions.
+
+   - parameter symbols: optional mapping of names to constants. If not given, `defaultSymbols` will be used
+   - parameter unaryFunctions: optional mapping of names to 1-ary functions. If not given, `defaultUnaryFunctions` will be used
+   - parameter binaryFunctions: optional mapping of names to 2-ary functions. If not given, `defaultBinaryFunctions` will be used
+   - parameter enableImpliedMultiplication: if true treat expressions like `2π` as valid and same as `2 * π`
+   */
+  public init(symbols: SymbolMap? = nil,
+              unaryFunctions: UnaryFunctionMap? = nil,
+              binaryFunctions: BinaryFunctionMap? = nil,
+              enableImpliedMultiplication: Bool = false) {
+    self.symbols = symbols ?? { Self.defaultSymbols[$0] }
+    self.unaryFunctions = unaryFunctions ?? { Self.defaultUnaryFunctions[$0] }
+    self.binaryFunctions = binaryFunctions ?? { Self.defaultBinaryFunctions[$0] }
     self.enableImpliedMultiplication = enableImpliedMultiplication
   }
 }
@@ -198,15 +268,19 @@ extension MathParser {
    */
   public func parse(_ text: String) -> Evaluator? {
     guard let token = try? expression.parse(text) else { return nil }
-    return Evaluator(token: token, symbols: self.symbols, functions: self.functions)
+    return Evaluator(token: token, symbols: self.symbols, unaryFunctions: self.unaryFunctions,
+                     binaryFunctions: self.binaryFunctions)
   }
 }
 
+/// Common expression for ignoring spaces in other parsers
 fileprivate let ignoreSpaces = Skip { Optionally { Prefix { $0.isWhitespace } } }
 
 /// All of our basic math operations reduce two inputs into one output.
 fileprivate typealias Operation = (Double, Double) -> Double
 
+/// Attempt to reduce two operand tokens and an operator. If constants, reduce to the operator applied to the constants.
+/// Otherwise, return a `.mathOp` token for future evaluation.
 fileprivate func tokenReducer(lhs: Token, rhs: Token, op: @escaping Operation) -> Token {
   if case let .constant(lhs) = lhs, case let .constant(rhs) = rhs {
     return .constant(op(lhs, rhs))
