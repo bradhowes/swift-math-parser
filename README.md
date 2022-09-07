@@ -22,7 +22,8 @@ The parser will return `nil` if it is unable to completely parse the expression.
 By default, the expression parser and evaluator handle the following symbols and functions:
 
 * Symbols: `pi`, `π`, and `e`
-* Functions: `sin`, `cos`, `tan`, `log10`, `ln`/`loge`, `log2`, `exp`, `ceil`, `floor`, `round`, `sqrt`
+* 1-argument functions: `sin`, `cos`, `tan`, `log10`, `ln`/`loge`, `log2`, `exp`, `ceil`, `floor`, `round`, `sqrt`
+* 2-argumetn functions: `atan`, `hypot`, `pow`
 
 You can reference additional symbols or variables and functions by providing your own mapping functions. There are two
 places where this can be done:
