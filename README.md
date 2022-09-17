@@ -25,7 +25,7 @@ By default, the expression parser and evaluator handle the following symbols and
 * Symbols: `pi`, `π`, and `e`
 * 1-argument functions: `sin`, `cos`, `tan`, `log10`, `ln` (`loge`), `log2`, `exp`, `ceil`, `floor`, `round`, `sqrt` (`√`)
 * 2-argument functions: `atan`, `hypot`, `pow` [^1]
-* alternative math operator symbols: `×` for multiplication and `÷` for division
+* alternative math operator symbols: `×` for multiplication and `÷` for division (see example above for use of `×`)
 
 You can reference additional symbols or variables and functions by providing your own mapping functions. There are two
 places where this can be done:
@@ -46,11 +46,12 @@ let myFuncs: [String:(Double)->Double] = ["twice": {$0 + $0}]
 let parser = MathParser(symbols: mySymbols.producer, unaryFunctions: myFuncs.producer)
 let myEvalFuncs: [String:(Double)->Double] = ["power": {$0 * $0}]
 let evaluator = parser.parse("power(twice(foo))")
-# Expression has been parsed and `twice(foo)` has been resolved to `246.8` but `power` was undefined
-print(evaluator?.value)
-nan
-print(evaluator?.eval(unaryFunctions: myEvalFuncs.producer))
-60910.240000000005
+
+# Expression parsed and `twice(foo)` resolved to `246.8` but `power` is unknown still
+evaluator?.value // => nan
+
+# Give evaluator way to resolve `power(246.8)`
+evaluator?.eval(unaryFunctions: myEvalFuncs.producer) // => 60910.240000000005
 ```
 
 ## Implied Multiplication
