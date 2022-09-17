@@ -70,4 +70,17 @@ sort of operation in the parser that can be enabled by setting `enableImpliedMul
 `MathParser` instance (it defaults to `false`). Note that when enabled, an expression such as `2^3 2^4` would be
 considered a valid expression, resolving to `2^3 * 2^4 = 128`, and `4sin(t(pi))` would become `4 * sin(t * pi)`.
 
+Here is the original example expression with implied multiplication:
+
+```swift
+let parser = MathParser(enableImpliedMultiplication: true)
+let evaluator = parser.parse("4sin(t π) + 2sin(t π)")
+evaluator.eval("t", value: 0.0) // => 0.0
+evaluator.eval("t", value: 0.25) // => 4.2426406871192848
+evaluator.eval("t", value: 0.5) // => 6
+evaluator.eval("t", value: 1.0) // => 0
+```
+
+Note that `t π` cannot be `tπ` since the parser treats the latter as one symbol and not two.
+
 [^1]: Redundant since there is already the `^` operator.

@@ -285,4 +285,20 @@ final class MathParserTests: XCTestCase {
     let evaluator = parser.parse("power(twice(foo))")
     XCTAssertEqual(evaluator?.eval(unaryFunctions: myEvalFuncs.producer), pow(123.4 * 2, 2))
   }
+
+  func testReadMeExample3() {
+    let parser = MathParser(enableImpliedMultiplication: true)
+    let evaluator = parser.parse("4sin(t π) + 2sin(t π)")
+    var t = 0.0
+    var v = evaluator!.eval("t", value: t)
+    XCTAssertEqual(4 * sin(t * .pi) + 2 * sin(t * .pi), v)
+    t = 0.25
+    v = evaluator!.eval("t", value: t)
+    XCTAssertEqual(4 * sin(t * .pi) + 2 * sin(t * .pi), v)
+    t = 0.5
+    v = evaluator!.eval("t", value: t)
+    XCTAssertEqual(4 * sin(t * .pi) + 2 * sin(t * .pi), v)
+    v = evaluator!.eval("u", value: 1.0)
+    XCTAssertTrue(v.isNaN)
+  }
 }
