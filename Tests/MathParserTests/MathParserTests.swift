@@ -174,6 +174,44 @@ final class MathParserTests: XCTestCase {
                    accuracy: 1e-5)
   }
 
+  func testArcTan() {
+    struct State {
+      var x: Double;
+      var y: Double;
+
+      func lookup(name: String) -> Double {
+        switch name {
+        case "x": return x
+        case "y": return y
+        default: return .nan
+        }
+      }
+    }
+
+    let epsilon = 1e-5
+    let token = parser.parse("atan2(y, x)")!
+    XCTAssertNotNil(token)
+    XCTAssertTrue(token.eval().isNaN)
+
+    var s = State(x: 0.0, y: 0.0)
+    let evaluator: () -> Double = { token.eval(symbols: s.lookup) }
+    XCTAssertEqual(evaluator(), 0.0, accuracy: epsilon)
+    s.x = -1.0
+    XCTAssertEqual(evaluator(), .pi, accuracy: epsilon)
+    s.x = 1.0
+    XCTAssertEqual(evaluator(), 0.0, accuracy: epsilon)
+    s.x = 0.0
+    s.y = -0.5
+    XCTAssertEqual(evaluator(), -.pi / 2, accuracy: epsilon)
+    s.y = 0.5
+    XCTAssertEqual(evaluator(), .pi / 2, accuracy: epsilon)
+    s.y = .nan
+    XCTAssertTrue(evaluator().isNaN)
+    s.x = 0.5
+    s.y = 0.5
+    XCTAssertEqual(evaluator(), 0.7853981633974483, accuracy: epsilon)
+  }
+
   func testReadMe() {
     let parser = MathParser()
     let evaluator = parser.parse("4 * sin(t * π) + 2 * sin(t * π)")
