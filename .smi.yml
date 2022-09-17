@@ -1,0 +1,9 @@
+version: 1
+builder:
+  configs:
+  - platform: ios
+    scheme: MathParser
+  - platform: tvos
+    scheme: MathParser
+  - platform: watchos
+    scheme: MathParser_watchOS

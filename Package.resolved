@@ -1,0 +1,34 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "swift-case-paths",
+        "repositoryURL": "https://github.com/pointfreeco/swift-case-paths",
+        "state": {
+          "branch": null,
+          "revision": "a09839348486db8866f85a727b8550be1d671c50",
+          "version": "0.9.1"
+        }
+      },
+      {
+        "package": "swift-parsing",
+        "repositoryURL": "https://github.com/pointfreeco/swift-parsing",
+        "state": {
+          "branch": null,
+          "revision": "bc92e84968990b41640214b636667f35b6e5d44c",
+          "version": "0.10.0"
+        }
+      },
+      {
+        "package": "xctest-dynamic-overlay",
+        "repositoryURL": "https://github.com/pointfreeco/xctest-dynamic-overlay",
+        "state": {
+          "branch": null,
+          "revision": "ef8e14e7ce1c0c304c644c6ba365d06c468ded6b",
+          "version": "0.3.3"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
