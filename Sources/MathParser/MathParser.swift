@@ -36,7 +36,9 @@ final public class MathParser {
     "sin": sin, "cos": cos, "tan": tan,
     "log10": log10, "ln": log, "loge": log, "log2": log2, "exp": exp,
     "ceil": ceil, "floor": floor, "round": round,
-    "sqrt": sqrt, "cbrt": cbrt
+    "sqrt": sqrt, "√": sqrt,
+    // cube root
+    "cbrt": cbrt
   ]
 
   /// Default 2-ary functions to use for parsing.
@@ -55,17 +57,64 @@ final public class MathParser {
   /// Function mapping to use during parsing and perhaps evaluation
   public let binaryFunctions: BinaryFunctionMap
 
-  /// Parser for start of identifier (constant, variable, function)
-  private lazy var identifierStart = Parse  {
-    Prefix(1) { $0.isLetter }
+  /**
+   Construct new parser. Only supports unary functions
+
+   - parameter symbols: optional mapping of names to constants. If not given, `defaultSymbols` will be used
+   - parameter functions: optional mapping of names to 1-ary functions. If not given, `defaultUnaryFunctions` will be used
+   - parameter enableImpliedMultiplication: if true treat expressions like `2π` as valid and same as `2 * π`
+   */
+  public init(symbols: SymbolMap? = nil,
+              functions: UnaryFunctionMap? = nil,
+              enableImpliedMultiplication: Bool = false) {
+    self.symbols = symbols ?? { Self.defaultSymbols[$0] }
+    self.unaryFunctions = functions ?? { Self.defaultUnaryFunctions[$0] }
+    self.binaryFunctions = { Self.defaultBinaryFunctions[$0] }
+    self.enableImpliedMultiplication = enableImpliedMultiplication
   }
+
+  /**
+   Construct new parser that supports unary and binary functions.
+
+   - parameter symbols: optional mapping of names to constants. If not given, `defaultSymbols` will be used
+   - parameter unaryFunctions: optional mapping of names to 1-ary functions. If not given, `defaultUnaryFunctions` will be used
+   - parameter binaryFunctions: optional mapping of names to 2-ary functions. If not given, `defaultBinaryFunctions` will be used
+   - parameter enableImpliedMultiplication: if true treat expressions like `2π` as valid and same as `2 * π`
+   */
+  public init(symbols: SymbolMap? = nil,
+              unaryFunctions: UnaryFunctionMap? = nil,
+              binaryFunctions: BinaryFunctionMap? = nil,
+              enableImpliedMultiplication: Bool = false) {
+    self.symbols = symbols ?? { Self.defaultSymbols[$0] }
+    self.unaryFunctions = unaryFunctions ?? { Self.defaultUnaryFunctions[$0] }
+    self.binaryFunctions = binaryFunctions ?? { Self.defaultBinaryFunctions[$0] }
+    self.enableImpliedMultiplication = enableImpliedMultiplication
+  }
+
+  // MARK: -
+
+  /**
+   Parse an expression into a token that can be evaluated at a later time.
+
+   - parameter text: the expression to parse
+   - returns: optional Evaluator to use to obtain results from the parsed expression. This is nil if expression was not
+   valid.
+   */
+  public func parse(_ text: String) -> Evaluator? {
+    guard let token = try? expression.parse(text) else { return nil }
+    return Evaluator(token: token, symbols: self.symbols, unaryFunctions: self.unaryFunctions,
+                     binaryFunctions: self.binaryFunctions)
+  }
+
+  // MARK: -
+
+  /// Parser for start of identifier (constant, variable, function). All must start with a letter.
+  private lazy var identifierStart = Parse { Prefix(1) { $0.isLetter } }
 
   /// Parser for remaining parts of identifier (constant, variable, function)
-  private lazy var identifierRemaining = Parse {
-    Prefix { $0.isNumber || $0.isLetter }
-  }
+  private lazy var identifierRemaining = Parse { Prefix { $0.isNumber || $0.isLetter } }
 
-  /// Parser for identifier
+  /// Parser for identifier such as a function name or a symbol.
   private lazy var identifier = Parse {
     identifierStart
     identifierRemaining
@@ -87,6 +136,7 @@ final public class MathParser {
   }
 
   /// Parser for valid addition / subtraction operations. This is the starting point of precedence-involved parsing.
+  /// Use type erasure due to circular references to this parser in others that follow.
   private lazy var additionAndSubtraction: TokenParser = LeftAssociativeInfixOperation(
     additionOrSubtractionOperator,
     higher: multiplicationAndDivision
@@ -95,18 +145,21 @@ final public class MathParser {
   /// When true, two parsed operands in a row implies multiplication
   private let enableImpliedMultiplication: Bool
 
-  /// Parser for multiplication / division operator.
+  /// Parser for multiplication / division operator. Also recognizes × for multiplication and ÷ for division.
   private lazy var multiplicationOrDivisionOperator = Parse {
     ignoreSpaces
     OneOf {
       "*".map { { tokenReducer(lhs: $0, rhs: $1, op: (*)) } }
+      "×".map { { tokenReducer(lhs: $0, rhs: $1, op: (*)) } }
       "/".map { { tokenReducer(lhs: $0, rhs: $1, op: (/)) } }
+      "÷".map { { tokenReducer(lhs: $0, rhs: $1, op: (/)) } }
     }
   }
 
   /// Parser for valid multiplication / division operations. Higher precedence than + and -
   /// If `enableImpliedMultiplication` is `true` then one can list two operands together
-  /// like `2x` and have it treated as a multiplication of `2` and the value in `x`.
+  /// like `2x` and have it treated as a multiplication of `2` and the value in `x`. Note that this does not work for
+  /// expression `x2` since that would be treated as the name of a symbol or function.
   private lazy var multiplicationAndDivision = LeftAssociativeInfixOperation(
     multiplicationOrDivisionOperator,
     higher: exponentiation,
@@ -119,7 +172,7 @@ final public class MathParser {
     "^".map { { tokenReducer(lhs: $0, rhs: $1, op: (pow)) } }
   }
 
-  /// Parser for exponentiation operation. Higher precedence than * /
+  /// Parser for exponentiation operation. Higher precedence than * and /
   private lazy var exponentiation = LeftAssociativeInfixOperation(
     exponentiationOperator,
     higher: operand
@@ -220,56 +273,6 @@ final public class MathParser {
     additionAndSubtraction
     ignoreSpaces
     End()
-  }
-
-  /**
-   Construct new parser. Only supports unary functions
-
-   - parameter symbols: optional mapping of names to constants. If not given, `defaultSymbols` will be used
-   - parameter functions: optional mapping of names to 1-ary functions. If not given, `defaultUnaryFunctions` will be used
-   - parameter enableImpliedMultiplication: if true treat expressions like `2π` as valid and same as `2 * π`
-   */
-  public init(symbols: SymbolMap? = nil,
-              functions: UnaryFunctionMap? = nil,
-              enableImpliedMultiplication: Bool = false) {
-    self.symbols = symbols ?? { Self.defaultSymbols[$0] }
-    self.unaryFunctions = functions ?? { Self.defaultUnaryFunctions[$0] }
-    self.binaryFunctions = { Self.defaultBinaryFunctions[$0] }
-    self.enableImpliedMultiplication = enableImpliedMultiplication
-  }
-
-  /**
-   Construct new parser that supports unary and binary functions.
-
-   - parameter symbols: optional mapping of names to constants. If not given, `defaultSymbols` will be used
-   - parameter unaryFunctions: optional mapping of names to 1-ary functions. If not given, `defaultUnaryFunctions` will be used
-   - parameter binaryFunctions: optional mapping of names to 2-ary functions. If not given, `defaultBinaryFunctions` will be used
-   - parameter enableImpliedMultiplication: if true treat expressions like `2π` as valid and same as `2 * π`
-   */
-  public init(symbols: SymbolMap? = nil,
-              unaryFunctions: UnaryFunctionMap? = nil,
-              binaryFunctions: BinaryFunctionMap? = nil,
-              enableImpliedMultiplication: Bool = false) {
-    self.symbols = symbols ?? { Self.defaultSymbols[$0] }
-    self.unaryFunctions = unaryFunctions ?? { Self.defaultUnaryFunctions[$0] }
-    self.binaryFunctions = binaryFunctions ?? { Self.defaultBinaryFunctions[$0] }
-    self.enableImpliedMultiplication = enableImpliedMultiplication
-  }
-}
-
-extension MathParser {
-
-  /**
-   Parse an expression into a token that can be evaluated at a later time.
-
-   - parameter text: the expression to parse
-   - returns: optional Evaluator to use to obtain results from the parsed expression. This is nil if expression was not
-   valid.
-   */
-  public func parse(_ text: String) -> Evaluator? {
-    guard let token = try? expression.parse(text) else { return nil }
-    return Evaluator(token: token, symbols: self.symbols, unaryFunctions: self.unaryFunctions,
-                     binaryFunctions: self.binaryFunctions)
   }
 }
 

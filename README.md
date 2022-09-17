@@ -11,10 +11,11 @@ Basic math expression parser built with [Point•Free's](https://www.pointfree.c
 
 ```swift
 let parser = MathParser()
-let evaluator = parser.parse('4 * sin(t * π) + 2 * sin(t * π)')
-let v1 = evaluator.eval("t", value: 0.0) // => 0.0
-let v2 = evaluator.eval("t", value: 0.5) // => 6.0
-let v3 = evaluator.eval("t", value: 1.0) // => 0.0
+let evaluator = parser.parse('4 × sin(t × π) + 2 × sin(t × π)')
+evaluator.eval("t", value: 0.0) // => 0.0
+evaluator.eval("t", value: 0.25) // => 4.2426406871192848
+evaluator.eval("t", value: 0.5) // => 6
+evaluator.eval("t", value: 1.0) // => 0
 ```
 
 The parser will return `nil` if it is unable to completely parse the expression.
@@ -22,8 +23,9 @@ The parser will return `nil` if it is unable to completely parse the expression.
 By default, the expression parser and evaluator handle the following symbols and functions:
 
 * Symbols: `pi`, `π`, and `e`
-* 1-argument functions: `sin`, `cos`, `tan`, `log10`, `ln`/`loge`, `log2`, `exp`, `ceil`, `floor`, `round`, `sqrt`
-* 2-argumetn functions: `atan`, `hypot`, `pow`
+* 1-argument functions: `sin`, `cos`, `tan`, `log10`, `ln` (`loge`), `log2`, `exp`, `ceil`, `floor`, `round`, `sqrt` (`√`)
+* 2-argument functions: `atan`, `hypot`, `pow` [^1]
+* alternative math operator symbols: `×` for multiplication and `÷` for division
 
 You can reference additional symbols or variables and functions by providing your own mapping functions. There are two
 places where this can be done:
@@ -33,8 +35,23 @@ places where this can be done:
 
 If a symbol or function does not exist during an `eval` call, the final result will be `NaN`. If a symbol is resolved
 during parsing, it will be replaced with the symbol's value. Otherwise, it will be resolved during a future `eval` call.
-Same for function calls -- if the function is known during parsing _and_ the argument is a known value, then it will be
-replaced with the function result. Otherwise, the function call will take place during an `eval` call.
+Same for function calls -- if the function is known during parsing _and_ all arguments have a known value, then it will 
+be replaced with the function result. Otherwise, the function call will take place during an `eval` call.
+
+Example:
+
+```swift
+let mySymbols = ["foo": 123.4]
+let myFuncs: [String:(Double)->Double] = ["twice": {$0 + $0}]
+let parser = MathParser(symbols: mySymbols.producer, unaryFunctions: myFuncs.producer)
+let myEvalFuncs: [String:(Double)->Double] = ["power": {$0 * $0}]
+let evaluator = parser.parse("power(twice(foo))")
+# Expression has been parsed and `twice(foo)` has been resolved to `246.8` but `power` was undefined
+print(evaluator?.value)
+nan
+print(evaluator?.eval(unaryFunctions: myEvalFuncs.producer))
+60910.240000000005
+```
 
 ## Implied Multiplication
 
@@ -51,3 +68,5 @@ when there are no explicit math operators present (eg `-2/9` __x__ `sin(11/7 - 4
 sort of operation in the parser that can be enabled by setting `enableImpliedMultiplication` when creating a new
 `MathParser` instance (it defaults to `false`). Note that when enabled, an expression such as `2^3 2^4` would be
 considered a valid expression, resolving to `2^3 * 2^4 = 128`, and `4sin(t(pi))` would become `4 * sin(t * pi)`.
+
+[^1]: Redundant since there is already the `^` operator.

@@ -31,11 +31,15 @@ public struct Evaluator {
     self.binaryFunctions = binaryFunctions
   }
 
+  /// Resolve a parsed expression to a value. If the expression has unresolved symbols this will return NaN.
+  public var value: Double { return self.eval() }
+
   /**
    Evaluate the token to obtain a value. By default will use symbol map and function map given to `init`.
 
    - parameter symbols: optional mapping of names to constants to use during evaluation
-   - parameter functions: optional mapping of names to functions to use during evaluation
+   - parameter unaryFunctions: optional mapping of names to 1 parameter functions to use during evaluation
+   - parameter binaryFunctions: optional mapping of names to 2 parameter functions to use during evaluation
    */
   @inlinable
   public func eval(symbols: MathParser.SymbolMap? = nil,
