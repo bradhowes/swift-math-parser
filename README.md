@@ -7,7 +7,7 @@
 # swift-math-parser
 
 Basic math expression parser built with [Point•Free's](https://www.pointfree.co/)
-[swift-parsing](https://github.com/pointfreeco/swift-parsing) package.
+[swift-parsing](https://github.com/pointfreeco/swift-parsing) package (v0.10.0).
 
 ```swift
 let parser = MathParser()
