@@ -47,7 +47,7 @@ let parser = MathParser(symbols: mySymbols.producer, unaryFunctions: myFuncs.pro
 let myEvalFuncs: [String:(Double)->Double] = ["power": {$0 * $0}]
 let evaluator = parser.parse("power(twice(foo))")
 
-# Expression parsed and `twice(foo)` resolved to `246.8` but `power` is unknown still
+# Expression parsed and `twice(foo)` resolved to `246.8` but `power` is still unknown
 evaluator?.value // => nan
 
 # Give evaluator way to resolve `power(246.8)`
