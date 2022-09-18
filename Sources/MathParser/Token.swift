@@ -41,7 +41,7 @@ public enum Token {
     case .variable(let name): return variables(name) ?? .nan
     case .function1(let name, let arg): return functions(name)?(resolve(arg)) ?? .nan
     case .function2: return .nan
-    case .mathOp(let lhs, let rhs, let op): return op(resolve(lhs), resolve(rhs))
+    case .mathOp(let lhs, let rhs, let operation): return operation(resolve(lhs), resolve(rhs))
     }
   }
 
@@ -63,8 +63,7 @@ public enum Token {
     case .variable(let name): return variables(name) ?? .nan
     case .function1(let name, let arg): return unaryFunctions(name)?(resolve(arg)) ?? .nan
     case .function2(let name, let arg1, let arg2): return binaryFunctions(name)?(resolve(arg1), resolve(arg2)) ?? .nan
-    case .mathOp(let lhs, let rhs, let op): return op(resolve(lhs), resolve(rhs))
+    case .mathOp(let lhs, let rhs, let operation): return operation(resolve(lhs), resolve(rhs))
     }
   }
 }
-

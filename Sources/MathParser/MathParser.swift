@@ -54,7 +54,8 @@ final public class MathParser {
    Construct new parser. Only supports unary functions
 
    - parameter symbols: optional mapping of names to constants. If not given, `defaultSymbols` will be used
-   - parameter functions: optional mapping of names to 1-ary functions. If not given, `defaultUnaryFunctions` will be used
+   - parameter functions: optional mapping of names to 1-ary functions. If not given, `defaultUnaryFunctions` will be
+   used
    - parameter enableImpliedMultiplication: if true treat expressions like `2π` as valid and same as `2 * π`
    */
   public init(symbols: SymbolMap? = nil,
@@ -70,8 +71,10 @@ final public class MathParser {
    Construct new parser that supports unary and binary functions.
 
    - parameter symbols: optional mapping of names to constants. If not given, `defaultSymbols` will be used
-   - parameter unaryFunctions: optional mapping of names to 1-ary functions. If not given, `defaultUnaryFunctions` will be used
-   - parameter binaryFunctions: optional mapping of names to 2-ary functions. If not given, `defaultBinaryFunctions` will be used
+   - parameter unaryFunctions: optional mapping of names to 1-ary functions. If not given, `defaultUnaryFunctions` will
+   be used
+   - parameter binaryFunctions: optional mapping of names to 2-ary functions. If not given, `defaultBinaryFunctions`
+   will be used
    - parameter enableImpliedMultiplication: if true treat expressions like `2π` as valid and same as `2 * π`
    */
   public init(symbols: SymbolMap? = nil,
@@ -123,8 +126,8 @@ final public class MathParser {
   private lazy var additionOrSubtractionOperator = Parse {
     ignoreSpaces
     OneOf {
-      "+".map { { tokenReducer(lhs: $0, rhs: $1, op: (+)) } }
-      "-".map { { tokenReducer(lhs: $0, rhs: $1, op: (-)) } }
+      "+".map { { tokenReducer(lhs: $0, rhs: $1, operation: (+)) } }
+      "-".map { { tokenReducer(lhs: $0, rhs: $1, operation: (-)) } }
     }
   }
 
@@ -142,10 +145,10 @@ final public class MathParser {
   private lazy var multiplicationOrDivisionOperator = Parse {
     ignoreSpaces
     OneOf {
-      "*".map { { tokenReducer(lhs: $0, rhs: $1, op: (*)) } }
-      "×".map { { tokenReducer(lhs: $0, rhs: $1, op: (*)) } }
-      "/".map { { tokenReducer(lhs: $0, rhs: $1, op: (/)) } }
-      "÷".map { { tokenReducer(lhs: $0, rhs: $1, op: (/)) } }
+      "*".map { { tokenReducer(lhs: $0, rhs: $1, operation: (*)) } }
+      "×".map { { tokenReducer(lhs: $0, rhs: $1, operation: (*)) } }
+      "/".map { { tokenReducer(lhs: $0, rhs: $1, operation: (/)) } }
+      "÷".map { { tokenReducer(lhs: $0, rhs: $1, operation: (/)) } }
     }
   }
 
@@ -156,13 +159,13 @@ final public class MathParser {
   private lazy var multiplicationAndDivision = LeftAssociativeInfixOperation(
     multiplicationOrDivisionOperator,
     higher: exponentiation,
-    implied: enableImpliedMultiplication ? { tokenReducer(lhs: $0, rhs: $1, op: (*)) } : nil
+    implied: enableImpliedMultiplication ? { tokenReducer(lhs: $0, rhs: $1, operation: (*)) } : nil
   )
 
   /// Parser for exponentiation (power) operator
   private lazy var exponentiationOperator = Parse {
     ignoreSpaces
-    "^".map { { tokenReducer(lhs: $0, rhs: $1, op: (pow)) } }
+    "^".map { { tokenReducer(lhs: $0, rhs: $1, operation: (pow)) } }
   }
 
   /// Parser for exponentiation operation. Higher precedence than * and /
@@ -214,7 +217,7 @@ final public class MathParser {
     }
 
     // We don't know the function at this time, should we treat as a variable multiplying a parenthetical expression?
-    return self.enableImpliedMultiplication ? tokenReducer(lhs: .variable(name), rhs: token, op: (*)) :
+    return self.enableImpliedMultiplication ? tokenReducer(lhs: .variable(name), rhs: token, operation: (*)) :
       .function1(name, token)
   }
 
@@ -270,16 +273,16 @@ final public class MathParser {
 }
 
 /// Common expression for ignoring spaces in other parsers
-fileprivate let ignoreSpaces = Skip { Optionally { Prefix { $0.isWhitespace } } }
+private let ignoreSpaces = Skip { Optionally { Prefix { $0.isWhitespace } } }
 
 /// All of our basic math operations reduce two inputs into one output.
-fileprivate typealias Operation = (Double, Double) -> Double
+private typealias Operation = (Double, Double) -> Double
 
 /// Attempt to reduce two operand tokens and an operator. If constants, reduce to the operator applied to the constants.
 /// Otherwise, return a `.mathOp` token for future evaluation.
-fileprivate func tokenReducer(lhs: Token, rhs: Token, op: @escaping Operation) -> Token {
+private func tokenReducer(lhs: Token, rhs: Token, operation: @escaping Operation) -> Token {
   if case let .constant(lhs) = lhs, case let .constant(rhs) = rhs {
-    return .constant(op(lhs, rhs))
+    return .constant(operation(lhs, rhs))
   }
-  return .mathOp(lhs, rhs, op)
+  return .mathOp(lhs, rhs, operation)
 }
