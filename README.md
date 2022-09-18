@@ -35,7 +35,7 @@ places where this can be done:
 
 If a symbol or function does not exist during an `eval` call, the final result will be `NaN`. If a symbol is resolved
 during parsing, it will be replaced with the symbol's value. Otherwise, it will be resolved during a future `eval` call.
-Same for function calls -- if the function is known during parsing _and_ all arguments have a known value, then it will 
+Same for function calls -- if the function is known during parsing _and_ all arguments have a known value, then it will
 be replaced with the function result. Otherwise, the function call will take place during an `eval` call.
 
 Example:
