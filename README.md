@@ -22,7 +22,7 @@ The parser will return `nil` if it is unable to completely parse the expression.
 
 By default, the expression parser and evaluator handle the following symbols and functions:
 
-* Symbols: `pi`, `π`, and `e`
+* Constants: `pi` (`π`) and `e`
 * 1-argument functions: `sin`, `cos`, `tan`, `log10`, `ln` (`loge`), `log2`, `exp`, `ceil`, `floor`, `round`, `sqrt` (`√`)
 * 2-argument functions: `atan`, `hypot`, `pow` [^1]
 * alternative math operator symbols: `×` for multiplication and `÷` for division (see example above for use of `×`)
