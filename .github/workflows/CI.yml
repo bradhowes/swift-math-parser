@@ -5,8 +5,9 @@ on:
   pull_request:
     branches: [ main ]
 jobs:
-  build:
+  build_macos:
     runs-on: macos-latest
+
     steps:
     - uses: actions/checkout@v2
     - name: Build
@@ -29,3 +30,26 @@ jobs:
         label: Coverage
         message: ${{ env.PERCENTAGE }}
         color: success
+
+  build_ubuntu:
+    strategy:
+      matrix:
+        os: [ubuntu-18.04, ubuntu-20.04]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+        run: swift build
+      - name: Run tests
+        run: swift test
+
+  build_windows:
+    runs-on: windows-2019
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: MaxDesiatov/swift-windows-action@v1
+        with:
+          swift-version: "5.5.1"
