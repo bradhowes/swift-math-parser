@@ -1,7 +1,5 @@
 // Copyright © 2021 Brad Howes. All rights reserved.
 
-import Foundation
-
 /**
  Evaluator of parsed tokens.
  */

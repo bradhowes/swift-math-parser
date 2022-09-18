@@ -1,7 +1,5 @@
 // Copyright © 2021 Brad Howes. All rights reserved.
 
-import Foundation
-
 /**
  Enumeration of the various components identified in a parse of an expression. If an expression can be fully evaluated
  (eg `1 + 2`) then it will result in a `.constant` token with the final value. Otherwise, calling `eval` with

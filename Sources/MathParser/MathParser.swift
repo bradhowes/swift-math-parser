@@ -2,13 +2,6 @@
 
 import Parsing
 import XCTest
-import Foundation
-
-#if canImport(Darwin)
-import Darwin.C
-#elseif canImport(Glibc)
-import Glibc
-#endif
 
 /**
  General-purpose parser for simple math expressions made up of the common operations as well as single argument
@@ -29,7 +22,7 @@ final public class MathParser {
   public typealias BinaryFunctionMap = (String) -> ((Double, Double) -> Double)?
 
   /// Default symbols to use for parsing.
-  public static let defaultSymbols: [String: Double] = ["pi": .pi, "π": .pi, "e": Darwin.M_E]
+  public static let defaultSymbols: [String: Double] = ["pi": .pi, "π": .pi, "e": .e]
 
   /// Default 1-ary functions to use for parsing.
   public static let defaultUnaryFunctions: [String: (Double) -> Double] = [
