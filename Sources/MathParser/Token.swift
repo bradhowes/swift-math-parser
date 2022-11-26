@@ -33,15 +33,24 @@ public enum Token {
    */
   @available(*, deprecated, message: "Migrate to the new eval() to support 2-argument function calls.")
   @inlinable
-  public func eval(_ variables: @escaping MathParser.SymbolMap,
-                   _ functions: @escaping MathParser.UnaryFunctionMap) -> Double {
-    let resolve: (Token) -> Double = { $0.eval(variables, functions) }
+  public func eval(_ variables: MathParser.SymbolMap,
+                   _ functions: MathParser.UnaryFunctionMap,
+                   _ enableImpliedMultiplication: Bool = false) -> Double {
     switch self {
     case .constant(let value): return value
-    case .variable(let name): return variables(name) ?? .nan
-    case .function1(let name, let arg): return functions(name)?(resolve(arg)) ?? .nan
+    case .variable(let name):
+      if enableImpliedMultiplication {
+        if let token = MathParser.attemptToSplitForMultiplication(name: name[...], symbols: variables) {
+          return token.eval(variables, functions, enableImpliedMultiplication)
+        }
+      }
+      return variables(name) ?? .nan
+    case .function1(let name, let arg): return functions(name)?(
+      arg.eval(variables, functions, enableImpliedMultiplication)) ?? .nan
     case .function2: return .nan
-    case .mathOp(let lhs, let rhs, let operation): return operation(resolve(lhs), resolve(rhs))
+    case .mathOp(let lhs, let rhs, let operation): return operation(
+      lhs.eval(variables, functions, enableImpliedMultiplication),
+      rhs.eval(variables, functions, enableImpliedMultiplication))
     }
   }
 
@@ -54,16 +63,27 @@ public enum Token {
    - returns: result of evaluation. May be NaN if unresolved symbol or function still exists
    */
   @inlinable
-  public func eval(_ variables: @escaping MathParser.SymbolMap,
-                   _ unaryFunctions: @escaping MathParser.UnaryFunctionMap,
-                   _ binaryFunctions: @escaping MathParser.BinaryFunctionMap) -> Double {
-    let resolve: (Token) -> Double = { $0.eval(variables, unaryFunctions, binaryFunctions) }
+  public func eval(_ variables: MathParser.SymbolMap,
+                   _ unaryFunctions: MathParser.UnaryFunctionMap,
+                   _ binaryFunctions: MathParser.BinaryFunctionMap,
+                   _ enableImpliedMultiplication: Bool = false) -> Double {
     switch self {
     case .constant(let value): return value
-    case .variable(let name): return variables(name) ?? .nan
-    case .function1(let name, let arg): return unaryFunctions(name)?(resolve(arg)) ?? .nan
-    case .function2(let name, let arg1, let arg2): return binaryFunctions(name)?(resolve(arg1), resolve(arg2)) ?? .nan
-    case .mathOp(let lhs, let rhs, let operation): return operation(resolve(lhs), resolve(rhs))
+    case .variable(let name):
+      if enableImpliedMultiplication {
+        if let token = MathParser.attemptToSplitForMultiplication(name: name[...], symbols: variables) {
+          return token.eval(variables, unaryFunctions, binaryFunctions, enableImpliedMultiplication)
+        }
+      }
+      return variables(name) ?? .nan
+    case .function1(let name, let arg): return unaryFunctions(name)?(
+      arg.eval(variables, unaryFunctions, binaryFunctions,enableImpliedMultiplication)) ?? .nan
+    case .function2(let name, let arg1, let arg2): return binaryFunctions(name)?(
+      arg1.eval(variables, unaryFunctions, binaryFunctions,enableImpliedMultiplication),
+      arg2.eval(variables, unaryFunctions, binaryFunctions,enableImpliedMultiplication)) ?? .nan
+    case .mathOp(let lhs, let rhs, let operation): return operation(
+      lhs.eval(variables, unaryFunctions, binaryFunctions,enableImpliedMultiplication),
+      rhs.eval(variables, unaryFunctions, binaryFunctions,enableImpliedMultiplication))
     }
   }
 }

@@ -15,10 +15,10 @@ final public class MathParser {
   /// Mapping of symbol names to an optional Double.
   public typealias SymbolMap = (String) -> Double?
 
-  /// Mapping of names to an optional transform function
+  /// Mapping of names to an optional transform function of 1 argument
   public typealias UnaryFunctionMap = (String) -> ((Double) -> Double)?
 
-  /// Mapping of names to an optional transform function
+  /// Mapping of names to an optional transform function of 2 arguments
   public typealias BinaryFunctionMap = (String) -> ((Double, Double) -> Double)?
 
   /// Default symbols to use for parsing.
@@ -174,13 +174,35 @@ final public class MathParser {
     higher: operand
   )
 
+  public static func attemptToSplitForMultiplication(name: Substring, symbols: SymbolMap) -> Token? {
+    for count in 1..<name.count {
+      let lhsName = name.dropLast(count)
+      let rhsName = name.suffix(count)
+      if let value = symbols(String(rhsName)) {
+        let lhs = attemptToSplitForMultiplication(name: lhsName, symbols: symbols) ?? .variable(String(lhsName))
+        let rhs: Token = .constant(value)
+        return tokenReducer(lhs: lhs, rhs: rhs, operation: (*))
+      }
+      else if let value = symbols(String(lhsName)) {
+        let lhs: Token = .constant(value)
+        let rhs = attemptToSplitForMultiplication(name: rhsName, symbols: symbols) ?? .variable(String(rhsName))
+        return tokenReducer(lhs: lhs, rhs: rhs, operation: (*))
+      }
+    }
+    return nil
+  }
+
   /// Parser for a symbol. If symbol exists during parse, parser returns `.constant` token. Otherwise, parser returns
   /// `.symbol` token for later evaluation when the symbol is known.
   private lazy var symbolOrVariable = Parse {
     identifier
   }.map { (name: Substring) -> Token in
-    let name = String(name)
-    guard let value = self.symbols(name) else { return .variable(name) }
+    if self.enableImpliedMultiplication {
+      if let token = MathParser.attemptToSplitForMultiplication(name: name, symbols: self.symbols) {
+        return token
+      }
+    }
+    guard let value = self.symbols(String(name)) else { return .variable(String(name)) }
     return .constant(value)
   }
 

@@ -25,6 +25,7 @@ final class MathParserTests: XCTestCase {
   func testConstants() {
     let parser = MathParser(enableImpliedMultiplication: true)
     XCTAssertEqual(.pi, parser.parse("pi")?.eval())
+    XCTAssertEqual(.pi, parser.parse("π")?.eval())
     XCTAssertEqual(.pi, parser.parse("(pi)")?.eval())
     XCTAssertEqual(2 * .pi, parser.parse("2(pi)")?.eval())
     XCTAssertEqual(2 * .pi, parser.parse("2pi")?.eval())
@@ -182,9 +183,32 @@ final class MathParserTests: XCTestCase {
     XCTAssertEqual(4 * sin(1.25 * .pi), eval(at: 1.0), accuracy: 1e-5)
   }
 
-  func testVariablesWithImpliedMultiplication() {
+  func testVariablesWithImpliedMultiplication1() {
     let parser = MathParser(enableImpliedMultiplication: true)
-    let token = parser.parse("4sin(t(pi))")!
+    let token = parser.parse("4sin(tπ)")!
+    XCTAssertNotNil(token)
+    XCTAssertTrue(token.eval().isNaN)
+    XCTAssertEqual(0.0, token.eval("t", value: 0.0), accuracy: 1e-5)
+    XCTAssertEqual(4.0, token.eval("t", value: 0.5), accuracy: 1e-5)
+    XCTAssertEqual(0.0, token.eval("t", value: 1.0), accuracy: 1e-5)
+
+    var tv: Double = 0.0
+    let symbols: MathParser.SymbolMap = {_ in tv}
+    let unaryFunctions: MathParser.UnaryFunctionMap = {_ in cos}
+
+    func eval(at t: Double) -> Double {
+      tv = t
+      return token.eval(symbols: symbols, unaryFunctions: unaryFunctions)
+    }
+
+    XCTAssertEqual(4.0, eval(at: 0.0), accuracy: 1e-5)
+    XCTAssertEqual(0.0, eval(at: 0.5), accuracy: 1e-5)
+    XCTAssertEqual(-4.0, eval(at: 1.0), accuracy: 1e-5)
+  }
+
+  func testVariablesWithImpliedMultiplication2() {
+    let parser = MathParser(enableImpliedMultiplication: true)
+    let token = parser.parse("4sin(πt)")!
     XCTAssertNotNil(token)
     XCTAssertTrue(token.eval().isNaN)
     XCTAssertEqual(0.0, token.eval("t", value: 0.0), accuracy: 1e-5)

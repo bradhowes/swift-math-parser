@@ -12,7 +12,8 @@ public struct Evaluator {
   internal let unaryFunctions: MathParser.UnaryFunctionMap
   @usableFromInline
   internal let binaryFunctions: MathParser.BinaryFunctionMap
-
+  @usableFromInline
+  internal let enableImpliedMultiplication: Bool
   /**
    Construct new evaluator.
 
@@ -22,11 +23,13 @@ public struct Evaluator {
    */
   internal init(token: Token, symbols: @escaping MathParser.SymbolMap,
                 unaryFunctions: @escaping MathParser.UnaryFunctionMap,
-                binaryFunctions: @escaping MathParser.BinaryFunctionMap) {
+                binaryFunctions: @escaping MathParser.BinaryFunctionMap,
+                enableImpliedMultiplication: Bool = false) {
     self.token = token
     self.symbols = symbols
     self.unaryFunctions = unaryFunctions
     self.binaryFunctions = binaryFunctions
+    self.enableImpliedMultiplication = enableImpliedMultiplication
   }
 
   /// Resolve a parsed expression to a value. If the expression has unresolved symbols this will return NaN.
@@ -43,7 +46,8 @@ public struct Evaluator {
   public func eval(symbols: MathParser.SymbolMap? = nil,
                    unaryFunctions: MathParser.UnaryFunctionMap? = nil,
                    binaryFunctions: MathParser.BinaryFunctionMap? = nil) -> Double {
-    token.eval(symbols ?? self.symbols, unaryFunctions ?? self.unaryFunctions, binaryFunctions ?? self.binaryFunctions)
+    token.eval(symbols ?? self.symbols, unaryFunctions ?? self.unaryFunctions, binaryFunctions ?? self.binaryFunctions,
+               enableImpliedMultiplication)
   }
 
   /**
@@ -54,6 +58,6 @@ public struct Evaluator {
    */
   @inlinable
   public func eval(_ name: String, value: Double) -> Double {
-    token.eval({$0 == name ? value : symbols(name)}, unaryFunctions, binaryFunctions)
+    token.eval({$0 == name ? value : symbols(name)}, unaryFunctions, binaryFunctions, enableImpliedMultiplication)
   }
 }
