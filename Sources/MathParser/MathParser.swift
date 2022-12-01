@@ -174,18 +174,30 @@ final public class MathParser {
     higher: operand
   )
 
+  /**
+   Attempt to split a symbol into multiplication of two or more items. This is used when `enableImpliedMultiplication`
+   is `true`. It takes a simple approach of looking for known symbols at the start and end of a symbol name. When a
+   match is found, it constructs a multiplication of two new symbols, one of which is converted into a constant.
+
+   This routine is used both during the initial parse of the function definition *and* during the evaluation of the
+   function if there are unknown symbols in need of resolution.
+
+   - parameter name: the name to split
+   - parameter symbols: the symbol map to use to locate a known symbol name
+   - returns: optional Token that describes one or more multiplications that came from the given name
+   */
   public static func attemptToSplitForMultiplication(name: Substring, symbols: SymbolMap) -> Token? {
     for count in 1..<name.count {
       let lhsName = name.dropLast(count)
       let rhsName = name.suffix(count)
-      if let value = symbols(String(rhsName)) {
-        let lhs = attemptToSplitForMultiplication(name: lhsName, symbols: symbols) ?? .variable(String(lhsName))
-        let rhs: Token = .constant(value)
-        return tokenReducer(lhs: lhs, rhs: rhs, operation: (*))
-      }
-      else if let value = symbols(String(lhsName)) {
+      if let value = symbols(String(lhsName)) {
         let lhs: Token = .constant(value)
         let rhs = attemptToSplitForMultiplication(name: rhsName, symbols: symbols) ?? .variable(String(rhsName))
+        return tokenReducer(lhs: lhs, rhs: rhs, operation: (*))
+      }
+      else if let value = symbols(String(rhsName)) {
+        let lhs = attemptToSplitForMultiplication(name: lhsName, symbols: symbols) ?? .variable(String(lhsName))
+        let rhs: Token = .constant(value)
         return tokenReducer(lhs: lhs, rhs: rhs, operation: (*))
       }
     }
@@ -197,13 +209,24 @@ final public class MathParser {
   private lazy var symbolOrVariable = Parse {
     identifier
   }.map { (name: Substring) -> Token in
+
+    // If the symbol is defined, use its value.
+    if let value = self.symbols(String(name)) {
+      return .constant(value)
+    }
+
+    // If implied-multiplication is allowed, look for symbols next to other symbols. This is risky if one symbol name
+    // is a substring of another symbol name -- say `e` and a variable called `value` which will be taken as `valu * e`
+    // by the following code. Two solutions to that: don't enable implied multiplication or avoid names that start/end
+    // with other symbols.
     if self.enableImpliedMultiplication {
       if let token = MathParser.attemptToSplitForMultiplication(name: name, symbols: self.symbols) {
         return token
       }
     }
-    guard let value = self.symbols(String(name)) else { return .variable(String(name)) }
-    return .constant(value)
+
+    // Treat as a symbol that will be resolved when evaluated for a result.
+    return .variable(String(name))
   }
 
   /// Parser for expression in parentheses. Use Lazy due to recursive nature of this definition.
