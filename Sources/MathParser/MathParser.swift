@@ -126,8 +126,8 @@ final public class MathParser {
   private lazy var additionOrSubtractionOperator = Parse {
     ignoreSpaces
     OneOf {
-      "+".map { { tokenReducer(lhs: $0, rhs: $1, operation: (+)) } }
-      "-".map { { tokenReducer(lhs: $0, rhs: $1, operation: (-)) } }
+      "+".map { { Token.reducer(lhs: $0, rhs: $1, operation: (+)) } }
+      "-".map { { Token.reducer(lhs: $0, rhs: $1, operation: (-)) } }
     }
   }
 
@@ -145,10 +145,10 @@ final public class MathParser {
   private lazy var multiplicationOrDivisionOperator = Parse {
     ignoreSpaces
     OneOf {
-      "*".map { { tokenReducer(lhs: $0, rhs: $1, operation: (*)) } }
-      "×".map { { tokenReducer(lhs: $0, rhs: $1, operation: (*)) } }
-      "/".map { { tokenReducer(lhs: $0, rhs: $1, operation: (/)) } }
-      "÷".map { { tokenReducer(lhs: $0, rhs: $1, operation: (/)) } }
+      "*".map { { Token.reducer(lhs: $0, rhs: $1, operation: (*)) } }
+      "×".map { { Token.reducer(lhs: $0, rhs: $1, operation: (*)) } }
+      "/".map { { Token.reducer(lhs: $0, rhs: $1, operation: (/)) } }
+      "÷".map { { Token.reducer(lhs: $0, rhs: $1, operation: (/)) } }
     }
   }
 
@@ -159,13 +159,13 @@ final public class MathParser {
   private lazy var multiplicationAndDivision = LeftAssociativeInfixOperation(
     multiplicationOrDivisionOperator,
     higher: exponentiation,
-    implied: enableImpliedMultiplication ? { tokenReducer(lhs: $0, rhs: $1, operation: (*)) } : nil
+    implied: enableImpliedMultiplication ? { Token.reducer(lhs: $0, rhs: $1, operation: (*)) } : nil
   )
 
   /// Parser for exponentiation (power) operator
   private lazy var exponentiationOperator = Parse {
     ignoreSpaces
-    "^".map { { tokenReducer(lhs: $0, rhs: $1, operation: (pow)) } }
+    "^".map { { Token.reducer(lhs: $0, rhs: $1, operation: (pow)) } }
   }
 
   /// Parser for exponentiation operation. Higher precedence than * and /
@@ -193,12 +193,12 @@ final public class MathParser {
       if let value = symbols(String(lhsName)) {
         let lhs: Token = .constant(value)
         let rhs = attemptToSplitForMultiplication(name: rhsName, symbols: symbols) ?? .variable(String(rhsName))
-        return tokenReducer(lhs: lhs, rhs: rhs, operation: (*))
+        return Token.reducer(lhs: lhs, rhs: rhs, operation: (*))
       }
       else if let value = symbols(String(rhsName)) {
         let lhs = attemptToSplitForMultiplication(name: lhsName, symbols: symbols) ?? .variable(String(lhsName))
         let rhs: Token = .constant(value)
-        return tokenReducer(lhs: lhs, rhs: rhs, operation: (*))
+        return Token.reducer(lhs: lhs, rhs: rhs, operation: (*))
       }
     }
     return nil
@@ -262,7 +262,7 @@ final public class MathParser {
     }
 
     // We don't know the function at this time, should we treat as a variable multiplying a parenthetical expression?
-    return self.enableImpliedMultiplication ? tokenReducer(lhs: .variable(name), rhs: token, operation: (*)) :
+    return self.enableImpliedMultiplication ? Token.reducer(lhs: .variable(name), rhs: token, operation: (*)) :
       .function1(name, token)
   }
 
@@ -319,15 +319,3 @@ final public class MathParser {
 
 /// Common expression for ignoring spaces in other parsers
 private let ignoreSpaces = Skip { Optionally { Prefix { $0.isWhitespace } } }
-
-/// All of our basic math operations reduce two inputs into one output.
-private typealias Operation = (Double, Double) -> Double
-
-/// Attempt to reduce two operand tokens and an operator. If constants, reduce to the operator applied to the constants.
-/// Otherwise, return a `.mathOp` token for future evaluation.
-private func tokenReducer(lhs: Token, rhs: Token, operation: @escaping Operation) -> Token {
-  if case let .constant(lhs) = lhs, case let .constant(rhs) = rhs {
-    return .constant(operation(lhs, rhs))
-  }
-  return .mathOp(lhs, rhs, operation)
-}

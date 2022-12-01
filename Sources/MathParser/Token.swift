@@ -24,6 +24,22 @@ public enum Token {
   indirect case mathOp(Token, Token, (Double, Double) -> Double)
 
   /**
+   Attempt to reduce two operand Tokens and an operator. If constants, reduce to the operator applied to the
+   constants. Otherwise, return a `.mathOp` token for future evaluation.
+
+   - parameter lhs: left-hand value
+   - parameter rhs: right-hand value
+   - parameter operation: two-value math operation to perform
+   - returns: `.constant` token if reduction took place; otherwise `.mathOp` token
+   */
+  static internal func reducer(lhs: Token, rhs: Token, operation: @escaping (Double, Double) -> Double) -> Token {
+    if case let .constant(lhs) = lhs, case let .constant(rhs) = rhs {
+      return .constant(operation(lhs, rhs))
+    }
+    return .mathOp(lhs, rhs, operation)
+  }
+
+  /**
    Evaluate the token to obtain a Double value. Resolves variables and functions using the given mappings. If there
    remain unresolved tokens, the result will be a NaN.
 
