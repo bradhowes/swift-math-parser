@@ -17,13 +17,15 @@ test-tvos:
 		-destination platform="$(PLATFORM_TVOS)"
 
 test-macos:
-	rm -rf "$(PWD)/DerivedData-macos"
+	xcodebuild clean \
+		-scheme MathParser \
+		-derivedDataPath "$(PWD)/DerivedData-macos" \
+		-destination platform="$(PLATFORM_MACOS)"
 	xcodebuild test \
 		-scheme MathParser \
+		-derivedDataPath "$(PWD)/DerivedData-macos" \
 		-destination platform="$(PLATFORM_MACOS)" \
-		-enableCodeCoverage YES \
-		-xcconfig command-line.xcconfig \
-		-derivedDataPath "$(PWD)/DerivedData-macos"
+		-enableCodeCoverage YES
 
 test-linux:
 	docker build -t swiftlang -f swiftlang.dockerfile .

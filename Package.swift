@@ -29,6 +29,7 @@ let package = Package(
     .testTarget(
       name: "MathParserTests",
       dependencies: [
+        .product(name: "Parsing", package: "swift-parsing"),
         "MathParser",
       ]
     )
