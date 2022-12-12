@@ -6,14 +6,21 @@ on:
     branches: [ main ]
 jobs:
   build_macos:
-    runs-on: macos-latest
-
+    runs-on: macos-11
+    strategy:
+      matrix:
+        xcode:
+          - "13.2.1" # Swift 5.5
+        commands:
+          - test
     steps:
     - uses: actions/checkout@v2
-    - name: Build
-      run: swift build -v
-    - name: Run Tests
-      run: swift test -v --enable-code-coverage
+    - name: Select Xcode ${{ matrix.xcode }}
+      run: sudo xcode-select -e /Application/Xcode_${{ matrix.xcode }}.app
+    - name: System
+      run: system_profiler $PHardwareDataType
+    - name: Run ${{ matrix.command }}
+      run: make ${{ matrix.command }}
     - name: Generate Test Coverage
       run: |
         set -x
