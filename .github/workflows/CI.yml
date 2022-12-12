@@ -16,7 +16,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Select Xcode ${{ matrix.xcode }}
-      run: sudo xcode-select -e /Application/Xcode_${{ matrix.xcode }}.app
+      run: sudo xcode-select -s /Applications/Xcode_${{ matrix.xcode }}.app
     - name: System
       run: system_profiler $PHardwareDataType
     - name: Run ${{ matrix.command }}
