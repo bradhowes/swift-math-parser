@@ -40,11 +40,11 @@ test-swift:
 	swift test --parallel
 
 coverage: test-macos
-	xcrun xccov view --report --only-targets $(PWD)/DerivedData-macOS/Logs/Test/*.xcresult > coverage.txt
+	xcrun xccov view --report --only-targets $(PWD)/DerivedData-macos/Logs/Test/*.xcresult > coverage.txt
 	cat coverage.txt
 
 percentage: coverage
-	awk '/ MathParser / { print $$4; }' coverage.txt > percentage.txt
+	awk '/ MathParser / { print $$4; }' coverage.txt | tail -1 > percentage.txt
 	cat percentage.txt
 
 test: test-ios test-tvos percentage
