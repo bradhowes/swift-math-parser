@@ -81,9 +81,10 @@ evaluator.eval("t", value: 0.5) // => 6
 evaluator.eval("t", value: 1.0) // => 0
 ```
 
-Note that `tπ` is broken into `t` and `π` even though one could have a symbol called `tπ`. This eager splitting of a
-symbol may cause unexpected multiplication. For instance, if you have a symbol defined with the name `pin`, 
-this will be split into `pi` and `n` because `pi` / `π` is a known symbol. The best way to protect from this happening
-is to not use `enabledImpliedMultiplication=true`.
+Note that with `enableImpliedMultiplication` enabled, `tπ` will be broken into `t` and `π` even though one could have a
+symbol called `tπ`. This eager splitting of a symbol may cause unexpected multiplication. For instance, if you have a 
+symbol defined with the name `pin`, this will be split into `pi` and `n` because `pi` / `π` is a known symbol. The best 
+way to protect from this happening is to not enable `enabledImpliedMultiplication` but an alternative is to always
+separate individual symbols with a space -- or place one inside a pair of parentheses.
 
 [^1]: Redundant since there is already the `^` operator.

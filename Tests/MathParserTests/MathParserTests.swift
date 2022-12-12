@@ -105,6 +105,8 @@ final class MathParserTests: XCTestCase {
 
     let parser = MathParser(enableImpliedMultiplication: true)
     XCTAssertEqual(2.0 * .pi * 3.0, parser.parse("2 pi * 3")?.eval())
+    XCTAssertEqual(.pi * 3.0, parser.parse("π 3")?.eval())
+    XCTAssertEqual(2.0 * .pi * 3.0, parser.parse("2pi 3")?.eval())
     XCTAssertEqual(2.0 * sin(.pi / 2), parser.parse("2 sin(pi / 2)")?.eval())
     XCTAssertEqual(2.0 * (1 + 2), parser.parse("2(1 + 2)")?.eval())
     XCTAssertEqual(2.0 * .pi, parser.parse("2pi")?.eval())
