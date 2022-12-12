@@ -20,7 +20,7 @@ jobs:
     #- name: System
     #  run: system_profiler $PHardwareDataType
     - name: Run ${{ matrix.command }}
-      run: make ${{ matrix.command }}
+      run: make
     - name: Get Test Coverage
       run: |
         set -x
