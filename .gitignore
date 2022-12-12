@@ -3,3 +3,8 @@
 /Packages
 /*.xcodeproj
 xcuserdata/
+DerivedData-macos/
+DerivedData-ios/
+DerivedData-tvos/
+coverage.txt
+percentage.txt

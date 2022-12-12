@@ -21,13 +21,11 @@ jobs:
     #  run: system_profiler $PHardwareDataType
     - name: Run ${{ matrix.command }}
       run: make ${{ matrix.command }}
-    - name: Generate Test Coverage
+    - name: Get Test Coverage
       run: |
         set -x
-        XCTEST_PATH="$(find . -name '*.xctest')"
-        set -- $(xcrun llvm-cov report ${XCTEST_PATH}/Contents/MacOS/*PackageTests -instr-profile .build/debug/codecov/default.profdata -ignore-filename-regex='.build/|Tests/' | tail -1)
-        echo "$4" > .build/debug/codecov/percentage.txt
-        echo "PERCENTAGE=$4" >> $GITHUB_ENV
+        set -- $(< percentage.txt)
+        echo "PERCENTAGE=${1}" >> $GITHUB_ENV
     - name: Create Coverage Badge
       uses: schneegans/dynamic-badges-action@v1.1.0
       with:
