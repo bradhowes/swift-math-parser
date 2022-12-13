@@ -88,3 +88,4 @@ way to protect from this happening is to not enable `enabledImpliedMultiplicatio
 separate individual symbols with a space -- or place one inside a pair of parentheses.
 
 [^1]: Redundant since there is already the `^` operator.
+
