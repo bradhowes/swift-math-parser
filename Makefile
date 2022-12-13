@@ -44,7 +44,7 @@ coverage: test-macos
 	cat coverage.txt
 
 percentage: coverage
-	awk '/ MathParser / { print $$4; }' coverage.txt | tail -1 > percentage.txt
+	awk '/ MathParser / { if ($$3 > 0) print $$4; }' coverage.txt > percentage.txt
 	cat percentage.txt
 
 test: test-ios test-tvos percentage
