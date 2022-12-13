@@ -22,6 +22,89 @@ final class MathParserTests: XCTestCase {
     XCTAssertNil(parser.parse("- 3")?.eval())
   }
 
+  func testConstruction() {
+    parser = MathParser(symbols: {name in
+      switch name {
+      case "a": return 1.0
+      case "b": return 2.0
+      default: return 0.0
+      }
+    })
+    XCTAssertEqual(6, parser.parse("3*b")?.eval())
+    XCTAssertEqual(1.5, parser.parse("3÷b")?.eval())
+
+    parser = MathParser(symbols: {name in
+      switch name {
+      case "a": return 1.0
+      case "b": return 2.0
+      default: return 0.0
+      }
+    }, functions: {name in
+      switch name {
+      case "foo": return {(value: Double) -> Double in value * 3}
+      default: return nil
+      }
+    })
+    XCTAssertEqual(7, parser.parse("a+3*b")?.eval())
+
+    parser = MathParser(symbols: {name in
+      switch name {
+      case "a": return 1.0
+      case "b": return 2.0
+      default: return 0.0
+      }
+    }, unaryFunctions: {name in
+      switch name {
+      case "foo": return {(value: Double) -> Double in value * 3}
+      default: return nil
+      }
+    }, binaryFunctions: {name in
+      switch name {
+      case "bar": return {(x: Double, y: Double) -> Double in x * y}
+      default: return nil
+      }
+    })
+    XCTAssertEqual(42, parser.parse("bar(a+3*b,6)")?.eval())
+
+    parser = MathParser(binaryFunctions: {name in
+      switch name {
+      case "bar": return {(x: Double, y: Double) -> Double in x * y}
+      default: return nil
+      }
+    }, enableImpliedMultiplication: true)
+    XCTAssertEqual(12, parser.parse("bar(3, 4)")?.eval())
+
+    XCTAssertEqual(12, parser.parse("abc")?.eval(symbols: {name in
+      switch name {
+      case "abc": return 12
+      default: return nil
+      }
+    }))
+  }
+
+  func testImpliedMultiplicationOrUnaryFunction() {
+    parser = MathParser(enableImpliedMultiplication: true)
+    XCTAssertEqual(15, parser.parse("abc(3)")?.eval(symbols: {_ in 5.0}))
+  }
+
+  func testEvalUnaryFunction() {
+    parser = MathParser(unaryFunctions: { name in
+      switch name {
+      case "abc": return {(x: Double) -> Double in x * x}
+      default: return nil
+      }
+    })
+    XCTAssertEqual(9, parser.parse("abc(3)")?.eval())
+
+    parser = MathParser(enableImpliedMultiplication: true)
+    XCTAssertEqual(12, parser.parse("abc(3)")?.eval(symbols: { name in
+      switch name {
+      case "abc": return 4
+      default: return nil
+      }
+    }))
+  }
+
   func testConstants() {
     let parser = MathParser(enableImpliedMultiplication: true)
     XCTAssertEqual(.pi, parser.parse("pi")?.eval())
@@ -62,6 +145,7 @@ final class MathParserTests: XCTestCase {
     let expected: Double = ((1.0 + 2.0) * (3.0 + 4.0)) / pow(5.0, 1.0 + 3.0)
     let actual = parser.parse("((1 + 2) * (3 + 4)) / 5 ^ (1 + 3)")
     XCTAssertEqual(expected, actual?.eval())
+    XCTAssertEqual(expected, actual?.value)
   }
 
   func testMissingClosingParenthesis() {
