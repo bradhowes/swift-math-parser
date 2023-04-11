@@ -24,8 +24,17 @@
         "repositoryURL": "https://github.com/pointfreeco/swift-parsing",
         "state": {
           "branch": null,
-          "revision": "4bb9192468c1a8be57f46b7d6fd4f561c88b2195",
-          "version": "0.11.0"
+          "revision": "bc92e84968990b41640214b636667f35b6e5d44c",
+          "version": "0.10.0"
+        }
+      },
+      {
+        "package": "xctest-dynamic-overlay",
+        "repositoryURL": "https://github.com/pointfreeco/xctest-dynamic-overlay",
+        "state": {
+          "branch": null,
+          "revision": "ab8c9f45843694dd16be4297e6d44c0634fd9913",
+          "version": "0.8.4"
         }
       }
     ]

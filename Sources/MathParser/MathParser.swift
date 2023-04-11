@@ -313,7 +313,7 @@ final public class MathParser {
   private lazy var expression = Parse {
     additionAndSubtraction
     ignoreSpaces
-    End()
+    End<Substring>()
   }
 }
 
