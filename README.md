@@ -9,6 +9,8 @@
 Basic math expression parser built with [Point•Free's](https://www.pointfree.co/)
 [swift-parsing](https://github.com/pointfreeco/swift-parsing) package (v0.11.0).
 
+NOTE: if you would like to use v0.12 of swift-parsing, please see the `swift-parsing-12` branch.
+
 ```swift
 let parser = MathParser()
 let evaluator = parser.parse('4 × sin(t × π) + 2 × sin(t × π)')
