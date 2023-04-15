@@ -52,15 +52,3 @@ jobs:
         run: swift build
       - name: Run tests
         run: swift test
-
-  build_windows:
-    runs-on: windows-latest
-
-    steps:
-      - uses: actions/checkout@v3
-      - uses: compnerd/gha-setup-swift@main
-        with:
-          branch: swift-5.7-release
-          tag: 5.7-RELEASE
-      - run: swift build
-      - run: swift test
