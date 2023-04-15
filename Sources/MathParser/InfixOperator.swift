@@ -12,10 +12,11 @@ import Parsing
  Based on InfixOperator found in the Arithmetic perf test of https://github.com/pointfreeco/swift-parsing
  If you want support for right-associative operators, check there for a more robust implementation that does both kinds.
  */
-internal struct LeftAssociativeInfixOperation<Operator, Operand>: Parser
-where Operator: Parser, Operand: Parser,
-      Operator.Input == Operand.Input,
-      Operator.Output == (Operand.Output, Operand.Output) -> Operand.Output {
+internal struct LeftAssociativeInfixOperation<Input, Operator: Parser, Operand: Parser>: Parser
+where Operator.Input == Input,
+      Operand.Input == Input,
+      Operator.Output == (Operand.Output, Operand.Output) -> Operand.Output
+{
   let `operator`: Operator
   let operand: Operand
   var implied: Operator.Output?
@@ -44,7 +45,7 @@ where Operator: Parser, Operand: Parser,
    - returns: the next output value found in the stream
    */
   @inlinable
-  func parse(_ input: inout Operand.Input) rethrows -> Operand.Output {
+  func parse(_ input: inout Input) rethrows -> Operand.Output {
     var lhs = try self.operand.parse(&input)
     var rest = input
     while true {
