@@ -75,7 +75,7 @@ public enum Token {
     case .constant(let value): return value
     case .variable(let name):
       if enableImpliedMultiplication {
-        if let token = MathParser.attemptToSplitForMultiplication(name: name.prefix(name.count), symbols: variables) {
+        if let token = Token.attemptToSplitForMultiplication(name: name.prefix(name.count), symbols: variables) {
           return token.eval(variables, unaryFunctions, binaryFunctions, enableImpliedMultiplication)
         }
       }
@@ -90,5 +90,36 @@ public enum Token {
       lhs.eval(variables, unaryFunctions, binaryFunctions,enableImpliedMultiplication),
       rhs.eval(variables, unaryFunctions, binaryFunctions,enableImpliedMultiplication))
     }
+  }
+
+  /**
+   Attempt to split a symbol into multiplication of two or more items. This is used when `enableImpliedMultiplication`
+   is `true`. It takes a simple approach of looking for known symbols at the start and end of a symbol name. When a
+   match is found, it constructs a multiplication of two new symbols, one of which is converted into a constant.
+
+   This routine is used both during the initial parse of the function definition *and* during the evaluation of the
+   function if there are unknown symbols in need of resolution.
+
+   - parameter name: the name to split
+   - parameter symbols: the symbol map to use to locate a known symbol name
+   - returns: optional Token that describes one or more multiplications that came from the given name
+   */
+  @usableFromInline
+  static func attemptToSplitForMultiplication(name: Substring, symbols: MathParser.SymbolMap) -> Token? {
+    for count in 1..<name.count {
+      let lhsName = name.dropLast(count)
+      let rhsName = name.suffix(count)
+      if let value = symbols(String(lhsName)) {
+        let lhs: Token = .constant(value)
+        let rhs = attemptToSplitForMultiplication(name: rhsName, symbols: symbols) ?? .variable(String(rhsName))
+        return Token.reducer(lhs: lhs, rhs: rhs, operation: (*))
+      }
+      else if let value = symbols(String(rhsName)) {
+        let lhs = attemptToSplitForMultiplication(name: lhsName, symbols: symbols) ?? .variable(String(lhsName))
+        let rhs: Token = .constant(value)
+        return Token.reducer(lhs: lhs, rhs: rhs, operation: (*))
+      }
+    }
+    return nil
   }
 }
