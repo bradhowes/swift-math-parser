@@ -32,12 +32,15 @@ public enum Token {
    - parameter operation: two-value math operation to perform
    - returns: `.constant` token if reduction took place; otherwise `.mathOp` token
    */
-  static internal func reducer(lhs: Token, rhs: Token, operation: @escaping (Double, Double) -> Double) -> Token {
+  static func reducer(lhs: Token, rhs: Token, operation: @escaping (Double, Double) -> Double) -> Token {
     if case let .constant(lhs) = lhs, case let .constant(rhs) = rhs {
       return .constant(operation(lhs, rhs))
     }
     return .mathOp(lhs, rhs, operation)
   }
+
+  @usableFromInline
+  var noBinaryFuncs: MathParser.BinaryFunctionMap { { _ in nil } }
 
   /**
    Evaluate the token to obtain a Double value. Resolves variables and functions using the given mappings. If there
@@ -52,22 +55,7 @@ public enum Token {
   public func eval(_ variables: MathParser.SymbolMap,
                    _ functions: MathParser.UnaryFunctionMap,
                    _ enableImpliedMultiplication: Bool = false) -> Double {
-    switch self {
-    case .constant(let value): return value
-    case .variable(let name):
-      if enableImpliedMultiplication {
-        if let token = MathParser.attemptToSplitForMultiplication(name: name[...], symbols: variables) {
-          return token.eval(variables, functions, enableImpliedMultiplication)
-        }
-      }
-      return variables(name) ?? .nan
-    case .function1(let name, let arg): return functions(name)?(
-      arg.eval(variables, functions, enableImpliedMultiplication)) ?? .nan
-    case .function2: return .nan
-    case .mathOp(let lhs, let rhs, let operation): return operation(
-      lhs.eval(variables, functions, enableImpliedMultiplication),
-      rhs.eval(variables, functions, enableImpliedMultiplication))
-    }
+    eval(variables, functions, noBinaryFuncs, enableImpliedMultiplication)
   }
 
   /**
@@ -94,7 +82,8 @@ public enum Token {
       return variables(name) ?? .nan
     case .function1(let name, let arg): return unaryFunctions(name)?(
       arg.eval(variables, unaryFunctions, binaryFunctions,enableImpliedMultiplication)) ?? .nan
-    case .function2(let name, let arg1, let arg2): return binaryFunctions(name)?(
+    case .function2(let name, let arg1, let arg2):
+      return binaryFunctions(name)?(
       arg1.eval(variables, unaryFunctions, binaryFunctions,enableImpliedMultiplication),
       arg2.eval(variables, unaryFunctions, binaryFunctions,enableImpliedMultiplication)) ?? .nan
     case .mathOp(let lhs, let rhs, let operation): return operation(
@@ -103,3 +92,6 @@ public enum Token {
     }
   }
 }
+
+
+// La qualité de fabrication est très médiocre. Il n'y a pas d'espace entre la poignée et la porte. La peinture était mal faite. Ça a l'air merdique.

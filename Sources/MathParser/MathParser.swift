@@ -188,7 +188,8 @@ final public class MathParser {
    - parameter symbols: the symbol map to use to locate a known symbol name
    - returns: optional Token that describes one or more multiplications that came from the given name
    */
-  public static func attemptToSplitForMultiplication(name: Substring, symbols: SymbolMap) -> Token? {
+  @usableFromInline
+  static func attemptToSplitForMultiplication(name: Substring, symbols: SymbolMap) -> Token? {
     for count in 1..<name.count {
       let lhsName = name.dropLast(count)
       let rhsName = name.suffix(count)
