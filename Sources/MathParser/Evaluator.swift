@@ -5,30 +5,17 @@
  */
 public struct Evaluator {
   @usableFromInline
-  internal let token: Token
+  let token: Token
   @usableFromInline
-  internal let symbols: MathParser.SymbolMap
-  @usableFromInline
-  internal let unaryFunctions: MathParser.UnaryFunctionMap
-  @usableFromInline
-  internal let binaryFunctions: MathParser.BinaryFunctionMap
-  @usableFromInline
-  internal let enableImpliedMultiplication: Bool
+  let enableImpliedMultiplication: Bool
   /**
-   Construct new evaluator.
+   Construct new evaluator. This is constructed and returned by `MathParser.parse`.
 
    - parameter token: the token to evaluate
-   - parameter symbols: the mapping of names to constants to use during evaluation
-   - parameter unaryFunctions: the mapping of names to functions to use during evaluation
+   - parameter enableImpliedMultiplication: if true then try to decompose symbols into pairs that are multiplied together
    */
-  internal init(token: Token, symbols: @escaping MathParser.SymbolMap,
-                unaryFunctions: @escaping MathParser.UnaryFunctionMap,
-                binaryFunctions: @escaping MathParser.BinaryFunctionMap,
-                enableImpliedMultiplication: Bool = false) {
+  init(token: Token, enableImpliedMultiplication: Bool = false) {
     self.token = token
-    self.symbols = symbols
-    self.unaryFunctions = unaryFunctions
-    self.binaryFunctions = binaryFunctions
     self.enableImpliedMultiplication = enableImpliedMultiplication
   }
 
@@ -46,8 +33,10 @@ public struct Evaluator {
   public func eval(symbols: MathParser.SymbolMap? = nil,
                    unaryFunctions: MathParser.UnaryFunctionMap? = nil,
                    binaryFunctions: MathParser.BinaryFunctionMap? = nil) -> Double {
-    token.eval(symbols ?? self.symbols, unaryFunctions ?? self.unaryFunctions, binaryFunctions ?? self.binaryFunctions,
-               enableImpliedMultiplication)
+    token.eval(symbols: symbols ?? { _ in nil },
+               unaryFunctions: unaryFunctions ?? { _ in nil },
+               binaryFunctions: binaryFunctions ?? { _ in nil },
+               enableImpliedMultiplication: enableImpliedMultiplication)
   }
 
   /**
@@ -58,6 +47,8 @@ public struct Evaluator {
    */
   @inlinable
   public func eval(_ name: String, value: Double) -> Double {
-    token.eval({$0 == name ? value : symbols(name)}, unaryFunctions, binaryFunctions, enableImpliedMultiplication)
-  }
+    token.eval(symbols: {$0 == name ? value : nil},
+               unaryFunctions: { _ in nil },
+               binaryFunctions: { _ in nil },
+               enableImpliedMultiplication: enableImpliedMultiplication)}
 }
