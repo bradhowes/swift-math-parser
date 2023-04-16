@@ -19,23 +19,16 @@ final class TokenTests: XCTestCase {
 
   func testDeprecatedEval() {
     let constant = Token.constant(123)
-    XCTAssertEqual(123, constant.eval({(name: String) -> Double? in nil},
-                                      {(name: String) -> ((Double) -> Double)? in
-      {(x: Double) -> Double in x * x}},
-                                      true))
+    XCTAssertEqual(123, constant.eval(symbols.producer, unaryFuncs, false))
 
     let variable = Token.variable("a")
-    XCTAssertEqual(123, variable.eval({(name: String) -> Double? in 123},
-                                      {(name: String) -> ((Double) -> Double)? in nil},
-                                      true))
+    XCTAssertEqual(3.0, variable.eval(symbols.producer, unaryFuncs, false))
 
-    let func1 = Token.function1("a", .constant(3))
-    XCTAssertEqual(9, func1.eval({(name: String) -> Double? in 123},
-                                      {(name: String) -> ((Double) -> Double)? in {x in x * x}},
-                                      true))
-    let func2 = Token.function2("a", .constant(3), .constant(4))
-    XCTAssertTrue(func2.eval({(name: String) -> Double? in 123}, {(name: String) -> ((Double) -> Double)? in {x in x * x}},
-                             true).isNaN)
+    let func1 = Token.function1("FOO", .constant(3))
+    XCTAssertEqual(6.0, func1.eval(symbols.producer, unaryFuncs, false))
+
+    let func2 = Token.function2("FOO", .constant(3), .constant(4))
+    XCTAssertTrue(func2.eval(symbols.producer, unaryFuncs, false).isNaN)
   }
 
   func testConstant() {

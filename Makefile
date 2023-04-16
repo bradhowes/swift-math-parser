@@ -21,6 +21,10 @@ test-macos:
 		-scheme MathParser \
 		-derivedDataPath "$(PWD)/DerivedData-macos" \
 		-destination platform="$(PLATFORM_MACOS)"
+	xcodebuild build \
+		-scheme MathParser \
+		-derivedDataPath "$(PWD)/DerivedData-macos" \
+		-destination platform="$(PLATFORM_MACOS)"
 	xcodebuild test \
 		-scheme MathParser \
 		-derivedDataPath "$(PWD)/DerivedData-macos" \

@@ -75,7 +75,7 @@ public enum Token {
     case .constant(let value): return value
     case .variable(let name):
       if enableImpliedMultiplication {
-        if let token = MathParser.attemptToSplitForMultiplication(name: name[...], symbols: variables) {
+        if let token = MathParser.attemptToSplitForMultiplication(name: name.prefix(name.count), symbols: variables) {
           return token.eval(variables, unaryFunctions, binaryFunctions, enableImpliedMultiplication)
         }
       }
@@ -92,6 +92,3 @@ public enum Token {
     }
   }
 }
-
-
-// La qualité de fabrication est très médiocre. Il n'y a pas d'espace entre la poignée et la porte. La peinture était mal faite. Ça a l'air merdique.
