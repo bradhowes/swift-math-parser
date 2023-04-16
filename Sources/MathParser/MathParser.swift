@@ -51,7 +51,7 @@ final public class MathParser {
   public let binaryFunctions: BinaryFunctionMap
 
   /**
-   Construct new parser. Only supports unary functions
+   Construct new parser.
 
    - parameter symbols: optional mapping of names to constants. If not given, `defaultSymbols` will be used
    - parameter functions: optional mapping of names to 1-ary functions. If not given, `defaultUnaryFunctions` will be
@@ -68,7 +68,7 @@ final public class MathParser {
   }
 
   /**
-   Construct new parser that supports unary and binary functions.
+   Construct new parser that recognizes custom binary functions.
 
    - parameter symbols: optional mapping of names to constants. If not given, `defaultSymbols` will be used
    - parameter unaryFunctions: optional mapping of names to 1-ary functions. If not given, `defaultUnaryFunctions` will
@@ -99,16 +99,16 @@ final public class MathParser {
   public func parse(_ text: String) -> Evaluator? {
     guard let token = try? expression.parse(text) else { return nil }
     return Evaluator(token: token, symbols: self.symbols, unaryFunctions: self.unaryFunctions,
-                     binaryFunctions: self.binaryFunctions)
+                     binaryFunctions: self.binaryFunctions, enableImpliedMultiplication: enableImpliedMultiplication)
   }
 
-  // MARK: -
+  // MARK: - implementation details
 
   /// Parser for start of identifier (constant, variable, function). All must start with a letter.
-  private lazy var identifierStart = Parse(input: Substring.self) { Prefix(1) { $0.isLetter } }
+  private var identifierStart = Parse(input: Substring.self) { Prefix(1) { $0.isLetter } }
 
   /// Parser for remaining parts of identifier (constant, variable, function)
-  private lazy var identifierRemaining = Parse(input: Substring.self) { Prefix { $0.isNumber || $0.isLetter } }
+  private var identifierRemaining = Parse(input: Substring.self) { Prefix { $0.isNumber || $0.isLetter } }
 
   /// Parser for identifier such as a function name or a symbol.
   private lazy var identifier = Parse(input: Substring.self) {
@@ -122,10 +122,10 @@ final public class MathParser {
   private typealias TR = (Token, Token) -> Token
 
   /// Parser for a numeric constant
-  private lazy var constant: some TokenParser = Parse { Double.parser().map { Token.constant($0) } }
+  private var constant: some TokenParser = Parse { Double.parser().map { Token.constant($0) } }
 
   /// Parser for addition / subtraction operator.
-  private lazy var additionOrSubtractionOperator: some Parser<Substring, TR> = Parse {
+  private var additionOrSubtractionOperator: some Parser<Substring, TR> = Parse {
     ignoreSpaces
     OneOf {
       "+".map { { Token.reducer(lhs: $0, rhs: $1, operation: (+)) } }
@@ -144,7 +144,7 @@ final public class MathParser {
   private let enableImpliedMultiplication: Bool
 
   /// Parser for multiplication / division operator. Also recognizes × for multiplication and ÷ for division.
-  private lazy var multiplicationOrDivisionOperator: some Parser<Substring, TR> = Parse {
+  private var multiplicationOrDivisionOperator: some Parser<Substring, TR> = Parse {
     ignoreSpaces
     OneOf {
       "*".map { { Token.reducer(lhs: $0, rhs: $1, operation: (*)) } }
@@ -165,7 +165,7 @@ final public class MathParser {
   )
 
   /// Parser for exponentiation (power) operator
-  private lazy var exponentiationOperator: some Parser<Substring, TR> = Parse {
+  private var exponentiationOperator: some Parser<Substring, TR> = Parse {
     ignoreSpaces
     "^".map { { Token.reducer(lhs: $0, rhs: $1, operation: (pow)) } }
   }
@@ -265,8 +265,7 @@ final public class MathParser {
     }
 
     // We don't know the function at this time, should we treat as a variable multiplying a parenthetical expression?
-    return self.enableImpliedMultiplication ? Token.reducer(lhs: .variable(name), rhs: token, operation: (*)) :
-      .function1(name, token)
+    return .function1(name, token)
   }
 
   /// Parser for function call of 2 parameters. Use Lazy due to recursive nature of this definition.
@@ -316,7 +315,7 @@ final public class MathParser {
   private lazy var expression: some TokenParser = Parse {
     additionAndSubtraction
     ignoreSpaces
-    End<Substring>()
+    End()
   }
 }
 
