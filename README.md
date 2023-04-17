@@ -42,6 +42,9 @@ during parsing, it will be replaced with the symbol's value. Otherwise, it will 
 Same for function calls -- if the function is known during parsing _and_ all arguments have a known value, then it will
 be replaced with the function result. Otherwise, the function call will take place during an `eval` call.
 
+You can get the unresolved symbol names from the `Evaluator.unresolved` attribute. It returns three collections for
+unresolved variables, unary functions, and binary function names.
+
 Example:
 
 ```swift
@@ -53,7 +56,7 @@ let evaluator = parser.parse("power(twice(foo))")
 
 # Expression parsed and `twice(foo)` resolved to `246.8` but `power` is still unknown
 evaluator?.value // => nan
-
+evaluator?.unresolved.unaryFunctions // => ['power']'
 # Give evaluator way to resolve `power(246.8)`
 evaluator?.eval(unaryFunctions: myEvalFuncs.producer) // => 60910.240000000005
 ```

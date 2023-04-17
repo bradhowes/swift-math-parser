@@ -91,7 +91,6 @@ extension Token {
           return proc(arg1.eval(state: state),
                       arg2.eval(state: state))
         } else {
-          print("** binary function '\(name)' is unresolved")
           return .nan
         }
 
