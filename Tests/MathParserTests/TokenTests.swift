@@ -5,7 +5,7 @@ import XCTest
 
 final class TokenTests: XCTestCase {
 
-  let symbols = ["a": 3.0, "b": 4.0, "ab": 99.0]
+  let variables = ["a": 3.0, "b": 4.0, "ab": 99.0]
   let unaryFuncs: MathParser.UnaryFunctionMap = { name in
     if name == "FOO" { return { $0 * 2.0 } }
     return nil
@@ -15,14 +15,14 @@ final class TokenTests: XCTestCase {
   override func setUp() {}
 
   func evalToken(_ token: Token,
-                 symbols: MathParser.SymbolMap? = nil,
+                 variables: MathParser.VariableMap? = nil,
                  unaryFunctions: MathParser.UnaryFunctionMap? = nil,
                  binaryFunctions: MathParser.BinaryFunctionMap? = nil,
-                 enableImpliedMultiplication: Bool = false) -> Double {
-    token.eval(symbols: symbols ?? self.symbols.producer,
-               unaryFunctions: unaryFunctions ?? self.unaryFuncs,
-               binaryFunctions: binaryFunctions ?? self.binaryFuncs,
-               enableImpliedMultiplication: enableImpliedMultiplication)
+                 usingImpliedMultiplication: Bool = false) -> Double {
+    token.eval(state: .init(variables: variables ?? self.variables.producer,
+                            unaryFunctions: unaryFunctions ?? self.unaryFuncs,
+                            binaryFunctions: binaryFunctions ?? self.binaryFuncs,
+                            usingImpliedMultiplication: usingImpliedMultiplication))
   }
 
   func testConstant() {
@@ -37,19 +37,20 @@ final class TokenTests: XCTestCase {
   }
 
   func testVariable() {
-    XCTAssertTrue(evalToken(.symbol(name: "blah")).isNaN)
+    XCTAssertTrue(evalToken(.variable(name: "blah")).isNaN)
   }
 
   func testImpliedMultiplicationDoesNotOverrideExistingVariable() {
-    let variable = Token.symbol(name: "ab")
-    XCTAssertEqual(99, evalToken(variable, enableImpliedMultiplication: true))
-    XCTAssertEqual(99, evalToken(variable, enableImpliedMultiplication: false))
+    let variable = Token.variable(name: "ab")
+    XCTAssertEqual(99, evalToken(variable, usingImpliedMultiplication: true))
+    XCTAssertEqual(99, evalToken(variable, usingImpliedMultiplication: false))
+    XCTAssertTrue(variable.unresolved.variables.contains("ab"))
   }
 
   func testMissingSymbolGeneratesNaN() {
-    let variable = Token.symbol(name: "abc")
-    XCTAssertTrue(evalToken(variable, enableImpliedMultiplication: true).isNaN)
-    XCTAssertTrue(evalToken(variable, enableImpliedMultiplication: false).isNaN)
+    let variable = Token.variable(name: "abc")
+    XCTAssertTrue(evalToken(variable, usingImpliedMultiplication: true).isNaN)
+    XCTAssertTrue(evalToken(variable, usingImpliedMultiplication: false).isNaN)
   }
 
   func testMissingUnaryFuncGeneratesNaN() {
@@ -57,9 +58,11 @@ final class TokenTests: XCTestCase {
   }
 
   func testMissingBinaryFuncGeneratesNaN() {
-    XCTAssertTrue(evalToken(.binaryCall(proc: .name("abc"),
-                                        arg1: .constant(value: 123.45),
-                                        arg2: .symbol(name: "a"))).isNaN)
+    let token: Token = .binaryCall(proc: .name("abc"),
+                                   arg1: .constant(value: 123.45),
+                                   arg2: .variable(name: "a"))
+    XCTAssertTrue(evalToken(token).isNaN)
+    XCTAssertTrue(token.unresolved.variables.contains("a") && token.unresolved.binaryFunctions.contains("abc"))
   }
 
   func testUnaryCallsAndImpliedMultiplication() {
@@ -69,22 +72,22 @@ final class TokenTests: XCTestCase {
     XCTAssertEqual(444.99, evalToken(.unaryCall(proc: .proc(proc), arg: .constant(value: 123.45))))
 
     XCTAssertEqual(123.45 * 6.0, evalToken(.unaryCall(proc: .name("aFOO"), arg: .constant(value: 123.45)),
-                                           enableImpliedMultiplication: true))
+                                           usingImpliedMultiplication: true))
 
     // abFOO(x) -> ab * FOO(x)
     XCTAssertEqual(99.0 * 123.45 * 2.0, evalToken(.unaryCall(proc: .name("abFOO"), arg: .constant(value: 123.45)),
-                                           enableImpliedMultiplication: true))
+                                                  usingImpliedMultiplication: true))
     // aaFOO(x) -> a * a * FOO(x)
     XCTAssertEqual(3.0 * 3.0 * 123.45 * 2.0, evalToken(.unaryCall(proc: .name("aaFOO"), arg: .constant(value: 123.45)),
-                                                  enableImpliedMultiplication: true))
+                                                       usingImpliedMultiplication: true))
   }
 
   func testUnaryCallResolution() {
-    let symbols = ["t": Double.pi / 4.0]
-    XCTAssertTrue(evalToken(.unaryCall(proc: .name("sin"), arg: .symbol(name: "t"))).isNaN)
-    XCTAssertTrue(evalToken(.unaryCall(proc: .proc(sin), arg: .symbol(name: "t"))).isNaN)
+    let variables = ["t": Double.pi / 4.0]
+    XCTAssertTrue(evalToken(.unaryCall(proc: .name("sin"), arg: .variable(name: "t"))).isNaN)
+    XCTAssertTrue(evalToken(.unaryCall(proc: .proc(sin), arg: .variable(name: "t"))).isNaN)
     XCTAssertEqual(0.7071067811865475,
-                   evalToken(.unaryCall(proc: .proc(sin), arg: .symbol(name: "t")), symbols: symbols.producer),
+                   evalToken(.unaryCall(proc: .proc(sin), arg: .variable(name: "t")), variables: variables.producer),
                    accuracy: 1.0E-8)
   }
 }

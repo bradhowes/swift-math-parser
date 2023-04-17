@@ -23,7 +23,7 @@ final class MathParserTests: XCTestCase {
   }
 
   func testConstruction() {
-    parser = MathParser(symbols: {name in
+    parser = MathParser(variables: {name in
       switch name {
       case "a": return 1.0
       case "b": return 2.0
@@ -33,13 +33,13 @@ final class MathParserTests: XCTestCase {
     XCTAssertEqual(6, parser.parse("3*b")?.eval())
     XCTAssertEqual(1.5, parser.parse("3÷b")?.eval())
 
-    parser = MathParser(symbols: {name in
+    parser = MathParser(variables: {name in
       switch name {
       case "a": return 1.0
       case "b": return 2.0
       default: return 0.0
       }
-    }, functions: {name in
+    }, unaryFunctions: {name in
       switch name {
       case "foo": return {(value: Double) -> Double in value * 3}
       default: return nil
@@ -47,7 +47,7 @@ final class MathParserTests: XCTestCase {
     })
     XCTAssertEqual(7, parser.parse("a+3*b")?.eval())
 
-    parser = MathParser(symbols: {name in
+    parser = MathParser(variables: {name in
       switch name {
       case "a": return 1.0
       case "b": return 2.0
@@ -74,7 +74,7 @@ final class MathParserTests: XCTestCase {
     }, enableImpliedMultiplication: true)
     XCTAssertEqual(12, parser.parse("bar(3, 4)")?.eval())
 
-    XCTAssertEqual(12, parser.parse("abc")?.eval(symbols: {name in
+    XCTAssertEqual(12, parser.parse("abc")?.eval(variables: {name in
       switch name {
       case "abc": return 12
       default: return nil
@@ -82,37 +82,19 @@ final class MathParserTests: XCTestCase {
     }))
   }
 
-  func __testImpliedMultiplicationOrUnaryFunction() {
+  func testImpliedMultiplicationOrUnaryFunction() {
     parser = MathParser(enableImpliedMultiplication: true)
-    let symbols = ["a": 2.0, "b": 3.0, "c": 4.0]
-    XCTAssertEqual(2.0 * 3.0 * 4.0 * 3.0, parser.parse("abc(3)")?.eval(symbols: symbols.producer))
+    let variables = ["a": 2.0, "b": 3.0, "c": 4.0]
+    XCTAssertTrue(parser.parse("abc(3)")!.eval(variables: variables.producer).isNaN)
     let unary = ["bc": { $0 * 10.0}]
-    XCTAssertEqual(2.0 * 30.0, parser.parse("abc(3)")?.eval(symbols: symbols.producer, unaryFunctions: unary.producer))
+    XCTAssertEqual(2.0 * 30.0, parser.parse("abc(3)")?.eval(variables: variables.producer, unaryFunctions: unary.producer))
   }
 
-  func __testImpliedMultiplicationWithUnaryFunction() {
+  func testImpliedMultiplicationWithUnaryFunction() {
     parser = MathParser(enableImpliedMultiplication: true)
-    let symbols = ["a": 2.0, "b": 3.0, "c": 4.0]
+    let variables = ["a": 2.0, "b": 3.0, "c": 4.0]
     let unary = ["bc": { $0 * 10.0}]
-    XCTAssertEqual(2.0 * 30.0, parser.parse("abc(3)")?.eval(symbols: symbols.producer, unaryFunctions: unary.producer))
-  }
-
-  func __testEvalUnaryFunction() {
-    parser = MathParser(unaryFunctions: { name in
-      switch name {
-      case "abc": return {(x: Double) -> Double in x * x}
-      default: return nil
-      }
-    })
-    XCTAssertEqual(9, parser.parse("abc(3)")?.eval())
-
-    parser = MathParser(enableImpliedMultiplication: true)
-    XCTAssertEqual(12, parser.parse("abc(3)")?.eval(symbols: { name in
-      switch name {
-      case "abc": return 4
-      default: return nil
-      }
-    }))
+    XCTAssertEqual(2.0 * 30.0, parser.parse("abc(3)")!.eval(variables: variables.producer, unaryFunctions: unary.producer))
   }
 
   func testConstants() {
@@ -223,11 +205,11 @@ final class MathParserTests: XCTestCase {
 
   func testCustomEvalSymbolMap() {
     let token = parser.parse("4 * sin(t * pi)")!
-    var symbols = ["t": 0.0]
+    var variables = ["t": 0.0]
 
     func eval(at t: Double) -> Double {
-      symbols["t"] = t
-      return token.eval(symbols: symbols.producer)
+      variables["t"] = t
+      return token.eval(variables: variables.producer)
     }
 
     XCTAssertEqual(0.0, eval(at: 0.0), accuracy: 1e-5)
@@ -237,11 +219,11 @@ final class MathParserTests: XCTestCase {
 
   func testCustomEvalSymbolMapDoesNotOverrideMathParserSymbolMap() {
     let token = parser.parse("4 * sin(t * pi)")!
-    var symbols = ["t": 0.0, "pi": 3.0]
+    var variables = ["t": 0.0, "pi": 3.0]
 
     func eval(at t: Double) -> Double {
-      symbols["t"] = t
-      return token.eval(symbols: symbols.producer)
+      variables["t"] = t
+      return token.eval(variables: variables.producer)
     }
 
     XCTAssertEqual(0.0, eval(at: 0.0), accuracy: 1e-5)
@@ -252,11 +234,11 @@ final class MathParserTests: XCTestCase {
   func testCustomEvalUnaryFunctionMapDoesNotOverrideMathParserUnaryFunctionMap() {
     let functions: [String: (Double)->Double] = ["sin": cos]
     let token = parser.parse("4 * sin(t * pi)")!
-    var symbols = ["t": 0.0]
+    var variables = ["t": 0.0]
 
     func eval(at t: Double) -> Double {
-      symbols["t"] = t
-      return token.eval(symbols: symbols.producer, unaryFunctions: functions.producer)
+      variables["t"] = t
+      return token.eval(variables: variables.producer, unaryFunctions: functions.producer)
     }
 
     XCTAssertEqual(0.0, eval(at: 0.0), accuracy: 1e-5)
@@ -266,12 +248,12 @@ final class MathParserTests: XCTestCase {
 
   func testCustomEvalBinaryFunctionMap() {
     let token = parser.parse("4 * sin(foobar(t, 0.25) * pi)")!
-    var symbols = ["t": 0.0]
+    var variables = ["t": 0.0]
     let functions: [String:(Double, Double)->Double] = ["foobar": {$0 + $1}]
 
     func eval(at t: Double) -> Double {
-      symbols["t"] = t
-      return token.eval(symbols: symbols.producer, binaryFunctions: functions.producer)
+      variables["t"] = t
+      return token.eval(variables: variables.producer, binaryFunctions: functions.producer)
     }
 
     XCTAssertEqual(4 * sin(0.25 * .pi), eval(at: 0.0), accuracy: 1e-5)
@@ -294,7 +276,7 @@ final class MathParserTests: XCTestCase {
     XCTAssertNotNil(token)
     XCTAssertTrue(token.eval().isNaN)
     // At this point pi has been resolved, leaving t and foo.
-    XCTAssertEqual(3.0 * .pi, token.eval(symbols: {_ in 1.0}, unaryFunctions: {_ in {$0 * 3.0}}), accuracy: 1e-5)
+    XCTAssertEqual(3.0 * .pi, token.eval(variables: {_ in 1.0}, unaryFunctions: {_ in {$0 * 3.0}}), accuracy: 1e-5)
   }
 
   func testBinaryFunction() {
@@ -303,7 +285,7 @@ final class MathParserTests: XCTestCase {
     XCTAssertTrue(token.eval().isNaN)
     // At this point pi has been resolved, leaving t and foo.
     XCTAssertEqual(((1.5 * .pi) + (2.0 * .pi)) * 3,
-                   token.eval(symbols: {_ in 1.5}, binaryFunctions: {_ in {($0 + $1) * 3.0}}),
+                   token.eval(variables: {_ in 1.5}, binaryFunctions: {_ in {($0 + $1) * 3.0}}),
                    accuracy: 1e-5)
   }
 
@@ -327,7 +309,7 @@ final class MathParserTests: XCTestCase {
     XCTAssertTrue(token.eval().isNaN)
 
     var s = State(x: 0.0, y: 0.0)
-    let evaluator: () -> Double = { token.eval(symbols: s.lookup) }
+    let evaluator: () -> Double = { token.eval(variables: s.lookup) }
     XCTAssertEqual(evaluator(), 0.0, accuracy: epsilon)
     s.x = -1.0
     XCTAssertEqual(evaluator(), .pi, accuracy: epsilon)
@@ -362,9 +344,9 @@ final class MathParserTests: XCTestCase {
   }
 
   func testReadMeExample2() {
-    let mySymbols = ["foo": 123.4]
+    let myVariables = ["foo": 123.4]
     let myFuncs: [String:(Double)->Double] = ["twice": {$0 + $0}]
-    let parser = MathParser(symbols: mySymbols.producer, unaryFunctions: myFuncs.producer)
+    let parser = MathParser(variables: myVariables.producer, unaryFunctions: myFuncs.producer)
     let myEvalFuncs: [String:(Double)->Double] = ["power": {$0 * $0}]
     let evaluator = parser.parse("power(twice(foo))")
     XCTAssertEqual(evaluator?.eval(unaryFunctions: myEvalFuncs.producer), pow(123.4 * 2, 2))
@@ -399,11 +381,20 @@ final class MathParserTests: XCTestCase {
     let yt: Evaluator! = mp.parse(y)
     XCTAssertNotNil(yt)
 
+
+    let unresolved = xt.unresolved
+    XCTAssertTrue(unresolved.variables.contains("t") &&
+                  unresolved.variables.count == 1 &&
+                  unresolved.unaryFunctions.contains("sgn") &&
+                  unresolved.unaryFunctions.contains("θ") &&
+                  unresolved.unaryFunctions.count == 2 &&
+                  unresolved.binaryFunctions.isEmpty)
+
     // The original Wolfram image has t going from 0 to 108π. It requires definitions for `sgn` and `θ`:
     // - sgn -- -1 if number is < 0, 1 if number is > 0 else 0
     // - θ -- 1 if number is >= 0 else 0
 
-    var symbols = ["t": 0.0]
+    var variables = ["t": 0.0]
     let unary = [
       "sgn": { x in x < 0.0 ? -1.0 : (x > 0.0 ? 1.0 : 0.0) },
       "θ": { x in x < 0.0 ? 0.0 : 1.0 }
@@ -433,9 +424,9 @@ final class MathParserTests: XCTestCase {
 
     // Take 10 samples from the original range of 0 - 108π
     for t in 0..<10 {
-      symbols["t"] = Double(t) / 10.0 * 108 * .pi
-      let x = xt.eval(symbols: symbols.producer, unaryFunctions: unary.producer)
-      let y = yt.eval(symbols: symbols.producer, unaryFunctions: unary.producer)
+      variables["t"] = Double(t) / 10.0 * 108 * .pi
+      let x = xt.eval(variables: variables.producer, unaryFunctions: unary.producer)
+      let y = yt.eval(variables: variables.producer, unaryFunctions: unary.producer)
       // print(x, y)
       XCTAssertEqual(xv[t], x, accuracy: 1.0E-8)
       XCTAssertEqual(yv[t], y, accuracy: 1.0E-8)

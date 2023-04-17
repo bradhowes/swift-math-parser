@@ -14,8 +14,12 @@ final public class MathParser {
   public typealias UnaryFunction = (Double) -> Double
   public typealias BinaryFunction = (Double, Double) -> Double
 
-  /// Mapping of symbol names to an optional Double.
+  /// Deprecated
+  @available(*, deprecated, message: "Use VariableMap instead.")
   public typealias SymbolMap = (String) -> Double?
+
+  /// Mapping of variable names to an optional Double.
+  public typealias VariableMap = (String) -> Double?
 
   /// Mapping of names to an optional transform function of 1 argument
   public typealias UnaryFunctionMap = (String) -> UnaryFunction?
@@ -24,7 +28,8 @@ final public class MathParser {
   public typealias BinaryFunctionMap = (String) -> BinaryFunction?
 
   /// Default symbols to use for parsing.
-  public static let defaultSymbols: [String: Double] = ["pi": .pi, "π": .pi, "e": .e]
+  public static let defaultVariables: [String: Double] = ["pi": .pi, "π": .pi, "e": .e]
+  public static var defaultSymbols: [String: Double] { defaultVariables }
 
   /// Default 1-ary functions to use for parsing.
   public static let defaultUnaryFunctions: [String: UnaryFunction] = [
@@ -43,7 +48,11 @@ final public class MathParser {
   ]
 
   /// Symbol mapping to use during parsing and perhaps evaluation
-  public let symbols: SymbolMap
+  public let variables: VariableMap
+
+  /// Symbol mapping to use during parsing and perhaps evaluation
+  @available(*, deprecated, message: "Use variables attribute instead.")
+  public var symbols: VariableMap { variables }
 
   /// Function mapping to use during parsing and perhaps evaluation
   public let unaryFunctions: UnaryFunctionMap
@@ -54,37 +63,41 @@ final public class MathParser {
   /**
    Construct new parser.
 
-   - parameter symbols: optional mapping of names to constants. If not given, `defaultSymbols` will be used
-   - parameter functions: optional mapping of names to 1-ary functions. If not given, `defaultUnaryFunctions` will be
-   used
-   - parameter enableImpliedMultiplication: if true treat expressions like `2π` as valid and same as `2 * π`
-   */
-  public init(symbols: SymbolMap? = nil,
-              functions: UnaryFunctionMap? = nil,
-              enableImpliedMultiplication: Bool = false) {
-    self.symbols = symbols ?? { Self.defaultSymbols[$0] }
-    self.unaryFunctions = functions ?? { Self.defaultUnaryFunctions[$0] }
-    self.binaryFunctions = { Self.defaultBinaryFunctions[$0] }
-    self.enableImpliedMultiplication = enableImpliedMultiplication
-  }
-
-  /**
-   Construct new parser that recognizes custom binary functions.
-
-   - parameter symbols: optional mapping of names to constants. If not given, `defaultSymbols` will be used
+   - parameter variables: optional mapping of names to variables. If not given, `defaultVariables` will be used
    - parameter unaryFunctions: optional mapping of names to 1-ary functions. If not given, `defaultUnaryFunctions` will
    be used
    - parameter binaryFunctions: optional mapping of names to 2-ary functions. If not given, `defaultBinaryFunctions`
    will be used
    - parameter enableImpliedMultiplication: if true treat expressions like `2π` as valid and same as `2 * π`
    */
-  public init(symbols: SymbolMap? = nil,
+  public init(variables: VariableMap? = nil,
               unaryFunctions: UnaryFunctionMap? = nil,
               binaryFunctions: BinaryFunctionMap? = nil,
               enableImpliedMultiplication: Bool = false) {
-    self.symbols = symbols ?? { Self.defaultSymbols[$0] }
+    self.variables = variables ?? { Self.defaultVariables[$0] }
     self.unaryFunctions = unaryFunctions ?? { Self.defaultUnaryFunctions[$0] }
     self.binaryFunctions = binaryFunctions ?? { Self.defaultBinaryFunctions[$0] }
+    self.enableImpliedMultiplication = enableImpliedMultiplication
+  }
+
+  @available(*, deprecated, message: "Use init with variables and binaryFunction parameters.")
+  public init(symbols: SymbolMap?,
+              unaryFunctions: UnaryFunctionMap? = nil,
+              binaryFunctions: BinaryFunctionMap? = nil,
+              enableImpliedMultiplication: Bool = false) {
+    self.variables = symbols ?? { Self.defaultVariables[$0] }
+    self.unaryFunctions = unaryFunctions ?? { Self.defaultUnaryFunctions[$0] }
+    self.binaryFunctions = binaryFunctions ?? { Self.defaultBinaryFunctions[$0] }
+    self.enableImpliedMultiplication = enableImpliedMultiplication
+  }
+
+  @available(*, deprecated, message: "Use init with variables and binaryFunction parameters.")
+  public init(symbols: SymbolMap?,
+              functions: UnaryFunctionMap? = nil,
+              enableImpliedMultiplication: Bool = false) {
+    self.variables = symbols ?? { Self.defaultVariables[$0] }
+    self.unaryFunctions = functions ?? { Self.defaultUnaryFunctions[$0] }
+    self.binaryFunctions = { Self.defaultBinaryFunctions[$0] }
     self.enableImpliedMultiplication = enableImpliedMultiplication
   }
 
@@ -99,7 +112,7 @@ final public class MathParser {
    */
   public func parse(_ text: String) -> Evaluator? {
     guard let token = try? expression.parse(text) else { return nil }
-    return Evaluator(token: token, enableImpliedMultiplication: enableImpliedMultiplication)
+    return Evaluator(token: token, usingImpliedMultiplication: enableImpliedMultiplication)
   }
 
   // MARK: - implementation details
@@ -183,7 +196,7 @@ final public class MathParser {
   }.map { (name: Substring) -> Token in
 
     // If the symbol is defined, use its value.
-    if let value = self.symbols(String(name)) {
+    if let value = self.variables(String(name)) {
       return .constant(value: value)
     }
 
@@ -192,13 +205,13 @@ final public class MathParser {
     // by the following code. Two solutions to that: don't enable implied multiplication or avoid names that start/end
     // with other symbols.
     if self.enableImpliedMultiplication {
-      if let token = Token.attemptToSplitForMultiplication(name: name, symbols: self.symbols) {
+      if let token = Token.attemptImpliedMultiplication(name: name, variables: self.variables) {
         return token
       }
     }
 
     // Treat as a symbol that will be resolved when evaluated for a result.
-    return .symbol(name: String(name))
+    return .variable(name: String(name))
   }
 
   /// Parser for expression in parentheses. Use Lazy due to recursive nature of this definition.
