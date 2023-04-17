@@ -90,4 +90,48 @@ final class TokenTests: XCTestCase {
                    evalToken(.unaryCall(proc: .proc(sin), arg: .variable(name: "t")), variables: variables.producer),
                    accuracy: 1.0E-8)
   }
+
+  func testUnresolvedProcessing() {
+    XCTAssertTrue(Token.constant(value: 1.2).unresolved.isEmpty)
+    XCTAssertTrue(Token.variable(name: "foo").unresolved.count == 1)
+    XCTAssertTrue(Token.unaryCall(proc: .name("foo"), arg: .constant(value: 1.2)).unresolved.count == 1)
+    XCTAssertTrue(Token.unaryCall(proc: .proc(sin), arg: .constant(value: 1.2)).unresolved.isEmpty)
+    XCTAssertTrue(Token.binaryCall(proc: .name("foo"), arg1: .constant(value: 1.2), arg2: .constant(value: 2.1)).unresolved.count == 1)
+    XCTAssertTrue(Token.binaryCall(proc: .proc(hypot), arg1: .constant(value: 1.2), arg2: .constant(value: 2.1)).unresolved.isEmpty)
+    XCTAssertTrue(Token.mathOp(lhs: .variable(name: "a"), rhs: .constant(value: 1.2), op: +).unresolved.count == 1)
+  }
+
+  func testAttemptImpliedMultiplications() {
+    let variables: (String) -> Double? = { name in
+      switch name {
+      case "a": return 2.0
+      case "b": return 3.0
+      default: return nil
+      }
+    }
+
+    let unaryFunctions: (String) -> ((Double) -> Double)? = { name in
+      switch name {
+      case "foo": return { $0 * 123 }
+      default: return nil
+      }
+    }
+
+    XCTAssertTrue(Token.attemptImpliedMultiplication(name: "foo",
+                                                      arg: .constant(value: 1.2),
+                                                      variables: variables,
+                                                      unaryFunctions: unaryFunctions) == nil)
+    XCTAssertTrue(Token.attemptImpliedMultiplication(name: "abfoo",
+                                                     arg: .constant(value: 1.2),
+                                                     variables: variables,
+                                                     unaryFunctions: unaryFunctions) != nil)
+    XCTAssertTrue(Token.attemptImpliedMultiplication(name: "xyzfoo",
+                                                     arg: .constant(value: 1.2),
+                                                     variables: variables,
+                                                     unaryFunctions: unaryFunctions) == nil)
+    XCTAssertTrue(Token.attemptImpliedMultiplication(name: "xyzbar",
+                                                     arg: .constant(value: 1.2),
+                                                     variables: variables,
+                                                     unaryFunctions: unaryFunctions) == nil)
+  }
 }

@@ -39,7 +39,7 @@ where Operator.Input == Input,
 }
 
 extension LeftAssociativeInfixOperation {
-  
+
   /**
    Implementation of Parser method. Looks for "operand operator operand" sequences, but also succeeds on just a
    sole initial "operand" parse for the left-hand side of the expression. Raises exceptions on parser failures.

@@ -29,6 +29,8 @@ final public class MathParser {
 
   /// Default symbols to use for parsing.
   public static let defaultVariables: [String: Double] = ["pi": .pi, "π": .pi, "e": .e]
+
+  @available(*, deprecated, message: "Use defaultVariables class attribute instead.")
   public static var defaultSymbols: [String: Double] { defaultVariables }
 
   /// Default 1-ary functions to use for parsing.
@@ -74,9 +76,9 @@ final public class MathParser {
               unaryFunctions: UnaryFunctionMap? = nil,
               binaryFunctions: BinaryFunctionMap? = nil,
               enableImpliedMultiplication: Bool = false) {
-    self.variables = variables ?? { Self.defaultVariables[$0] }
-    self.unaryFunctions = unaryFunctions ?? { Self.defaultUnaryFunctions[$0] }
-    self.binaryFunctions = binaryFunctions ?? { Self.defaultBinaryFunctions[$0] }
+    self.variables = variables ?? Self.defaultVariables.producer
+    self.unaryFunctions = unaryFunctions ?? Self.defaultUnaryFunctions.producer
+    self.binaryFunctions = binaryFunctions ?? Self.defaultBinaryFunctions.producer
     self.enableImpliedMultiplication = enableImpliedMultiplication
   }
 
@@ -85,9 +87,9 @@ final public class MathParser {
               unaryFunctions: UnaryFunctionMap? = nil,
               binaryFunctions: BinaryFunctionMap? = nil,
               enableImpliedMultiplication: Bool = false) {
-    self.variables = symbols ?? { Self.defaultVariables[$0] }
-    self.unaryFunctions = unaryFunctions ?? { Self.defaultUnaryFunctions[$0] }
-    self.binaryFunctions = binaryFunctions ?? { Self.defaultBinaryFunctions[$0] }
+    self.variables = symbols ?? Self.defaultVariables.producer
+    self.unaryFunctions = unaryFunctions ?? Self.defaultUnaryFunctions.producer
+    self.binaryFunctions = binaryFunctions ?? Self.defaultBinaryFunctions.producer
     self.enableImpliedMultiplication = enableImpliedMultiplication
   }
 
@@ -95,9 +97,9 @@ final public class MathParser {
   public init(symbols: SymbolMap?,
               functions: UnaryFunctionMap? = nil,
               enableImpliedMultiplication: Bool = false) {
-    self.variables = symbols ?? { Self.defaultVariables[$0] }
-    self.unaryFunctions = functions ?? { Self.defaultUnaryFunctions[$0] }
-    self.binaryFunctions = { Self.defaultBinaryFunctions[$0] }
+    self.variables = symbols ?? Self.defaultVariables.producer
+    self.unaryFunctions = functions ?? Self.defaultUnaryFunctions.producer
+    self.binaryFunctions = Self.defaultBinaryFunctions.producer
     self.enableImpliedMultiplication = enableImpliedMultiplication
   }
 

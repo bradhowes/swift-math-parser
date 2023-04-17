@@ -106,10 +106,14 @@ extension Token {
 
 extension Token {
 
+  /// Obtain the unresolved symbols for this token an all those that it references in graph form.
   var unresolved: Unresolved {
     var variables: Set<String> = .init()
     var unaryFunctions: Set<String> = .init()
     var binaryFunctions: Set<String> = .init()
+
+    // Using a stack to remember what needs to be worked on next. We don't care about order and we are by definition
+    // directed acyclic so this is sufficient.
     var pending :[Token] = .init()
 
     pending.append(self)

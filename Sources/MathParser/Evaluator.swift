@@ -106,9 +106,20 @@ struct Unresolved {
   let unaryFunctions: Set<String>
   let binaryFunctions: Set<String>
 
+  var isEmpty: Bool { variables.isEmpty && unaryFunctions.isEmpty && binaryFunctions.isEmpty }
+
+  var count: Int { [variables, unaryFunctions, binaryFunctions]
+    .map { $0.count }
+    .sum()
+  }
+
   init(variables: Set<String>, unaryFunctions: Set<String>, binaryFunctions: Set<String>) {
     self.variables = variables
     self.unaryFunctions = unaryFunctions
     self.binaryFunctions = binaryFunctions
   }
+}
+
+private extension Sequence where Element: AdditiveArithmetic {
+  func sum() -> Element { reduce(.zero, +) }
 }
