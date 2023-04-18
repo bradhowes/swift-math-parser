@@ -1,7 +1,8 @@
 // Copyright © 2021 Brad Howes. All rights reserved.
 
 import Parsing
-import XCTest
+import Foundation
+import XCTestDynamicOverlay
 
 /**
  General-purpose parser for simple math expressions made up of the common operations as well as single argument
