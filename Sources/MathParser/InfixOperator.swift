@@ -41,8 +41,9 @@ where Operator.Input == Input,
 extension LeftAssociativeInfixOperation {
 
   /**
-   Implementation of Parser method. Looks for "operand operator operand" sequences, but also succeeds on just a
-   sole initial "operand" parse for the left-hand side of the expression. Raises exceptions on parser failures.
+   Implementation of Parser method. Looks for "operand operator operand" sequences. There is a special case when
+   `self.implied` is not nil: if two operands follow one another, then the operator from `self.implied` will be used
+   for the "missing" operator.
 
    - parameter input: the input stream to parse
    - returns: the next output value found in the stream
@@ -52,29 +53,18 @@ extension LeftAssociativeInfixOperation {
     var lhs = try self.operand.parse(&input)
     var rest = input
     while true {
-
-      // If we can handle a missing operator, try for another operand
-      if let implied = self.implied {
+      if let operation = (try? self.operator.parse(&input)) ?? self.implied {
         do {
           let rhs = try self.operand.parse(&input)
           rest = input
-          lhs = implied(lhs, rhs)
+          lhs = operation(lhs, rhs)
           continue
         } catch {
-          input = rest
         }
       }
-
-      // Parse operator followed by operand.
-      do {
-        let operation = try self.operator.parse(&input)
-        let rhs = try self.operand.parse(&input)
-        rest = input
-        lhs = operation(lhs, rhs)
-      } catch {
-        input = rest
-        return lhs
-      }
+      // Reset and end parse
+      input = rest
+      return lhs
     }
   }
 }
