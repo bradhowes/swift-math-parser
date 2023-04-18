@@ -12,7 +12,7 @@ public struct Evaluator {
   @usableFromInline let usingImpliedMultiplication: Bool
 
   /// Obtain unresolved names of symbols for variables and functions
-  var unresolved: Unresolved { token.unresolved }
+  public var unresolved: Unresolved { token.unresolved }
   
   /**
    Construct new evaluator. This is constructed and returned by `MathParser.parse`.
@@ -101,14 +101,14 @@ struct EvalState {
   }
 }
 
-struct Unresolved {
-  let variables: Set<String>
-  let unaryFunctions: Set<String>
-  let binaryFunctions: Set<String>
+public struct Unresolved {
+  public let variables: Set<String>
+  public let unaryFunctions: Set<String>
+  public let binaryFunctions: Set<String>
 
-  var isEmpty: Bool { variables.isEmpty && unaryFunctions.isEmpty && binaryFunctions.isEmpty }
+  public var isEmpty: Bool { variables.isEmpty && unaryFunctions.isEmpty && binaryFunctions.isEmpty }
 
-  var count: Int { [variables, unaryFunctions, binaryFunctions]
+  public var count: Int { [variables, unaryFunctions, binaryFunctions]
     .map { $0.count }
     .sum()
   }
