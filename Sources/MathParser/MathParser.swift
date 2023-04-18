@@ -143,8 +143,8 @@ final public class MathParser {
   private var additionOrSubtractionOperator: some Parser<Substring, TR> = Parse {
     ignoreSpaces
     OneOf {
-      "+".map { { Token.reducer(lhs: $0, rhs: $1, operation: (+)) } }
-      "-".map { { Token.reducer(lhs: $0, rhs: $1, operation: (-)) } }
+      "+".map { { Token.reducer(lhs: $0, rhs: $1, operation: .proc(op: (+), name: "+")) } }
+      "-".map { { Token.reducer(lhs: $0, rhs: $1, operation: .proc(op: (-), name: "-")) } }
     }
   }
 
@@ -162,10 +162,10 @@ final public class MathParser {
   private var multiplicationOrDivisionOperator: some Parser<Substring, TR> = Parse {
     ignoreSpaces
     OneOf {
-      "*".map { { Token.reducer(lhs: $0, rhs: $1, operation: (*)) } }
-      "×".map { { Token.reducer(lhs: $0, rhs: $1, operation: (*)) } }
-      "/".map { { Token.reducer(lhs: $0, rhs: $1, operation: (/)) } }
-      "÷".map { { Token.reducer(lhs: $0, rhs: $1, operation: (/)) } }
+      "*".map { { Token.reducer(lhs: $0, rhs: $1, operation: .proc(op: (*), name: "*")) } }
+      "×".map { { Token.reducer(lhs: $0, rhs: $1, operation: .proc(op: (*), name: "*")) } }
+      "/".map { { Token.reducer(lhs: $0, rhs: $1, operation: .proc(op: (/), name: "/")) } }
+      "÷".map { { Token.reducer(lhs: $0, rhs: $1, operation: .proc(op: (/), name: "/")) } }
     }
   }
 
@@ -176,13 +176,13 @@ final public class MathParser {
   private lazy var multiplicationAndDivision: some TokenParser = LeftAssociativeInfixOperation(
     multiplicationOrDivisionOperator,
     higher: exponentiation,
-    implied: enableImpliedMultiplication ? { Token.reducer(lhs: $0, rhs: $1, operation: (*)) } : nil
+    implied: enableImpliedMultiplication ? { Token.reducer(lhs: $0, rhs: $1, operation: .proc(op: (*), name: "*")) } : nil
   )
 
   /// Parser for exponentiation (power) operator
   private var exponentiationOperator: some Parser<Substring, TR> = Parse {
     ignoreSpaces
-    "^".map { { Token.reducer(lhs: $0, rhs: $1, operation: (pow)) } }
+    "^".map { { Token.reducer(lhs: $0, rhs: $1, operation: .proc(op: (pow), name: "^")) } }
   }
 
   /// Parser for exponentiation operation. Higher precedence than * and /
@@ -245,7 +245,7 @@ final public class MathParser {
         // Known constant value -- evaluate function with it and return new constant value
         return .constant(value: resolved(value))
       }
-      return .unaryCall(proc: .proc(resolved), arg: arg)
+      return .unaryCall(proc: .proc(op: resolved, name: name), arg: arg)
     }
     return .unaryCall(proc: .name(name), arg: arg)
   }
@@ -275,7 +275,7 @@ final public class MathParser {
          case let .constant(value2) = arg2 {
         return .constant(value: resolved(value1, value2))
       }
-      return .binaryCall(proc: .proc(resolved), arg1: arg1, arg2: arg2)
+      return .binaryCall(proc: .proc(op: resolved, name: name), arg1: arg1, arg2: arg2)
     }
     return .binaryCall(proc: .name(name), arg1: arg1, arg2: arg2)
   }
