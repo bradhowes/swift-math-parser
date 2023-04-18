@@ -27,16 +27,12 @@ enum Token {
 
   /// Numerical value from parse
   case constant(value: Double)
-
   /// Unresolved variable symbol
   case variable(name: String)
-
   /// Unresolved 1-arg function call
   indirect case unaryCall(proc: UnaryProc, arg: Token)
-
   /// Unresolved 2-arg function call
   indirect case binaryCall(proc: BinaryProc, arg1: Token, arg2: Token)
-
   /// Unresolved math operation due to one or both operands being unresolved
   indirect case mathOp(lhs: Token, rhs: Token, op: (Double, Double) -> Double)
 }
@@ -233,4 +229,33 @@ extension Token {
 
     return nil
   }
+}
+
+/**
+ Collection of unresolved names from a `Token.unreolved` property.
+ */
+struct Unresolved {
+  /// The unresolved variables
+  let variables: Set<String>
+  /// The unresolved unary function names
+  let unaryFunctions: Set<String>
+  /// The unresolved binary function names
+  let binaryFunctions: Set<String>
+  /// True if there are no unresolved symbols
+  var isEmpty: Bool { variables.isEmpty && unaryFunctions.isEmpty && binaryFunctions.isEmpty }
+  /// Obtain the number of unresolved symbols
+  var count: Int { [variables, unaryFunctions, binaryFunctions]
+    .map { $0.count }
+    .sum()
+  }
+
+  init(variables: Set<String>, unaryFunctions: Set<String>, binaryFunctions: Set<String>) {
+    self.variables = variables
+    self.unaryFunctions = unaryFunctions
+    self.binaryFunctions = binaryFunctions
+  }
+}
+
+private extension Sequence where Element: AdditiveArithmetic {
+  func sum() -> Element { reduce(.zero, +) }
 }

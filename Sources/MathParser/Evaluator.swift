@@ -74,18 +74,17 @@ public extension Evaluator {
   }
 }
 
+/**
+ Collection of symbol maps to use for evaluating a Token
+ */
 @usableFromInline
 struct EvalState {
-
   /// Map to use any unresolved symbols from parse
   @usableFromInline let variables: MathParser.VariableMap
-
   /// Map to use any unresolved unary functions from parse
   @usableFromInline let unaryFunctions: MathParser.UnaryFunctionMap
-
   /// Map to use any unresolved binary functions from parse
   @usableFromInline let binaryFunctions: MathParser.BinaryFunctionMap
-
   /// True if using implied multiplication to resolve symbols
   @usableFromInline let usingImpliedMultiplication: Bool
 
@@ -101,25 +100,3 @@ struct EvalState {
   }
 }
 
-struct Unresolved {
-  let variables: Set<String>
-  let unaryFunctions: Set<String>
-  let binaryFunctions: Set<String>
-
-  var isEmpty: Bool { variables.isEmpty && unaryFunctions.isEmpty && binaryFunctions.isEmpty }
-
-  var count: Int { [variables, unaryFunctions, binaryFunctions]
-    .map { $0.count }
-    .sum()
-  }
-
-  init(variables: Set<String>, unaryFunctions: Set<String>, binaryFunctions: Set<String>) {
-    self.variables = variables
-    self.unaryFunctions = unaryFunctions
-    self.binaryFunctions = binaryFunctions
-  }
-}
-
-private extension Sequence where Element: AdditiveArithmetic {
-  func sum() -> Element { reduce(.zero, +) }
-}
