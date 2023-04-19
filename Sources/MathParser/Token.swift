@@ -260,17 +260,17 @@ extension Token {
 /**
  Collection of unresolved names from a `Token.unreolved` property.
  */
-struct Unresolved {
+public struct Unresolved {
   /// The unresolved variables
-  let variables: Set<String>
+  public let variables: Set<String>
   /// The unresolved unary function names
-  let unaryFunctions: Set<String>
+  public let unaryFunctions: Set<String>
   /// The unresolved binary function names
-  let binaryFunctions: Set<String>
+  public let binaryFunctions: Set<String>
   /// True if there are no unresolved symbols
-  var isEmpty: Bool { variables.isEmpty && unaryFunctions.isEmpty && binaryFunctions.isEmpty }
+  public var isEmpty: Bool { variables.isEmpty && unaryFunctions.isEmpty && binaryFunctions.isEmpty }
   /// Obtain the number of unresolved symbols
-  var count: Int { [variables, unaryFunctions, binaryFunctions]
+  public var count: Int { [variables, unaryFunctions, binaryFunctions]
     .map { $0.count }
     .sum()
   }

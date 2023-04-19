@@ -12,7 +12,7 @@ public struct Evaluator {
   @usableFromInline let usingImpliedMultiplication: Bool
 
   /// Obtain unresolved names of symbols for variables and functions
-  var unresolved: Unresolved { token.unresolved }
+  public var unresolved: Unresolved { token.unresolved }
   
   /**
    Construct new evaluator. This is constructed and returned by `MathParser.parse`.
