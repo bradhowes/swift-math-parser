@@ -62,23 +62,41 @@ final public class MathParser {
   /// Function mapping to use during parsing and perhaps evaluation
   public let binaryFunctions: BinaryFunctionMap
 
+  private let customVariableMapping: [String: Double]?
+  private let customUnaryFunctionMapping: [String: (Double) -> Double]?
+  private let customBinaryFunctionMapping: [String: (Double, Double) -> Double]?
+
   /**
    Construct new parser.
 
    - parameter variables: optional mapping of names to variables. If not given, `defaultVariables` will be used
+   - parameter variableMapping: optional dictionary that maps a name to a constant. Note that this will be ignored if
+   `variables` is also given.
    - parameter unaryFunctions: optional mapping of names to 1-ary functions. If not given, `defaultUnaryFunctions` will
    be used
+   - parameter unaryFunctionMapping: optional dictionary that maps a name to a closure that maps a double to another.
+   Note that this will be ignored if `unaryFunctions` is also given.
    - parameter binaryFunctions: optional mapping of names to 2-ary functions. If not given, `defaultBinaryFunctions`
    will be used
+   - parameter binaryFunctionMapping: optional dictionary that maps a name to a closure that maps two doubles into one.
+   Note that this will be ignored if `binaryFunctions` is also given.
    - parameter enableImpliedMultiplication: if true treat expressions like `2π` as valid and same as `2 * π`
    */
   public init(variables: VariableMap? = nil,
+              variableMapping: [String: Double]? = nil,
               unaryFunctions: UnaryFunctionMap? = nil,
+              unaryFunctionMapping: [String: (Double) -> Double]? = nil,
               binaryFunctions: BinaryFunctionMap? = nil,
-              enableImpliedMultiplication: Bool = false) {
-    self.variables = variables ?? Self.defaultVariables.producer
-    self.unaryFunctions = unaryFunctions ?? Self.defaultUnaryFunctions.producer
-    self.binaryFunctions = binaryFunctions ?? Self.defaultBinaryFunctions.producer
+              binaryFunctionMapping: [String: (Double, Double) -> Double]? = nil,
+              enableImpliedMultiplication: Bool = false
+  ) {
+    self.customVariableMapping = variableMapping
+    self.customUnaryFunctionMapping = unaryFunctionMapping
+    self.customBinaryFunctionMapping = binaryFunctionMapping
+
+    self.variables = variables ?? variableMapping?.producer ?? Self.defaultVariables.producer
+    self.unaryFunctions = unaryFunctions ?? unaryFunctionMapping?.producer ?? Self.defaultUnaryFunctions.producer
+    self.binaryFunctions = binaryFunctions ?? binaryFunctionMapping?.producer ?? Self.defaultBinaryFunctions.producer
     self.enableImpliedMultiplication = enableImpliedMultiplication
   }
 
@@ -91,6 +109,9 @@ final public class MathParser {
     self.unaryFunctions = unaryFunctions ?? Self.defaultUnaryFunctions.producer
     self.binaryFunctions = binaryFunctions ?? Self.defaultBinaryFunctions.producer
     self.enableImpliedMultiplication = enableImpliedMultiplication
+    self.customVariableMapping = nil
+    self.customUnaryFunctionMapping = nil
+    self.customBinaryFunctionMapping = nil
   }
 
   @available(*, deprecated, message: "Use init with variables and binaryFunction parameters.")
@@ -101,6 +122,9 @@ final public class MathParser {
     self.unaryFunctions = functions ?? Self.defaultUnaryFunctions.producer
     self.binaryFunctions = Self.defaultBinaryFunctions.producer
     self.enableImpliedMultiplication = enableImpliedMultiplication
+    self.customVariableMapping = nil
+    self.customUnaryFunctionMapping = nil
+    self.customBinaryFunctionMapping = nil
   }
 
   // MARK: -

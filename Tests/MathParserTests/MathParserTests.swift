@@ -368,16 +368,49 @@ final class MathParserTests: XCTestCase {
     XCTAssertTrue(v.isNaN)
   }
 
+  func testVariableMapping() {
+    let parser = MathParser(variableMapping: ["a": 1.0, "b": 2.0])
+    XCTAssertEqual(3.0, parser.parse("a + b")?.value)
+  }
+
+  func testVariableMappingIgnoredIfVariablesAlsoPresent() {
+    let varMap = ["a": 10.0, "b": 20.0]
+    let parser = MathParser(variables: varMap.producer, variableMapping: ["a": 1.0, "b": 2.0])
+    XCTAssertEqual(30.0, parser.parse("a + b")?.value)
+  }
+
+  func testUnaryFunctionMapping() {
+    let parser = MathParser(unaryFunctionMapping: ["a": { $0 * 100.0 }])
+    XCTAssertEqual(123.0, parser.parse("a(1.23)")?.value)
+  }
+
+  func testUnaryFunctionMappingIgnoredIfUnaryFunctionsAlsoPresent() {
+    let unaryMap = ["a": { $0 * 1000.0}]
+    let parser = MathParser(unaryFunctions: unaryMap.producer, unaryFunctionMapping: ["a": { $0 * 2.0}])
+    XCTAssertEqual(1230.0, parser.parse("a(1.23)")?.value)
+  }
+
+  func testBinaryFunctionMapping() {
+    let parser = MathParser(binaryFunctionMapping: ["a": { $0 * $1 }])
+    XCTAssertEqual(12.0, parser.parse("a(3.0, 4.0)")?.value)
+  }
+
+  func testBinaryFunctionMappingIgnoredIfBinaryFunctionsAlsoPresent() {
+    let binaryMap: [String: (Double, Double) -> Double] = ["a": { $0 + $1 }]
+    let parser = MathParser(binaryFunctions: binaryMap.producer, binaryFunctionMapping: ["a": { $0 * $1}])
+    XCTAssertEqual(4.6, parser.parse("a(1.2, 3.4)")?.value)
+  }
+
   func testDeprecations() {
     XCTAssertTrue(!MathParser.defaultSymbols.isEmpty)
-    XCTAssertTrue(MathParser.init(symbols: nil).symbols != nil)
-    XCTAssertTrue(MathParser.init(symbols: nil, binaryFunctions: nil).symbols != nil)
-    XCTAssertTrue(MathParser.init(symbols: { _ in nil },
-                                  functions: { _ in nil },
-                                  enableImpliedMultiplication: true).symbols != nil)
-    XCTAssertTrue(MathParser.init(symbols: nil,
-                                  functions:  nil,
-                                  enableImpliedMultiplication: true).symbols != nil)
+    XCTAssertNotNil(MathParser.init(symbols: nil).symbols)
+    XCTAssertNotNil(MathParser.init(symbols: nil, binaryFunctions: nil).symbols)
+    XCTAssertNotNil(MathParser.init(symbols: { _ in nil },
+                                    functions: { _ in nil },
+                                    enableImpliedMultiplication: true).symbols)
+    XCTAssertNotNil(MathParser.init(symbols: nil,
+                                    functions:  nil,
+                                    enableImpliedMultiplication: true).symbols)
 
     let evaluator = parser.parse("5 * 3")
     XCTAssertEqual(15, evaluator?.eval(symbols: nil))
