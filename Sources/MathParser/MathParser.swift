@@ -17,16 +17,15 @@ final public class MathParser {
   /// Deprecated
   @available(*, deprecated, message: "Use VariableMap instead.")
   public typealias SymbolMap = (String) -> Double?
-
   /// Mapping of variable names to an optional Double.
   public typealias VariableMap = (String) -> Double?
-
+  public typealias VariableDict = [String: Double]
   /// Mapping of names to an optional transform function of 1 argument
   public typealias UnaryFunctionMap = (String) -> UnaryFunction?
-
+  public typealias UnaryFunctionDict = [String: UnaryFunction]
   /// Mapping of names to an optional transform function of 2 arguments
   public typealias BinaryFunctionMap = (String) -> BinaryFunction?
-
+  public typealias BinaryFunctionDict = [String: BinaryFunction]
   /// Default symbols to use for parsing.
   public static let defaultVariables: [String: Double] = ["pi": .pi, "π": .pi, "e": .e]
 
@@ -34,7 +33,7 @@ final public class MathParser {
   public static var defaultSymbols: [String: Double] { defaultVariables }
 
   /// Default 1-ary functions to use for parsing.
-  public static let defaultUnaryFunctions: [String: UnaryFunction] = [
+  public static let defaultUnaryFunctions: UnaryFunctionDict = [
     "sin": sin, "cos": cos, "tan": tan,
     "log10": log10, "ln": log, "loge": log, "log2": log2, "exp": exp,
     "ceil": ceil, "floor": floor, "round": round,
@@ -43,7 +42,7 @@ final public class MathParser {
   ]
 
   /// Default 2-ary functions to use for parsing.
-  public static let defaultBinaryFunctions: [String: BinaryFunction] = [
+  public static let defaultBinaryFunctions: BinaryFunctionDict = [
     "atan2": atan2,
     "hypot": hypot,
     "pow": pow // Redundant since we support x^b expressions
@@ -62,41 +61,41 @@ final public class MathParser {
   /// Function mapping to use during parsing and perhaps evaluation
   public let binaryFunctions: BinaryFunctionMap
 
-  private let customVariableMapping: [String: Double]?
-  private let customUnaryFunctionMapping: [String: (Double) -> Double]?
-  private let customBinaryFunctionMapping: [String: (Double, Double) -> Double]?
+  private let customVariableDict: VariableDict?
+  private let customUnaryFunctionDict: UnaryFunctionDict?
+  private let customBinaryFunctionDict: BinaryFunctionDict?
 
   /**
    Construct new parser.
 
    - parameter variables: optional mapping of names to variables. If not given, `defaultVariables` will be used
-   - parameter variableMapping: optional dictionary that maps a name to a constant. Note that this will be ignored if
+   - parameter variableDict: optional dictionary that maps a name to a constant. Note that this will be ignored if
    `variables` is also given.
    - parameter unaryFunctions: optional mapping of names to 1-ary functions. If not given, `defaultUnaryFunctions` will
    be used
-   - parameter unaryFunctionMapping: optional dictionary that maps a name to a closure that maps a double to another.
+   - parameter variableDict: optional dictionary that maps a name to a closure that maps a double to another.
    Note that this will be ignored if `unaryFunctions` is also given.
    - parameter binaryFunctions: optional mapping of names to 2-ary functions. If not given, `defaultBinaryFunctions`
    will be used
-   - parameter binaryFunctionMapping: optional dictionary that maps a name to a closure that maps two doubles into one.
+   - parameter binaryFunctionDict: optional dictionary that maps a name to a closure that maps two doubles into one.
    Note that this will be ignored if `binaryFunctions` is also given.
    - parameter enableImpliedMultiplication: if true treat expressions like `2π` as valid and same as `2 * π`
    */
   public init(variables: VariableMap? = nil,
-              variableMapping: [String: Double]? = nil,
+              variableDict: VariableDict? = nil,
               unaryFunctions: UnaryFunctionMap? = nil,
-              unaryFunctionMapping: [String: (Double) -> Double]? = nil,
+              unaryFunctionDict: UnaryFunctionDict? = nil,
               binaryFunctions: BinaryFunctionMap? = nil,
-              binaryFunctionMapping: [String: (Double, Double) -> Double]? = nil,
+              binaryFunctionDict: BinaryFunctionDict? = nil,
               enableImpliedMultiplication: Bool = false
   ) {
-    self.customVariableMapping = variableMapping
-    self.customUnaryFunctionMapping = unaryFunctionMapping
-    self.customBinaryFunctionMapping = binaryFunctionMapping
+    self.customVariableDict = variableDict
+    self.customUnaryFunctionDict = unaryFunctionDict
+    self.customBinaryFunctionDict = binaryFunctionDict
 
-    self.variables = variables ?? variableMapping?.producer ?? Self.defaultVariables.producer
-    self.unaryFunctions = unaryFunctions ?? unaryFunctionMapping?.producer ?? Self.defaultUnaryFunctions.producer
-    self.binaryFunctions = binaryFunctions ?? binaryFunctionMapping?.producer ?? Self.defaultBinaryFunctions.producer
+    self.variables = variables ?? variableDict?.producer ?? Self.defaultVariables.producer
+    self.unaryFunctions = unaryFunctions ?? unaryFunctionDict?.producer ?? Self.defaultUnaryFunctions.producer
+    self.binaryFunctions = binaryFunctions ?? binaryFunctionDict?.producer ?? Self.defaultBinaryFunctions.producer
     self.enableImpliedMultiplication = enableImpliedMultiplication
   }
 
@@ -109,9 +108,9 @@ final public class MathParser {
     self.unaryFunctions = unaryFunctions ?? Self.defaultUnaryFunctions.producer
     self.binaryFunctions = binaryFunctions ?? Self.defaultBinaryFunctions.producer
     self.enableImpliedMultiplication = enableImpliedMultiplication
-    self.customVariableMapping = nil
-    self.customUnaryFunctionMapping = nil
-    self.customBinaryFunctionMapping = nil
+    self.customVariableDict = nil
+    self.customUnaryFunctionDict = nil
+    self.customBinaryFunctionDict = nil
   }
 
   @available(*, deprecated, message: "Use init with variables and binaryFunction parameters.")
@@ -122,9 +121,9 @@ final public class MathParser {
     self.unaryFunctions = functions ?? Self.defaultUnaryFunctions.producer
     self.binaryFunctions = Self.defaultBinaryFunctions.producer
     self.enableImpliedMultiplication = enableImpliedMultiplication
-    self.customVariableMapping = nil
-    self.customUnaryFunctionMapping = nil
-    self.customBinaryFunctionMapping = nil
+    self.customVariableDict = nil
+    self.customUnaryFunctionDict = nil
+    self.customBinaryFunctionDict = nil
   }
 
   // MARK: -

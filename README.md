@@ -48,17 +48,24 @@ unresolved variables, unary functions, and binary function names.
 Example:
 
 ```swift
-let mySymbols = ["foo": 123.4]
+let myVariables = ["foo": 123.4]
 let myFuncs: [String:(Double)->Double] = ["twice": {$0 + $0}]
-let parser = MathParser(symbols: mySymbols.producer, unaryFunctions: myFuncs.producer)
-let myEvalFuncs: [String:(Double)->Double] = ["power": {$0 * $0}]
+let parser = MathParser(variables: myVariables.producer, unaryFunctions: myFuncs.producer)
 let evaluator = parser.parse("power(twice(foo))")
 
 # Expression parsed and `twice(foo)` resolved to `246.8` but `power` is still unknown
 evaluator?.value // => nan
 evaluator?.unresolved.unaryFunctions // => ['power']'
 # Give evaluator way to resolve `power(246.8)`
+let myEvalFuncs: [String:(Double)->Double] = ["power": {$0 * $0}]
 evaluator?.eval(unaryFunctions: myEvalFuncs.producer) // => 60910.240000000005
+```
+
+Instead of passing in a closure to access the dictionary of symbols, you can pass the dictionary itself:
+
+```
+let parser = MathParser(variableDict: myVariables, unaryFunctionDict: myFuncs)
+evaluator?.eval(unaryFunctionDict: myEvalFuncs) // => 60910.240000000005
 ```
 
 ## Implied Multiplication

@@ -368,36 +368,36 @@ final class MathParserTests: XCTestCase {
     XCTAssertTrue(v.isNaN)
   }
 
-  func testVariableMapping() {
-    let parser = MathParser(variableMapping: ["a": 1.0, "b": 2.0])
+  func testVariableDict() {
+    let parser = MathParser(variableDict: ["a": 1.0, "b": 2.0])
     XCTAssertEqual(3.0, parser.parse("a + b")?.value)
   }
 
-  func testVariableMappingIgnoredIfVariablesAlsoPresent() {
+  func testVariableDictIgnoredIfVariablesAlsoPresent() {
     let varMap = ["a": 10.0, "b": 20.0]
-    let parser = MathParser(variables: varMap.producer, variableMapping: ["a": 1.0, "b": 2.0])
+    let parser = MathParser(variables: varMap.producer, variableDict: ["a": 1.0, "b": 2.0])
     XCTAssertEqual(30.0, parser.parse("a + b")?.value)
   }
 
-  func testUnaryFunctionMapping() {
-    let parser = MathParser(unaryFunctionMapping: ["a": { $0 * 100.0 }])
+  func testUnaryFunctionDict() {
+    let parser = MathParser(unaryFunctionDict: ["a": { $0 * 100.0 }])
     XCTAssertEqual(123.0, parser.parse("a(1.23)")?.value)
   }
 
-  func testUnaryFunctionMappingIgnoredIfUnaryFunctionsAlsoPresent() {
+  func testUnaryFunctionDictIgnoredIfUnaryFunctionsAlsoPresent() {
     let unaryMap = ["a": { $0 * 1000.0}]
-    let parser = MathParser(unaryFunctions: unaryMap.producer, unaryFunctionMapping: ["a": { $0 * 2.0}])
+    let parser = MathParser(unaryFunctions: unaryMap.producer, unaryFunctionDict: ["a": { $0 * 2.0}])
     XCTAssertEqual(1230.0, parser.parse("a(1.23)")?.value)
   }
 
-  func testBinaryFunctionMapping() {
-    let parser = MathParser(binaryFunctionMapping: ["a": { $0 * $1 }])
+  func testBinaryFunctionDict() {
+    let parser = MathParser(binaryFunctionDict: ["a": { $0 * $1 }])
     XCTAssertEqual(12.0, parser.parse("a(3.0, 4.0)")?.value)
   }
 
-  func testBinaryFunctionMappingIgnoredIfBinaryFunctionsAlsoPresent() {
+  func testBinaryFunctionDictIgnoredIfBinaryFunctionsAlsoPresent() {
     let binaryMap: [String: (Double, Double) -> Double] = ["a": { $0 + $1 }]
-    let parser = MathParser(binaryFunctions: binaryMap.producer, binaryFunctionMapping: ["a": { $0 * $1}])
+    let parser = MathParser(binaryFunctions: binaryMap.producer, binaryFunctionDict: ["a": { $0 * $1}])
     XCTAssertEqual(4.6, parser.parse("a(1.2, 3.4)")?.value)
   }
 
