@@ -42,10 +42,31 @@ public extension Evaluator {
   func eval(variables: MathParser.VariableMap? = nil,
             unaryFunctions: MathParser.UnaryFunctionMap? = nil,
             binaryFunctions: MathParser.BinaryFunctionMap? = nil) -> Double {
-    token.eval(state: .init(variables: variables,
-                            unaryFunctions: unaryFunctions,
-                            binaryFunctions: binaryFunctions,
-                            usingImpliedMultiplication: usingImpliedMultiplication))
+    (try? token.eval(state: .init(variables: variables,
+                                  unaryFunctions: unaryFunctions,
+                                  binaryFunctions: binaryFunctions,
+                                  usingImpliedMultiplication: usingImpliedMultiplication))) ?? .nan
+  }
+
+  /**
+   Evaluate the token to obtain a value. By default will use symbol map and function map given to `init`.
+
+   - parameter variables: optional mapping of names to constants to use during evaluation
+   - parameter unaryFunctions: optional mapping of names to 1 parameter functions to use during evaluation
+   - parameter binaryFunctions: optional mapping of names to 2 parameter functions to use during evaluation
+   */
+  @inlinable
+  func evalWithError(variables: MathParser.VariableMap? = nil,
+                     unaryFunctions: MathParser.UnaryFunctionMap? = nil,
+                     binaryFunctions: MathParser.BinaryFunctionMap? = nil) -> Result<Double, Error> {
+    do {
+      return .success(try token.eval(state: .init(variables: variables,
+                                                  unaryFunctions: unaryFunctions,
+                                                  binaryFunctions: binaryFunctions,
+                                                  usingImpliedMultiplication: usingImpliedMultiplication)))
+    } catch {
+      return .failure(error)
+    }
   }
 
   @available(*, deprecated, message: "Use init with variables parameter.")
@@ -53,10 +74,10 @@ public extension Evaluator {
   func eval(symbols: MathParser.SymbolMap?,
             unaryFunctions: MathParser.UnaryFunctionMap? = nil,
             binaryFunctions: MathParser.BinaryFunctionMap? = nil) -> Double {
-    token.eval(state: .init(variables: symbols,
-                            unaryFunctions: unaryFunctions,
-                            binaryFunctions: binaryFunctions,
-                            usingImpliedMultiplication: usingImpliedMultiplication))
+    (try? token.eval(state: .init(variables: symbols,
+                                  unaryFunctions: unaryFunctions,
+                                  binaryFunctions: binaryFunctions,
+                                  usingImpliedMultiplication: usingImpliedMultiplication))) ?? .nan
   }
 
   /**
@@ -67,10 +88,10 @@ public extension Evaluator {
    */
   @inlinable
   func eval(_ name: String, value: Double) -> Double {
-    token.eval(state: .init(variables: {$0 == name ? value : nil},
-                            unaryFunctions: nil,
-                            binaryFunctions: nil,
-                            usingImpliedMultiplication: usingImpliedMultiplication))
+    (try? token.eval(state: .init(variables: {$0 == name ? value : nil},
+                                  unaryFunctions: nil,
+                                  binaryFunctions: nil,
+                                  usingImpliedMultiplication: usingImpliedMultiplication))) ?? .nan
   }
 }
 

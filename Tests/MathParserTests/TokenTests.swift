@@ -19,10 +19,10 @@ final class TokenTests: XCTestCase {
                  unaryFunctions: MathParser.UnaryFunctionMap? = nil,
                  binaryFunctions: MathParser.BinaryFunctionMap? = nil,
                  usingImpliedMultiplication: Bool = false) -> Double {
-    token.eval(state: .init(variables: variables ?? self.variables.producer,
-                            unaryFunctions: unaryFunctions ?? self.unaryFuncs,
-                            binaryFunctions: binaryFunctions ?? self.binaryFuncs,
-                            usingImpliedMultiplication: usingImpliedMultiplication))
+    (try? token.eval(state: .init(variables: variables ?? self.variables.producer,
+                                  unaryFunctions: unaryFunctions ?? self.unaryFuncs,
+                                  binaryFunctions: binaryFunctions ?? self.binaryFuncs,
+                                  usingImpliedMultiplication: usingImpliedMultiplication))) ?? .nan
   }
 
   func testConstant() {
@@ -148,5 +148,52 @@ final class TokenTests: XCTestCase {
     XCTAssertEqual("+(1.0, 2.0)", Token.binaryCall(proc: .proc(op: +, name: "+"),
                                                    arg1: .constant(value: 1),
                                                    arg2: .constant(value: 2)).description)
+  }
+
+  func testTokenEvalThrowsError() {
+    XCTAssertThrowsError(try Token.variable(name: "undefined").eval(state: .init(variables: variables.producer,
+                                                                                 unaryFunctions: unaryFuncs,
+                                                                                 binaryFunctions: binaryFuncs,
+                                                                                 usingImpliedMultiplication: false)))
+  }
+
+  func testTokenEvalThrowsErrorForUndefinedVariable() {
+    do {
+      _ = try Token.variable(name: "undefined").eval(state: .init(variables: variables.producer,
+                                                                  unaryFunctions: unaryFuncs,
+                                                                  binaryFunctions: binaryFuncs,
+                                                                  usingImpliedMultiplication: false))
+    } catch {
+      print(error)
+      XCTAssertEqual("\(error)", "Variable 'undefined' not found")
+    }
+  }
+
+  func testTokenEvalThrowsErrorForUndefinedUnaryFunction() {
+    do {
+      _ = try Token.unaryCall(proc: .name("undefined"), arg: .constant(value: 1.2))
+        .eval(state: .init(variables: variables.producer,
+                           unaryFunctions: unaryFuncs,
+                           binaryFunctions: binaryFuncs,
+                           usingImpliedMultiplication: false))
+    } catch {
+      print(error)
+      XCTAssertEqual("\(error)", "Function 'undefined' not found")
+    }
+  }
+
+  func testTokenEvalThrowsErrorForUndefinedBinaryFunction() {
+    do {
+      _ = try Token.binaryCall(proc: .name("undefined"),
+                               arg1: .constant(value: 1.2),
+                               arg2: .constant(value: 2.4))
+        .eval(state: .init(variables: variables.producer,
+                           unaryFunctions: unaryFuncs,
+                           binaryFunctions: binaryFuncs,
+                           usingImpliedMultiplication: false))
+    } catch {
+      print(error)
+      XCTAssertEqual("\(error)", "Function 'undefined' not found")
+    }
   }
 }

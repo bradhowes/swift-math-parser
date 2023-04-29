@@ -418,4 +418,72 @@ final class MathParserTests: XCTestCase {
     // Invoke the default binaryFunctionFunctions.producer
     XCTAssertTrue(MathParser.init(symbols: nil, functions: nil).parse("hypot(4.0, 5.0)") != nil)
   }
+
+  func expectFailure(result: Result<Evaluator, MathParserError>, expected: String) {
+    switch result {
+    case .success: XCTFail("Expected a failure case")
+    case .failure(let err): XCTAssertEqual(err.description, expected)
+    }
+  }
+
+  func testParseWithErrorMissingOperand() {
+    expectFailure(result: parser.parseWithError("4.0 +"),
+                  expected: """
+error: unexpected input
+ --> input:1:5
+1 | 4.0 +
+  |     ^ expected end of input
+""")
+  }
+
+  func testParseWithErrorOpenParenthesis() {
+    expectFailure(result: parser.parseWithError("(4.0 + 3.0"),
+                  expected: """
+error: multiple failures occurred
+
+error: unexpected input
+ --> input:1:11
+1 | (4.0 + 3.0
+  |           ^ expected ")"
+
+error: unexpected input
+ --> input:1:1
+1 | (4.0 + 3.0
+  | ^ expected 1 element satisfying predicate
+  | ^ expected 1 element satisfying predicate
+  | ^ expected 1 element satisfying predicate
+  | ^ expected double
+""")
+  }
+
+  func testParseWithErrorExtraCloseParenthesis() {
+    expectFailure(result: parser.parseWithError("(4.0 + 3.0))"),
+                  expected: """
+error: unexpected input
+ --> input:1:12
+1 | (4.0 + 3.0))
+  |            ^ expected end of input
+""")
+  }
+
+  func testParseWithErrorMissingOperator() {
+    expectFailure(result: parser.parseWithError("4.0 3.0"),
+                  expected: """
+error: unexpected input
+ --> input:1:5
+1 | 4.0 3.0
+  |     ^ expected end of input
+""")
+  }
+
+  func testEvalWithErrorFailsWithUnknownVariable() {
+    let evaluator = parser.parse("undefined(1.2)")!
+    XCTAssertTrue(evaluator.value.isNaN)
+    let result = evaluator.evalWithError()
+    switch result {
+    case .success: XCTFail()
+    case .failure(let error):
+      XCTAssertEqual("\(error)", "Function 'undefined' not found")
+    }
+  }
 }

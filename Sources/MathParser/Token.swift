@@ -6,6 +6,9 @@
  additional symbols/functions will return a value, though it may be NaN if there were still unresolved symbols or
  functions in the token(s).
  */
+
+import Foundation
+
 @usableFromInline
 enum Token {
 
@@ -43,7 +46,7 @@ extension Token {
    - returns: result of evaluation. May be NaN if unresolved symbol or function still exists
    */
   @inlinable
-  func eval(state: EvalState) -> Double {
+  func eval(state: EvalState) throws -> Double {
     switch self {
 
     case .constant(let value):
@@ -55,9 +58,9 @@ extension Token {
       } else if state.usingImpliedMultiplication,
                 let token = Token.attemptImpliedMultiplication(name: name.prefix(name.count),
                                                                variables: state.variables) {
-        return token.eval(state: state)
+        return try token.eval(state: state)
       } else {
-        return .nan
+        throw MathParserError(description: "Variable '\(name)' not found")
       }
 
     case .unaryCall(let proc, let arg):
@@ -65,19 +68,19 @@ extension Token {
 
       case .name(let name):
         if let proc = state.unaryFunctions(name) {
-          return proc(arg.eval(state: state))
+          return proc(try arg.eval(state: state))
         } else if state.usingImpliedMultiplication,
                   let token = Token.attemptImpliedMultiplication(name: name.prefix(name.count),
                                                                  arg: arg,
                                                                  variables: state.variables,
                                                                  unaryFunctions: state.unaryFunctions) {
-          return token.eval(state: state)
+          return try token.eval(state: state)
         } else {
-          return .nan
+          throw MathParserError(description: "Function '\(name)' not found")
         }
 
       case .proc(let proc, _):
-        return proc(arg.eval(state: state))
+        return proc(try arg.eval(state: state))
       }
 
     case .binaryCall(let proc, let arg1, let arg2):
@@ -85,14 +88,14 @@ extension Token {
 
       case .name(let name):
         if let proc = state.binaryFunctions(name) {
-          return proc(arg1.eval(state: state),
-                      arg2.eval(state: state))
+          return proc(try arg1.eval(state: state),
+                      try arg2.eval(state: state))
         } else {
-          return .nan
+          throw MathParserError(description: "Function '\(name)' not found")
         }
 
       case let .proc(proc, _):
-        return proc(arg1.eval(state: state), arg2.eval(state: state))
+        return proc(try arg1.eval(state: state), try arg2.eval(state: state))
       }
     }
   }

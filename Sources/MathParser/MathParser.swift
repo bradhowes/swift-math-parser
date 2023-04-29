@@ -140,6 +140,15 @@ final public class MathParser {
     return Evaluator(token: token, usingImpliedMultiplication: enableImpliedMultiplication)
   }
 
+  public func parseWithError(_ text: String) -> Result<Evaluator, MathParserError> {
+    do {
+      let token = try expression.parse(text)
+      return .success(Evaluator(token: token, usingImpliedMultiplication: enableImpliedMultiplication))
+    } catch {
+      return .failure(MathParserError(description: "\(error)"))
+    }
+  }
+
   // MARK: - implementation details
 
   /// Parser for start of identifier (constant, variable, function). All must start with a letter.
