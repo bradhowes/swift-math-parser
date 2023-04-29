@@ -486,4 +486,9 @@ error: unexpected input
       XCTAssertEqual("\(error)", "Function 'undefined' not found")
     }
   }
+
+  func testParseWithErrorReadme() {
+    let evaluator = parser.parseWithError("4 × sin(t × π")
+    print(evaluator)
+  }
 }

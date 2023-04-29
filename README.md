@@ -15,14 +15,26 @@ If you need to use an older version, use the tagged 3.0.1 release instead.
 
 ```swift
 let parser = MathParser()
-let evaluator = parser.parse('4 × sin(t × π) + 2 × sin(t × π)')
+let evaluator = parser.parse("4 × sin(t × π) + 2 × sin(t × π)")
 evaluator.eval("t", value: 0.0) // => 0.0
 evaluator.eval("t", value: 0.25) // => 4.2426406871192848
 evaluator.eval("t", value: 0.5) // => 6
 evaluator.eval("t", value: 1.0) // => 0
 ```
 
-The parser will return `nil` if it is unable to completely parse the expression.
+The parser will return `nil` if it is unable to completely parse the expression. Alternatively, you can call the
+`parseWithError` to obtain a Swift `Result` enum that will have a `MathParserError` value when parsing fails. This
+will contain a description of the parsing failure that comes from the swift-parsing library.
+
+```swift
+let evaluator = parser.parseWithError("4 × sin(t × π")
+print(evaluator)
+failure(error: unexpected input
+ --> input:1:8
+1 | 4 × sin(t × π
+  |        ^ expected end of input)
+
+```
 
 By default, the expression parser and evaluator handle the following symbols and functions:
 
