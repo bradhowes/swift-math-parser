@@ -37,6 +37,7 @@ public extension Evaluator {
    - parameter variables: optional mapping of names to constants to use during evaluation
    - parameter unaryFunctions: optional mapping of names to 1 parameter functions to use during evaluation
    - parameter binaryFunctions: optional mapping of names to 2 parameter functions to use during evaluation
+   - returns: Double value that is NaN when evaluation cannot finish due to unresolved symbol
    */
   @inlinable
   func eval(variables: MathParser.VariableMap? = nil,
@@ -49,16 +50,18 @@ public extension Evaluator {
   }
 
   /**
-   Evaluate the token to obtain a value. By default will use symbol map and function map given to `init`.
+   Evaluate the token to obtain a `Result` value that indicates a success or failure. The `.success` case holds a valid
+   `Double` value, while the `.failure` case holds a string describing the failure.
 
    - parameter variables: optional mapping of names to constants to use during evaluation
    - parameter unaryFunctions: optional mapping of names to 1 parameter functions to use during evaluation
    - parameter binaryFunctions: optional mapping of names to 2 parameter functions to use during evaluation
+   - returns: `Result` enum
    */
   @inlinable
-  func evalWithError(variables: MathParser.VariableMap? = nil,
-                     unaryFunctions: MathParser.UnaryFunctionMap? = nil,
-                     binaryFunctions: MathParser.BinaryFunctionMap? = nil) -> Result<Double, Error> {
+  func evalResult(variables: MathParser.VariableMap? = nil,
+                  unaryFunctions: MathParser.UnaryFunctionMap? = nil,
+                  binaryFunctions: MathParser.BinaryFunctionMap? = nil) -> Result<Double, Error> {
     do {
       return .success(try token.eval(state: .init(variables: variables,
                                                   unaryFunctions: unaryFunctions,

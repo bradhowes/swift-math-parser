@@ -140,7 +140,16 @@ final public class MathParser {
     return Evaluator(token: token, usingImpliedMultiplication: enableImpliedMultiplication)
   }
 
-  public func parseWithError(_ text: String) -> Result<Evaluator, MathParserError> {
+  /**
+   Parse an expression into a token that can be evaluated at a later time. Returns a `Result` enum with two cases:
+
+   - `.success` -- holds an `Evaluator` instance for evaluations of the parsed expression
+   - `.failure` -- holds a `MathParserError` instance that describes the parse failure
+
+   - parameter text: the expression to parse
+   - returns: `Result` enum
+   */
+  public func parseResult(_ text: String) -> Result<Evaluator, MathParserError> {
     do {
       let token = try expression.parse(text)
       return .success(Evaluator(token: token, usingImpliedMultiplication: enableImpliedMultiplication))

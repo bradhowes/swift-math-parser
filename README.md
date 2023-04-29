@@ -23,7 +23,7 @@ evaluator.eval("t", value: 1.0) // => 0
 ```
 
 The parser will return `nil` if it is unable to completely parse the expression. Alternatively, you can call the
-`parseWithError` to obtain a Swift `Result` enum that will have a `MathParserError` value when parsing fails. This
+`parseResult` to obtain a Swift `Result` enum that will have a `MathParserError` value when parsing fails. This
 will contain a description of the parsing failure that comes from the swift-parsing library.
 
 ```swift
@@ -47,7 +47,7 @@ You can reference additional symbols or variables and functions by providing you
 places where this can be done:
 
 * `MathParser.init`
-* `MathParser.Evaluator.eval`
+* `Evaluator.eval`
 
 If a symbol or function does not exist during an `eval` call, the final result will be `NaN`. If a symbol is resolved
 during parsing, it will be replaced with the symbol's value. Otherwise, it will be resolved during a future `eval` call.
@@ -55,7 +55,8 @@ Same for function calls -- if the function is known during parsing _and_ all arg
 be replaced with the function result. Otherwise, the function call will take place during an `eval` call.
 
 You can get the unresolved symbol names from the `Evaluator.unresolved` attribute. It returns three collections for
-unresolved variables, unary functions, and binary function names.
+unresolved variables, unary functions, and binary function names. You can also use the `evalResult` to attempt an
+evaluation but also obtain a description of the failure when the evaluation fails.
 
 Example:
 

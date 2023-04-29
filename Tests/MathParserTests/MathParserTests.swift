@@ -412,8 +412,8 @@ final class MathParserTests: XCTestCase {
                                     functions:  nil,
                                     enableImpliedMultiplication: true).symbols)
 
-    let evaluator = parser.parse("5 * 3")
-    XCTAssertEqual(15, evaluator?.eval(symbols: nil))
+    XCTAssertEqual(15, parser.parse("5 * 3")?.eval(symbols: nil))
+    XCTAssertTrue(parser.parse("5 * afwef")?.eval(symbols: nil).isNaN ?? false)
 
     // Invoke the default binaryFunctionFunctions.producer
     XCTAssertTrue(MathParser.init(symbols: nil, functions: nil).parse("hypot(4.0, 5.0)") != nil)
@@ -427,7 +427,7 @@ final class MathParserTests: XCTestCase {
   }
 
   func testParseWithErrorMissingOperand() {
-    expectFailure(result: parser.parseWithError("4.0 +"),
+    expectFailure(result: parser.parseResult("4.0 +"),
                   expected: """
 error: unexpected input
  --> input:1:5
@@ -437,7 +437,7 @@ error: unexpected input
   }
 
   func testParseWithErrorOpenParenthesis() {
-    expectFailure(result: parser.parseWithError("(4.0 + 3.0"),
+    expectFailure(result: parser.parseResult("(4.0 + 3.0"),
                   expected: """
 error: multiple failures occurred
 
@@ -457,7 +457,7 @@ error: unexpected input
   }
 
   func testParseWithErrorExtraCloseParenthesis() {
-    expectFailure(result: parser.parseWithError("(4.0 + 3.0))"),
+    expectFailure(result: parser.parseResult("(4.0 + 3.0))"),
                   expected: """
 error: unexpected input
  --> input:1:12
@@ -467,7 +467,7 @@ error: unexpected input
   }
 
   func testParseWithErrorMissingOperator() {
-    expectFailure(result: parser.parseWithError("4.0 3.0"),
+    expectFailure(result: parser.parseResult("4.0 3.0"),
                   expected: """
 error: unexpected input
  --> input:1:5
@@ -479,7 +479,7 @@ error: unexpected input
   func testEvalWithErrorFailsWithUnknownVariable() {
     let evaluator = parser.parse("undefined(1.2)")!
     XCTAssertTrue(evaluator.value.isNaN)
-    let result = evaluator.evalWithError()
+    let result = evaluator.evalResult()
     switch result {
     case .success: XCTFail()
     case .failure(let error):
@@ -488,7 +488,7 @@ error: unexpected input
   }
 
   func testParseWithErrorReadme() {
-    let evaluator = parser.parseWithError("4 × sin(t × π")
+    let evaluator = parser.parseResult("4 × sin(t × π")
     print(evaluator)
   }
 }
