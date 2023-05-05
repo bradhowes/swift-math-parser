@@ -13,4 +13,3 @@ public struct MathParserError: Error, CustomStringConvertible {
     self.description = description
   }
 }
-

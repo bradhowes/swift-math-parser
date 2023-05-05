@@ -302,7 +302,7 @@ final public class MathParser {
   }
 
   /// Parser for a single argument function call (eg `atan2`).
-  private lazy var binaryCall: some TokenParser = Parse  {
+  private lazy var binaryCall: some TokenParser = Parse {
     identifier
     "("
     binaryCallArgs

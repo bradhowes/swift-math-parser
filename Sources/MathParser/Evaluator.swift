@@ -13,7 +13,7 @@ public struct Evaluator {
 
   /// Obtain unresolved names of symbols for variables and functions
   public var unresolved: Unresolved { token.unresolved }
-  
+
   /**
    Construct new evaluator. This is constructed and returned by `MathParser.parse`.
 
@@ -123,4 +123,3 @@ struct EvalState {
     self.usingImpliedMultiplication = usingImpliedMultiplication
   }
 }
-

@@ -15,8 +15,7 @@ import Parsing
 struct LeftAssociativeInfixOperation<Input, Operator: Parser, Operand: Parser>: Parser
 where Operator.Input == Input,
       Operand.Input == Input,
-      Operator.Output == (Operand.Output, Operand.Output) -> Operand.Output
-{
+      Operator.Output == (Operand.Output, Operand.Output) -> Operand.Output {
   private let `operator`: Operator
   private let operand: Operand
   private var implied: Operator.Output?

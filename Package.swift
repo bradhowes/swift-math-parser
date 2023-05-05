@@ -22,16 +22,11 @@ let package = Package(
   targets: [
     .target(
       name: "MathParser",
-      dependencies: [
-        .product(name: "Parsing", package: "swift-parsing"),
-      ]
+      dependencies: [.product(name: "Parsing", package: "swift-parsing")]
     ),
     .testTarget(
       name: "MathParserTests",
-      dependencies: [
-        .product(name: "Parsing", package: "swift-parsing"),
-        "MathParser",
-      ]
+      dependencies: [.product(name: "Parsing", package: "swift-parsing"), "MathParser"]
     )
   ]
 )

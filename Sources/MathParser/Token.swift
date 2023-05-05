@@ -111,7 +111,7 @@ extension Token {
 
     // Using a stack to remember what needs to be worked on next. We don't care about order and we are by definition
     // directed acyclic so this is sufficient (we don't need a queue)
-    var pending :[Token] = .init()
+    var pending: [Token] = .init()
 
     pending.append(self)
     while let token = pending.popLast() {
@@ -208,8 +208,7 @@ extension Token {
         let lhs: Token = .constant(value: value)
         let rhs = attemptImpliedMultiplication(name: rhsName, variables: variables) ?? .variable(name: String(rhsName))
         return Token.reducer(lhs: lhs, rhs: rhs, operation: .proc(op: (*), name: "*"))
-      }
-      else if let value = variables(String(rhsName)) {
+      } else if let value = variables(String(rhsName)) {
         let lhs = attemptImpliedMultiplication(name: lhsName, variables: variables) ?? .variable(name: String(lhsName))
         let rhs: Token = .constant(value: value)
         return Token.reducer(lhs: lhs, rhs: rhs, operation: .proc(op: (*), name: "*"))
