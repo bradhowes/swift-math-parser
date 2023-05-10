@@ -1,30 +1,29 @@
 // Copyright © 2021 Brad Howes. All rights reserved.
 
+import Foundation
+
 /**
  Enumeration of the various components identified in a parse of an expression. If an expression can be fully evaluated
  (eg `1 + 2`) then it will result in a `.constant` token with the final value. Otherwise, calling `eval` with
  additional symbols/functions will return a value, though it may be NaN if there were still unresolved symbols or
  functions in the token(s).
  */
-
-import Foundation
-
 @usableFromInline
 enum Token {
-
+  /// Unresolved/resolved unary function
   @usableFromInline
   enum UnaryProc {
-    // Unresolved unary function
+    /// Unresolved unary function
     case name(String)
-    // Resolved unary function
+    /// Resolved unary function
     case proc(op: MathParser.UnaryFunction, name: String)
   }
-
+  /// Unresolved/resolved binary function
   @usableFromInline
   enum BinaryProc {
-    // Unresolved binary function
+    /// Unresolved binary function
     case name(String)
-    // Resolved binary function
+    /// Resolved binary function
     case proc(op: MathParser.BinaryFunction, name: String)
   }
   /// Numerical value from parse
@@ -87,12 +86,10 @@ extension Token {
       switch proc {
 
       case .name(let name):
-        if let proc = state.binaryFunctions(name) {
-          return proc(try arg1.eval(state: state),
-                      try arg2.eval(state: state))
-        } else {
+        guard let proc = state.binaryFunctions(name) else {
           throw MathParserError(description: "Function '\(name)' not found")
         }
+        return proc(try arg1.eval(state: state), try arg2.eval(state: state))
 
       case let .proc(proc, _):
         return proc(try arg1.eval(state: state), try arg2.eval(state: state))
@@ -196,7 +193,7 @@ extension Token {
    function if there are unknown symbols in need of resolution.
 
    - parameter name: the name to split
-   - parameter symbols: the symbol map to use to locate a known symbol name
+   - parameter variables: the map to use to locate a known symbol name
    - returns: optional Token that describes one or more multiplications that came from the given name
    */
   @usableFromInline
@@ -227,7 +224,8 @@ extension Token {
    function if there are unknown symbols in need of resolution.
 
    - parameter name: the name to split
-   - parameter symbols: the symbol map to use to locate a known symbol name
+   - parameter variables: the symbol map to use to locate a known symbol name
+   - parameter unaryFunctions: the symbol map to use to locate a known unary function
    - returns: optional Token that describes one or more multiplications that came from the given name
    */
   @usableFromInline
