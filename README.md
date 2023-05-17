@@ -27,7 +27,7 @@ The parser will return `nil` if it is unable to completely parse the expression.
 will contain a description of the parsing failure that comes from the swift-parsing library.
 
 ```swift
-let evaluator = parser.parseWithError("4 × sin(t × π")
+let evaluator = parser.parseResult("4 × sin(t × π")
 print(evaluator)
 failure(error: unexpected input
  --> input:1:8
