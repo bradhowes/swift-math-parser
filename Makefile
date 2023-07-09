@@ -17,7 +17,7 @@ docc:
 		--target $(TARGET) \
 		--disable-indexing \
 		--transform-for-static-hosting \
-		--hosting-base-path $(TARGET) \
+		--hosting-base-path swift-math-parser \
 		--output-path $(DOCC_DIR)
 
 lint: clean
