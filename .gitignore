@@ -3,9 +3,10 @@
 /Packages
 /*.xcodeproj
 xcuserdata/
-DerivedData-macos/
-DerivedData-ios/
-DerivedData-tvos/
+.DerivedData-macos/
+.DerivedData-ios/
+.DerivedData-tvos/
+.workspace/
 coverage.txt
 percentage.txt
 /.swiftpm/xcode/xcshareddata/xcschemes/swift-math-parser.xcschemes

@@ -3,11 +3,13 @@ PLATFORM_MACOS = macOS
 PLATFORM_TVOS = tvOS Simulator,name=Apple TV 4K (3rd generation) (at 1080p)
 TARGET = MathParser
 DOCC_DIR = ./docs
+QUIET = -quiet
+WORKSPACE = $(PWD)/.workspace
 
 default: percentage
 
 clean:
-	rm -rf "$(PWD)/DerivedData*"
+	rm -rf "$(PWD)/.DerivedData-macos" "$(PWD)/.DerivedData-ios" "$(PWD)/.DerivedData-tvos" "$(WORKSPACE)"
 
 docc:
 	DOCC_JSON_PRETTYPRINT="YES" \
@@ -23,24 +25,41 @@ docc:
 lint: clean
 	@if command -v swiftlint; then swiftlint; fi
 
-test-ios: lint
+resolve-deps: lint
+	xcodebuild \
+		$(QUIET) \
+		-resolvePackageDependencies \
+		-clonedSourcePackagesDirPath "$(WORKSPACE)" \
+		-scheme $(TARGET)
+
+test-ios: resolve-deps
 	xcodebuild test \
+		$(QUIET) \
+		-clonedSourcePackagesDirPath "$(WORKSPACE)" \
 		-scheme $(TARGET) \
+		-derivedDataPath "$(PWD)/.DerivedData-ios" \
 		-destination platform="$(PLATFORM_IOS)"
 
-test-tvos: lint
+test-tvos: resolve-deps
 	xcodebuild test \
+		$(QUIET) \
+		-clonedSourcePackagesDirPath "$(WORKSPACE)" \
 		-scheme $(TARGET) \
+		-derivedDataPath "$(PWD)/.DerivedData-tvos" \
 		-destination platform="$(PLATFORM_TVOS)"
 
-test-macos: lint
-	xcodebuild build \
+test-macos: resolve-deps
+	xcodebuild build-for-testing \
+		$(QUIET) \
+		-clonedSourcePackagesDirPath "$(WORKSPACE)" \
 		-scheme $(TARGET) \
-		-derivedDataPath "$(PWD)/DerivedData-macos" \
+		-derivedDataPath "$(PWD)/.DerivedData-macos" \
 		-destination platform="$(PLATFORM_MACOS)"
-	xcodebuild test \
+	xcodebuild test-without-building \
+		$(QUIET) \
+		-clonedSourcePackagesDirPath "$(WORKSPACE)" \
 		-scheme $(TARGET) \
-		-derivedDataPath "$(PWD)/DerivedData-macos" \
+		-derivedDataPath "$(PWD)/.DerivedData-macos" \
 		-destination platform="$(PLATFORM_MACOS)" \
 		-enableCodeCoverage YES
 
@@ -54,10 +73,10 @@ test-linux: lint
 		bash -c 'make test-swift'
 
 test-swift: lint
-	swift test --enable-test-discovery --parallel
+	swift test --parallel
 
 coverage: test-macos
-	xcrun xccov view --report --only-targets $(PWD)/DerivedData-macos/Logs/Test/*.xcresult > coverage.txt
+	xcrun xccov view --report --only-targets $(PWD)/.DerivedData-macos/Logs/Test/*.xcresult > coverage.txt
 	cat coverage.txt
 
 percentage: coverage
