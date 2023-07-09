@@ -8,3 +8,4 @@ DerivedData-ios/
 DerivedData-tvos/
 coverage.txt
 percentage.txt
+/.swiftpm/xcode/xcshareddata/xcschemes/swift-math-parser.xcschemes

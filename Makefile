@@ -4,23 +4,26 @@ PLATFORM_TVOS = tvOS Simulator,name=Apple TV 4K (3rd generation) (at 1080p)
 
 default: percentage
 
-test-ios:
-	rm -rf "$(PWD)/DerivedData-ios"
+clean:
+	rm -rf "$(PWD)/DerivedData*"
+
+docc:
+	swift package generate-documentation --target MathParser
+
+lint: clean
+	@if command -v swiftlint; then swiftlint; fi
+
+test-ios: lint
 	xcodebuild test \
 		-scheme MathParser \
 		-destination platform="$(PLATFORM_IOS)"
 
-test-tvos:
-	rm -rf "$(PWD)/DerivedData-tvos"
+test-tvos: lint
 	xcodebuild test \
 		-scheme MathParser \
 		-destination platform="$(PLATFORM_TVOS)"
 
-test-macos:
-	xcodebuild clean \
-		-scheme MathParser \
-		-derivedDataPath "$(PWD)/DerivedData-macos" \
-		-destination platform="$(PLATFORM_MACOS)"
+test-macos: lint
 	xcodebuild build \
 		-scheme MathParser \
 		-derivedDataPath "$(PWD)/DerivedData-macos" \
@@ -31,7 +34,7 @@ test-macos:
 		-destination platform="$(PLATFORM_MACOS)" \
 		-enableCodeCoverage YES
 
-test-linux:
+test-linux: lint
 	docker build -t swiftlang -f swiftlang.dockerfile .
 	docker run \
 		--rm \
@@ -40,7 +43,7 @@ test-linux:
 		swift57 \
 		bash -c 'make test-swift'
 
-test-swift:
+test-swift: lint
 	swift test --parallel
 
 coverage: test-macos

@@ -14,7 +14,6 @@ public extension Double {
 }
 #else
 public extension Double {
-  // swiftlint:disable:next identifier_name
   static var pi: Self { 3.14159265358979323846264338327950288 }
   // swiftlint:disable:next identifier_name
   static var e: Self { 2.71828182845904523536028747135266250 }

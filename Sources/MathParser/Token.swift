@@ -1,10 +1,10 @@
-// Copyright © 2021 Brad Howes. All rights reserved.
+// Copyright © 2023 Brad Howes. All rights reserved.
 
 import Foundation
 
 /**
  Enumeration of the various components identified in a parse of an expression. If an expression can be fully evaluated
- (eg `1 + 2`) then it will result in a `.constant` token with the final value. Otherwise, calling `eval` with
+ (eg `1 + 2`) then it will result in a ``.constant`` token with the final value. Otherwise, calling ``eval`` with
  additional symbols/functions will return a value, though it may be NaN if there were still unresolved symbols or
  functions in the token(s).
  */
@@ -37,11 +37,13 @@ enum Token {
 }
 
 extension Token {
+  // swiftlint:disable cyclomatic_complexity
 
   /**
    Evaluate the token to obtain a Double value. Resolves variables and functions using the given mappings. If there
    remain unresolved tokens, the result will be a NaN.
 
+   - parameter state: collection of values to use to resolve any remaing symbols in the token
    - returns: result of evaluation. May be NaN if unresolved symbol or function still exists
    */
   @inlinable
@@ -96,6 +98,7 @@ extension Token {
       }
     }
   }
+  // swiftlint:enable cyclomatic_complexity
 }
 
 extension Token {
@@ -166,13 +169,13 @@ extension Token: CustomStringConvertible {
 extension Token {
 
   /**
-   Attempt to reduce two operand Tokens and an operator. If constants, reduce to the operator applied to the
-   constants. Otherwise, return a `.mathOp` token for future evaluation.
+   Attempt to reduce two operand Tokens and an operator. If the operands are constants, reduce to the operator
+   applied to the constants. Otherwise, return a ``.binaryCall`` token for future evaluation.
 
    - parameter lhs: left-hand value
    - parameter rhs: right-hand value
-   - parameter operation: two-value math operation to perform
-   - returns: `.constant` token if reduction took place; otherwise `.mathOp` token
+   - parameter operation: the two-value math operation to perform
+   - returns: ``.constant`` token if reduction took place; otherwise ``.binaryCall`` token
    */
   @inlinable
   static func reducer(lhs: Token, rhs: Token, operation: BinaryProc) -> Token {
@@ -185,7 +188,7 @@ extension Token {
   }
 
   /**
-   Attempt to split a symbol into multiplication of two or more items. This is used when `enableImpliedMultiplication`
+   Attempt to split a symbol into multiplication of two or more items. This is used when ``enableImpliedMultiplication``
    is `true`. It takes a simple approach of looking for known symbols at the start and end of a symbol name. When a
    match is found, it constructs a multiplication of two new symbols, one of which is converted into a constant.
 
@@ -194,7 +197,7 @@ extension Token {
 
    - parameter name: the name to split
    - parameter variables: the map to use to locate a known symbol name
-   - returns: optional Token that describes one or more multiplications that came from the given name
+   - returns: optional ``Token`` that describes one or more multiplications that came from the given name
    */
   @usableFromInline
   static func attemptImpliedMultiplication(name: Substring, variables: MathParser.VariableMap) -> Token? {
@@ -215,15 +218,24 @@ extension Token {
   }
 
   /**
-   Attempt to split a function name into multiplication of two or more values and a function call. This is used
-   when `enableImpliedMultiplication`
+   Attempt to split a unary function name into multiplication of two or more values and a function call. This is used
+   when ``enableImpliedMultiplication``
    is `true`. It takes a simple approach of looking for known symbols at the start and end of a symbol name. When a
-   match is found, it constructs a multiplication of two new symbols, one of which is converted into a constant.
+   match is found, it constructs a multiplication of two new symbols, one of which is converted into a constant, and
+   the other is a call to a unary function.
 
    This routine is used both during the initial parse of the function definition *and* during the evaluation of the
    function if there are unknown symbols in need of resolution.
 
+   Example: `tsin(abc)`: here `name` is "tsin" and it will be evaluated at split points in order to resolve names to
+   known symbols. If `t` and `abc` are variables, then the code should reduce to the operations
+   `t * sin(abc)` (with `t` and `abc` being resolved to their actual values). Note that parsing has already taken
+   place on the argument `abc`, and it might have earlier determined that it was made up of `a * b * c`. Also, if
+   `sin` resolved to a variable, then the expression would ultimately resolve to `t * sin * (a * b * c)` instead
+   of the function call `sin`.
+
    - parameter name: the name to split
+   - parameter arg: the argument given to the unary function
    - parameter variables: the symbol map to use to locate a known symbol name
    - parameter unaryFunctions: the symbol map to use to locate a known unary function
    - returns: optional Token that describes one or more multiplications that came from the given name
@@ -258,7 +270,8 @@ extension Token {
 }
 
 /**
- Collection of unresolved names from a `Token.unreolved` property.
+ Collection of unresolved names from parse. Attempts to evaluate a token with unresolved names will result in a
+ NaN.
  */
 public struct Unresolved {
   /// The unresolved variables

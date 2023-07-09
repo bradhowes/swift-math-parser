@@ -1,19 +1,30 @@
-// Copyright © 2021 Brad Howes. All rights reserved.
+// Copyright © 2023 Brad Howes. All rights reserved.
 
 import Parsing
 import Foundation
 
 /**
- General-purpose parser for simple math expressions made up of the common operations as well as single argument
- functions like `sqrt` and `sin` and named variables / symbols. For instance, the expression `4 * sin(t * pi)` is
- legal and references the `sin` function, the `pi` constant, and an unknown variable `t`. Parsing a legal expression
- results in an `Evaluator` that can be used to obtain Double results from the expression, such as when the
- value for `t` is known.
- */
-final public class MathParser {
-  public typealias UnaryFunction = (Double) -> Double
-  public typealias BinaryFunction = (Double, Double) -> Double
+ A parser for simple math expressions made up of five common operations addition, subtraction, multiplication,
+ division, and exponentiation, as well as one- and two-argument functions like `sqrt` and `sin`, and named
+ variables / symbols.
 
+ The expression
+
+ ```
+ 4 * sin(t * π)
+ ```
+
+ is a legal math expression according to the parser. It references the known `sin` function, the known `pi` constant
+ (here using the symbol π),
+ and an unknown variable `t`. Parsing a legal expression results in an ``Evaluator`` instance that can be used to obtain
+ `Double` results from the expression, such as when the value for `t` is known.
+ */
+
+final public class MathParser {
+  /// Type definition for a mapping of one `Double` value to another such as by a 1-argument function.
+  public typealias UnaryFunction = (Double) -> Double
+  /// Type definition for a reduction of two `Double` values to one such as by a 2-argument function.
+  public typealias BinaryFunction = (Double, Double) -> Double
   /// Deprecated
   @available(*, deprecated, message: "Use VariableMap instead.")
   public typealias SymbolMap = (String) -> Double?
@@ -26,13 +37,38 @@ final public class MathParser {
   /// Mapping of names to an optional transform function of 2 arguments
   public typealias BinaryFunctionMap = (String) -> BinaryFunction?
   public typealias BinaryFunctionDict = [String: BinaryFunction]
-  /// Default symbols to use for parsing.
+  /**
+   Default symbols to use for parsing.
+
+   - `pi` -- the transcendental number that is the ratio of a circle's circumference to it's diameter
+   - `π` -- same as above but as a Unicode symbol
+   - `e` -- the transcendental number that is the base of natural logarithms
+   */
   public static let defaultVariables: [String: Double] = ["pi": .pi, "π": .pi, "e": .e]
 
   @available(*, deprecated, message: "Use defaultVariables class attribute instead.")
   public static var defaultSymbols: [String: Double] { defaultVariables }
 
-  /// Default 1-ary functions to use for parsing.
+  /**
+   Default 1-argument functions to use for parsing and evaluation.
+
+   - `sin` -- trigonometric function of an angle Θ in radians that represents the the ratio of the length of the side
+   of a right triangle that is opposite to angle Θ and to the length of the hypotenuse.
+   - `cos` -- trigonometric function of an angle Θ in radians that represents the the ratio of the length of the side
+   of a right triangle that is adjacent to angle Θ and to the length of the hypotenuse.
+   - `tan` -- trigonometric function that is the ratio of the opposite and adjacent sides of the triangle.
+   - `log10` -- the base-10 logarithm of the given number.
+   - `ln` -- the natural (base-e) logarithm of the given number.
+   - `loge` -- alias for `ln`.
+   - `log2` -- the base-2 logarithm of the given number.
+   - `exp` -- the exponentiation of e to the given number (the inverse of the `ln` function).
+   - `ceil` -- the largest integral value that is less than or equal to the given value.
+   - `floor` -- the smallest integral value that is greater than or equal to the given value.
+   - `round` -- computes the nearest integral value, rounding halfway cases away from zero.
+   - `sqrt` -- computes the square-root of the given number
+   - `√` -- same as above but as a Unicode symbol
+   - `cbrt` -- computes the cube-root of the given number
+   */
   public static let defaultUnaryFunctions: UnaryFunctionDict = [
     "sin": sin, "cos": cos, "tan": tan,
     "log10": log10, "ln": log, "loge": log, "log2": log2, "exp": exp,
@@ -41,17 +77,26 @@ final public class MathParser {
     "cbrt": cbrt // cube root
   ]
 
-  /// Default 2-ary functions to use for parsing.
+  /**
+   Default 2-argument functions to use for parsing and evaluation.
+
+   - `atan2` -- calculate the angle measure in radians between the x-axis and a ray from the origin to a point (x, y).
+   Note that the argument order to `atan2` is `y` then `x` by convention.
+   - `hypot` -- returns the length of a ray from the origin to a point (x, y).
+   Note that the argument order to `hypot` is `x` then `y` unlike that of `atan2`.
+   - `pow` -- calculate the result of raising the first argument to the power of the second. Thus `pow(x, y)` is the
+   same as writing `x ^ y`.
+  */
   public static let defaultBinaryFunctions: BinaryFunctionDict = [
     "atan2": atan2,
     "hypot": hypot,
     "pow": pow // Redundant since we support x^b expressions
   ]
 
-  /// Symbol mapping to use during parsing and perhaps evaluation
+  /// Symbol/variable mapping to use during parsing and perhaps evaluation
   public let variables: VariableMap
 
-  /// Symbol mapping to use during parsing and perhaps evaluation
+  /// Symbol/variable mapping to use during parsing and perhaps evaluation
   @available(*, deprecated, message: "Use variables attribute instead.")
   public var symbols: VariableMap { variables }
 
@@ -68,17 +113,17 @@ final public class MathParser {
   /**
    Construct new parser.
 
-   - parameter variables: optional mapping of names to variables. If not given, `defaultVariables` will be used
+   - parameter variables: optional mapping of names to variables. If not given, ``defaultVariables`` will be used
    - parameter variableDict: optional dictionary that maps a name to a constant. Note that this will be ignored if
-   `variables` is also given.
-   - parameter unaryFunctions: optional mapping of names to 1-ary functions. If not given, `defaultUnaryFunctions` will
+   ``variables`` is also given.
+   - parameter unaryFunctions: optional mapping of names to 1-ary functions. If not given, ``defaultUnaryFunctions`` will
    be used
    - parameter variableDict: optional dictionary that maps a name to a closure that maps a double to another.
-   Note that this will be ignored if `unaryFunctions` is also given.
-   - parameter binaryFunctions: optional mapping of names to 2-ary functions. If not given, `defaultBinaryFunctions`
+   Note that this will be ignored if ``unaryFunctions`` is also given.
+   - parameter binaryFunctions: optional mapping of names to 2-ary functions. If not given, ``defaultBinaryFunctions``
    will be used
    - parameter binaryFunctionDict: optional dictionary that maps a name to a closure that maps two doubles into one.
-   Note that this will be ignored if `binaryFunctions` is also given.
+   Note that this will be ignored if ``binaryFunctions`` is also given.
    - parameter enableImpliedMultiplication: if true treat expressions like `2π` as valid and same as `2 * π`
    */
   public init(variables: VariableMap? = nil,
@@ -143,8 +188,8 @@ final public class MathParser {
   /**
    Parse an expression into a token that can be evaluated at a later time. Returns a `Result` enum with two cases:
 
-   - `.success` -- holds an `Evaluator` instance for evaluations of the parsed expression
-   - `.failure` -- holds a `MathParserError` instance that describes the parse failure
+   - `.success` -- holds an ``Evaluator`` instance for evaluations of the parsed expression
+   - `.failure` -- holds a ``MathParserError`` instance that describes the parse failure
 
    - parameter text: the expression to parse
    - returns: `Result` enum
@@ -175,13 +220,13 @@ final public class MathParser {
   /// Type of the parser that returns a Token
   private typealias TokenParser = Parser<Substring, Token>
   private typealias Ary2Parser = Parser<Substring, (Token, Token)>
-  private typealias TR = (Token, Token) -> Token
+  private typealias TokenReducer = (Token, Token) -> Token
 
   /// Parser for a numeric constant
   private var constant: some TokenParser = Parse { Double.parser().map { Token.constant(value: $0) } }
 
   /// Parser for addition / subtraction operator.
-  private var additionOrSubtractionOperator: some Parser<Substring, TR> = Parse {
+  private var additionOrSubtractionOperator: some Parser<Substring, TokenReducer> = Parse {
     ignoreSpaces
     OneOf {
       "+".map { { Token.reducer(lhs: $0, rhs: $1, operation: .proc(op: (+), name: "+")) } }
@@ -199,29 +244,32 @@ final public class MathParser {
   /// When true, two parsed operands in a row implies multiplication
   private let enableImpliedMultiplication: Bool
 
+  private let multiplicationReducer = { Token.reducer(lhs: $0, rhs: $1, operation: .proc(op: (*), name: "*")) }
+  private let divisionReducer = { Token.reducer(lhs: $0, rhs: $1, operation: .proc(op: (/), name: "/")) }
+
   /// Parser for multiplication / division operator. Also recognizes × for multiplication and ÷ for division.
-  private var multiplicationOrDivisionOperator: some Parser<Substring, TR> = Parse {
+  private lazy var multiplicationOrDivisionOperator: some Parser<Substring, TokenReducer> = Parse {
     ignoreSpaces
     OneOf {
-      "*".map { { Token.reducer(lhs: $0, rhs: $1, operation: .proc(op: (*), name: "*")) } }
-      "×".map { { Token.reducer(lhs: $0, rhs: $1, operation: .proc(op: (*), name: "*")) } }
-      "/".map { { Token.reducer(lhs: $0, rhs: $1, operation: .proc(op: (/), name: "/")) } }
-      "÷".map { { Token.reducer(lhs: $0, rhs: $1, operation: .proc(op: (/), name: "/")) } }
+      "*".map { multiplicationReducer }
+      "×".map { multiplicationReducer }
+      "/".map { divisionReducer }
+      "÷".map { divisionReducer }
     }
   }
 
   /// Parser for valid multiplication / division operations. Higher precedence than + and -
-  /// If `enableImpliedMultiplication` is `true` then one can list two operands together
+  /// If ``enableImpliedMultiplication`` is `true` then one can list two operands together
   /// like `2x` and have it treated as a multiplication of `2` and the value in `x`. Note that this does not work for
   /// expression `x2` since that would be treated as the name of a symbol or function.
   private lazy var multiplicationAndDivision: some TokenParser = LeftAssociativeInfixOperation(
     multiplicationOrDivisionOperator,
     higher: exponentiation,
-    implied: enableImpliedMultiplication ? { Token.reducer(lhs: $0, rhs: $1, operation: .proc(op: (*), name: "*")) } : nil
+    implied: enableImpliedMultiplication ? multiplicationReducer : nil
   )
 
   /// Parser for exponentiation (power) operator
-  private var exponentiationOperator: some Parser<Substring, TR> = Parse {
+  private var exponentiationOperator: some Parser<Substring, TokenReducer> = Parse {
     ignoreSpaces
     "^".map { { Token.reducer(lhs: $0, rhs: $1, operation: .proc(op: (pow), name: "^")) } }
   }
@@ -232,8 +280,8 @@ final public class MathParser {
     higher: operand
   )
 
-  /// Parser for a symbol. If symbol exists during parse, parser returns `.constant` token. Otherwise, parser returns
-  /// `.symbol` token for later evaluation when the symbol is known.
+  /// Parser for a symbol. If symbol exists during parse, parser returns ``.constant`` token. Otherwise, parser returns
+  /// ``.symbol`` token for later evaluation when the symbol is known.
   private lazy var symbolOrVariable: some TokenParser = Parse {
     identifier
   }.map { (name: Substring) -> Token in
@@ -244,7 +292,7 @@ final public class MathParser {
     }
 
     // If implied-multiplication is allowed, look for symbols next to other symbols. This is risky if one symbol name
-    // is a substring of another symbol name -- say `e` and a variable called `value` which will be taken as `valu * e`
+    // is a substring of another symbol name -- say `e` and a variable called `value` which will be taken as `value * e`
     // by the following code. Two solutions to that: don't enable implied multiplication or avoid names that start/end
     // with other symbols.
     if self.enableImpliedMultiplication {
@@ -322,7 +370,7 @@ final public class MathParser {
   }
 
   /// Parser for an operand of an expression. Note that order is important: a function is made up of an identifier
-  /// followed by a parenthetical expression, so it must be before `parenthetical` and `symbolOrVariable`.
+  /// followed by a parenthetical expression, so it must be before ``parenthetical`` and ``symbolOrVariable``.
   private lazy var operand: some TokenParser = Parse {
     ignoreSpaces
     OneOf {
