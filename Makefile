@@ -45,7 +45,7 @@ test-linux: lint
 		bash -c 'make test-swift'
 
 test-swift: lint
-	swift test --parallel
+	swift test --enable-test-discovery --parallel
 
 coverage: test-macos
 	xcrun xccov view --report --only-targets $(PWD)/DerivedData-macos/Logs/Test/*.xcresult > coverage.txt
