@@ -163,7 +163,7 @@
         {
           "inlineContent" : [
             {
-              "text" : "optional Evaluator to use to obtain results from the parsed expression. This is nil if expression was not",
+              "text" : "optional Evaluator to use to obtain results from the parsed expression. This is nil if",
               "type" : "text"
             },
             {
@@ -171,7 +171,7 @@
               "type" : "text"
             },
             {
-              "text" : "valid.",
+              "text" : "the given expression is not valid.",
               "type" : "text"
             }
           ],

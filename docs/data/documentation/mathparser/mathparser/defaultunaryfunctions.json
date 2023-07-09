@@ -514,7 +514,10 @@
 },
 "doc://MathParser/documentation/MathParser/MathParser/UnaryFunctionDict": {
   "abstract" : [
-
+    {
+      "text" : "Dictionary of unary function names and their implementations.",
+      "type" : "text"
+    }
   ],
   "fragments" : [
     {

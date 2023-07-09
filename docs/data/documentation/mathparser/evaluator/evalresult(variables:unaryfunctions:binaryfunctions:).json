@@ -752,7 +752,7 @@
 "doc://MathParser/documentation/MathParser/MathParser/UnaryFunctionMap": {
   "abstract" : [
     {
-      "text" : "Mapping of names to an optional transform function of 1 argument",
+      "text" : "Mapping of names to an optional transform function of 1 argument.",
       "type" : "text"
     }
   ],

@@ -1,4 +1,10 @@
 {
+  "abstract" : [
+    {
+      "text" : "Dictionary of variable names and their values.",
+      "type" : "text"
+    }
+  ],
   "hierarchy" : {
     "paths" : [
       [
@@ -196,7 +202,10 @@
 },
 "doc://MathParser/documentation/MathParser/MathParser/VariableDict": {
   "abstract" : [
-
+    {
+      "text" : "Dictionary of variable names and their values.",
+      "type" : "text"
+    }
   ],
   "fragments" : [
     {

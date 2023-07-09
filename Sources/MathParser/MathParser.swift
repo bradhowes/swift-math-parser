@@ -30,13 +30,17 @@ final public class MathParser {
   public typealias SymbolMap = (String) -> Double?
   /// Mapping of variable names to an optional Double.
   public typealias VariableMap = (String) -> Double?
+  /// Dictionary of variable names and their values.
   public typealias VariableDict = [String: Double]
-  /// Mapping of names to an optional transform function of 1 argument
+  /// Mapping of names to an optional transform function of 1 argument.
   public typealias UnaryFunctionMap = (String) -> UnaryFunction?
+  /// Dictionary of unary function names and their implementations.
   public typealias UnaryFunctionDict = [String: UnaryFunction]
   /// Mapping of names to an optional transform function of 2 arguments
   public typealias BinaryFunctionMap = (String) -> BinaryFunction?
+  /// Dictionary of binary function names and their implementations.
   public typealias BinaryFunctionDict = [String: BinaryFunction]
+
   /**
    Default symbols to use for parsing.
 
@@ -113,6 +117,8 @@ final public class MathParser {
   /**
    Construct new parser.
 
+   All parameters are optional; ``MathParser`` will work as you would expect without any configuration.
+
    - parameter variables: optional mapping of names to variables. If not given, ``defaultVariables`` will be used
    - parameter variableDict: optional dictionary that maps a name to a constant. Note that this will be ignored if
    ``variables`` is also given.
@@ -177,8 +183,8 @@ final public class MathParser {
    Parse an expression into a token that can be evaluated at a later time.
 
    - parameter text: the expression to parse
-   - returns: optional Evaluator to use to obtain results from the parsed expression. This is nil if expression was not
-   valid.
+   - returns: optional Evaluator to use to obtain results from the parsed expression. This is nil if
+   the given expression is not valid.
    */
   public func parse(_ text: String) -> Evaluator? {
     guard let token = try? expression.parse(text) else { return nil }

@@ -1,4 +1,10 @@
 {
+  "abstract" : [
+    {
+      "text" : "Dictionary of binary function names and their implementations.",
+      "type" : "text"
+    }
+  ],
   "hierarchy" : {
     "paths" : [
       [
@@ -249,7 +255,10 @@
 },
 "doc://MathParser/documentation/MathParser/MathParser/BinaryFunctionDict": {
   "abstract" : [
-
+    {
+      "text" : "Dictionary of binary function names and their implementations.",
+      "type" : "text"
+    }
   ],
   "fragments" : [
     {

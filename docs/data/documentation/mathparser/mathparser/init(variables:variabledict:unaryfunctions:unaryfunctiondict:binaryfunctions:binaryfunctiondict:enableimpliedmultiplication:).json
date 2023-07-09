@@ -622,6 +622,35 @@
           "name" : "enableImpliedMultiplication"
         }
       ]
+    },
+    {
+      "content" : [
+        {
+          "anchor" : "discussion",
+          "level" : 2,
+          "text" : "Discussion",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "All parameters are optional; ",
+              "type" : "text"
+            },
+            {
+              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser",
+              "isActive" : true,
+              "type" : "reference"
+            },
+            {
+              "text" : " will work as you would expect without any configuration.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        }
+      ],
+      "kind" : "content"
     }
   ],
   "schemaVersion" : {
@@ -725,7 +754,10 @@
 },
 "doc://MathParser/documentation/MathParser/MathParser/BinaryFunctionDict": {
   "abstract" : [
-
+    {
+      "text" : "Dictionary of binary function names and their implementations.",
+      "type" : "text"
+    }
   ],
   "fragments" : [
     {
@@ -790,7 +822,10 @@
 },
 "doc://MathParser/documentation/MathParser/MathParser/UnaryFunctionDict": {
   "abstract" : [
-
+    {
+      "text" : "Dictionary of unary function names and their implementations.",
+      "type" : "text"
+    }
   ],
   "fragments" : [
     {
@@ -822,7 +857,7 @@
 "doc://MathParser/documentation/MathParser/MathParser/UnaryFunctionMap": {
   "abstract" : [
     {
-      "text" : "Mapping of names to an optional transform function of 1 argument",
+      "text" : "Mapping of names to an optional transform function of 1 argument.",
       "type" : "text"
     }
   ],
@@ -855,7 +890,10 @@
 },
 "doc://MathParser/documentation/MathParser/MathParser/VariableDict": {
   "abstract" : [
-
+    {
+      "text" : "Dictionary of variable names and their values.",
+      "type" : "text"
+    }
   ],
   "fragments" : [
     {
