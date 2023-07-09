@@ -8,7 +8,8 @@ clean:
 	rm -rf "$(PWD)/DerivedData*"
 
 docc:
-	swift package generate-documentation --target MathParser
+	swift package --allow-writing-to-directory ./docs generate-documentation --target MathParser --disable-indexing \
+		--transform-for-static-hosting --hosting-base-path MySwiftPackage --output-path ./docs
 
 lint: clean
 	@if command -v swiftlint; then swiftlint; fi
