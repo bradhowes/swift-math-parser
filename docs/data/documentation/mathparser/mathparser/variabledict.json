@@ -1,1 +1,229 @@
-{"primaryContentSections":[{"kind":"declarations","declarations":[{"tokens":[{"kind":"keyword","text":"typealias"},{"kind":"text","text":" "},{"kind":"identifier","text":"VariableDict"},{"kind":"text","text":" = ["},{"kind":"typeIdentifier","text":"String","preciseIdentifier":"s:SS"},{"kind":"text","text":" : "},{"kind":"typeIdentifier","text":"Double","preciseIdentifier":"s:Sd"},{"kind":"text","text":"]"}],"languages":["swift"],"platforms":["macOS"]}]}],"schemaVersion":{"major":0,"minor":3,"patch":0},"sections":[],"variants":[{"paths":["\/documentation\/mathparser\/mathparser\/variabledict"],"traits":[{"interfaceLanguage":"swift"}]}],"identifier":{"url":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/VariableDict","interfaceLanguage":"swift"},"kind":"symbol","metadata":{"fragments":[{"kind":"keyword","text":"typealias"},{"kind":"text","text":" "},{"kind":"identifier","text":"VariableDict"}],"title":"MathParser.VariableDict","roleHeading":"Type Alias","role":"symbol","symbolKind":"typealias","externalID":"s:10MathParserAAC12VariableDicta","modules":[{"name":"MathParser"}],"navigatorTitle":[{"kind":"identifier","text":"VariableDict"}]},"hierarchy":{"paths":[["doc:\/\/MathParser\/documentation\/MathParser","doc:\/\/MathParser\/documentation\/MathParser\/MathParser"]]},"references":{"doc://MathParser/documentation/MathParser":{"role":"collection","title":"MathParser","abstract":[],"identifier":"doc:\/\/MathParser\/documentation\/MathParser","kind":"symbol","type":"topic","url":"\/documentation\/mathparser"},"doc://MathParser/documentation/MathParser/MathParser/VariableDict":{"role":"symbol","title":"MathParser.VariableDict","fragments":[{"kind":"keyword","text":"typealias"},{"kind":"text","text":" "},{"kind":"identifier","text":"VariableDict"}],"abstract":[],"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/VariableDict","kind":"symbol","type":"topic","navigatorTitle":[{"kind":"identifier","text":"VariableDict"}],"url":"\/documentation\/mathparser\/mathparser\/variabledict"},"doc://MathParser/documentation/MathParser/MathParser":{"role":"symbol","title":"MathParser","fragments":[{"kind":"keyword","text":"class"},{"kind":"text","text":" "},{"kind":"identifier","text":"MathParser"}],"abstract":[{"type":"text","text":"A parser for simple math expressions made up of five common operations addition, subtraction, multiplication,"},{"type":"text","text":" "},{"type":"text","text":"division, and exponentiation, as well as one- and two-argument functions like "},{"type":"codeVoice","code":"sqrt"},{"type":"text","text":" and "},{"type":"codeVoice","code":"sin"},{"type":"text","text":", and named"},{"type":"text","text":" "},{"type":"text","text":"variables \/ symbols."}],"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser","kind":"symbol","type":"topic","navigatorTitle":[{"kind":"identifier","text":"MathParser"}],"url":"\/documentation\/mathparser\/mathparser"}}}
+{
+  "hierarchy" : {
+    "paths" : [
+      [
+        "doc:\/\/MathParser\/documentation\/MathParser",
+        "doc:\/\/MathParser\/documentation\/MathParser\/MathParser"
+      ]
+    ]
+  },
+  "identifier" : {
+    "interfaceLanguage" : "swift",
+    "url" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/VariableDict"
+  },
+  "kind" : "symbol",
+  "metadata" : {
+    "externalID" : "s:10MathParserAAC12VariableDicta",
+    "fragments" : [
+      {
+        "kind" : "keyword",
+        "text" : "typealias"
+      },
+      {
+        "kind" : "text",
+        "text" : " "
+      },
+      {
+        "kind" : "identifier",
+        "text" : "VariableDict"
+      }
+    ],
+    "modules" : [
+      {
+        "name" : "MathParser"
+      }
+    ],
+    "navigatorTitle" : [
+      {
+        "kind" : "identifier",
+        "text" : "VariableDict"
+      }
+    ],
+    "role" : "symbol",
+    "roleHeading" : "Type Alias",
+    "symbolKind" : "typealias",
+    "title" : "MathParser.VariableDict"
+  },
+  "primaryContentSections" : [
+    {
+      "declarations" : [
+        {
+          "languages" : [
+            "swift"
+          ],
+          "platforms" : [
+            "macOS"
+          ],
+          "tokens" : [
+            {
+              "kind" : "keyword",
+              "text" : "typealias"
+            },
+            {
+              "kind" : "text",
+              "text" : " "
+            },
+            {
+              "kind" : "identifier",
+              "text" : "VariableDict"
+            },
+            {
+              "kind" : "text",
+              "text" : " = ["
+            },
+            {
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:SS",
+              "text" : "String"
+            },
+            {
+              "kind" : "text",
+              "text" : " : "
+            },
+            {
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:Sd",
+              "text" : "Double"
+            },
+            {
+              "kind" : "text",
+              "text" : "]"
+            }
+          ]
+        }
+      ],
+      "kind" : "declarations"
+    }
+  ],
+  "schemaVersion" : {
+    "major" : 0,
+    "minor" : 3,
+    "patch" : 0
+  },
+  "sections" : [
+
+  ],
+  "variants" : [
+    {
+      "paths" : [
+        "\/documentation\/mathparser\/mathparser\/variabledict"
+      ],
+      "traits" : [
+        {
+          "interfaceLanguage" : "swift"
+        }
+      ]
+    }
+  ]
+, 
+"references": {
+"doc://MathParser/documentation/MathParser": {
+  "abstract" : [
+
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser",
+  "kind" : "symbol",
+  "role" : "collection",
+  "title" : "MathParser",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser"
+},
+"doc://MathParser/documentation/MathParser/MathParser": {
+  "abstract" : [
+    {
+      "text" : "A parser for simple math expressions made up of five common operations addition, subtraction, multiplication,",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "division, and exponentiation, as well as one- and two-argument functions like ",
+      "type" : "text"
+    },
+    {
+      "code" : "sqrt",
+      "type" : "codeVoice"
+    },
+    {
+      "text" : " and ",
+      "type" : "text"
+    },
+    {
+      "code" : "sin",
+      "type" : "codeVoice"
+    },
+    {
+      "text" : ", and named",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "variables \/ symbols.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "class"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "MathParser"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "MathParser"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "MathParser",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparser"
+},
+"doc://MathParser/documentation/MathParser/MathParser/VariableDict": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "typealias"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "VariableDict"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/VariableDict",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "VariableDict"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "MathParser.VariableDict",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparser\/variabledict"
+}
+}
+}

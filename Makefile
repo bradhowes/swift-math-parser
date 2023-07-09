@@ -1,6 +1,8 @@
 PLATFORM_IOS = iOS Simulator,name=iPhone 14 Pro
 PLATFORM_MACOS = macOS
 PLATFORM_TVOS = tvOS Simulator,name=Apple TV 4K (3rd generation) (at 1080p)
+TARGET = MathParser
+DOCC_DIR = ./docs
 
 default: percentage
 
@@ -8,29 +10,36 @@ clean:
 	rm -rf "$(PWD)/DerivedData*"
 
 docc:
-	swift package --allow-writing-to-directory ./docs generate-documentation --target MathParser --disable-indexing \
-		--transform-for-static-hosting --hosting-base-path MySwiftPackage --output-path ./docs
+	DOCC_JSON_PRETTYPRINT="YES" \
+	swift package \
+		--allow-writing-to-directory $(DOCC_DIR) \
+		generate-documentation \
+		--target $(TARGET) \
+		--disable-indexing \
+		--transform-for-static-hosting \
+		--hosting-base-path $(TARGET) \
+		--output-path $(DOCC_DIR)
 
 lint: clean
 	@if command -v swiftlint; then swiftlint; fi
 
 test-ios: lint
 	xcodebuild test \
-		-scheme MathParser \
+		-scheme $(TARGET) \
 		-destination platform="$(PLATFORM_IOS)"
 
 test-tvos: lint
 	xcodebuild test \
-		-scheme MathParser \
+		-scheme $(TARGET) \
 		-destination platform="$(PLATFORM_TVOS)"
 
 test-macos: lint
 	xcodebuild build \
-		-scheme MathParser \
+		-scheme $(TARGET) \
 		-derivedDataPath "$(PWD)/DerivedData-macos" \
 		-destination platform="$(PLATFORM_MACOS)"
 	xcodebuild test \
-		-scheme MathParser \
+		-scheme $(TARGET) \
 		-derivedDataPath "$(PWD)/DerivedData-macos" \
 		-destination platform="$(PLATFORM_MACOS)" \
 		-enableCodeCoverage YES
@@ -52,7 +61,7 @@ coverage: test-macos
 	cat coverage.txt
 
 percentage: coverage
-	awk '/ MathParser / { if ($$3 > 0) print $$4; }' coverage.txt > percentage.txt
+	awk '/ $(TARGET) / { if ($$3 > 0) print $$4; }' coverage.txt > percentage.txt
 	cat percentage.txt
 
 test: test-ios test-tvos percentage

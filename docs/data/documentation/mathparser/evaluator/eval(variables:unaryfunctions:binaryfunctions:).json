@@ -1,1 +1,691 @@
-{"primaryContentSections":[{"kind":"declarations","declarations":[{"tokens":[{"kind":"keyword","text":"func"},{"kind":"text","text":" "},{"kind":"identifier","text":"eval"},{"kind":"text","text":"("},{"kind":"externalParam","text":"variables"},{"kind":"text","text":": "},{"kind":"typeIdentifier","identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser","preciseIdentifier":"s:10MathParserAAC","text":"MathParser"},{"kind":"text","text":"."},{"kind":"typeIdentifier","identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/VariableMap","preciseIdentifier":"s:10MathParserAAC11VariableMapa","text":"VariableMap"},{"kind":"text","text":"? = nil, "},{"kind":"externalParam","text":"unaryFunctions"},{"kind":"text","text":": "},{"kind":"typeIdentifier","identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser","preciseIdentifier":"s:10MathParserAAC","text":"MathParser"},{"kind":"text","text":"."},{"kind":"typeIdentifier","identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/UnaryFunctionMap","preciseIdentifier":"s:10MathParserAAC16UnaryFunctionMapa","text":"UnaryFunctionMap"},{"kind":"text","text":"? = nil, "},{"kind":"externalParam","text":"binaryFunctions"},{"kind":"text","text":": "},{"kind":"typeIdentifier","identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser","preciseIdentifier":"s:10MathParserAAC","text":"MathParser"},{"kind":"text","text":"."},{"kind":"typeIdentifier","identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/BinaryFunctionMap","preciseIdentifier":"s:10MathParserAAC17BinaryFunctionMapa","text":"BinaryFunctionMap"},{"kind":"text","text":"? = nil) -> "},{"kind":"typeIdentifier","text":"Double","preciseIdentifier":"s:Sd"}],"languages":["swift"],"platforms":["macOS"]}]},{"kind":"parameters","parameters":[{"name":"variables","content":[{"type":"paragraph","inlineContent":[{"type":"text","text":"optional mapping of names to constants to use during evaluation"}]}]},{"name":"unaryFunctions","content":[{"type":"paragraph","inlineContent":[{"type":"text","text":"optional mapping of names to 1 parameter functions to use during evaluation"}]}]},{"name":"binaryFunctions","content":[{"type":"paragraph","inlineContent":[{"type":"text","text":"optional mapping of names to 2 parameter functions to use during evaluation"}]}]}]},{"kind":"content","content":[{"anchor":"return-value","level":2,"type":"heading","text":"Return Value"},{"type":"paragraph","inlineContent":[{"type":"text","text":"Double value that is NaN when evaluation cannot finish due to unresolved symbol"}]}]}],"schemaVersion":{"major":0,"minor":3,"patch":0},"sections":[],"variants":[{"paths":["\/documentation\/mathparser\/evaluator\/eval(variables:unaryfunctions:binaryfunctions:)"],"traits":[{"interfaceLanguage":"swift"}]}],"identifier":{"url":"doc:\/\/MathParser\/documentation\/MathParser\/Evaluator\/eval(variables:unaryFunctions:binaryFunctions:)","interfaceLanguage":"swift"},"abstract":[{"type":"text","text":"Evaluate the token to obtain a value. By default will use symbol map and function map given to "},{"type":"codeVoice","code":"init"},{"type":"text","text":"."}],"kind":"symbol","metadata":{"role":"symbol","title":"eval(variables:unaryFunctions:binaryFunctions:)","roleHeading":"Instance Method","fragments":[{"kind":"keyword","text":"func"},{"kind":"text","text":" "},{"kind":"identifier","text":"eval"},{"kind":"text","text":"("},{"kind":"externalParam","text":"variables"},{"kind":"text","text":": "},{"kind":"typeIdentifier","text":"MathParser","preciseIdentifier":"s:10MathParserAAC"},{"kind":"text","text":"."},{"kind":"typeIdentifier","text":"VariableMap","preciseIdentifier":"s:10MathParserAAC11VariableMapa"},{"kind":"text","text":"?, "},{"kind":"externalParam","text":"unaryFunctions"},{"kind":"text","text":": "},{"kind":"typeIdentifier","text":"MathParser","preciseIdentifier":"s:10MathParserAAC"},{"kind":"text","text":"."},{"kind":"typeIdentifier","text":"UnaryFunctionMap","preciseIdentifier":"s:10MathParserAAC16UnaryFunctionMapa"},{"kind":"text","text":"?, "},{"kind":"externalParam","text":"binaryFunctions"},{"kind":"text","text":": "},{"kind":"typeIdentifier","text":"MathParser","preciseIdentifier":"s:10MathParserAAC"},{"kind":"text","text":"."},{"kind":"typeIdentifier","text":"BinaryFunctionMap","preciseIdentifier":"s:10MathParserAAC17BinaryFunctionMapa"},{"kind":"text","text":"?) -> "},{"kind":"typeIdentifier","text":"Double","preciseIdentifier":"s:Sd"}],"symbolKind":"method","externalID":"s:10MathParser9EvaluatorV4eval9variables14unaryFunctions06binaryG0S2dSgSScSg_S2dcSgSScSgS2d_SdtcSgSScSgtF","extendedModule":"MathParser","modules":[{"name":"MathParser"}]},"hierarchy":{"paths":[["doc:\/\/MathParser\/documentation\/MathParser","doc:\/\/MathParser\/documentation\/MathParser\/Evaluator"]]},"references":{"doc://MathParser/documentation/MathParser":{"role":"collection","title":"MathParser","abstract":[],"identifier":"doc:\/\/MathParser\/documentation\/MathParser","kind":"symbol","type":"topic","url":"\/documentation\/mathparser"},"doc://MathParser/documentation/MathParser/MathParser":{"role":"symbol","title":"MathParser","fragments":[{"kind":"keyword","text":"class"},{"kind":"text","text":" "},{"kind":"identifier","text":"MathParser"}],"abstract":[{"type":"text","text":"A parser for simple math expressions made up of five common operations addition, subtraction, multiplication,"},{"type":"text","text":" "},{"type":"text","text":"division, and exponentiation, as well as one- and two-argument functions like "},{"type":"codeVoice","code":"sqrt"},{"type":"text","text":" and "},{"type":"codeVoice","code":"sin"},{"type":"text","text":", and named"},{"type":"text","text":" "},{"type":"text","text":"variables \/ symbols."}],"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser","kind":"symbol","type":"topic","navigatorTitle":[{"kind":"identifier","text":"MathParser"}],"url":"\/documentation\/mathparser\/mathparser"},"doc://MathParser/documentation/MathParser/Evaluator/eval(variables:unaryFunctions:binaryFunctions:)":{"role":"symbol","title":"eval(variables:unaryFunctions:binaryFunctions:)","fragments":[{"kind":"keyword","text":"func"},{"kind":"text","text":" "},{"kind":"identifier","text":"eval"},{"kind":"text","text":"("},{"kind":"externalParam","text":"variables"},{"kind":"text","text":": "},{"kind":"typeIdentifier","text":"MathParser","preciseIdentifier":"s:10MathParserAAC"},{"kind":"text","text":"."},{"kind":"typeIdentifier","text":"VariableMap","preciseIdentifier":"s:10MathParserAAC11VariableMapa"},{"kind":"text","text":"?, "},{"kind":"externalParam","text":"unaryFunctions"},{"kind":"text","text":": "},{"kind":"typeIdentifier","text":"MathParser","preciseIdentifier":"s:10MathParserAAC"},{"kind":"text","text":"."},{"kind":"typeIdentifier","text":"UnaryFunctionMap","preciseIdentifier":"s:10MathParserAAC16UnaryFunctionMapa"},{"kind":"text","text":"?, "},{"kind":"externalParam","text":"binaryFunctions"},{"kind":"text","text":": "},{"kind":"typeIdentifier","text":"MathParser","preciseIdentifier":"s:10MathParserAAC"},{"kind":"text","text":"."},{"kind":"typeIdentifier","text":"BinaryFunctionMap","preciseIdentifier":"s:10MathParserAAC17BinaryFunctionMapa"},{"kind":"text","text":"?) -> "},{"kind":"typeIdentifier","text":"Double","preciseIdentifier":"s:Sd"}],"abstract":[{"type":"text","text":"Evaluate the token to obtain a value. By default will use symbol map and function map given to "},{"type":"codeVoice","code":"init"},{"type":"text","text":"."}],"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/Evaluator\/eval(variables:unaryFunctions:binaryFunctions:)","kind":"symbol","type":"topic","url":"\/documentation\/mathparser\/evaluator\/eval(variables:unaryfunctions:binaryfunctions:)"},"doc://MathParser/documentation/MathParser/MathParser/UnaryFunctionMap":{"role":"symbol","title":"MathParser.UnaryFunctionMap","fragments":[{"kind":"keyword","text":"typealias"},{"kind":"text","text":" "},{"kind":"identifier","text":"UnaryFunctionMap"}],"abstract":[{"type":"text","text":"Mapping of names to an optional transform function of 1 argument"}],"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/UnaryFunctionMap","kind":"symbol","type":"topic","navigatorTitle":[{"kind":"identifier","text":"UnaryFunctionMap"}],"url":"\/documentation\/mathparser\/mathparser\/unaryfunctionmap"},"doc://MathParser/documentation/MathParser/MathParser/VariableMap":{"role":"symbol","title":"MathParser.VariableMap","fragments":[{"kind":"keyword","text":"typealias"},{"kind":"text","text":" "},{"kind":"identifier","text":"VariableMap"}],"abstract":[{"type":"text","text":"Mapping of variable names to an optional Double."}],"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/VariableMap","kind":"symbol","type":"topic","navigatorTitle":[{"kind":"identifier","text":"VariableMap"}],"url":"\/documentation\/mathparser\/mathparser\/variablemap"},"doc://MathParser/documentation/MathParser/Evaluator":{"role":"symbol","title":"Evaluator","fragments":[{"kind":"keyword","text":"struct"},{"kind":"text","text":" "},{"kind":"identifier","text":"Evaluator"}],"abstract":[{"type":"text","text":"Evaluator of parsed tokens."}],"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/Evaluator","kind":"symbol","type":"topic","navigatorTitle":[{"kind":"identifier","text":"Evaluator"}],"url":"\/documentation\/mathparser\/evaluator"},"doc://MathParser/documentation/MathParser/MathParser/BinaryFunctionMap":{"role":"symbol","title":"MathParser.BinaryFunctionMap","fragments":[{"kind":"keyword","text":"typealias"},{"kind":"text","text":" "},{"kind":"identifier","text":"BinaryFunctionMap"}],"abstract":[{"type":"text","text":"Mapping of names to an optional transform function of 2 arguments"}],"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/BinaryFunctionMap","kind":"symbol","type":"topic","navigatorTitle":[{"kind":"identifier","text":"BinaryFunctionMap"}],"url":"\/documentation\/mathparser\/mathparser\/binaryfunctionmap"}}}
+{
+  "abstract" : [
+    {
+      "text" : "Evaluate the token to obtain a value. By default will use symbol map and function map given to ",
+      "type" : "text"
+    },
+    {
+      "code" : "init",
+      "type" : "codeVoice"
+    },
+    {
+      "text" : ".",
+      "type" : "text"
+    }
+  ],
+  "hierarchy" : {
+    "paths" : [
+      [
+        "doc:\/\/MathParser\/documentation\/MathParser",
+        "doc:\/\/MathParser\/documentation\/MathParser\/Evaluator"
+      ]
+    ]
+  },
+  "identifier" : {
+    "interfaceLanguage" : "swift",
+    "url" : "doc:\/\/MathParser\/documentation\/MathParser\/Evaluator\/eval(variables:unaryFunctions:binaryFunctions:)"
+  },
+  "kind" : "symbol",
+  "metadata" : {
+    "extendedModule" : "MathParser",
+    "externalID" : "s:10MathParser9EvaluatorV4eval9variables14unaryFunctions06binaryG0S2dSgSScSg_S2dcSgSScSgS2d_SdtcSgSScSgtF",
+    "fragments" : [
+      {
+        "kind" : "keyword",
+        "text" : "func"
+      },
+      {
+        "kind" : "text",
+        "text" : " "
+      },
+      {
+        "kind" : "identifier",
+        "text" : "eval"
+      },
+      {
+        "kind" : "text",
+        "text" : "("
+      },
+      {
+        "kind" : "externalParam",
+        "text" : "variables"
+      },
+      {
+        "kind" : "text",
+        "text" : ": "
+      },
+      {
+        "kind" : "typeIdentifier",
+        "preciseIdentifier" : "s:10MathParserAAC",
+        "text" : "MathParser"
+      },
+      {
+        "kind" : "text",
+        "text" : "."
+      },
+      {
+        "kind" : "typeIdentifier",
+        "preciseIdentifier" : "s:10MathParserAAC11VariableMapa",
+        "text" : "VariableMap"
+      },
+      {
+        "kind" : "text",
+        "text" : "?, "
+      },
+      {
+        "kind" : "externalParam",
+        "text" : "unaryFunctions"
+      },
+      {
+        "kind" : "text",
+        "text" : ": "
+      },
+      {
+        "kind" : "typeIdentifier",
+        "preciseIdentifier" : "s:10MathParserAAC",
+        "text" : "MathParser"
+      },
+      {
+        "kind" : "text",
+        "text" : "."
+      },
+      {
+        "kind" : "typeIdentifier",
+        "preciseIdentifier" : "s:10MathParserAAC16UnaryFunctionMapa",
+        "text" : "UnaryFunctionMap"
+      },
+      {
+        "kind" : "text",
+        "text" : "?, "
+      },
+      {
+        "kind" : "externalParam",
+        "text" : "binaryFunctions"
+      },
+      {
+        "kind" : "text",
+        "text" : ": "
+      },
+      {
+        "kind" : "typeIdentifier",
+        "preciseIdentifier" : "s:10MathParserAAC",
+        "text" : "MathParser"
+      },
+      {
+        "kind" : "text",
+        "text" : "."
+      },
+      {
+        "kind" : "typeIdentifier",
+        "preciseIdentifier" : "s:10MathParserAAC17BinaryFunctionMapa",
+        "text" : "BinaryFunctionMap"
+      },
+      {
+        "kind" : "text",
+        "text" : "?) -> "
+      },
+      {
+        "kind" : "typeIdentifier",
+        "preciseIdentifier" : "s:Sd",
+        "text" : "Double"
+      }
+    ],
+    "modules" : [
+      {
+        "name" : "MathParser"
+      }
+    ],
+    "role" : "symbol",
+    "roleHeading" : "Instance Method",
+    "symbolKind" : "method",
+    "title" : "eval(variables:unaryFunctions:binaryFunctions:)"
+  },
+  "primaryContentSections" : [
+    {
+      "declarations" : [
+        {
+          "languages" : [
+            "swift"
+          ],
+          "platforms" : [
+            "macOS"
+          ],
+          "tokens" : [
+            {
+              "kind" : "keyword",
+              "text" : "func"
+            },
+            {
+              "kind" : "text",
+              "text" : " "
+            },
+            {
+              "kind" : "identifier",
+              "text" : "eval"
+            },
+            {
+              "kind" : "text",
+              "text" : "("
+            },
+            {
+              "kind" : "externalParam",
+              "text" : "variables"
+            },
+            {
+              "kind" : "text",
+              "text" : ": "
+            },
+            {
+              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser",
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:10MathParserAAC",
+              "text" : "MathParser"
+            },
+            {
+              "kind" : "text",
+              "text" : "."
+            },
+            {
+              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/VariableMap",
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:10MathParserAAC11VariableMapa",
+              "text" : "VariableMap"
+            },
+            {
+              "kind" : "text",
+              "text" : "? = nil, "
+            },
+            {
+              "kind" : "externalParam",
+              "text" : "unaryFunctions"
+            },
+            {
+              "kind" : "text",
+              "text" : ": "
+            },
+            {
+              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser",
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:10MathParserAAC",
+              "text" : "MathParser"
+            },
+            {
+              "kind" : "text",
+              "text" : "."
+            },
+            {
+              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/UnaryFunctionMap",
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:10MathParserAAC16UnaryFunctionMapa",
+              "text" : "UnaryFunctionMap"
+            },
+            {
+              "kind" : "text",
+              "text" : "? = nil, "
+            },
+            {
+              "kind" : "externalParam",
+              "text" : "binaryFunctions"
+            },
+            {
+              "kind" : "text",
+              "text" : ": "
+            },
+            {
+              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser",
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:10MathParserAAC",
+              "text" : "MathParser"
+            },
+            {
+              "kind" : "text",
+              "text" : "."
+            },
+            {
+              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/BinaryFunctionMap",
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:10MathParserAAC17BinaryFunctionMapa",
+              "text" : "BinaryFunctionMap"
+            },
+            {
+              "kind" : "text",
+              "text" : "? = nil) -> "
+            },
+            {
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:Sd",
+              "text" : "Double"
+            }
+          ]
+        }
+      ],
+      "kind" : "declarations"
+    },
+    {
+      "kind" : "parameters",
+      "parameters" : [
+        {
+          "content" : [
+            {
+              "inlineContent" : [
+                {
+                  "text" : "optional mapping of names to constants to use during evaluation",
+                  "type" : "text"
+                }
+              ],
+              "type" : "paragraph"
+            }
+          ],
+          "name" : "variables"
+        },
+        {
+          "content" : [
+            {
+              "inlineContent" : [
+                {
+                  "text" : "optional mapping of names to 1 parameter functions to use during evaluation",
+                  "type" : "text"
+                }
+              ],
+              "type" : "paragraph"
+            }
+          ],
+          "name" : "unaryFunctions"
+        },
+        {
+          "content" : [
+            {
+              "inlineContent" : [
+                {
+                  "text" : "optional mapping of names to 2 parameter functions to use during evaluation",
+                  "type" : "text"
+                }
+              ],
+              "type" : "paragraph"
+            }
+          ],
+          "name" : "binaryFunctions"
+        }
+      ]
+    },
+    {
+      "content" : [
+        {
+          "anchor" : "return-value",
+          "level" : 2,
+          "text" : "Return Value",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Double value that is NaN when evaluation cannot finish due to unresolved symbol",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        }
+      ],
+      "kind" : "content"
+    }
+  ],
+  "schemaVersion" : {
+    "major" : 0,
+    "minor" : 3,
+    "patch" : 0
+  },
+  "sections" : [
+
+  ],
+  "variants" : [
+    {
+      "paths" : [
+        "\/documentation\/mathparser\/evaluator\/eval(variables:unaryfunctions:binaryfunctions:)"
+      ],
+      "traits" : [
+        {
+          "interfaceLanguage" : "swift"
+        }
+      ]
+    }
+  ]
+, 
+"references": {
+"doc://MathParser/documentation/MathParser": {
+  "abstract" : [
+
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser",
+  "kind" : "symbol",
+  "role" : "collection",
+  "title" : "MathParser",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser"
+},
+"doc://MathParser/documentation/MathParser/Evaluator": {
+  "abstract" : [
+    {
+      "text" : "Evaluator of parsed tokens.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "Evaluator"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/Evaluator",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "Evaluator"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "Evaluator",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/evaluator"
+},
+"doc://MathParser/documentation/MathParser/Evaluator/eval(variables:unaryFunctions:binaryFunctions:)": {
+  "abstract" : [
+    {
+      "text" : "Evaluate the token to obtain a value. By default will use symbol map and function map given to ",
+      "type" : "text"
+    },
+    {
+      "code" : "init",
+      "type" : "codeVoice"
+    },
+    {
+      "text" : ".",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "eval"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "variables"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC",
+      "text" : "MathParser"
+    },
+    {
+      "kind" : "text",
+      "text" : "."
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC11VariableMapa",
+      "text" : "VariableMap"
+    },
+    {
+      "kind" : "text",
+      "text" : "?, "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "unaryFunctions"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC",
+      "text" : "MathParser"
+    },
+    {
+      "kind" : "text",
+      "text" : "."
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC16UnaryFunctionMapa",
+      "text" : "UnaryFunctionMap"
+    },
+    {
+      "kind" : "text",
+      "text" : "?, "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "binaryFunctions"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC",
+      "text" : "MathParser"
+    },
+    {
+      "kind" : "text",
+      "text" : "."
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC17BinaryFunctionMapa",
+      "text" : "BinaryFunctionMap"
+    },
+    {
+      "kind" : "text",
+      "text" : "?) -> "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sd",
+      "text" : "Double"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/Evaluator\/eval(variables:unaryFunctions:binaryFunctions:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "eval(variables:unaryFunctions:binaryFunctions:)",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/evaluator\/eval(variables:unaryfunctions:binaryfunctions:)"
+},
+"doc://MathParser/documentation/MathParser/MathParser": {
+  "abstract" : [
+    {
+      "text" : "A parser for simple math expressions made up of five common operations addition, subtraction, multiplication,",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "division, and exponentiation, as well as one- and two-argument functions like ",
+      "type" : "text"
+    },
+    {
+      "code" : "sqrt",
+      "type" : "codeVoice"
+    },
+    {
+      "text" : " and ",
+      "type" : "text"
+    },
+    {
+      "code" : "sin",
+      "type" : "codeVoice"
+    },
+    {
+      "text" : ", and named",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "variables \/ symbols.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "class"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "MathParser"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "MathParser"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "MathParser",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparser"
+},
+"doc://MathParser/documentation/MathParser/MathParser/BinaryFunctionMap": {
+  "abstract" : [
+    {
+      "text" : "Mapping of names to an optional transform function of 2 arguments",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "typealias"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "BinaryFunctionMap"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/BinaryFunctionMap",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "BinaryFunctionMap"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "MathParser.BinaryFunctionMap",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparser\/binaryfunctionmap"
+},
+"doc://MathParser/documentation/MathParser/MathParser/UnaryFunctionMap": {
+  "abstract" : [
+    {
+      "text" : "Mapping of names to an optional transform function of 1 argument",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "typealias"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "UnaryFunctionMap"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/UnaryFunctionMap",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "UnaryFunctionMap"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "MathParser.UnaryFunctionMap",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparser\/unaryfunctionmap"
+},
+"doc://MathParser/documentation/MathParser/MathParser/VariableMap": {
+  "abstract" : [
+    {
+      "text" : "Mapping of variable names to an optional Double.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "typealias"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "VariableMap"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/VariableMap",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "VariableMap"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "MathParser.VariableMap",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparser\/variablemap"
+}
+}
+}

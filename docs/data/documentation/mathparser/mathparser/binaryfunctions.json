@@ -1,1 +1,294 @@
-{"primaryContentSections":[{"kind":"declarations","declarations":[{"tokens":[{"kind":"keyword","text":"let"},{"kind":"text","text":" "},{"kind":"identifier","text":"binaryFunctions"},{"kind":"text","text":": "},{"kind":"typeIdentifier","identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser","preciseIdentifier":"s:10MathParserAAC","text":"MathParser"},{"kind":"text","text":"."},{"kind":"typeIdentifier","identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/BinaryFunctionMap","preciseIdentifier":"s:10MathParserAAC17BinaryFunctionMapa","text":"BinaryFunctionMap"}],"languages":["swift"],"platforms":["macOS"]}]}],"schemaVersion":{"major":0,"minor":3,"patch":0},"sections":[],"variants":[{"paths":["\/documentation\/mathparser\/mathparser\/binaryfunctions"],"traits":[{"interfaceLanguage":"swift"}]}],"identifier":{"url":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/binaryFunctions","interfaceLanguage":"swift"},"abstract":[{"type":"text","text":"Function mapping to use during parsing and perhaps evaluation"}],"kind":"symbol","metadata":{"fragments":[{"kind":"keyword","text":"let"},{"kind":"text","text":" "},{"kind":"identifier","text":"binaryFunctions"},{"kind":"text","text":": "},{"kind":"typeIdentifier","text":"MathParser","preciseIdentifier":"s:10MathParserAAC"},{"kind":"text","text":"."},{"kind":"typeIdentifier","text":"BinaryFunctionMap","preciseIdentifier":"s:10MathParserAAC17BinaryFunctionMapa"}],"title":"binaryFunctions","roleHeading":"Instance Property","role":"symbol","symbolKind":"property","externalID":"s:10MathParserAAC15binaryFunctionsyS2d_SdtcSgSScvp","modules":[{"name":"MathParser"}]},"hierarchy":{"paths":[["doc:\/\/MathParser\/documentation\/MathParser","doc:\/\/MathParser\/documentation\/MathParser\/MathParser"]]},"references":{"doc://MathParser/documentation/MathParser/MathParser/binaryFunctions":{"role":"symbol","title":"binaryFunctions","fragments":[{"kind":"keyword","text":"let"},{"kind":"text","text":" "},{"kind":"identifier","text":"binaryFunctions"},{"kind":"text","text":": "},{"kind":"typeIdentifier","text":"MathParser","preciseIdentifier":"s:10MathParserAAC"},{"kind":"text","text":"."},{"kind":"typeIdentifier","text":"BinaryFunctionMap","preciseIdentifier":"s:10MathParserAAC17BinaryFunctionMapa"}],"abstract":[{"type":"text","text":"Function mapping to use during parsing and perhaps evaluation"}],"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/binaryFunctions","kind":"symbol","type":"topic","url":"\/documentation\/mathparser\/mathparser\/binaryfunctions"},"doc://MathParser/documentation/MathParser":{"role":"collection","title":"MathParser","abstract":[],"identifier":"doc:\/\/MathParser\/documentation\/MathParser","kind":"symbol","type":"topic","url":"\/documentation\/mathparser"},"doc://MathParser/documentation/MathParser/MathParser/BinaryFunctionMap":{"role":"symbol","title":"MathParser.BinaryFunctionMap","fragments":[{"kind":"keyword","text":"typealias"},{"kind":"text","text":" "},{"kind":"identifier","text":"BinaryFunctionMap"}],"abstract":[{"type":"text","text":"Mapping of names to an optional transform function of 2 arguments"}],"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/BinaryFunctionMap","kind":"symbol","type":"topic","navigatorTitle":[{"kind":"identifier","text":"BinaryFunctionMap"}],"url":"\/documentation\/mathparser\/mathparser\/binaryfunctionmap"},"doc://MathParser/documentation/MathParser/MathParser":{"role":"symbol","title":"MathParser","fragments":[{"kind":"keyword","text":"class"},{"kind":"text","text":" "},{"kind":"identifier","text":"MathParser"}],"abstract":[{"type":"text","text":"A parser for simple math expressions made up of five common operations addition, subtraction, multiplication,"},{"type":"text","text":" "},{"type":"text","text":"division, and exponentiation, as well as one- and two-argument functions like "},{"type":"codeVoice","code":"sqrt"},{"type":"text","text":" and "},{"type":"codeVoice","code":"sin"},{"type":"text","text":", and named"},{"type":"text","text":" "},{"type":"text","text":"variables \/ symbols."}],"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser","kind":"symbol","type":"topic","navigatorTitle":[{"kind":"identifier","text":"MathParser"}],"url":"\/documentation\/mathparser\/mathparser"}}}
+{
+  "abstract" : [
+    {
+      "text" : "Function mapping to use during parsing and perhaps evaluation",
+      "type" : "text"
+    }
+  ],
+  "hierarchy" : {
+    "paths" : [
+      [
+        "doc:\/\/MathParser\/documentation\/MathParser",
+        "doc:\/\/MathParser\/documentation\/MathParser\/MathParser"
+      ]
+    ]
+  },
+  "identifier" : {
+    "interfaceLanguage" : "swift",
+    "url" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/binaryFunctions"
+  },
+  "kind" : "symbol",
+  "metadata" : {
+    "externalID" : "s:10MathParserAAC15binaryFunctionsyS2d_SdtcSgSScvp",
+    "fragments" : [
+      {
+        "kind" : "keyword",
+        "text" : "let"
+      },
+      {
+        "kind" : "text",
+        "text" : " "
+      },
+      {
+        "kind" : "identifier",
+        "text" : "binaryFunctions"
+      },
+      {
+        "kind" : "text",
+        "text" : ": "
+      },
+      {
+        "kind" : "typeIdentifier",
+        "preciseIdentifier" : "s:10MathParserAAC",
+        "text" : "MathParser"
+      },
+      {
+        "kind" : "text",
+        "text" : "."
+      },
+      {
+        "kind" : "typeIdentifier",
+        "preciseIdentifier" : "s:10MathParserAAC17BinaryFunctionMapa",
+        "text" : "BinaryFunctionMap"
+      }
+    ],
+    "modules" : [
+      {
+        "name" : "MathParser"
+      }
+    ],
+    "role" : "symbol",
+    "roleHeading" : "Instance Property",
+    "symbolKind" : "property",
+    "title" : "binaryFunctions"
+  },
+  "primaryContentSections" : [
+    {
+      "declarations" : [
+        {
+          "languages" : [
+            "swift"
+          ],
+          "platforms" : [
+            "macOS"
+          ],
+          "tokens" : [
+            {
+              "kind" : "keyword",
+              "text" : "let"
+            },
+            {
+              "kind" : "text",
+              "text" : " "
+            },
+            {
+              "kind" : "identifier",
+              "text" : "binaryFunctions"
+            },
+            {
+              "kind" : "text",
+              "text" : ": "
+            },
+            {
+              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser",
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:10MathParserAAC",
+              "text" : "MathParser"
+            },
+            {
+              "kind" : "text",
+              "text" : "."
+            },
+            {
+              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/BinaryFunctionMap",
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:10MathParserAAC17BinaryFunctionMapa",
+              "text" : "BinaryFunctionMap"
+            }
+          ]
+        }
+      ],
+      "kind" : "declarations"
+    }
+  ],
+  "schemaVersion" : {
+    "major" : 0,
+    "minor" : 3,
+    "patch" : 0
+  },
+  "sections" : [
+
+  ],
+  "variants" : [
+    {
+      "paths" : [
+        "\/documentation\/mathparser\/mathparser\/binaryfunctions"
+      ],
+      "traits" : [
+        {
+          "interfaceLanguage" : "swift"
+        }
+      ]
+    }
+  ]
+, 
+"references": {
+"doc://MathParser/documentation/MathParser": {
+  "abstract" : [
+
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser",
+  "kind" : "symbol",
+  "role" : "collection",
+  "title" : "MathParser",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser"
+},
+"doc://MathParser/documentation/MathParser/MathParser": {
+  "abstract" : [
+    {
+      "text" : "A parser for simple math expressions made up of five common operations addition, subtraction, multiplication,",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "division, and exponentiation, as well as one- and two-argument functions like ",
+      "type" : "text"
+    },
+    {
+      "code" : "sqrt",
+      "type" : "codeVoice"
+    },
+    {
+      "text" : " and ",
+      "type" : "text"
+    },
+    {
+      "code" : "sin",
+      "type" : "codeVoice"
+    },
+    {
+      "text" : ", and named",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "variables \/ symbols.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "class"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "MathParser"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "MathParser"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "MathParser",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparser"
+},
+"doc://MathParser/documentation/MathParser/MathParser/BinaryFunctionMap": {
+  "abstract" : [
+    {
+      "text" : "Mapping of names to an optional transform function of 2 arguments",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "typealias"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "BinaryFunctionMap"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/BinaryFunctionMap",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "BinaryFunctionMap"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "MathParser.BinaryFunctionMap",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparser\/binaryfunctionmap"
+},
+"doc://MathParser/documentation/MathParser/MathParser/binaryFunctions": {
+  "abstract" : [
+    {
+      "text" : "Function mapping to use during parsing and perhaps evaluation",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "let"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "binaryFunctions"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC",
+      "text" : "MathParser"
+    },
+    {
+      "kind" : "text",
+      "text" : "."
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC17BinaryFunctionMapa",
+      "text" : "BinaryFunctionMap"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/binaryFunctions",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "binaryFunctions",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparser\/binaryfunctions"
+}
+}
+}

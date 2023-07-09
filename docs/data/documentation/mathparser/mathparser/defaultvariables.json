@@ -1,1 +1,361 @@
-{"primaryContentSections":[{"kind":"declarations","declarations":[{"tokens":[{"kind":"keyword","text":"static"},{"kind":"text","text":" "},{"kind":"keyword","text":"let"},{"kind":"text","text":" "},{"kind":"identifier","text":"defaultVariables"},{"kind":"text","text":": ["},{"kind":"typeIdentifier","text":"String","preciseIdentifier":"s:SS"},{"kind":"text","text":" : "},{"kind":"typeIdentifier","text":"Double","preciseIdentifier":"s:Sd"},{"kind":"text","text":"]"}],"languages":["swift"],"platforms":["macOS"]}]},{"kind":"content","content":[{"anchor":"discussion","level":2,"type":"heading","text":"Discussion"},{"type":"unorderedList","items":[{"content":[{"type":"paragraph","inlineContent":[{"type":"codeVoice","code":"pi"},{"type":"text","text":" – the transcendental number that is the ratio of a circle’s circumference to it’s diameter"}]}]},{"content":[{"type":"paragraph","inlineContent":[{"type":"codeVoice","code":"π"},{"type":"text","text":" – same as above but as a Unicode symbol"}]}]},{"content":[{"type":"paragraph","inlineContent":[{"type":"codeVoice","code":"e"},{"type":"text","text":" – the transcendental number that is the base of natural logarithms"}]}]}]}]}],"schemaVersion":{"major":0,"minor":3,"patch":0},"sections":[],"variants":[{"paths":["\/documentation\/mathparser\/mathparser\/defaultvariables"],"traits":[{"interfaceLanguage":"swift"}]}],"identifier":{"url":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/defaultVariables","interfaceLanguage":"swift"},"abstract":[{"type":"text","text":"Default symbols to use for parsing."}],"kind":"symbol","metadata":{"fragments":[{"kind":"keyword","text":"static"},{"kind":"text","text":" "},{"kind":"keyword","text":"let"},{"kind":"text","text":" "},{"kind":"identifier","text":"defaultVariables"},{"kind":"text","text":": ["},{"kind":"typeIdentifier","text":"String","preciseIdentifier":"s:SS"},{"kind":"text","text":" : "},{"kind":"typeIdentifier","text":"Double","preciseIdentifier":"s:Sd"},{"kind":"text","text":"]"}],"title":"defaultVariables","roleHeading":"Type Property","role":"symbol","symbolKind":"property","externalID":"s:10MathParserAAC16defaultVariablesSDySSSdGvpZ","modules":[{"name":"MathParser"}]},"hierarchy":{"paths":[["doc:\/\/MathParser\/documentation\/MathParser","doc:\/\/MathParser\/documentation\/MathParser\/MathParser"]]},"references":{"doc://MathParser/documentation/MathParser/MathParser":{"role":"symbol","title":"MathParser","fragments":[{"kind":"keyword","text":"class"},{"kind":"text","text":" "},{"kind":"identifier","text":"MathParser"}],"abstract":[{"type":"text","text":"A parser for simple math expressions made up of five common operations addition, subtraction, multiplication,"},{"type":"text","text":" "},{"type":"text","text":"division, and exponentiation, as well as one- and two-argument functions like "},{"type":"codeVoice","code":"sqrt"},{"type":"text","text":" and "},{"type":"codeVoice","code":"sin"},{"type":"text","text":", and named"},{"type":"text","text":" "},{"type":"text","text":"variables \/ symbols."}],"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser","kind":"symbol","type":"topic","navigatorTitle":[{"kind":"identifier","text":"MathParser"}],"url":"\/documentation\/mathparser\/mathparser"},"doc://MathParser/documentation/MathParser/MathParser/defaultVariables":{"role":"symbol","title":"defaultVariables","fragments":[{"kind":"keyword","text":"static"},{"kind":"text","text":" "},{"kind":"keyword","text":"let"},{"kind":"text","text":" "},{"kind":"identifier","text":"defaultVariables"},{"kind":"text","text":": ["},{"kind":"typeIdentifier","text":"String","preciseIdentifier":"s:SS"},{"kind":"text","text":" : "},{"kind":"typeIdentifier","text":"Double","preciseIdentifier":"s:Sd"},{"kind":"text","text":"]"}],"abstract":[{"type":"text","text":"Default symbols to use for parsing."}],"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/defaultVariables","kind":"symbol","type":"topic","url":"\/documentation\/mathparser\/mathparser\/defaultvariables"},"doc://MathParser/documentation/MathParser":{"role":"collection","title":"MathParser","abstract":[],"identifier":"doc:\/\/MathParser\/documentation\/MathParser","kind":"symbol","type":"topic","url":"\/documentation\/mathparser"}}}
+{
+  "abstract" : [
+    {
+      "text" : "Default symbols to use for parsing.",
+      "type" : "text"
+    }
+  ],
+  "hierarchy" : {
+    "paths" : [
+      [
+        "doc:\/\/MathParser\/documentation\/MathParser",
+        "doc:\/\/MathParser\/documentation\/MathParser\/MathParser"
+      ]
+    ]
+  },
+  "identifier" : {
+    "interfaceLanguage" : "swift",
+    "url" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/defaultVariables"
+  },
+  "kind" : "symbol",
+  "metadata" : {
+    "externalID" : "s:10MathParserAAC16defaultVariablesSDySSSdGvpZ",
+    "fragments" : [
+      {
+        "kind" : "keyword",
+        "text" : "static"
+      },
+      {
+        "kind" : "text",
+        "text" : " "
+      },
+      {
+        "kind" : "keyword",
+        "text" : "let"
+      },
+      {
+        "kind" : "text",
+        "text" : " "
+      },
+      {
+        "kind" : "identifier",
+        "text" : "defaultVariables"
+      },
+      {
+        "kind" : "text",
+        "text" : ": ["
+      },
+      {
+        "kind" : "typeIdentifier",
+        "preciseIdentifier" : "s:SS",
+        "text" : "String"
+      },
+      {
+        "kind" : "text",
+        "text" : " : "
+      },
+      {
+        "kind" : "typeIdentifier",
+        "preciseIdentifier" : "s:Sd",
+        "text" : "Double"
+      },
+      {
+        "kind" : "text",
+        "text" : "]"
+      }
+    ],
+    "modules" : [
+      {
+        "name" : "MathParser"
+      }
+    ],
+    "role" : "symbol",
+    "roleHeading" : "Type Property",
+    "symbolKind" : "property",
+    "title" : "defaultVariables"
+  },
+  "primaryContentSections" : [
+    {
+      "declarations" : [
+        {
+          "languages" : [
+            "swift"
+          ],
+          "platforms" : [
+            "macOS"
+          ],
+          "tokens" : [
+            {
+              "kind" : "keyword",
+              "text" : "static"
+            },
+            {
+              "kind" : "text",
+              "text" : " "
+            },
+            {
+              "kind" : "keyword",
+              "text" : "let"
+            },
+            {
+              "kind" : "text",
+              "text" : " "
+            },
+            {
+              "kind" : "identifier",
+              "text" : "defaultVariables"
+            },
+            {
+              "kind" : "text",
+              "text" : ": ["
+            },
+            {
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:SS",
+              "text" : "String"
+            },
+            {
+              "kind" : "text",
+              "text" : " : "
+            },
+            {
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:Sd",
+              "text" : "Double"
+            },
+            {
+              "kind" : "text",
+              "text" : "]"
+            }
+          ]
+        }
+      ],
+      "kind" : "declarations"
+    },
+    {
+      "content" : [
+        {
+          "anchor" : "discussion",
+          "level" : 2,
+          "text" : "Discussion",
+          "type" : "heading"
+        },
+        {
+          "items" : [
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "pi",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " – the transcendental number that is the ratio of a circle’s circumference to it’s diameter",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "π",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " – same as above but as a Unicode symbol",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "e",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " – the transcendental number that is the base of natural logarithms",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            }
+          ],
+          "type" : "unorderedList"
+        }
+      ],
+      "kind" : "content"
+    }
+  ],
+  "schemaVersion" : {
+    "major" : 0,
+    "minor" : 3,
+    "patch" : 0
+  },
+  "sections" : [
+
+  ],
+  "variants" : [
+    {
+      "paths" : [
+        "\/documentation\/mathparser\/mathparser\/defaultvariables"
+      ],
+      "traits" : [
+        {
+          "interfaceLanguage" : "swift"
+        }
+      ]
+    }
+  ]
+, 
+"references": {
+"doc://MathParser/documentation/MathParser": {
+  "abstract" : [
+
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser",
+  "kind" : "symbol",
+  "role" : "collection",
+  "title" : "MathParser",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser"
+},
+"doc://MathParser/documentation/MathParser/MathParser": {
+  "abstract" : [
+    {
+      "text" : "A parser for simple math expressions made up of five common operations addition, subtraction, multiplication,",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "division, and exponentiation, as well as one- and two-argument functions like ",
+      "type" : "text"
+    },
+    {
+      "code" : "sqrt",
+      "type" : "codeVoice"
+    },
+    {
+      "text" : " and ",
+      "type" : "text"
+    },
+    {
+      "code" : "sin",
+      "type" : "codeVoice"
+    },
+    {
+      "text" : ", and named",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "variables \/ symbols.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "class"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "MathParser"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "MathParser"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "MathParser",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparser"
+},
+"doc://MathParser/documentation/MathParser/MathParser/defaultVariables": {
+  "abstract" : [
+    {
+      "text" : "Default symbols to use for parsing.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "static"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "keyword",
+      "text" : "let"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "defaultVariables"
+    },
+    {
+      "kind" : "text",
+      "text" : ": ["
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    },
+    {
+      "kind" : "text",
+      "text" : " : "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sd",
+      "text" : "Double"
+    },
+    {
+      "kind" : "text",
+      "text" : "]"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/defaultVariables",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "defaultVariables",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparser\/defaultvariables"
+}
+}
+}

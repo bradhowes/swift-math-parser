@@ -1,1 +1,541 @@
-{"primaryContentSections":[{"kind":"declarations","declarations":[{"tokens":[{"kind":"keyword","text":"func"},{"kind":"text","text":" "},{"kind":"identifier","text":"parseResult"},{"kind":"text","text":"("},{"kind":"externalParam","text":"_"},{"kind":"text","text":" "},{"kind":"internalParam","text":"text"},{"kind":"text","text":": "},{"kind":"typeIdentifier","text":"String","preciseIdentifier":"s:SS"},{"kind":"text","text":") -> "},{"kind":"typeIdentifier","text":"Result","preciseIdentifier":"s:s6ResultO"},{"kind":"text","text":"<"},{"kind":"typeIdentifier","identifier":"doc:\/\/MathParser\/documentation\/MathParser\/Evaluator","preciseIdentifier":"s:10MathParser9EvaluatorV","text":"Evaluator"},{"kind":"text","text":", "},{"kind":"typeIdentifier","identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParserError","preciseIdentifier":"s:10MathParser0aB5ErrorV","text":"MathParserError"},{"kind":"text","text":">"}],"languages":["swift"],"platforms":["macOS"]}]},{"kind":"parameters","parameters":[{"name":"text","content":[{"type":"paragraph","inlineContent":[{"type":"text","text":"the expression to parse"}]}]}]},{"kind":"content","content":[{"anchor":"return-value","level":2,"type":"heading","text":"Return Value"},{"type":"paragraph","inlineContent":[{"type":"text","text":""},{"type":"codeVoice","code":"Result"},{"type":"text","text":" enum"}]}]},{"kind":"content","content":[{"anchor":"discussion","level":2,"type":"heading","text":"Discussion"},{"type":"unorderedList","items":[{"content":[{"type":"paragraph","inlineContent":[{"type":"codeVoice","code":".success"},{"type":"text","text":" – holds an "},{"type":"reference","isActive":true,"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/Evaluator"},{"type":"text","text":" instance for evaluations of the parsed expression"}]}]},{"content":[{"type":"paragraph","inlineContent":[{"type":"codeVoice","code":".failure"},{"type":"text","text":" – holds a "},{"type":"reference","isActive":true,"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParserError"},{"type":"text","text":" instance that describes the parse failure"}]}]}]}]}],"schemaVersion":{"major":0,"minor":3,"patch":0},"sections":[],"variants":[{"paths":["\/documentation\/mathparser\/mathparser\/parseresult(_:)"],"traits":[{"interfaceLanguage":"swift"}]}],"identifier":{"url":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/parseResult(_:)","interfaceLanguage":"swift"},"abstract":[{"type":"text","text":"Parse an expression into a token that can be evaluated at a later time. Returns a "},{"type":"codeVoice","code":"Result"},{"type":"text","text":" enum with two cases:"}],"kind":"symbol","metadata":{"fragments":[{"kind":"keyword","text":"func"},{"kind":"text","text":" "},{"kind":"identifier","text":"parseResult"},{"kind":"text","text":"("},{"kind":"typeIdentifier","text":"String","preciseIdentifier":"s:SS"},{"kind":"text","text":") -> "},{"kind":"typeIdentifier","text":"Result","preciseIdentifier":"s:s6ResultO"},{"kind":"text","text":"<"},{"kind":"typeIdentifier","text":"Evaluator","preciseIdentifier":"s:10MathParser9EvaluatorV"},{"kind":"text","text":", "},{"kind":"typeIdentifier","text":"MathParserError","preciseIdentifier":"s:10MathParser0aB5ErrorV"},{"kind":"text","text":">"}],"title":"parseResult(_:)","roleHeading":"Instance Method","role":"symbol","symbolKind":"method","externalID":"s:10MathParserAAC11parseResultys0D0OyAA9EvaluatorVAA0aB5ErrorVGSSF","modules":[{"name":"MathParser"}]},"hierarchy":{"paths":[["doc:\/\/MathParser\/documentation\/MathParser","doc:\/\/MathParser\/documentation\/MathParser\/MathParser"]]},"references":{"doc://MathParser/documentation/MathParser/Evaluator":{"role":"symbol","title":"Evaluator","fragments":[{"kind":"keyword","text":"struct"},{"kind":"text","text":" "},{"kind":"identifier","text":"Evaluator"}],"abstract":[{"type":"text","text":"Evaluator of parsed tokens."}],"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/Evaluator","kind":"symbol","type":"topic","navigatorTitle":[{"kind":"identifier","text":"Evaluator"}],"url":"\/documentation\/mathparser\/evaluator"},"doc://MathParser/documentation/MathParser/MathParser/parseResult(_:)":{"role":"symbol","title":"parseResult(_:)","fragments":[{"kind":"keyword","text":"func"},{"kind":"text","text":" "},{"kind":"identifier","text":"parseResult"},{"kind":"text","text":"("},{"kind":"typeIdentifier","text":"String","preciseIdentifier":"s:SS"},{"kind":"text","text":") -> "},{"kind":"typeIdentifier","text":"Result","preciseIdentifier":"s:s6ResultO"},{"kind":"text","text":"<"},{"kind":"typeIdentifier","text":"Evaluator","preciseIdentifier":"s:10MathParser9EvaluatorV"},{"kind":"text","text":", "},{"kind":"typeIdentifier","text":"MathParserError","preciseIdentifier":"s:10MathParser0aB5ErrorV"},{"kind":"text","text":">"}],"abstract":[{"type":"text","text":"Parse an expression into a token that can be evaluated at a later time. Returns a "},{"type":"codeVoice","code":"Result"},{"type":"text","text":" enum with two cases:"}],"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/parseResult(_:)","kind":"symbol","type":"topic","url":"\/documentation\/mathparser\/mathparser\/parseresult(_:)"},"doc://MathParser/documentation/MathParser/MathParserError":{"role":"symbol","title":"MathParserError","fragments":[{"kind":"keyword","text":"struct"},{"kind":"text","text":" "},{"kind":"identifier","text":"MathParserError"}],"abstract":[{"type":"text","text":"Error type that describes a failure in either text parsing or token evaluation."}],"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParserError","kind":"symbol","type":"topic","navigatorTitle":[{"kind":"identifier","text":"MathParserError"}],"url":"\/documentation\/mathparser\/mathparsererror"},"doc://MathParser/documentation/MathParser/MathParser":{"role":"symbol","title":"MathParser","fragments":[{"kind":"keyword","text":"class"},{"kind":"text","text":" "},{"kind":"identifier","text":"MathParser"}],"abstract":[{"type":"text","text":"A parser for simple math expressions made up of five common operations addition, subtraction, multiplication,"},{"type":"text","text":" "},{"type":"text","text":"division, and exponentiation, as well as one- and two-argument functions like "},{"type":"codeVoice","code":"sqrt"},{"type":"text","text":" and "},{"type":"codeVoice","code":"sin"},{"type":"text","text":", and named"},{"type":"text","text":" "},{"type":"text","text":"variables \/ symbols."}],"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser","kind":"symbol","type":"topic","navigatorTitle":[{"kind":"identifier","text":"MathParser"}],"url":"\/documentation\/mathparser\/mathparser"},"doc://MathParser/documentation/MathParser":{"role":"collection","title":"MathParser","abstract":[],"identifier":"doc:\/\/MathParser\/documentation\/MathParser","kind":"symbol","type":"topic","url":"\/documentation\/mathparser"}}}
+{
+  "abstract" : [
+    {
+      "text" : "Parse an expression into a token that can be evaluated at a later time. Returns a ",
+      "type" : "text"
+    },
+    {
+      "code" : "Result",
+      "type" : "codeVoice"
+    },
+    {
+      "text" : " enum with two cases:",
+      "type" : "text"
+    }
+  ],
+  "hierarchy" : {
+    "paths" : [
+      [
+        "doc:\/\/MathParser\/documentation\/MathParser",
+        "doc:\/\/MathParser\/documentation\/MathParser\/MathParser"
+      ]
+    ]
+  },
+  "identifier" : {
+    "interfaceLanguage" : "swift",
+    "url" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/parseResult(_:)"
+  },
+  "kind" : "symbol",
+  "metadata" : {
+    "externalID" : "s:10MathParserAAC11parseResultys0D0OyAA9EvaluatorVAA0aB5ErrorVGSSF",
+    "fragments" : [
+      {
+        "kind" : "keyword",
+        "text" : "func"
+      },
+      {
+        "kind" : "text",
+        "text" : " "
+      },
+      {
+        "kind" : "identifier",
+        "text" : "parseResult"
+      },
+      {
+        "kind" : "text",
+        "text" : "("
+      },
+      {
+        "kind" : "typeIdentifier",
+        "preciseIdentifier" : "s:SS",
+        "text" : "String"
+      },
+      {
+        "kind" : "text",
+        "text" : ") -> "
+      },
+      {
+        "kind" : "typeIdentifier",
+        "preciseIdentifier" : "s:s6ResultO",
+        "text" : "Result"
+      },
+      {
+        "kind" : "text",
+        "text" : "<"
+      },
+      {
+        "kind" : "typeIdentifier",
+        "preciseIdentifier" : "s:10MathParser9EvaluatorV",
+        "text" : "Evaluator"
+      },
+      {
+        "kind" : "text",
+        "text" : ", "
+      },
+      {
+        "kind" : "typeIdentifier",
+        "preciseIdentifier" : "s:10MathParser0aB5ErrorV",
+        "text" : "MathParserError"
+      },
+      {
+        "kind" : "text",
+        "text" : ">"
+      }
+    ],
+    "modules" : [
+      {
+        "name" : "MathParser"
+      }
+    ],
+    "role" : "symbol",
+    "roleHeading" : "Instance Method",
+    "symbolKind" : "method",
+    "title" : "parseResult(_:)"
+  },
+  "primaryContentSections" : [
+    {
+      "declarations" : [
+        {
+          "languages" : [
+            "swift"
+          ],
+          "platforms" : [
+            "macOS"
+          ],
+          "tokens" : [
+            {
+              "kind" : "keyword",
+              "text" : "func"
+            },
+            {
+              "kind" : "text",
+              "text" : " "
+            },
+            {
+              "kind" : "identifier",
+              "text" : "parseResult"
+            },
+            {
+              "kind" : "text",
+              "text" : "("
+            },
+            {
+              "kind" : "externalParam",
+              "text" : "_"
+            },
+            {
+              "kind" : "text",
+              "text" : " "
+            },
+            {
+              "kind" : "internalParam",
+              "text" : "text"
+            },
+            {
+              "kind" : "text",
+              "text" : ": "
+            },
+            {
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:SS",
+              "text" : "String"
+            },
+            {
+              "kind" : "text",
+              "text" : ") -> "
+            },
+            {
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:s6ResultO",
+              "text" : "Result"
+            },
+            {
+              "kind" : "text",
+              "text" : "<"
+            },
+            {
+              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/Evaluator",
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:10MathParser9EvaluatorV",
+              "text" : "Evaluator"
+            },
+            {
+              "kind" : "text",
+              "text" : ", "
+            },
+            {
+              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError",
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:10MathParser0aB5ErrorV",
+              "text" : "MathParserError"
+            },
+            {
+              "kind" : "text",
+              "text" : ">"
+            }
+          ]
+        }
+      ],
+      "kind" : "declarations"
+    },
+    {
+      "kind" : "parameters",
+      "parameters" : [
+        {
+          "content" : [
+            {
+              "inlineContent" : [
+                {
+                  "text" : "the expression to parse",
+                  "type" : "text"
+                }
+              ],
+              "type" : "paragraph"
+            }
+          ],
+          "name" : "text"
+        }
+      ]
+    },
+    {
+      "content" : [
+        {
+          "anchor" : "return-value",
+          "level" : 2,
+          "text" : "Return Value",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "",
+              "type" : "text"
+            },
+            {
+              "code" : "Result",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " enum",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        }
+      ],
+      "kind" : "content"
+    },
+    {
+      "content" : [
+        {
+          "anchor" : "discussion",
+          "level" : 2,
+          "text" : "Discussion",
+          "type" : "heading"
+        },
+        {
+          "items" : [
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : ".success",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " – holds an ",
+                      "type" : "text"
+                    },
+                    {
+                      "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/Evaluator",
+                      "isActive" : true,
+                      "type" : "reference"
+                    },
+                    {
+                      "text" : " instance for evaluations of the parsed expression",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : ".failure",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " – holds a ",
+                      "type" : "text"
+                    },
+                    {
+                      "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError",
+                      "isActive" : true,
+                      "type" : "reference"
+                    },
+                    {
+                      "text" : " instance that describes the parse failure",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            }
+          ],
+          "type" : "unorderedList"
+        }
+      ],
+      "kind" : "content"
+    }
+  ],
+  "schemaVersion" : {
+    "major" : 0,
+    "minor" : 3,
+    "patch" : 0
+  },
+  "sections" : [
+
+  ],
+  "variants" : [
+    {
+      "paths" : [
+        "\/documentation\/mathparser\/mathparser\/parseresult(_:)"
+      ],
+      "traits" : [
+        {
+          "interfaceLanguage" : "swift"
+        }
+      ]
+    }
+  ]
+, 
+"references": {
+"doc://MathParser/documentation/MathParser": {
+  "abstract" : [
+
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser",
+  "kind" : "symbol",
+  "role" : "collection",
+  "title" : "MathParser",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser"
+},
+"doc://MathParser/documentation/MathParser/Evaluator": {
+  "abstract" : [
+    {
+      "text" : "Evaluator of parsed tokens.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "Evaluator"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/Evaluator",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "Evaluator"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "Evaluator",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/evaluator"
+},
+"doc://MathParser/documentation/MathParser/MathParser": {
+  "abstract" : [
+    {
+      "text" : "A parser for simple math expressions made up of five common operations addition, subtraction, multiplication,",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "division, and exponentiation, as well as one- and two-argument functions like ",
+      "type" : "text"
+    },
+    {
+      "code" : "sqrt",
+      "type" : "codeVoice"
+    },
+    {
+      "text" : " and ",
+      "type" : "text"
+    },
+    {
+      "code" : "sin",
+      "type" : "codeVoice"
+    },
+    {
+      "text" : ", and named",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "variables \/ symbols.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "class"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "MathParser"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "MathParser"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "MathParser",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparser"
+},
+"doc://MathParser/documentation/MathParser/MathParser/parseResult(_:)": {
+  "abstract" : [
+    {
+      "text" : "Parse an expression into a token that can be evaluated at a later time. Returns a ",
+      "type" : "text"
+    },
+    {
+      "code" : "Result",
+      "type" : "codeVoice"
+    },
+    {
+      "text" : " enum with two cases:",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "parseResult"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    },
+    {
+      "kind" : "text",
+      "text" : ") -> "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:s6ResultO",
+      "text" : "Result"
+    },
+    {
+      "kind" : "text",
+      "text" : "<"
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParser9EvaluatorV",
+      "text" : "Evaluator"
+    },
+    {
+      "kind" : "text",
+      "text" : ", "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParser0aB5ErrorV",
+      "text" : "MathParserError"
+    },
+    {
+      "kind" : "text",
+      "text" : ">"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/parseResult(_:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "parseResult(_:)",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparser\/parseresult(_:)"
+},
+"doc://MathParser/documentation/MathParser/MathParserError": {
+  "abstract" : [
+    {
+      "text" : "Error type that describes a failure in either text parsing or token evaluation.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "MathParserError"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "MathParserError"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "MathParserError",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparsererror"
+}
+}
+}

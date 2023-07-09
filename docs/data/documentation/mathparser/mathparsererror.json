@@ -1,1 +1,280 @@
-{"primaryContentSections":[{"kind":"declarations","declarations":[{"tokens":[{"kind":"keyword","text":"struct"},{"kind":"text","text":" "},{"kind":"identifier","text":"MathParserError"}],"languages":["swift"],"platforms":["macOS"]}]}],"schemaVersion":{"major":0,"minor":3,"patch":0},"sections":[],"variants":[{"paths":["\/documentation\/mathparser\/mathparsererror"],"traits":[{"interfaceLanguage":"swift"}]}],"relationshipsSections":[{"identifiers":["doc:\/\/MathParser\/s23CustomStringConvertibleP","doc:\/\/MathParser\/s5ErrorP","doc:\/\/MathParser\/s8SendableP"],"kind":"relationships","title":"Conforms To","type":"conformsTo"}],"identifier":{"url":"doc:\/\/MathParser\/documentation\/MathParser\/MathParserError","interfaceLanguage":"swift"},"abstract":[{"type":"text","text":"Error type that describes a failure in either text parsing or token evaluation."}],"kind":"symbol","metadata":{"fragments":[{"kind":"keyword","text":"struct"},{"kind":"text","text":" "},{"kind":"identifier","text":"MathParserError"}],"title":"MathParserError","roleHeading":"Structure","role":"symbol","symbolKind":"struct","externalID":"s:10MathParser0aB5ErrorV","modules":[{"name":"MathParser"}],"navigatorTitle":[{"kind":"identifier","text":"MathParserError"}]},"hierarchy":{"paths":[["doc:\/\/MathParser\/documentation\/MathParser"]]},"topicSections":[{"title":"Initializers","identifiers":["doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/init(description:)"]},{"title":"Instance Properties","identifiers":["doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/description"]},{"title":"Default Implementations","identifiers":["doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/Error-Implementations"],"generated":true}],"references":{"doc://MathParser/documentation/MathParser/MathParserError/Error-Implementations":{"role":"collectionGroup","title":"Error Implementations","abstract":[],"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/Error-Implementations","kind":"article","type":"topic","url":"\/documentation\/mathparser\/mathparsererror\/error-implementations"},"doc://MathParser/documentation/MathParser/MathParserError":{"role":"symbol","title":"MathParserError","fragments":[{"kind":"keyword","text":"struct"},{"kind":"text","text":" "},{"kind":"identifier","text":"MathParserError"}],"abstract":[{"type":"text","text":"Error type that describes a failure in either text parsing or token evaluation."}],"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParserError","kind":"symbol","type":"topic","navigatorTitle":[{"kind":"identifier","text":"MathParserError"}],"url":"\/documentation\/mathparser\/mathparsererror"},"doc://MathParser/s5ErrorP":{"type":"unresolvable","title":"Swift.Error","identifier":"doc:\/\/MathParser\/s5ErrorP"},"doc://MathParser/s8SendableP":{"type":"unresolvable","title":"Swift.Sendable","identifier":"doc:\/\/MathParser\/s8SendableP"},"doc://MathParser/documentation/MathParser":{"role":"collection","title":"MathParser","abstract":[],"identifier":"doc:\/\/MathParser\/documentation\/MathParser","kind":"symbol","type":"topic","url":"\/documentation\/mathparser"},"doc://MathParser/s23CustomStringConvertibleP":{"type":"unresolvable","title":"Swift.CustomStringConvertible","identifier":"doc:\/\/MathParser\/s23CustomStringConvertibleP"},"doc://MathParser/documentation/MathParser/MathParserError/init(description:)":{"role":"symbol","title":"init(description:)","fragments":[{"kind":"identifier","text":"init"},{"kind":"text","text":"("},{"kind":"externalParam","text":"description"},{"kind":"text","text":": "},{"kind":"typeIdentifier","text":"String","preciseIdentifier":"s:SS"},{"kind":"text","text":")"}],"abstract":[],"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/init(description:)","kind":"symbol","type":"topic","url":"\/documentation\/mathparser\/mathparsererror\/init(description:)"},"doc://MathParser/documentation/MathParser/MathParserError/description":{"role":"symbol","title":"description","fragments":[{"kind":"keyword","text":"let"},{"kind":"text","text":" "},{"kind":"identifier","text":"description"},{"kind":"text","text":": "},{"kind":"typeIdentifier","text":"String","preciseIdentifier":"s:SS"}],"abstract":[],"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/description","kind":"symbol","type":"topic","url":"\/documentation\/mathparser\/mathparsererror\/description"}}}
+{
+  "abstract" : [
+    {
+      "text" : "Error type that describes a failure in either text parsing or token evaluation.",
+      "type" : "text"
+    }
+  ],
+  "hierarchy" : {
+    "paths" : [
+      [
+        "doc:\/\/MathParser\/documentation\/MathParser"
+      ]
+    ]
+  },
+  "identifier" : {
+    "interfaceLanguage" : "swift",
+    "url" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError"
+  },
+  "kind" : "symbol",
+  "metadata" : {
+    "externalID" : "s:10MathParser0aB5ErrorV",
+    "fragments" : [
+      {
+        "kind" : "keyword",
+        "text" : "struct"
+      },
+      {
+        "kind" : "text",
+        "text" : " "
+      },
+      {
+        "kind" : "identifier",
+        "text" : "MathParserError"
+      }
+    ],
+    "modules" : [
+      {
+        "name" : "MathParser"
+      }
+    ],
+    "navigatorTitle" : [
+      {
+        "kind" : "identifier",
+        "text" : "MathParserError"
+      }
+    ],
+    "role" : "symbol",
+    "roleHeading" : "Structure",
+    "symbolKind" : "struct",
+    "title" : "MathParserError"
+  },
+  "primaryContentSections" : [
+    {
+      "declarations" : [
+        {
+          "languages" : [
+            "swift"
+          ],
+          "platforms" : [
+            "macOS"
+          ],
+          "tokens" : [
+            {
+              "kind" : "keyword",
+              "text" : "struct"
+            },
+            {
+              "kind" : "text",
+              "text" : " "
+            },
+            {
+              "kind" : "identifier",
+              "text" : "MathParserError"
+            }
+          ]
+        }
+      ],
+      "kind" : "declarations"
+    }
+  ],
+  "relationshipsSections" : [
+    {
+      "identifiers" : [
+        "doc:\/\/MathParser\/s23CustomStringConvertibleP",
+        "doc:\/\/MathParser\/s5ErrorP",
+        "doc:\/\/MathParser\/s8SendableP"
+      ],
+      "kind" : "relationships",
+      "title" : "Conforms To",
+      "type" : "conformsTo"
+    }
+  ],
+  "schemaVersion" : {
+    "major" : 0,
+    "minor" : 3,
+    "patch" : 0
+  },
+  "sections" : [
+
+  ],
+  "topicSections" : [
+    {
+      "identifiers" : [
+        "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/init(description:)"
+      ],
+      "title" : "Initializers"
+    },
+    {
+      "identifiers" : [
+        "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/description"
+      ],
+      "title" : "Instance Properties"
+    },
+    {
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/Error-Implementations"
+      ],
+      "title" : "Default Implementations"
+    }
+  ],
+  "variants" : [
+    {
+      "paths" : [
+        "\/documentation\/mathparser\/mathparsererror"
+      ],
+      "traits" : [
+        {
+          "interfaceLanguage" : "swift"
+        }
+      ]
+    }
+  ]
+, 
+"references": {
+"doc://MathParser/documentation/MathParser": {
+  "abstract" : [
+
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser",
+  "kind" : "symbol",
+  "role" : "collection",
+  "title" : "MathParser",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser"
+},
+"doc://MathParser/documentation/MathParser/MathParserError": {
+  "abstract" : [
+    {
+      "text" : "Error type that describes a failure in either text parsing or token evaluation.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "MathParserError"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "MathParserError"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "MathParserError",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparsererror"
+},
+"doc://MathParser/documentation/MathParser/MathParserError/Error-Implementations": {
+  "abstract" : [
+
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/Error-Implementations",
+  "kind" : "article",
+  "role" : "collectionGroup",
+  "title" : "Error Implementations",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparsererror\/error-implementations"
+},
+"doc://MathParser/documentation/MathParser/MathParserError/description": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "let"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "description"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/description",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "description",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparsererror\/description"
+},
+"doc://MathParser/documentation/MathParser/MathParserError/init(description:)": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "identifier",
+      "text" : "init"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "description"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    },
+    {
+      "kind" : "text",
+      "text" : ")"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/init(description:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "init(description:)",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparsererror\/init(description:)"
+},
+"doc://MathParser/s23CustomStringConvertibleP": {
+  "identifier" : "doc:\/\/MathParser\/s23CustomStringConvertibleP",
+  "title" : "Swift.CustomStringConvertible",
+  "type" : "unresolvable"
+},
+"doc://MathParser/s5ErrorP": {
+  "identifier" : "doc:\/\/MathParser\/s5ErrorP",
+  "title" : "Swift.Error",
+  "type" : "unresolvable"
+},
+"doc://MathParser/s8SendableP": {
+  "identifier" : "doc:\/\/MathParser\/s8SendableP",
+  "title" : "Swift.Sendable",
+  "type" : "unresolvable"
+}
+}
+}

@@ -1,1 +1,212 @@
-{"primaryContentSections":[{"kind":"declarations","declarations":[{"tokens":[{"kind":"keyword","text":"var"},{"kind":"text","text":" "},{"kind":"identifier","text":"value"},{"kind":"text","text":": "},{"kind":"typeIdentifier","text":"Double","preciseIdentifier":"s:Sd"},{"kind":"text","text":" { "},{"kind":"keyword","text":"get"},{"kind":"text","text":" }"}],"languages":["swift"],"platforms":["macOS"]}]}],"schemaVersion":{"major":0,"minor":3,"patch":0},"sections":[],"variants":[{"paths":["\/documentation\/mathparser\/evaluator\/value"],"traits":[{"interfaceLanguage":"swift"}]}],"identifier":{"url":"doc:\/\/MathParser\/documentation\/MathParser\/Evaluator\/value","interfaceLanguage":"swift"},"abstract":[{"type":"text","text":"Resolve a parsed expression to a value. If the expression has unresolved symbols this will return NaN."}],"kind":"symbol","metadata":{"role":"symbol","title":"value","roleHeading":"Instance Property","fragments":[{"kind":"keyword","text":"var"},{"kind":"text","text":" "},{"kind":"identifier","text":"value"},{"kind":"text","text":": "},{"kind":"typeIdentifier","text":"Double","preciseIdentifier":"s:Sd"}],"symbolKind":"property","externalID":"s:10MathParser9EvaluatorV5valueSdvp","extendedModule":"MathParser","modules":[{"name":"MathParser"}]},"hierarchy":{"paths":[["doc:\/\/MathParser\/documentation\/MathParser","doc:\/\/MathParser\/documentation\/MathParser\/Evaluator"]]},"references":{"doc://MathParser/documentation/MathParser":{"role":"collection","title":"MathParser","abstract":[],"identifier":"doc:\/\/MathParser\/documentation\/MathParser","kind":"symbol","type":"topic","url":"\/documentation\/mathparser"},"doc://MathParser/documentation/MathParser/Evaluator":{"role":"symbol","title":"Evaluator","fragments":[{"kind":"keyword","text":"struct"},{"kind":"text","text":" "},{"kind":"identifier","text":"Evaluator"}],"abstract":[{"type":"text","text":"Evaluator of parsed tokens."}],"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/Evaluator","kind":"symbol","type":"topic","navigatorTitle":[{"kind":"identifier","text":"Evaluator"}],"url":"\/documentation\/mathparser\/evaluator"},"doc://MathParser/documentation/MathParser/Evaluator/value":{"role":"symbol","title":"value","fragments":[{"kind":"keyword","text":"var"},{"kind":"text","text":" "},{"kind":"identifier","text":"value"},{"kind":"text","text":": "},{"kind":"typeIdentifier","text":"Double","preciseIdentifier":"s:Sd"}],"abstract":[{"type":"text","text":"Resolve a parsed expression to a value. If the expression has unresolved symbols this will return NaN."}],"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/Evaluator\/value","kind":"symbol","type":"topic","url":"\/documentation\/mathparser\/evaluator\/value"}}}
+{
+  "abstract" : [
+    {
+      "text" : "Resolve a parsed expression to a value. If the expression has unresolved symbols this will return NaN.",
+      "type" : "text"
+    }
+  ],
+  "hierarchy" : {
+    "paths" : [
+      [
+        "doc:\/\/MathParser\/documentation\/MathParser",
+        "doc:\/\/MathParser\/documentation\/MathParser\/Evaluator"
+      ]
+    ]
+  },
+  "identifier" : {
+    "interfaceLanguage" : "swift",
+    "url" : "doc:\/\/MathParser\/documentation\/MathParser\/Evaluator\/value"
+  },
+  "kind" : "symbol",
+  "metadata" : {
+    "extendedModule" : "MathParser",
+    "externalID" : "s:10MathParser9EvaluatorV5valueSdvp",
+    "fragments" : [
+      {
+        "kind" : "keyword",
+        "text" : "var"
+      },
+      {
+        "kind" : "text",
+        "text" : " "
+      },
+      {
+        "kind" : "identifier",
+        "text" : "value"
+      },
+      {
+        "kind" : "text",
+        "text" : ": "
+      },
+      {
+        "kind" : "typeIdentifier",
+        "preciseIdentifier" : "s:Sd",
+        "text" : "Double"
+      }
+    ],
+    "modules" : [
+      {
+        "name" : "MathParser"
+      }
+    ],
+    "role" : "symbol",
+    "roleHeading" : "Instance Property",
+    "symbolKind" : "property",
+    "title" : "value"
+  },
+  "primaryContentSections" : [
+    {
+      "declarations" : [
+        {
+          "languages" : [
+            "swift"
+          ],
+          "platforms" : [
+            "macOS"
+          ],
+          "tokens" : [
+            {
+              "kind" : "keyword",
+              "text" : "var"
+            },
+            {
+              "kind" : "text",
+              "text" : " "
+            },
+            {
+              "kind" : "identifier",
+              "text" : "value"
+            },
+            {
+              "kind" : "text",
+              "text" : ": "
+            },
+            {
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:Sd",
+              "text" : "Double"
+            },
+            {
+              "kind" : "text",
+              "text" : " { "
+            },
+            {
+              "kind" : "keyword",
+              "text" : "get"
+            },
+            {
+              "kind" : "text",
+              "text" : " }"
+            }
+          ]
+        }
+      ],
+      "kind" : "declarations"
+    }
+  ],
+  "schemaVersion" : {
+    "major" : 0,
+    "minor" : 3,
+    "patch" : 0
+  },
+  "sections" : [
+
+  ],
+  "variants" : [
+    {
+      "paths" : [
+        "\/documentation\/mathparser\/evaluator\/value"
+      ],
+      "traits" : [
+        {
+          "interfaceLanguage" : "swift"
+        }
+      ]
+    }
+  ]
+, 
+"references": {
+"doc://MathParser/documentation/MathParser": {
+  "abstract" : [
+
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser",
+  "kind" : "symbol",
+  "role" : "collection",
+  "title" : "MathParser",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser"
+},
+"doc://MathParser/documentation/MathParser/Evaluator": {
+  "abstract" : [
+    {
+      "text" : "Evaluator of parsed tokens.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "Evaluator"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/Evaluator",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "Evaluator"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "Evaluator",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/evaluator"
+},
+"doc://MathParser/documentation/MathParser/Evaluator/value": {
+  "abstract" : [
+    {
+      "text" : "Resolve a parsed expression to a value. If the expression has unresolved symbols this will return NaN.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "var"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "value"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sd",
+      "text" : "Double"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/Evaluator\/value",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "value",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/evaluator\/value"
+}
+}
+}

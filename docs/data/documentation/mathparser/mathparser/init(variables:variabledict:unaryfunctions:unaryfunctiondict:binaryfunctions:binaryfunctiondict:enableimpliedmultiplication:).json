@@ -1,1 +1,1423 @@
-{"primaryContentSections":[{"kind":"declarations","declarations":[{"tokens":[{"kind":"keyword","text":"init"},{"kind":"text","text":"("},{"kind":"externalParam","text":"variables"},{"kind":"text","text":": "},{"kind":"typeIdentifier","identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser","preciseIdentifier":"s:10MathParserAAC","text":"MathParser"},{"kind":"text","text":"."},{"kind":"typeIdentifier","identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/VariableMap","preciseIdentifier":"s:10MathParserAAC11VariableMapa","text":"VariableMap"},{"kind":"text","text":"? = nil, "},{"kind":"externalParam","text":"variableDict"},{"kind":"text","text":": "},{"kind":"typeIdentifier","identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser","preciseIdentifier":"s:10MathParserAAC","text":"MathParser"},{"kind":"text","text":"."},{"kind":"typeIdentifier","identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/VariableDict","preciseIdentifier":"s:10MathParserAAC12VariableDicta","text":"VariableDict"},{"kind":"text","text":"? = nil, "},{"kind":"externalParam","text":"unaryFunctions"},{"kind":"text","text":": "},{"kind":"typeIdentifier","identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser","preciseIdentifier":"s:10MathParserAAC","text":"MathParser"},{"kind":"text","text":"."},{"kind":"typeIdentifier","identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/UnaryFunctionMap","preciseIdentifier":"s:10MathParserAAC16UnaryFunctionMapa","text":"UnaryFunctionMap"},{"kind":"text","text":"? = nil, "},{"kind":"externalParam","text":"unaryFunctionDict"},{"kind":"text","text":": "},{"kind":"typeIdentifier","identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser","preciseIdentifier":"s:10MathParserAAC","text":"MathParser"},{"kind":"text","text":"."},{"kind":"typeIdentifier","identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/UnaryFunctionDict","preciseIdentifier":"s:10MathParserAAC17UnaryFunctionDicta","text":"UnaryFunctionDict"},{"kind":"text","text":"? = nil, "},{"kind":"externalParam","text":"binaryFunctions"},{"kind":"text","text":": "},{"kind":"typeIdentifier","identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser","preciseIdentifier":"s:10MathParserAAC","text":"MathParser"},{"kind":"text","text":"."},{"kind":"typeIdentifier","identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/BinaryFunctionMap","preciseIdentifier":"s:10MathParserAAC17BinaryFunctionMapa","text":"BinaryFunctionMap"},{"kind":"text","text":"? = nil, "},{"kind":"externalParam","text":"binaryFunctionDict"},{"kind":"text","text":": "},{"kind":"typeIdentifier","identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser","preciseIdentifier":"s:10MathParserAAC","text":"MathParser"},{"kind":"text","text":"."},{"kind":"typeIdentifier","identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/BinaryFunctionDict","preciseIdentifier":"s:10MathParserAAC18BinaryFunctionDicta","text":"BinaryFunctionDict"},{"kind":"text","text":"? = nil, "},{"kind":"externalParam","text":"enableImpliedMultiplication"},{"kind":"text","text":": "},{"kind":"typeIdentifier","text":"Bool","preciseIdentifier":"s:Sb"},{"kind":"text","text":" = false)"}],"languages":["swift"],"platforms":["macOS"]}]},{"kind":"parameters","parameters":[{"name":"variables","content":[{"type":"paragraph","inlineContent":[{"type":"text","text":"optional mapping of names to variables. If not given, "},{"type":"reference","isActive":true,"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/defaultVariables"},{"type":"text","text":" will be used"}]}]},{"name":"variableDict","content":[{"type":"paragraph","inlineContent":[{"type":"text","text":"optional dictionary that maps a name to a constant. Note that this will be ignored if"},{"type":"text","text":" "},{"type":"reference","isActive":true,"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/variables"},{"type":"text","text":" is also given."}]}]},{"name":"unaryFunctions","content":[{"type":"paragraph","inlineContent":[{"type":"text","text":"optional mapping of names to 1-ary functions. If not given, "},{"type":"reference","isActive":true,"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/defaultUnaryFunctions"},{"type":"text","text":" will"},{"type":"text","text":" "},{"type":"text","text":"be used"}]}]},{"name":"variableDict","content":[{"type":"paragraph","inlineContent":[{"type":"text","text":"optional dictionary that maps a name to a closure that maps a double to another."},{"type":"text","text":" "},{"type":"text","text":"Note that this will be ignored if "},{"type":"reference","isActive":true,"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/unaryFunctions"},{"type":"text","text":" is also given."}]}]},{"name":"binaryFunctions","content":[{"type":"paragraph","inlineContent":[{"type":"text","text":"optional mapping of names to 2-ary functions. If not given, "},{"type":"reference","isActive":true,"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/defaultBinaryFunctions"},{"type":"text","text":" "},{"type":"text","text":"will be used"}]}]},{"name":"binaryFunctionDict","content":[{"type":"paragraph","inlineContent":[{"type":"text","text":"optional dictionary that maps a name to a closure that maps two doubles into one."},{"type":"text","text":" "},{"type":"text","text":"Note that this will be ignored if "},{"type":"reference","isActive":true,"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/binaryFunctions"},{"type":"text","text":" is also given."}]}]},{"name":"enableImpliedMultiplication","content":[{"type":"paragraph","inlineContent":[{"type":"text","text":"if true treat expressions like "},{"type":"codeVoice","code":"2π"},{"type":"text","text":" as valid and same as "},{"type":"codeVoice","code":"2 * π"}]}]}]}],"schemaVersion":{"major":0,"minor":3,"patch":0},"sections":[],"variants":[{"paths":["\/documentation\/mathparser\/mathparser\/init(variables:variabledict:unaryfunctions:unaryfunctiondict:binaryfunctions:binaryfunctiondict:enableimpliedmultiplication:)"],"traits":[{"interfaceLanguage":"swift"}]}],"identifier":{"url":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/init(variables:variableDict:unaryFunctions:unaryFunctionDict:binaryFunctions:binaryFunctionDict:enableImpliedMultiplication:)","interfaceLanguage":"swift"},"abstract":[{"type":"text","text":"Construct new parser."}],"kind":"symbol","metadata":{"fragments":[{"kind":"identifier","text":"init"},{"kind":"text","text":"("},{"kind":"externalParam","text":"variables"},{"kind":"text","text":": "},{"kind":"typeIdentifier","text":"MathParser","preciseIdentifier":"s:10MathParserAAC"},{"kind":"text","text":"."},{"kind":"typeIdentifier","text":"VariableMap","preciseIdentifier":"s:10MathParserAAC11VariableMapa"},{"kind":"text","text":"?, "},{"kind":"externalParam","text":"variableDict"},{"kind":"text","text":": "},{"kind":"typeIdentifier","text":"MathParser","preciseIdentifier":"s:10MathParserAAC"},{"kind":"text","text":"."},{"kind":"typeIdentifier","text":"VariableDict","preciseIdentifier":"s:10MathParserAAC12VariableDicta"},{"kind":"text","text":"?, "},{"kind":"externalParam","text":"unaryFunctions"},{"kind":"text","text":": "},{"kind":"typeIdentifier","text":"MathParser","preciseIdentifier":"s:10MathParserAAC"},{"kind":"text","text":"."},{"kind":"typeIdentifier","text":"UnaryFunctionMap","preciseIdentifier":"s:10MathParserAAC16UnaryFunctionMapa"},{"kind":"text","text":"?, "},{"kind":"externalParam","text":"unaryFunctionDict"},{"kind":"text","text":": "},{"kind":"typeIdentifier","text":"MathParser","preciseIdentifier":"s:10MathParserAAC"},{"kind":"text","text":"."},{"kind":"typeIdentifier","text":"UnaryFunctionDict","preciseIdentifier":"s:10MathParserAAC17UnaryFunctionDicta"},{"kind":"text","text":"?, "},{"kind":"externalParam","text":"binaryFunctions"},{"kind":"text","text":": "},{"kind":"typeIdentifier","text":"MathParser","preciseIdentifier":"s:10MathParserAAC"},{"kind":"text","text":"."},{"kind":"typeIdentifier","text":"BinaryFunctionMap","preciseIdentifier":"s:10MathParserAAC17BinaryFunctionMapa"},{"kind":"text","text":"?, "},{"kind":"externalParam","text":"binaryFunctionDict"},{"kind":"text","text":": "},{"kind":"typeIdentifier","text":"MathParser","preciseIdentifier":"s:10MathParserAAC"},{"kind":"text","text":"."},{"kind":"typeIdentifier","text":"BinaryFunctionDict","preciseIdentifier":"s:10MathParserAAC18BinaryFunctionDicta"},{"kind":"text","text":"?, "},{"kind":"externalParam","text":"enableImpliedMultiplication"},{"kind":"text","text":": "},{"kind":"typeIdentifier","text":"Bool","preciseIdentifier":"s:Sb"},{"kind":"text","text":")"}],"title":"init(variables:variableDict:unaryFunctions:unaryFunctionDict:binaryFunctions:binaryFunctionDict:enableImpliedMultiplication:)","roleHeading":"Initializer","role":"symbol","symbolKind":"init","externalID":"s:10MathParserAAC9variables12variableDict14unaryFunctions0f8FunctionE006binaryG00ihE027enableImpliedMultiplicationABSdSgSScSg_SDySSSdGSgS2dcSgSScSgSDySSS2dcGSgS2d_SdtcSgSScSgSDySSS2d_SdtcGSgSbtcfc","modules":[{"name":"MathParser"}]},"hierarchy":{"paths":[["doc:\/\/MathParser\/documentation\/MathParser","doc:\/\/MathParser\/documentation\/MathParser\/MathParser"]]},"references":{"doc://MathParser/documentation/MathParser/MathParser/unaryFunctions":{"role":"symbol","title":"unaryFunctions","fragments":[{"kind":"keyword","text":"let"},{"kind":"text","text":" "},{"kind":"identifier","text":"unaryFunctions"},{"kind":"text","text":": "},{"kind":"typeIdentifier","text":"MathParser","preciseIdentifier":"s:10MathParserAAC"},{"kind":"text","text":"."},{"kind":"typeIdentifier","text":"UnaryFunctionMap","preciseIdentifier":"s:10MathParserAAC16UnaryFunctionMapa"}],"abstract":[{"type":"text","text":"Function mapping to use during parsing and perhaps evaluation"}],"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/unaryFunctions","kind":"symbol","type":"topic","url":"\/documentation\/mathparser\/mathparser\/unaryfunctions"},"doc://MathParser/documentation/MathParser/MathParser/BinaryFunctionDict":{"role":"symbol","title":"MathParser.BinaryFunctionDict","fragments":[{"kind":"keyword","text":"typealias"},{"kind":"text","text":" "},{"kind":"identifier","text":"BinaryFunctionDict"}],"abstract":[],"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/BinaryFunctionDict","kind":"symbol","type":"topic","navigatorTitle":[{"kind":"identifier","text":"BinaryFunctionDict"}],"url":"\/documentation\/mathparser\/mathparser\/binaryfunctiondict"},"doc://MathParser/documentation/MathParser/MathParser/init(variables:variableDict:unaryFunctions:unaryFunctionDict:binaryFunctions:binaryFunctionDict:enableImpliedMultiplication:)":{"role":"symbol","title":"init(variables:variableDict:unaryFunctions:unaryFunctionDict:binaryFunctions:binaryFunctionDict:enableImpliedMultiplication:)","fragments":[{"kind":"identifier","text":"init"},{"kind":"text","text":"("},{"kind":"externalParam","text":"variables"},{"kind":"text","text":": "},{"kind":"typeIdentifier","text":"MathParser","preciseIdentifier":"s:10MathParserAAC"},{"kind":"text","text":"."},{"kind":"typeIdentifier","text":"VariableMap","preciseIdentifier":"s:10MathParserAAC11VariableMapa"},{"kind":"text","text":"?, "},{"kind":"externalParam","text":"variableDict"},{"kind":"text","text":": "},{"kind":"typeIdentifier","text":"MathParser","preciseIdentifier":"s:10MathParserAAC"},{"kind":"text","text":"."},{"kind":"typeIdentifier","text":"VariableDict","preciseIdentifier":"s:10MathParserAAC12VariableDicta"},{"kind":"text","text":"?, "},{"kind":"externalParam","text":"unaryFunctions"},{"kind":"text","text":": "},{"kind":"typeIdentifier","text":"MathParser","preciseIdentifier":"s:10MathParserAAC"},{"kind":"text","text":"."},{"kind":"typeIdentifier","text":"UnaryFunctionMap","preciseIdentifier":"s:10MathParserAAC16UnaryFunctionMapa"},{"kind":"text","text":"?, "},{"kind":"externalParam","text":"unaryFunctionDict"},{"kind":"text","text":": "},{"kind":"typeIdentifier","text":"MathParser","preciseIdentifier":"s:10MathParserAAC"},{"kind":"text","text":"."},{"kind":"typeIdentifier","text":"UnaryFunctionDict","preciseIdentifier":"s:10MathParserAAC17UnaryFunctionDicta"},{"kind":"text","text":"?, "},{"kind":"externalParam","text":"binaryFunctions"},{"kind":"text","text":": "},{"kind":"typeIdentifier","text":"MathParser","preciseIdentifier":"s:10MathParserAAC"},{"kind":"text","text":"."},{"kind":"typeIdentifier","text":"BinaryFunctionMap","preciseIdentifier":"s:10MathParserAAC17BinaryFunctionMapa"},{"kind":"text","text":"?, "},{"kind":"externalParam","text":"binaryFunctionDict"},{"kind":"text","text":": "},{"kind":"typeIdentifier","text":"MathParser","preciseIdentifier":"s:10MathParserAAC"},{"kind":"text","text":"."},{"kind":"typeIdentifier","text":"BinaryFunctionDict","preciseIdentifier":"s:10MathParserAAC18BinaryFunctionDicta"},{"kind":"text","text":"?, "},{"kind":"externalParam","text":"enableImpliedMultiplication"},{"kind":"text","text":": "},{"kind":"typeIdentifier","text":"Bool","preciseIdentifier":"s:Sb"},{"kind":"text","text":")"}],"abstract":[{"type":"text","text":"Construct new parser."}],"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/init(variables:variableDict:unaryFunctions:unaryFunctionDict:binaryFunctions:binaryFunctionDict:enableImpliedMultiplication:)","kind":"symbol","type":"topic","url":"\/documentation\/mathparser\/mathparser\/init(variables:variabledict:unaryfunctions:unaryfunctiondict:binaryfunctions:binaryfunctiondict:enableimpliedmultiplication:)"},"doc://MathParser/documentation/MathParser/MathParser/BinaryFunctionMap":{"role":"symbol","title":"MathParser.BinaryFunctionMap","fragments":[{"kind":"keyword","text":"typealias"},{"kind":"text","text":" "},{"kind":"identifier","text":"BinaryFunctionMap"}],"abstract":[{"type":"text","text":"Mapping of names to an optional transform function of 2 arguments"}],"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/BinaryFunctionMap","kind":"symbol","type":"topic","navigatorTitle":[{"kind":"identifier","text":"BinaryFunctionMap"}],"url":"\/documentation\/mathparser\/mathparser\/binaryfunctionmap"},"doc://MathParser/documentation/MathParser/MathParser/defaultVariables":{"role":"symbol","title":"defaultVariables","fragments":[{"kind":"keyword","text":"static"},{"kind":"text","text":" "},{"kind":"keyword","text":"let"},{"kind":"text","text":" "},{"kind":"identifier","text":"defaultVariables"},{"kind":"text","text":": ["},{"kind":"typeIdentifier","text":"String","preciseIdentifier":"s:SS"},{"kind":"text","text":" : "},{"kind":"typeIdentifier","text":"Double","preciseIdentifier":"s:Sd"},{"kind":"text","text":"]"}],"abstract":[{"type":"text","text":"Default symbols to use for parsing."}],"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/defaultVariables","kind":"symbol","type":"topic","url":"\/documentation\/mathparser\/mathparser\/defaultvariables"},"doc://MathParser/documentation/MathParser/MathParser/variables":{"role":"symbol","title":"variables","fragments":[{"kind":"keyword","text":"let"},{"kind":"text","text":" "},{"kind":"identifier","text":"variables"},{"kind":"text","text":": "},{"kind":"typeIdentifier","text":"MathParser","preciseIdentifier":"s:10MathParserAAC"},{"kind":"text","text":"."},{"kind":"typeIdentifier","text":"VariableMap","preciseIdentifier":"s:10MathParserAAC11VariableMapa"}],"abstract":[{"type":"text","text":"Symbol\/variable mapping to use during parsing and perhaps evaluation"}],"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/variables","kind":"symbol","type":"topic","url":"\/documentation\/mathparser\/mathparser\/variables"},"doc://MathParser/documentation/MathParser/MathParser/binaryFunctions":{"role":"symbol","title":"binaryFunctions","fragments":[{"kind":"keyword","text":"let"},{"kind":"text","text":" "},{"kind":"identifier","text":"binaryFunctions"},{"kind":"text","text":": "},{"kind":"typeIdentifier","text":"MathParser","preciseIdentifier":"s:10MathParserAAC"},{"kind":"text","text":"."},{"kind":"typeIdentifier","text":"BinaryFunctionMap","preciseIdentifier":"s:10MathParserAAC17BinaryFunctionMapa"}],"abstract":[{"type":"text","text":"Function mapping to use during parsing and perhaps evaluation"}],"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/binaryFunctions","kind":"symbol","type":"topic","url":"\/documentation\/mathparser\/mathparser\/binaryfunctions"},"doc://MathParser/documentation/MathParser/MathParser/VariableDict":{"role":"symbol","title":"MathParser.VariableDict","fragments":[{"kind":"keyword","text":"typealias"},{"kind":"text","text":" "},{"kind":"identifier","text":"VariableDict"}],"abstract":[],"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/VariableDict","kind":"symbol","type":"topic","navigatorTitle":[{"kind":"identifier","text":"VariableDict"}],"url":"\/documentation\/mathparser\/mathparser\/variabledict"},"doc://MathParser/documentation/MathParser/MathParser":{"role":"symbol","title":"MathParser","fragments":[{"kind":"keyword","text":"class"},{"kind":"text","text":" "},{"kind":"identifier","text":"MathParser"}],"abstract":[{"type":"text","text":"A parser for simple math expressions made up of five common operations addition, subtraction, multiplication,"},{"type":"text","text":" "},{"type":"text","text":"division, and exponentiation, as well as one- and two-argument functions like "},{"type":"codeVoice","code":"sqrt"},{"type":"text","text":" and "},{"type":"codeVoice","code":"sin"},{"type":"text","text":", and named"},{"type":"text","text":" "},{"type":"text","text":"variables \/ symbols."}],"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser","kind":"symbol","type":"topic","navigatorTitle":[{"kind":"identifier","text":"MathParser"}],"url":"\/documentation\/mathparser\/mathparser"},"doc://MathParser/documentation/MathParser/MathParser/VariableMap":{"role":"symbol","title":"MathParser.VariableMap","fragments":[{"kind":"keyword","text":"typealias"},{"kind":"text","text":" "},{"kind":"identifier","text":"VariableMap"}],"abstract":[{"type":"text","text":"Mapping of variable names to an optional Double."}],"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/VariableMap","kind":"symbol","type":"topic","navigatorTitle":[{"kind":"identifier","text":"VariableMap"}],"url":"\/documentation\/mathparser\/mathparser\/variablemap"},"doc://MathParser/documentation/MathParser/MathParser/UnaryFunctionDict":{"role":"symbol","title":"MathParser.UnaryFunctionDict","fragments":[{"kind":"keyword","text":"typealias"},{"kind":"text","text":" "},{"kind":"identifier","text":"UnaryFunctionDict"}],"abstract":[],"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/UnaryFunctionDict","kind":"symbol","type":"topic","navigatorTitle":[{"kind":"identifier","text":"UnaryFunctionDict"}],"url":"\/documentation\/mathparser\/mathparser\/unaryfunctiondict"},"doc://MathParser/documentation/MathParser":{"role":"collection","title":"MathParser","abstract":[],"identifier":"doc:\/\/MathParser\/documentation\/MathParser","kind":"symbol","type":"topic","url":"\/documentation\/mathparser"},"doc://MathParser/documentation/MathParser/MathParser/defaultBinaryFunctions":{"role":"symbol","title":"defaultBinaryFunctions","fragments":[{"kind":"keyword","text":"static"},{"kind":"text","text":" "},{"kind":"keyword","text":"let"},{"kind":"text","text":" "},{"kind":"identifier","text":"defaultBinaryFunctions"},{"kind":"text","text":": "},{"kind":"typeIdentifier","text":"MathParser","preciseIdentifier":"s:10MathParserAAC"},{"kind":"text","text":"."},{"kind":"typeIdentifier","text":"BinaryFunctionDict","preciseIdentifier":"s:10MathParserAAC18BinaryFunctionDicta"}],"abstract":[{"type":"text","text":"Default 2-argument functions to use for parsing and evaluation."}],"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/defaultBinaryFunctions","kind":"symbol","type":"topic","url":"\/documentation\/mathparser\/mathparser\/defaultbinaryfunctions"},"doc://MathParser/documentation/MathParser/MathParser/UnaryFunctionMap":{"role":"symbol","title":"MathParser.UnaryFunctionMap","fragments":[{"kind":"keyword","text":"typealias"},{"kind":"text","text":" "},{"kind":"identifier","text":"UnaryFunctionMap"}],"abstract":[{"type":"text","text":"Mapping of names to an optional transform function of 1 argument"}],"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/UnaryFunctionMap","kind":"symbol","type":"topic","navigatorTitle":[{"kind":"identifier","text":"UnaryFunctionMap"}],"url":"\/documentation\/mathparser\/mathparser\/unaryfunctionmap"},"doc://MathParser/documentation/MathParser/MathParser/defaultUnaryFunctions":{"role":"symbol","title":"defaultUnaryFunctions","fragments":[{"kind":"keyword","text":"static"},{"kind":"text","text":" "},{"kind":"keyword","text":"let"},{"kind":"text","text":" "},{"kind":"identifier","text":"defaultUnaryFunctions"},{"kind":"text","text":": "},{"kind":"typeIdentifier","text":"MathParser","preciseIdentifier":"s:10MathParserAAC"},{"kind":"text","text":"."},{"kind":"typeIdentifier","text":"UnaryFunctionDict","preciseIdentifier":"s:10MathParserAAC17UnaryFunctionDicta"}],"abstract":[{"type":"text","text":"Default 1-argument functions to use for parsing and evaluation."}],"identifier":"doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/defaultUnaryFunctions","kind":"symbol","type":"topic","url":"\/documentation\/mathparser\/mathparser\/defaultunaryfunctions"}}}
+{
+  "abstract" : [
+    {
+      "text" : "Construct new parser.",
+      "type" : "text"
+    }
+  ],
+  "hierarchy" : {
+    "paths" : [
+      [
+        "doc:\/\/MathParser\/documentation\/MathParser",
+        "doc:\/\/MathParser\/documentation\/MathParser\/MathParser"
+      ]
+    ]
+  },
+  "identifier" : {
+    "interfaceLanguage" : "swift",
+    "url" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/init(variables:variableDict:unaryFunctions:unaryFunctionDict:binaryFunctions:binaryFunctionDict:enableImpliedMultiplication:)"
+  },
+  "kind" : "symbol",
+  "metadata" : {
+    "externalID" : "s:10MathParserAAC9variables12variableDict14unaryFunctions0f8FunctionE006binaryG00ihE027enableImpliedMultiplicationABSdSgSScSg_SDySSSdGSgS2dcSgSScSgSDySSS2dcGSgS2d_SdtcSgSScSgSDySSS2d_SdtcGSgSbtcfc",
+    "fragments" : [
+      {
+        "kind" : "identifier",
+        "text" : "init"
+      },
+      {
+        "kind" : "text",
+        "text" : "("
+      },
+      {
+        "kind" : "externalParam",
+        "text" : "variables"
+      },
+      {
+        "kind" : "text",
+        "text" : ": "
+      },
+      {
+        "kind" : "typeIdentifier",
+        "preciseIdentifier" : "s:10MathParserAAC",
+        "text" : "MathParser"
+      },
+      {
+        "kind" : "text",
+        "text" : "."
+      },
+      {
+        "kind" : "typeIdentifier",
+        "preciseIdentifier" : "s:10MathParserAAC11VariableMapa",
+        "text" : "VariableMap"
+      },
+      {
+        "kind" : "text",
+        "text" : "?, "
+      },
+      {
+        "kind" : "externalParam",
+        "text" : "variableDict"
+      },
+      {
+        "kind" : "text",
+        "text" : ": "
+      },
+      {
+        "kind" : "typeIdentifier",
+        "preciseIdentifier" : "s:10MathParserAAC",
+        "text" : "MathParser"
+      },
+      {
+        "kind" : "text",
+        "text" : "."
+      },
+      {
+        "kind" : "typeIdentifier",
+        "preciseIdentifier" : "s:10MathParserAAC12VariableDicta",
+        "text" : "VariableDict"
+      },
+      {
+        "kind" : "text",
+        "text" : "?, "
+      },
+      {
+        "kind" : "externalParam",
+        "text" : "unaryFunctions"
+      },
+      {
+        "kind" : "text",
+        "text" : ": "
+      },
+      {
+        "kind" : "typeIdentifier",
+        "preciseIdentifier" : "s:10MathParserAAC",
+        "text" : "MathParser"
+      },
+      {
+        "kind" : "text",
+        "text" : "."
+      },
+      {
+        "kind" : "typeIdentifier",
+        "preciseIdentifier" : "s:10MathParserAAC16UnaryFunctionMapa",
+        "text" : "UnaryFunctionMap"
+      },
+      {
+        "kind" : "text",
+        "text" : "?, "
+      },
+      {
+        "kind" : "externalParam",
+        "text" : "unaryFunctionDict"
+      },
+      {
+        "kind" : "text",
+        "text" : ": "
+      },
+      {
+        "kind" : "typeIdentifier",
+        "preciseIdentifier" : "s:10MathParserAAC",
+        "text" : "MathParser"
+      },
+      {
+        "kind" : "text",
+        "text" : "."
+      },
+      {
+        "kind" : "typeIdentifier",
+        "preciseIdentifier" : "s:10MathParserAAC17UnaryFunctionDicta",
+        "text" : "UnaryFunctionDict"
+      },
+      {
+        "kind" : "text",
+        "text" : "?, "
+      },
+      {
+        "kind" : "externalParam",
+        "text" : "binaryFunctions"
+      },
+      {
+        "kind" : "text",
+        "text" : ": "
+      },
+      {
+        "kind" : "typeIdentifier",
+        "preciseIdentifier" : "s:10MathParserAAC",
+        "text" : "MathParser"
+      },
+      {
+        "kind" : "text",
+        "text" : "."
+      },
+      {
+        "kind" : "typeIdentifier",
+        "preciseIdentifier" : "s:10MathParserAAC17BinaryFunctionMapa",
+        "text" : "BinaryFunctionMap"
+      },
+      {
+        "kind" : "text",
+        "text" : "?, "
+      },
+      {
+        "kind" : "externalParam",
+        "text" : "binaryFunctionDict"
+      },
+      {
+        "kind" : "text",
+        "text" : ": "
+      },
+      {
+        "kind" : "typeIdentifier",
+        "preciseIdentifier" : "s:10MathParserAAC",
+        "text" : "MathParser"
+      },
+      {
+        "kind" : "text",
+        "text" : "."
+      },
+      {
+        "kind" : "typeIdentifier",
+        "preciseIdentifier" : "s:10MathParserAAC18BinaryFunctionDicta",
+        "text" : "BinaryFunctionDict"
+      },
+      {
+        "kind" : "text",
+        "text" : "?, "
+      },
+      {
+        "kind" : "externalParam",
+        "text" : "enableImpliedMultiplication"
+      },
+      {
+        "kind" : "text",
+        "text" : ": "
+      },
+      {
+        "kind" : "typeIdentifier",
+        "preciseIdentifier" : "s:Sb",
+        "text" : "Bool"
+      },
+      {
+        "kind" : "text",
+        "text" : ")"
+      }
+    ],
+    "modules" : [
+      {
+        "name" : "MathParser"
+      }
+    ],
+    "role" : "symbol",
+    "roleHeading" : "Initializer",
+    "symbolKind" : "init",
+    "title" : "init(variables:variableDict:unaryFunctions:unaryFunctionDict:binaryFunctions:binaryFunctionDict:enableImpliedMultiplication:)"
+  },
+  "primaryContentSections" : [
+    {
+      "declarations" : [
+        {
+          "languages" : [
+            "swift"
+          ],
+          "platforms" : [
+            "macOS"
+          ],
+          "tokens" : [
+            {
+              "kind" : "keyword",
+              "text" : "init"
+            },
+            {
+              "kind" : "text",
+              "text" : "("
+            },
+            {
+              "kind" : "externalParam",
+              "text" : "variables"
+            },
+            {
+              "kind" : "text",
+              "text" : ": "
+            },
+            {
+              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser",
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:10MathParserAAC",
+              "text" : "MathParser"
+            },
+            {
+              "kind" : "text",
+              "text" : "."
+            },
+            {
+              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/VariableMap",
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:10MathParserAAC11VariableMapa",
+              "text" : "VariableMap"
+            },
+            {
+              "kind" : "text",
+              "text" : "? = nil, "
+            },
+            {
+              "kind" : "externalParam",
+              "text" : "variableDict"
+            },
+            {
+              "kind" : "text",
+              "text" : ": "
+            },
+            {
+              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser",
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:10MathParserAAC",
+              "text" : "MathParser"
+            },
+            {
+              "kind" : "text",
+              "text" : "."
+            },
+            {
+              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/VariableDict",
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:10MathParserAAC12VariableDicta",
+              "text" : "VariableDict"
+            },
+            {
+              "kind" : "text",
+              "text" : "? = nil, "
+            },
+            {
+              "kind" : "externalParam",
+              "text" : "unaryFunctions"
+            },
+            {
+              "kind" : "text",
+              "text" : ": "
+            },
+            {
+              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser",
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:10MathParserAAC",
+              "text" : "MathParser"
+            },
+            {
+              "kind" : "text",
+              "text" : "."
+            },
+            {
+              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/UnaryFunctionMap",
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:10MathParserAAC16UnaryFunctionMapa",
+              "text" : "UnaryFunctionMap"
+            },
+            {
+              "kind" : "text",
+              "text" : "? = nil, "
+            },
+            {
+              "kind" : "externalParam",
+              "text" : "unaryFunctionDict"
+            },
+            {
+              "kind" : "text",
+              "text" : ": "
+            },
+            {
+              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser",
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:10MathParserAAC",
+              "text" : "MathParser"
+            },
+            {
+              "kind" : "text",
+              "text" : "."
+            },
+            {
+              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/UnaryFunctionDict",
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:10MathParserAAC17UnaryFunctionDicta",
+              "text" : "UnaryFunctionDict"
+            },
+            {
+              "kind" : "text",
+              "text" : "? = nil, "
+            },
+            {
+              "kind" : "externalParam",
+              "text" : "binaryFunctions"
+            },
+            {
+              "kind" : "text",
+              "text" : ": "
+            },
+            {
+              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser",
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:10MathParserAAC",
+              "text" : "MathParser"
+            },
+            {
+              "kind" : "text",
+              "text" : "."
+            },
+            {
+              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/BinaryFunctionMap",
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:10MathParserAAC17BinaryFunctionMapa",
+              "text" : "BinaryFunctionMap"
+            },
+            {
+              "kind" : "text",
+              "text" : "? = nil, "
+            },
+            {
+              "kind" : "externalParam",
+              "text" : "binaryFunctionDict"
+            },
+            {
+              "kind" : "text",
+              "text" : ": "
+            },
+            {
+              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser",
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:10MathParserAAC",
+              "text" : "MathParser"
+            },
+            {
+              "kind" : "text",
+              "text" : "."
+            },
+            {
+              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/BinaryFunctionDict",
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:10MathParserAAC18BinaryFunctionDicta",
+              "text" : "BinaryFunctionDict"
+            },
+            {
+              "kind" : "text",
+              "text" : "? = nil, "
+            },
+            {
+              "kind" : "externalParam",
+              "text" : "enableImpliedMultiplication"
+            },
+            {
+              "kind" : "text",
+              "text" : ": "
+            },
+            {
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:Sb",
+              "text" : "Bool"
+            },
+            {
+              "kind" : "text",
+              "text" : " = false)"
+            }
+          ]
+        }
+      ],
+      "kind" : "declarations"
+    },
+    {
+      "kind" : "parameters",
+      "parameters" : [
+        {
+          "content" : [
+            {
+              "inlineContent" : [
+                {
+                  "text" : "optional mapping of names to variables. If not given, ",
+                  "type" : "text"
+                },
+                {
+                  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/defaultVariables",
+                  "isActive" : true,
+                  "type" : "reference"
+                },
+                {
+                  "text" : " will be used",
+                  "type" : "text"
+                }
+              ],
+              "type" : "paragraph"
+            }
+          ],
+          "name" : "variables"
+        },
+        {
+          "content" : [
+            {
+              "inlineContent" : [
+                {
+                  "text" : "optional dictionary that maps a name to a constant. Note that this will be ignored if",
+                  "type" : "text"
+                },
+                {
+                  "text" : " ",
+                  "type" : "text"
+                },
+                {
+                  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/variables",
+                  "isActive" : true,
+                  "type" : "reference"
+                },
+                {
+                  "text" : " is also given.",
+                  "type" : "text"
+                }
+              ],
+              "type" : "paragraph"
+            }
+          ],
+          "name" : "variableDict"
+        },
+        {
+          "content" : [
+            {
+              "inlineContent" : [
+                {
+                  "text" : "optional mapping of names to 1-ary functions. If not given, ",
+                  "type" : "text"
+                },
+                {
+                  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/defaultUnaryFunctions",
+                  "isActive" : true,
+                  "type" : "reference"
+                },
+                {
+                  "text" : " will",
+                  "type" : "text"
+                },
+                {
+                  "text" : " ",
+                  "type" : "text"
+                },
+                {
+                  "text" : "be used",
+                  "type" : "text"
+                }
+              ],
+              "type" : "paragraph"
+            }
+          ],
+          "name" : "unaryFunctions"
+        },
+        {
+          "content" : [
+            {
+              "inlineContent" : [
+                {
+                  "text" : "optional dictionary that maps a name to a closure that maps a double to another.",
+                  "type" : "text"
+                },
+                {
+                  "text" : " ",
+                  "type" : "text"
+                },
+                {
+                  "text" : "Note that this will be ignored if ",
+                  "type" : "text"
+                },
+                {
+                  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/unaryFunctions",
+                  "isActive" : true,
+                  "type" : "reference"
+                },
+                {
+                  "text" : " is also given.",
+                  "type" : "text"
+                }
+              ],
+              "type" : "paragraph"
+            }
+          ],
+          "name" : "variableDict"
+        },
+        {
+          "content" : [
+            {
+              "inlineContent" : [
+                {
+                  "text" : "optional mapping of names to 2-ary functions. If not given, ",
+                  "type" : "text"
+                },
+                {
+                  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/defaultBinaryFunctions",
+                  "isActive" : true,
+                  "type" : "reference"
+                },
+                {
+                  "text" : " ",
+                  "type" : "text"
+                },
+                {
+                  "text" : "will be used",
+                  "type" : "text"
+                }
+              ],
+              "type" : "paragraph"
+            }
+          ],
+          "name" : "binaryFunctions"
+        },
+        {
+          "content" : [
+            {
+              "inlineContent" : [
+                {
+                  "text" : "optional dictionary that maps a name to a closure that maps two doubles into one.",
+                  "type" : "text"
+                },
+                {
+                  "text" : " ",
+                  "type" : "text"
+                },
+                {
+                  "text" : "Note that this will be ignored if ",
+                  "type" : "text"
+                },
+                {
+                  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/binaryFunctions",
+                  "isActive" : true,
+                  "type" : "reference"
+                },
+                {
+                  "text" : " is also given.",
+                  "type" : "text"
+                }
+              ],
+              "type" : "paragraph"
+            }
+          ],
+          "name" : "binaryFunctionDict"
+        },
+        {
+          "content" : [
+            {
+              "inlineContent" : [
+                {
+                  "text" : "if true treat expressions like ",
+                  "type" : "text"
+                },
+                {
+                  "code" : "2π",
+                  "type" : "codeVoice"
+                },
+                {
+                  "text" : " as valid and same as ",
+                  "type" : "text"
+                },
+                {
+                  "code" : "2 * π",
+                  "type" : "codeVoice"
+                }
+              ],
+              "type" : "paragraph"
+            }
+          ],
+          "name" : "enableImpliedMultiplication"
+        }
+      ]
+    }
+  ],
+  "schemaVersion" : {
+    "major" : 0,
+    "minor" : 3,
+    "patch" : 0
+  },
+  "sections" : [
+
+  ],
+  "variants" : [
+    {
+      "paths" : [
+        "\/documentation\/mathparser\/mathparser\/init(variables:variabledict:unaryfunctions:unaryfunctiondict:binaryfunctions:binaryfunctiondict:enableimpliedmultiplication:)"
+      ],
+      "traits" : [
+        {
+          "interfaceLanguage" : "swift"
+        }
+      ]
+    }
+  ]
+, 
+"references": {
+"doc://MathParser/documentation/MathParser": {
+  "abstract" : [
+
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser",
+  "kind" : "symbol",
+  "role" : "collection",
+  "title" : "MathParser",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser"
+},
+"doc://MathParser/documentation/MathParser/MathParser": {
+  "abstract" : [
+    {
+      "text" : "A parser for simple math expressions made up of five common operations addition, subtraction, multiplication,",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "division, and exponentiation, as well as one- and two-argument functions like ",
+      "type" : "text"
+    },
+    {
+      "code" : "sqrt",
+      "type" : "codeVoice"
+    },
+    {
+      "text" : " and ",
+      "type" : "text"
+    },
+    {
+      "code" : "sin",
+      "type" : "codeVoice"
+    },
+    {
+      "text" : ", and named",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "variables \/ symbols.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "class"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "MathParser"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "MathParser"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "MathParser",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparser"
+},
+"doc://MathParser/documentation/MathParser/MathParser/BinaryFunctionDict": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "typealias"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "BinaryFunctionDict"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/BinaryFunctionDict",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "BinaryFunctionDict"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "MathParser.BinaryFunctionDict",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparser\/binaryfunctiondict"
+},
+"doc://MathParser/documentation/MathParser/MathParser/BinaryFunctionMap": {
+  "abstract" : [
+    {
+      "text" : "Mapping of names to an optional transform function of 2 arguments",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "typealias"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "BinaryFunctionMap"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/BinaryFunctionMap",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "BinaryFunctionMap"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "MathParser.BinaryFunctionMap",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparser\/binaryfunctionmap"
+},
+"doc://MathParser/documentation/MathParser/MathParser/UnaryFunctionDict": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "typealias"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "UnaryFunctionDict"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/UnaryFunctionDict",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "UnaryFunctionDict"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "MathParser.UnaryFunctionDict",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparser\/unaryfunctiondict"
+},
+"doc://MathParser/documentation/MathParser/MathParser/UnaryFunctionMap": {
+  "abstract" : [
+    {
+      "text" : "Mapping of names to an optional transform function of 1 argument",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "typealias"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "UnaryFunctionMap"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/UnaryFunctionMap",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "UnaryFunctionMap"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "MathParser.UnaryFunctionMap",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparser\/unaryfunctionmap"
+},
+"doc://MathParser/documentation/MathParser/MathParser/VariableDict": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "typealias"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "VariableDict"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/VariableDict",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "VariableDict"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "MathParser.VariableDict",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparser\/variabledict"
+},
+"doc://MathParser/documentation/MathParser/MathParser/VariableMap": {
+  "abstract" : [
+    {
+      "text" : "Mapping of variable names to an optional Double.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "typealias"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "VariableMap"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/VariableMap",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "VariableMap"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "MathParser.VariableMap",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparser\/variablemap"
+},
+"doc://MathParser/documentation/MathParser/MathParser/binaryFunctions": {
+  "abstract" : [
+    {
+      "text" : "Function mapping to use during parsing and perhaps evaluation",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "let"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "binaryFunctions"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC",
+      "text" : "MathParser"
+    },
+    {
+      "kind" : "text",
+      "text" : "."
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC17BinaryFunctionMapa",
+      "text" : "BinaryFunctionMap"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/binaryFunctions",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "binaryFunctions",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparser\/binaryfunctions"
+},
+"doc://MathParser/documentation/MathParser/MathParser/defaultBinaryFunctions": {
+  "abstract" : [
+    {
+      "text" : "Default 2-argument functions to use for parsing and evaluation.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "static"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "keyword",
+      "text" : "let"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "defaultBinaryFunctions"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC",
+      "text" : "MathParser"
+    },
+    {
+      "kind" : "text",
+      "text" : "."
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC18BinaryFunctionDicta",
+      "text" : "BinaryFunctionDict"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/defaultBinaryFunctions",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "defaultBinaryFunctions",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparser\/defaultbinaryfunctions"
+},
+"doc://MathParser/documentation/MathParser/MathParser/defaultUnaryFunctions": {
+  "abstract" : [
+    {
+      "text" : "Default 1-argument functions to use for parsing and evaluation.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "static"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "keyword",
+      "text" : "let"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "defaultUnaryFunctions"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC",
+      "text" : "MathParser"
+    },
+    {
+      "kind" : "text",
+      "text" : "."
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC17UnaryFunctionDicta",
+      "text" : "UnaryFunctionDict"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/defaultUnaryFunctions",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "defaultUnaryFunctions",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparser\/defaultunaryfunctions"
+},
+"doc://MathParser/documentation/MathParser/MathParser/defaultVariables": {
+  "abstract" : [
+    {
+      "text" : "Default symbols to use for parsing.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "static"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "keyword",
+      "text" : "let"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "defaultVariables"
+    },
+    {
+      "kind" : "text",
+      "text" : ": ["
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    },
+    {
+      "kind" : "text",
+      "text" : " : "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sd",
+      "text" : "Double"
+    },
+    {
+      "kind" : "text",
+      "text" : "]"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/defaultVariables",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "defaultVariables",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparser\/defaultvariables"
+},
+"doc://MathParser/documentation/MathParser/MathParser/init(variables:variableDict:unaryFunctions:unaryFunctionDict:binaryFunctions:binaryFunctionDict:enableImpliedMultiplication:)": {
+  "abstract" : [
+    {
+      "text" : "Construct new parser.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "identifier",
+      "text" : "init"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "variables"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC",
+      "text" : "MathParser"
+    },
+    {
+      "kind" : "text",
+      "text" : "."
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC11VariableMapa",
+      "text" : "VariableMap"
+    },
+    {
+      "kind" : "text",
+      "text" : "?, "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "variableDict"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC",
+      "text" : "MathParser"
+    },
+    {
+      "kind" : "text",
+      "text" : "."
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC12VariableDicta",
+      "text" : "VariableDict"
+    },
+    {
+      "kind" : "text",
+      "text" : "?, "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "unaryFunctions"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC",
+      "text" : "MathParser"
+    },
+    {
+      "kind" : "text",
+      "text" : "."
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC16UnaryFunctionMapa",
+      "text" : "UnaryFunctionMap"
+    },
+    {
+      "kind" : "text",
+      "text" : "?, "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "unaryFunctionDict"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC",
+      "text" : "MathParser"
+    },
+    {
+      "kind" : "text",
+      "text" : "."
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC17UnaryFunctionDicta",
+      "text" : "UnaryFunctionDict"
+    },
+    {
+      "kind" : "text",
+      "text" : "?, "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "binaryFunctions"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC",
+      "text" : "MathParser"
+    },
+    {
+      "kind" : "text",
+      "text" : "."
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC17BinaryFunctionMapa",
+      "text" : "BinaryFunctionMap"
+    },
+    {
+      "kind" : "text",
+      "text" : "?, "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "binaryFunctionDict"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC",
+      "text" : "MathParser"
+    },
+    {
+      "kind" : "text",
+      "text" : "."
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC18BinaryFunctionDicta",
+      "text" : "BinaryFunctionDict"
+    },
+    {
+      "kind" : "text",
+      "text" : "?, "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "enableImpliedMultiplication"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sb",
+      "text" : "Bool"
+    },
+    {
+      "kind" : "text",
+      "text" : ")"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/init(variables:variableDict:unaryFunctions:unaryFunctionDict:binaryFunctions:binaryFunctionDict:enableImpliedMultiplication:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "init(variables:variableDict:unaryFunctions:unaryFunctionDict:binaryFunctions:binaryFunctionDict:enableImpliedMultiplication:)",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparser\/init(variables:variabledict:unaryfunctions:unaryfunctiondict:binaryfunctions:binaryfunctiondict:enableimpliedmultiplication:)"
+},
+"doc://MathParser/documentation/MathParser/MathParser/unaryFunctions": {
+  "abstract" : [
+    {
+      "text" : "Function mapping to use during parsing and perhaps evaluation",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "let"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "unaryFunctions"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC",
+      "text" : "MathParser"
+    },
+    {
+      "kind" : "text",
+      "text" : "."
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC16UnaryFunctionMapa",
+      "text" : "UnaryFunctionMap"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/unaryFunctions",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "unaryFunctions",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparser\/unaryfunctions"
+},
+"doc://MathParser/documentation/MathParser/MathParser/variables": {
+  "abstract" : [
+    {
+      "text" : "Symbol\/variable mapping to use during parsing and perhaps evaluation",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "let"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "variables"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC",
+      "text" : "MathParser"
+    },
+    {
+      "kind" : "text",
+      "text" : "."
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC11VariableMapa",
+      "text" : "VariableMap"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/variables",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "variables",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparser\/variables"
+}
+}
+}
