@@ -7,11 +7,13 @@
 # swift-math-parser
 
 Basic math expression parser built with [Point•Free's](https://www.pointfree.co/)
-[swift-parsing](https://github.com/pointfreeco/swift-parsing) package (v0.12.0).
+[swift-parsing](https://github.com/pointfreeco/swift-parsing) package (v0.12.0). See the [API documentation](https://bradhowes.github.io/swift-math-parser/documentation/mathparser/) for developer info.
 
 NOTE: v3.1.0 uses swift-parsing v0.12 which requires Xcode 14 and ideally Swift 5.8 
-(see [What's Changed](https://github.com/pointfreeco/swift-parsing/releases/tag/0.12.0) for additional details).
+(see their [What's Changed](https://github.com/pointfreeco/swift-parsing/releases/tag/0.12.0) doc for additional details).
 If you need to use an older version, use the tagged 3.0.1 release instead.
+
+# Usage Example
 
 ```swift
 let parser = MathParser()
@@ -58,7 +60,10 @@ You can get the unresolved symbol names from the `Evaluator.unresolved` attribut
 unresolved variables, unary functions, and binary function names. You can also use the `evalResult` to attempt an
 evaluation but also obtain a description of the failure when the evaluation fails.
 
-Example:
+# Custom Symbols
+
+Below is an example that provides a custom unary function that returns the twice the value it receives. There is also a custom
+variable called `foo` which holds the constant `123.4`.
 
 ```swift
 let myVariables = ["foo": 123.4]
@@ -81,7 +86,7 @@ let parser = MathParser(variableDict: myVariables, unaryFunctionDict: myFuncs)
 evaluator?.eval(unaryFunctionDict: myEvalFuncs) // => 60910.240000000005
 ```
 
-## Implied Multiplication
+# Implied Multiplication
 
 One of the original goals of this parser was to be able to accept a Wolfram Alpha math expression more or less as-is
 -- for instance the definition https://www.wolframalpha.com/input/?i=Sawsbuck+Winter+Form%E2%80%90like+curve -- without
