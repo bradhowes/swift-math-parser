@@ -14,17 +14,14 @@ jobs:
       matrix:
         xcode:
           - "14.2"
-        command:
-          - test
     steps:
     - uses: actions/checkout@v3
     - name: Select Xcode ${{ matrix.xcode }}
       run: sudo xcode-select -s /Applications/Xcode_${{ matrix.xcode }}.app
-    - name: Run ${{ matrix.command }}
-      run: make ${{ matrix.command }}
+    - name: Run make
+      run: env && make
     - name: Get Test Coverage
       run: |
-        set -x
         set -- $(< percentage.txt)
         echo "PERCENTAGE=${1}" >> $GITHUB_ENV
     - name: Create Coverage Badge
