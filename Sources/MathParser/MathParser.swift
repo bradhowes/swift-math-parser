@@ -140,6 +140,7 @@ final public class MathParser {
               binaryFunctionDict: BinaryFunctionDict? = nil,
               enableImpliedMultiplication: Bool = false
   ) {
+    precondition(!enableImpliedMultiplication, "enableImpliedMultiplication unsupported due to errors")
     self.customVariableDict = variableDict
     self.customUnaryFunctionDict = unaryFunctionDict
     self.customBinaryFunctionDict = binaryFunctionDict
@@ -244,7 +245,8 @@ final public class MathParser {
   /// Use type erasure due to circular references to this parser in others that follow.
   private lazy var additionAndSubtraction: some TokenParser = LeftAssociativeInfixOperation(
     additionOrSubtractionOperator,
-    higher: multiplicationAndDivision
+    higher: multiplicationAndDivision,
+    implied: enableImpliedMultiplication ? multiplicationReducer : nil
   ).eraseToAnyParser()
 
   /// When true, two parsed operands in a row implies multiplication
@@ -264,14 +266,10 @@ final public class MathParser {
     }
   }
 
-  /// Parser for valid multiplication / division operations. Higher precedence than + and -
-  /// If ``enableImpliedMultiplication`` is `true` then one can list two operands together
-  /// like `2x` and have it treated as a multiplication of `2` and the value in `x`. Note that this does not work for
-  /// expression `x2` since that would be treated as the name of a symbol or function.
+  /// Parser for multiplication / division operations. Higher precedence than + and -.
   private lazy var multiplicationAndDivision: some TokenParser = LeftAssociativeInfixOperation(
     multiplicationOrDivisionOperator,
-    higher: exponentiation,
-    implied: enableImpliedMultiplication ? multiplicationReducer : nil
+    higher: exponentiation
   )
 
   /// Parser for exponentiation (power) operator
@@ -280,7 +278,10 @@ final public class MathParser {
     "^".map { { Token.reducer(lhs: $0, rhs: $1, operation: .proc(op: (pow), name: "^")) } }
   }
 
-  /// Parser for exponentiation operation. Higher precedence than * and /
+  /// Parser for exponentiation operation. Higher precedence than * and /.
+  /// If ``enableImpliedMultiplication`` is `true` then one can list two operands together
+  /// like `2x` and have it treated as a multiplication of `2` and the value in `x`. Note that this does not work for
+  /// expression `x2` since that would be treated as the name of a symbol or function.
   private lazy var exponentiation: some TokenParser = LeftAssociativeInfixOperation(
     exponentiationOperator,
     higher: operand

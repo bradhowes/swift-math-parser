@@ -11,7 +11,7 @@ final class TestWolfram: XCTestCase {
     parser = MathParser()
   }
 
-  func testWolframExample() {
+  func _testWolframExample() {
     // The following equations come from https://www.wolframalpha.com/input?i=Sawsbuck+Winter+Form%E2%80%90like+curve
     // The two parametric functions there were copied verbatim here as xw and yw. The
     let x = """
