@@ -13,6 +13,8 @@ NOTE: v3.1.0 uses swift-parsing v0.12 which requires Xcode 14 and ideally Swift 
 (see their [What's Changed](https://github.com/pointfreeco/swift-parsing/releases/tag/0.12.0) doc for additional details).
 If you need to use an older version, use the tagged 3.0.1 release instead.
 
+**NOTE**: the `enableImpliedMultiplication` feature mentioned below is currently disabled due to an error in implementation. Creating a parser with `true` for this parameter will result in a fatal error being raised.
+
 # Usage Example
 
 ```swift
