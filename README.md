@@ -91,7 +91,7 @@ evaluator?.eval(unaryFunctionDict: myEvalFuncs) // => 60910.240000000005
 # Implied Multiplication
 
 **NOTE**: this feature is currently disabled due to an error in implementation. Creating a parser with `true` for the
-``enableImpliedMultiplication` parameter will result in a fatal error being raise.
+`enableImpliedMultiplication` parameter will result in a fatal error being raise.
 
 One of the original goals of this parser was to be able to accept a Wolfram Alpha math expression more or less as-is
 -- for instance the definition https://www.wolframalpha.com/input/?i=Sawsbuck+Winter+Form%E2%80%90like+curve -- without
