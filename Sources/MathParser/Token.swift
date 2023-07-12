@@ -10,30 +10,14 @@ import Foundation
  */
 @usableFromInline
 enum Token {
-  /// Unresolved/resolved unary function
-  @usableFromInline
-  enum UnaryProc {
-    /// Unresolved unary function
-    case name(String)
-    /// Resolved unary function
-    case proc(op: MathParser.UnaryFunction, name: String)
-  }
-  /// Unresolved/resolved binary function
-  @usableFromInline
-  enum BinaryProc {
-    /// Unresolved binary function
-    case name(String)
-    /// Resolved binary function
-    case proc(op: MathParser.BinaryFunction, name: String)
-  }
   /// Numerical value from parse
   case constant(value: Double)
   /// Unresolved variable symbol
   case variable(name: String)
   /// Unresolved 1-arg function call
-  indirect case unaryCall(proc: UnaryProc, arg: Token)
+  indirect case unaryCall(op: MathParser.UnaryFunction?, name: String, arg: Token)
   /// Unresolved 2-arg function call
-  indirect case binaryCall(proc: BinaryProc, arg1: Token, arg2: Token)
+  indirect case binaryCall(op: MathParser.BinaryFunction?, name: String, arg1: Token, arg2: Token)
 }
 
 extension Token {
@@ -64,38 +48,24 @@ extension Token {
         throw MathParserError(description: "Variable '\(name)' not found")
       }
 
-    case .unaryCall(let proc, let arg):
-      switch proc {
-
-      case .name(let name):
-        if let proc = state.unaryFunctions(name) {
-          return proc(try arg.eval(state: state))
-        } else if state.usingImpliedMultiplication,
-                  let token = Token.attemptImpliedMultiplication(name: name.prefix(name.count),
-                                                                 arg: arg,
-                                                                 variables: state.variables,
-                                                                 unaryFunctions: state.unaryFunctions) {
-          return try token.eval(state: state)
-        } else {
-          throw MathParserError(description: "Function '\(name)' not found")
-        }
-
-      case .proc(let proc, _):
-        return proc(try arg.eval(state: state))
+    case let .unaryCall(op, name, arg):
+      if let op = op { return op(try arg.eval(state: state)) }
+      if let op = state.unaryFunctions(name) { return op(try arg.eval(state: state)) }
+      if state.usingImpliedMultiplication,
+         let token = Token.attemptImpliedMultiplication(name: name.prefix(name.count),
+                                                        arg: arg,
+                                                        variables: state.variables,
+                                                        unaryFunctions: state.unaryFunctions) {
+        return try token.eval(state: state)
       }
+      throw MathParserError(description: "Function '\(name)' not found")
 
-    case .binaryCall(let proc, let arg1, let arg2):
-      switch proc {
-
-      case .name(let name):
-        guard let proc = state.binaryFunctions(name) else {
-          throw MathParserError(description: "Function '\(name)' not found")
-        }
-        return proc(try arg1.eval(state: state), try arg2.eval(state: state))
-
-      case let .proc(proc, _):
-        return proc(try arg1.eval(state: state), try arg2.eval(state: state))
+    case let .binaryCall(op, name, arg1, arg2):
+      if let op = op { return op(try arg1.eval(state: state), try arg2.eval(state: state)) }
+      guard let op = state.binaryFunctions(name) else {
+        throw MathParserError(description: "Function '\(name)' not found")
       }
+      return op(try arg1.eval(state: state), try arg2.eval(state: state))
     }
   }
   // swiftlint:enable cyclomatic_complexity
@@ -118,19 +88,13 @@ extension Token {
       switch token {
       case .constant: break
       case let .variable(name: name): variables.insert(name)
-      case let .unaryCall(proc: proc, arg: arg):
+      case let .unaryCall(op, name, arg):
         pending.append(arg)
-        switch proc {
-        case let .name(name): unaryFunctions.insert(name)
-        case .proc: break
-        }
-      case let .binaryCall(proc: proc, arg1: arg1, arg2: arg2):
+        if op == nil { unaryFunctions.insert(name) }
+      case let .binaryCall(op, name, arg1, arg2):
         pending.append(arg1)
         pending.append(arg2)
-        switch proc {
-        case let .name(name): binaryFunctions.insert(name)
-        case .proc: break
-        }
+        if op == nil { binaryFunctions.insert(name) }
       }
     }
     return .init(variables: variables, unaryFunctions: unaryFunctions, binaryFunctions: binaryFunctions)
@@ -145,23 +109,8 @@ extension Token: CustomStringConvertible {
     switch self {
     case let .constant(value: value): return "\(value)"
     case let .variable(name: name): return name
-    case let .unaryCall(proc: proc, arg: arg):
-      let name: String = {
-        switch proc {
-        case let .name(name): return name
-        case let .proc(_, name): return name
-        }
-      }()
-      return "\(name)(\(arg.description))"
-
-    case let .binaryCall(proc: proc, arg1: arg1, arg2: arg2):
-      let name: String = {
-        switch proc {
-        case let .name(name): return name
-        case let .proc(_, name): return name
-        }
-      }()
-      return "\(name)(\(arg1.description), \(arg2.description))"
+    case let .unaryCall(_, name, arg): return "\(name)(\(arg.description))"
+    case let .binaryCall(_, name, arg1, arg2): return "\(name)(\(arg1.description), \(arg2.description))"
     }
   }
 }
@@ -178,13 +127,12 @@ extension Token {
    - returns: ``.constant`` token if reduction took place; otherwise ``.binaryCall`` token
    */
   @inlinable
-  static func reducer(lhs: Token, rhs: Token, operation: BinaryProc) -> Token {
+  static func reducer(lhs: Token, rhs: Token, op: @escaping MathParser.BinaryFunction, name: String) -> Token {
     if case let .constant(value: lhs) = lhs,
-       case let .constant(value: rhs) = rhs,
-       case let .proc(op, _) = operation {
+       case let .constant(value: rhs) = rhs {
       return .constant(value: op(lhs, rhs))
     }
-    return .binaryCall(proc: operation, arg1: lhs, arg2: rhs)
+    return .binaryCall(op: op, name: name, arg1: lhs, arg2: rhs)
   }
 
   /**
@@ -207,11 +155,11 @@ extension Token {
       if let value = variables(String(lhsName)) {
         let lhs: Token = .constant(value: value)
         let rhs = attemptImpliedMultiplication(name: rhsName, variables: variables) ?? .variable(name: String(rhsName))
-        return Token.reducer(lhs: lhs, rhs: rhs, operation: .proc(op: (*), name: "*"))
+        return Token.reducer(lhs: lhs, rhs: rhs, op: (*), name: "*")
       } else if let value = variables(String(rhsName)) {
         let lhs = attemptImpliedMultiplication(name: lhsName, variables: variables) ?? .variable(name: String(lhsName))
         let rhs: Token = .constant(value: value)
-        return Token.reducer(lhs: lhs, rhs: rhs, operation: .proc(op: (*), name: "*"))
+        return Token.reducer(lhs: lhs, rhs: rhs, op: (*), name: "*")
       }
     }
     return nil
@@ -253,14 +201,14 @@ extension Token {
 
           // Found a value to multiply with
           return .reducer(lhs: .constant(value: lhsValue),
-                          rhs: .unaryCall(proc: .proc(op: rhsValue, name: rhsName), arg: arg),
-                          operation: .proc(op: (*), name: "*"))
+                          rhs: .unaryCall(op: rhsValue, name: rhsName, arg: arg),
+                          op: (*), name: "*")
         } else if let lhsValue = attemptImpliedMultiplication(name: lhsName, variables: variables) {
 
           // Found some implied multiplications on the left to multiply with the function result
           return .reducer(lhs: lhsValue,
-                          rhs: .unaryCall(proc: .proc(op: rhsValue, name: rhsName), arg: arg),
-                          operation: .proc(op: (*), name: "*"))
+                          rhs: .unaryCall(op: rhsValue, name: rhsName, arg: arg),
+                          op: (*), name: "*")
         }
       }
     }

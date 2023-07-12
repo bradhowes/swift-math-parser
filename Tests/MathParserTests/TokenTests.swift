@@ -33,7 +33,7 @@ final class TokenTests: XCTestCase {
     XCTAssertEqual(5.0, evalToken(.reducer(
       lhs: .constant(value: 2.0),
       rhs: .constant(value: 3.0),
-      operation: .proc(op: { $0 + $1 }, name: "+"))))
+      op: { $0 + $1 }, name: "+")))
   }
 
   func testVariable() {
@@ -54,11 +54,11 @@ final class TokenTests: XCTestCase {
   }
 
   func testMissingUnaryFuncGeneratesNaN() {
-    XCTAssertTrue(evalToken(.unaryCall(proc: .name("abc"), arg: .constant(value: 123.45))).isNaN)
+    XCTAssertTrue(evalToken(.unaryCall(op: nil, name: "abc", arg: .constant(value: 123.45))).isNaN)
   }
 
   func testMissingBinaryFuncGeneratesNaN() {
-    let token: Token = .binaryCall(proc: .name("abc"),
+    let token: Token = .binaryCall(op: nil, name: "abc",
                                    arg1: .constant(value: 123.45),
                                    arg2: .variable(name: "a"))
     XCTAssertTrue(evalToken(token).isNaN)
@@ -66,39 +66,39 @@ final class TokenTests: XCTestCase {
   }
 
   func testUnaryCallsAndImpliedMultiplication() {
-    XCTAssertEqual(246.90, evalToken(.unaryCall(proc: .name("FOO"), arg: .constant(value: 123.45))))
+    XCTAssertEqual(246.90, evalToken(.unaryCall(op: nil, name: "FOO", arg: .constant(value: 123.45))))
 
     let proc: MathParser.UnaryFunction = { $0 + 321.54 }
-    XCTAssertEqual(444.99, evalToken(.unaryCall(proc: .proc(op: proc, name: "+"), arg: .constant(value: 123.45))))
+    XCTAssertEqual(444.99, evalToken(.unaryCall(op: proc, name: "+", arg: .constant(value: 123.45))))
 
-    XCTAssertEqual(123.45 * 6.0, evalToken(.unaryCall(proc: .name("aFOO"), arg: .constant(value: 123.45)),
+    XCTAssertEqual(123.45 * 6.0, evalToken(.unaryCall(op: nil, name: "aFOO", arg: .constant(value: 123.45)),
                                            usingImpliedMultiplication: true))
 
     // abFOO(x) -> ab * FOO(x)
-    XCTAssertEqual(99.0 * 123.45 * 2.0, evalToken(.unaryCall(proc: .name("abFOO"), arg: .constant(value: 123.45)),
+    XCTAssertEqual(99.0 * 123.45 * 2.0, evalToken(.unaryCall(op: nil, name: "abFOO", arg: .constant(value: 123.45)),
                                                   usingImpliedMultiplication: true))
     // aaFOO(x) -> a * a * FOO(x)
-    XCTAssertEqual(3.0 * 3.0 * 123.45 * 2.0, evalToken(.unaryCall(proc: .name("aaFOO"), arg: .constant(value: 123.45)),
+    XCTAssertEqual(3.0 * 3.0 * 123.45 * 2.0, evalToken(.unaryCall(op: nil, name: "aaFOO", arg: .constant(value: 123.45)),
                                                        usingImpliedMultiplication: true))
   }
 
   func testUnaryCallResolution() {
     let variables = ["t": Double.pi / 4.0]
-    XCTAssertTrue(evalToken(.unaryCall(proc: .name("sin"), arg: .variable(name: "t"))).isNaN)
-    XCTAssertTrue(evalToken(.unaryCall(proc: .proc(op: sin, name: "sin"), arg: .variable(name: "t"))).isNaN)
+    XCTAssertTrue(evalToken(.unaryCall(op: nil, name: "sin", arg: .variable(name: "t"))).isNaN)
+    XCTAssertTrue(evalToken(.unaryCall(op: sin, name: "sin", arg: .variable(name: "t"))).isNaN)
     XCTAssertEqual(0.7071067811865475,
-                   evalToken(.unaryCall(proc: .proc(op: sin, name: "sin"), arg: .variable(name: "t")), variables: variables.producer),
+                   evalToken(.unaryCall(op: sin, name: "sin", arg: .variable(name: "t")), variables: variables.producer),
                    accuracy: 1.0E-8)
   }
 
   func testUnresolvedProcessing() {
     XCTAssertTrue(Token.constant(value: 1.2).unresolved.isEmpty)
     XCTAssertTrue(Token.variable(name: "foo").unresolved.count == 1)
-    XCTAssertTrue(Token.unaryCall(proc: .name("foo"), arg: .constant(value: 1.2)).unresolved.count == 1)
-    XCTAssertTrue(Token.unaryCall(proc: .proc(op: sin, name: "sin"), arg: .constant(value: 1.2)).unresolved.isEmpty)
-    XCTAssertTrue(Token.binaryCall(proc: .name("foo"), arg1: .constant(value: 1.2), arg2: .constant(value: 2.1)).unresolved.count == 1)
-    XCTAssertTrue(Token.binaryCall(proc: .proc(op: hypot, name: "hypot"), arg1: .constant(value: 1.2), arg2: .constant(value: 2.1)).unresolved.isEmpty)
-    XCTAssertTrue(Token.binaryCall(proc: .proc(op: +, name: "+"), arg1: .variable(name: "a"), arg2: .constant(value: 1.2)).unresolved.count == 1)
+    XCTAssertTrue(Token.unaryCall(op: nil, name: "foo", arg: .constant(value: 1.2)).unresolved.count == 1)
+    XCTAssertTrue(Token.unaryCall(op: sin, name: "sin", arg: .constant(value: 1.2)).unresolved.isEmpty)
+    XCTAssertTrue(Token.binaryCall(op: nil, name: "foo", arg1: .constant(value: 1.2), arg2: .constant(value: 2.1)).unresolved.count == 1)
+    XCTAssertTrue(Token.binaryCall(op: hypot, name: "hypot", arg1: .constant(value: 1.2), arg2: .constant(value: 2.1)).unresolved.isEmpty)
+    XCTAssertTrue(Token.binaryCall(op: +, name: "+", arg1: .variable(name: "a"), arg2: .constant(value: 1.2)).unresolved.count == 1)
   }
 
   func testAttemptImpliedMultiplications() {
@@ -138,14 +138,14 @@ final class TokenTests: XCTestCase {
   func testDescription() {
     XCTAssertEqual("1.23", Token.constant(value: 1.23).description)
     XCTAssertEqual("foobar", Token.variable(name: "foobar").description)
-    XCTAssertEqual("unary(+(1.0, 2.0))", Token.unaryCall(proc: .name("unary"),
-                                                         arg: .binaryCall(proc: .proc(op: +, name: "+"),
+    XCTAssertEqual("unary(+(1.0, 2.0))", Token.unaryCall(op: nil, name: "unary",
+                                                         arg: .binaryCall(op: (+), name: "+",
                                                                           arg1: .constant(value: 1),
                                                                           arg2: .constant(value: 2))).description)
-    XCTAssertEqual("binary(1.0, blah)", Token.binaryCall(proc: .name("binary"),
+    XCTAssertEqual("binary(1.0, blah)", Token.binaryCall(op: nil, name: "binary",
                                                          arg1: .constant(value: 1),
                                                          arg2: .variable(name: "blah")).description)
-    XCTAssertEqual("+(1.0, 2.0)", Token.binaryCall(proc: .proc(op: +, name: "+"),
+    XCTAssertEqual("+(1.0, 2.0)", Token.binaryCall(op: +, name: "+",
                                                    arg1: .constant(value: 1),
                                                    arg2: .constant(value: 2)).description)
   }
@@ -171,7 +171,7 @@ final class TokenTests: XCTestCase {
 
   func testTokenEvalThrowsErrorForUndefinedUnaryFunction() {
     do {
-      _ = try Token.unaryCall(proc: .name("undefined"), arg: .constant(value: 1.2))
+      _ = try Token.unaryCall(op: nil, name: "undefined", arg: .constant(value: 1.2))
         .eval(state: .init(variables: variables.producer,
                            unaryFunctions: unaryFuncs,
                            binaryFunctions: binaryFuncs,
@@ -184,7 +184,7 @@ final class TokenTests: XCTestCase {
 
   func testTokenEvalThrowsErrorForUndefinedBinaryFunction() {
     do {
-      _ = try Token.binaryCall(proc: .name("undefined"),
+      _ = try Token.binaryCall(op: nil, name: "undefined",
                                arg1: .constant(value: 1.2),
                                arg2: .constant(value: 2.4))
         .eval(state: .init(variables: variables.producer,

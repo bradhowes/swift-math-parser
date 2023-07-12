@@ -216,7 +216,9 @@ final public class MathParser {
   private var identifierStart = Parse(input: Substring.self) { Prefix(1) { $0.isLetter } }
 
   /// Parser for remaining parts of identifier (constant, variable, function)
-  private var identifierRemaining = Parse(input: Substring.self) { Prefix { $0.isNumber || $0.isLetter } }
+  private var identifierRemaining = Parse(input: Substring.self) {
+    Prefix { $0.isNumber || $0.isLetter || $0 == Character("_") }
+  }
 
   /// Parser for identifier such as a function name or a symbol.
   private lazy var identifier = Parse(input: Substring.self) {
@@ -236,8 +238,8 @@ final public class MathParser {
   private var additionOrSubtractionOperator: some Parser<Substring, TokenReducer> = Parse {
     ignoreSpaces
     OneOf {
-      "+".map { { Token.reducer(lhs: $0, rhs: $1, operation: .proc(op: (+), name: "+")) } }
-      "-".map { { Token.reducer(lhs: $0, rhs: $1, operation: .proc(op: (-), name: "-")) } }
+      "+".map { { Token.reducer(lhs: $0, rhs: $1, op: (+), name: "+") } }
+      "-".map { { Token.reducer(lhs: $0, rhs: $1, op: (-), name: "-") } }
     }
   }
 
@@ -245,15 +247,14 @@ final public class MathParser {
   /// Use type erasure due to circular references to this parser in others that follow.
   private lazy var additionAndSubtraction: some TokenParser = LeftAssociativeInfixOperation(
     additionOrSubtractionOperator,
-    higher: multiplicationAndDivision,
-    implied: enableImpliedMultiplication ? multiplicationReducer : nil
+    higher: multiplicationAndDivision
   ).eraseToAnyParser()
 
   /// When true, two parsed operands in a row implies multiplication
   private let enableImpliedMultiplication: Bool
 
-  private let multiplicationReducer = { Token.reducer(lhs: $0, rhs: $1, operation: .proc(op: (*), name: "*")) }
-  private let divisionReducer = { Token.reducer(lhs: $0, rhs: $1, operation: .proc(op: (/), name: "/")) }
+  private let multiplicationReducer = { Token.reducer(lhs: $0, rhs: $1, op: (*), name: "*") }
+  private let divisionReducer = { Token.reducer(lhs: $0, rhs: $1, op: (/), name: "/") }
 
   /// Parser for multiplication / division operator. Also recognizes × for multiplication and ÷ for division.
   private lazy var multiplicationOrDivisionOperator: some Parser<Substring, TokenReducer> = Parse {
@@ -275,7 +276,7 @@ final public class MathParser {
   /// Parser for exponentiation (power) operator
   private var exponentiationOperator: some Parser<Substring, TokenReducer> = Parse {
     ignoreSpaces
-    "^".map { { Token.reducer(lhs: $0, rhs: $1, operation: .proc(op: (pow), name: "^")) } }
+    "^".map { { Token.reducer(lhs: $0, rhs: $1, op: (pow), name: "^") } }
   }
 
   /// Parser for exponentiation operation. Higher precedence than * and /.
@@ -332,18 +333,16 @@ final public class MathParser {
     "("
     unaryCallArg
     ")"
-  }.map { (tuple) -> Token in
-    let name = String(tuple.0)
-    let arg = tuple.1
-    if let resolved = self.unaryFunctions(name) {
-      // Known function name
-      if case .constant(let value) = arg {
-        // Known constant value -- evaluate function with it and return new constant value
-        return .constant(value: resolved(value))
-      }
-      return .unaryCall(proc: .proc(op: resolved, name: name), arg: arg)
+  }.map { (identifier: Substring, arg: Token) -> Token in
+    let name = String(identifier)
+    guard let resolved = self.unaryFunctions(name) else {
+      return .unaryCall(op: nil, name: name, arg: arg)
     }
-    return .unaryCall(proc: .name(name), arg: arg)
+    if case .constant(let value) = arg {
+      return .constant(value: resolved(value))
+    } else {
+      return .unaryCall(op: resolved, name: name, arg: arg)
+    }
   }
 
   /// Parser for function call of 2 parameters. Use Lazy due to recursive nature of this definition.
@@ -362,18 +361,19 @@ final public class MathParser {
     "("
     binaryCallArgs
     ")"
-  }.map { (tuple) -> Token in
-    let name = String(tuple.0)
-    let arg1 = tuple.1.0
-    let arg2 = tuple.1.1
-    if let resolved = self.binaryFunctions(name) {
-      if case let .constant(value1) = arg1,
-         case let .constant(value2) = arg2 {
-        return .constant(value: resolved(value1, value2))
-      }
-      return .binaryCall(proc: .proc(op: resolved, name: name), arg1: arg1, arg2: arg2)
+  }.map { (identifier: Substring, args) -> Token in
+    let name = String(identifier)
+    let arg1 = args.0
+    let arg2 = args.1
+    guard let resolved = self.binaryFunctions(name) else {
+      return .binaryCall(op: nil, name: name, arg1: arg1, arg2: arg2)
     }
-    return .binaryCall(proc: .name(name), arg1: arg1, arg2: arg2)
+    if case let .constant(value1) = arg1,
+       case let .constant(value2) = arg2 {
+      return .constant(value: resolved(value1, value2))
+    } else {
+      return .binaryCall(op: resolved, name: name, arg1: arg1, arg2: arg2)
+    }
   }
 
   /// Parser for an operand of an expression. Note that order is important: a function is made up of an identifier
