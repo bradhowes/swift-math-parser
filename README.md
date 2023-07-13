@@ -127,7 +127,7 @@ the "-" operator:
 However, for "+" all is well:
 
 * `2+3` => 5
-* `2 +3 -> 5
+* `2 +3` -> 5
 * `2 + 3` => 5
 
 Unfortunately, there is no way to handle this ambiguity between implied multiplication, subtraction and negation when 
