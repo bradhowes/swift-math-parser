@@ -19,7 +19,7 @@ final class MathParserTests: XCTestCase {
     XCTAssertEqual(-3, parser.parse("-3 ")?.eval())
     XCTAssertEqual(-3.45, parser.parse("-3.45")?.eval())
     XCTAssertEqual(-3.45E2, parser.parse("-3.45E2 ")?.eval())
-    XCTAssertNil(parser.parse("- 3")?.eval())
+    XCTAssertEqual(-3, parser.parse("- 3")?.eval()) // uses negation operation
   }
 
   func testConstruction() {
@@ -124,9 +124,27 @@ final class MathParserTests: XCTestCase {
     XCTAssertEqual(-4, parser.parse(" 1 - 2 - 3 ")?.eval())
   }
 
+  func testNegation() {
+    XCTAssertEqual(-2, parser.parse("-2")?.eval())
+    XCTAssertEqual(-2, parser.parse("- 2")?.eval())
+    XCTAssertEqual(2, parser.parse("--2")?.eval())
+    XCTAssertEqual(2, parser.parse("-(-2)")?.eval())
+    XCTAssertEqual(1, parser.parse("--3 - 2")?.eval())
+    XCTAssertEqual(5, parser.parse("-(-3 - 2)")?.eval())
+    XCTAssertEqual(pow(2, -(1 - 8)), parser.parse("2^-(1 - 8)")?.eval())
+    XCTAssertEqual(5.0 * -.pi, parser.parse("5 * -pi")?.eval())
+    XCTAssertEqual(5.0 * -.pi * -3, parser.parse("5 * -pi * -t")?.eval("t", value: 3))
+  }
+  
+  func testExponentiationIsRightAssociative() {
+    let expected: Double = pow(5.0, pow(2, pow(3, 4)))
+    let actual = parser.parse("5^2 ^3^ 4")
+    XCTAssertEqual(expected, actual?.eval())
+  }
+
   func testOrderOfOperations() {
-    let expected: Double = 1.0 + 2.0 * 3.0 / 4.0 - pow(5.0, 6.0)
-    let actual = parser.parse(" 1 + 2 * 3 / 4 - 5 ^ 6")
+    let expected: Double = 1.0 + 2.0 * 3.0 / 4.0 - pow(5.0, pow(2, 3))
+    let actual = parser.parse(" 1 + 2 * 3 / 4 - 5 ^ 2 ^ 3")
     XCTAssertEqual(expected, actual?.eval())
   }
 
@@ -474,6 +492,7 @@ error: unexpected input
 error: unexpected input
  --> input:1:1
 1 | (4.0 + 3.0
+  | ^ expected "-"
   | ^ expected 1 element satisfying predicate
   | ^ expected 1 element satisfying predicate
   | ^ expected 1 element satisfying predicate

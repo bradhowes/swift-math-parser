@@ -8,6 +8,81 @@ import Foundation
  additional symbols/functions will return a value, though it may be NaN if there were still unresolved symbols or
  functions in the token(s).
  */
+enum Associativity {
+  case left
+  case right
+}
+
+enum Ops: CaseIterable {
+  case addition
+  case subtraction
+  case multiplication
+  case division
+  case exponentiation
+  case negation
+  case unaryCall(op: MathParser.UnaryFunction?, name: String)
+  case binaryCall(op: MathParser.BinaryFunction?, name: String)
+
+  static var allCases: [Ops] { [.addition, .subtraction, .multiplication, .division, .exponentiation, .negation] }
+
+  var name: String {
+    switch self {
+    case .addition: return "+"
+    case .subtraction: return "-"
+    case .multiplication: return "*"
+    case .division: return "/"
+    case .exponentiation: return "^"
+    case .negation: return "+/-"
+    case let .unaryCall(op: _, name: name): return name
+    case let .binaryCall(op: _, name: name): return name
+    }
+  }
+
+  var binaryOperation: ((Double, Double) -> Double) {
+    switch self {
+    case .addition: return (+)
+    case .subtraction: return (-)
+    case .multiplication: return (*)
+    case .division: return (/)
+    case .exponentiation: return pow
+    default: fatalError("logic error")
+    }
+  }
+
+  var unaryOperation: ((Double) -> Double) {
+    switch self {
+    case .negation: return { -$0 }
+    default: fatalError("logic error")
+    }
+  }
+
+  var precedence: Int {
+    switch self {
+    case .addition: return 1
+    case .subtraction: return 1
+    case .multiplication: return 2
+    case .division: return 2
+    case .exponentiation: return 3
+    case .negation: return 4
+    case .unaryCall: return 5
+    case .binaryCall: return 5
+    }
+  }
+
+  var associativity: Associativity {
+    switch self {
+    case .addition: return .left
+    case .subtraction: return .left
+    case .multiplication: return .left
+    case .division: return .left
+    case .exponentiation: return .right
+    case .negation: return .right
+    case .unaryCall: return .left
+    case .binaryCall: return .left
+    }
+  }
+}
+
 @usableFromInline
 enum Token {
   /// Numerical value from parse

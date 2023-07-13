@@ -212,12 +212,48 @@ final public class MathParser {
 
   // MARK: - implementation details
 
+  /// When true, two parsed operands in a row implies multiplication
+  private let enableImpliedMultiplication: Bool
+
+  /// Type of the parser that returns a Token
+  private typealias TokenParser = Parser<Substring, Token>
+  private typealias Ary2Parser = Parser<Substring, (Token, Token)>
+  private typealias TokenReducer = (Token, Token) -> Token
+
   /// Parser for start of identifier (constant, variable, function). All must start with a letter.
-  private var identifierStart = Parse(input: Substring.self) { Prefix(1) { $0.isLetter } }
+  private let identifierStart = Parse(input: Substring.self) { Prefix(1) { $0.isLetter } }
 
   /// Parser for remaining parts of identifier (constant, variable, function)
-  private var identifierRemaining = Parse(input: Substring.self) {
+  private let identifierRemaining = Parse(input: Substring.self) {
     Prefix { $0.isNumber || $0.isLetter || $0 == Character("_") }
+  }
+  /// Parser for a numeric constant
+  private let constant: some TokenParser = Parse { Double.parser().map { Token.constant(value: $0) } }
+
+  /// Parser for addition / subtraction operator.
+  private let additionOrSubtractionOperator: some Parser<Substring, TokenReducer> = Parse {
+    ignoreSpaces
+    OneOf {
+      "+".map { { Token.reducer(lhs: $0, rhs: $1, op: (+), name: "+") } }
+      "-".map { { Token.reducer(lhs: $0, rhs: $1, op: (-), name: "-") } }
+    }
+  }
+
+  /// Parser for multiplication / division operator. Also recognizes × for multiplication and ÷ for division.
+  private let multiplicationOrDivisionOperator: some Parser<Substring, TokenReducer> = Parse {
+    ignoreSpaces
+    OneOf {
+      "*".map { { Token.reducer(lhs: $0, rhs: $1, op: (*), name: "*") } }
+      "×".map { { Token.reducer(lhs: $0, rhs: $1, op: (*), name: "*") } }
+      "/".map { { Token.reducer(lhs: $0, rhs: $1, op: (/), name: "/") } }
+      "÷".map { { Token.reducer(lhs: $0, rhs: $1, op: (/), name: "/") } }
+    }
+  }
+
+  /// Parser for exponentiation (power) operator
+  private let exponentiationOperator: some Parser<Substring, TokenReducer> = Parse {
+    ignoreSpaces
+    "^".map { { Token.reducer(lhs: $0, rhs: $1, op: (pow), name: "^") } }
   }
 
   /// Parser for identifier such as a function name or a symbol.
@@ -226,70 +262,28 @@ final public class MathParser {
     identifierRemaining
   }.map { $0.0 + $0.1 }
 
-  /// Type of the parser that returns a Token
-  private typealias TokenParser = Parser<Substring, Token>
-  private typealias Ary2Parser = Parser<Substring, (Token, Token)>
-  private typealias TokenReducer = (Token, Token) -> Token
-
-  /// Parser for a numeric constant
-  private var constant: some TokenParser = Parse { Double.parser().map { Token.constant(value: $0) } }
-
-  /// Parser for addition / subtraction operator.
-  private var additionOrSubtractionOperator: some Parser<Substring, TokenReducer> = Parse {
-    ignoreSpaces
-    OneOf {
-      "+".map { { Token.reducer(lhs: $0, rhs: $1, op: (+), name: "+") } }
-      "-".map { { Token.reducer(lhs: $0, rhs: $1, op: (-), name: "-") } }
-    }
-  }
-
   /// Parser for valid addition / subtraction operations. This is the starting point of precedence-involved parsing.
   /// Use type erasure due to circular references to this parser in others that follow.
-  private lazy var additionAndSubtraction: some TokenParser = LeftAssociativeInfixOperation(
-    additionOrSubtractionOperator,
+  private lazy var additionAndSubtraction: some TokenParser = InfixOperation(
+    associativity: .left,
+    operator: additionOrSubtractionOperator,
     higher: multiplicationAndDivision
   ).eraseToAnyParser()
 
-  /// When true, two parsed operands in a row implies multiplication
-  private let enableImpliedMultiplication: Bool
-
-  private let multiplicationReducer = { Token.reducer(lhs: $0, rhs: $1, op: (*), name: "*") }
-  private let divisionReducer = { Token.reducer(lhs: $0, rhs: $1, op: (/), name: "/") }
-
-  /// Parser for multiplication / division operator. Also recognizes × for multiplication and ÷ for division.
-  private lazy var multiplicationOrDivisionOperator: some Parser<Substring, TokenReducer> = Parse {
-    ignoreSpaces
-    OneOf {
-      "*".map { multiplicationReducer }
-      "×".map { multiplicationReducer }
-      "/".map { divisionReducer }
-      "÷".map { divisionReducer }
-    }
-  }
-
   /// Parser for multiplication / division operations. Higher precedence than + and -.
-  private lazy var multiplicationAndDivision: some TokenParser = LeftAssociativeInfixOperation(
-    multiplicationOrDivisionOperator,
+  private lazy var multiplicationAndDivision: some TokenParser = InfixOperation(
+    associativity: .left,
+    operator: multiplicationOrDivisionOperator,
     higher: exponentiation
   )
 
-  /// Parser for exponentiation (power) operator
-  private var exponentiationOperator: some Parser<Substring, TokenReducer> = Parse {
-    ignoreSpaces
-    "^".map { { Token.reducer(lhs: $0, rhs: $1, op: (pow), name: "^") } }
-  }
-
   /// Parser for exponentiation operation. Higher precedence than * and /.
-  /// If ``enableImpliedMultiplication`` is `true` then one can list two operands together
-  /// like `2x` and have it treated as a multiplication of `2` and the value in `x`. Note that this does not work for
-  /// expression `x2` since that would be treated as the name of a symbol or function.
-  private lazy var exponentiation: some TokenParser = LeftAssociativeInfixOperation(
-    exponentiationOperator,
+  private lazy var exponentiation: some TokenParser = InfixOperation(
+    associativity: .right,
+    operator: exponentiationOperator,
     higher: operand
   )
 
-  /// Parser for a symbol. If symbol exists during parse, parser returns ``.constant`` token. Otherwise, parser returns
-  /// ``.symbol`` token for later evaluation when the symbol is known.
   private lazy var symbolOrVariable: some TokenParser = Parse {
     identifier
   }.map { (name: Substring) -> Token in
@@ -313,25 +307,24 @@ final public class MathParser {
     return .variable(name: String(name))
   }
 
-  /// Parser for expression in parentheses. Use Lazy due to recursive nature of this definition.
-  private lazy var parenthetical: some TokenParser = Lazy {
-    "("
+  /// Parser for expression term. Starts at the lowest precedence operation.
+  private lazy var term: some TokenParser = Lazy {
     self.additionAndSubtraction
     ignoreSpaces
-    ")"
   }
 
-  /// Parser for function call of 1 parameter. Use Lazy due to recursive nature of this definition.
-  private lazy var unaryCallArg: some TokenParser = Lazy {
-    self.additionAndSubtraction
-    ignoreSpaces
+  /// Parser for expression in parentheses.
+  private lazy var parenthetical: some TokenParser = Lazy {
+    "("
+    self.term
+    ")"
   }
 
   /// Parser for a single argument function call (eg `sin`).
   private lazy var unaryCall: some TokenParser = Parse {
-    identifier
+    self.identifier
     "("
-    unaryCallArg
+    self.term
     ")"
   }.map { (identifier: Substring, arg: Token) -> Token in
     let name = String(identifier)
@@ -345,26 +338,16 @@ final public class MathParser {
     }
   }
 
-  /// Parser for function call of 2 parameters. Use Lazy due to recursive nature of this definition.
-  private lazy var binaryCallArgs: some Ary2Parser = Lazy {
-    self.additionAndSubtraction
-    ignoreSpaces
-    ","
-    ignoreSpaces
-    self.additionAndSubtraction
-    ignoreSpaces
-  }
-
-  /// Parser for a single argument function call (eg `atan2`).
+  /// Parser for a two-argument function call (eg `atan2`).
   private lazy var binaryCall: some TokenParser = Parse {
-    identifier
+    self.identifier
     "("
-    binaryCallArgs
+    self.term
+    ","
+    self.term
     ")"
-  }.map { (identifier: Substring, args) -> Token in
+  }.map { (identifier: Substring, arg1: Token, arg2: Token) -> Token in
     let name = String(identifier)
-    let arg1 = args.0
-    let arg2 = args.1
     guard let resolved = self.binaryFunctions(name) else {
       return .binaryCall(op: nil, name: name, arg1: arg1, arg2: arg2)
     }
@@ -376,9 +359,8 @@ final public class MathParser {
     }
   }
 
-  /// Parser for an operand of an expression. Note that order is important: a function is made up of an identifier
-  /// followed by a parenthetical expression, so it must be before ``parenthetical`` and ``symbolOrVariable``.
-  private lazy var operand: some TokenParser = Parse {
+  /// Parser for negation
+  private lazy var nonNegatedOperand: some TokenParser = Parse {
     ignoreSpaces
     OneOf {
       binaryCall
@@ -389,10 +371,26 @@ final public class MathParser {
     }
   }
 
+  /// Parser for negation
+  private lazy var negatedOperand: some Parser<Substring, Token> = Parse {
+    ignoreSpaces
+    "-"
+    nonNegatedOperand
+  }.map { Token.reducer(lhs: .constant(value: -1.0), rhs: $0, op: (*), name: "*") }
+
+
+  /// Parser for an operand of an expression. Note that order is important: a function call is made up of an identifier
+  /// followed by a parenthetical expression, so it must be before ``parenthetical`` and ``symbolOrVariable``.
+  private lazy var operand: some TokenParser = Parse {
+    OneOf {
+      negatedOperand
+      nonNegatedOperand
+    }
+  }
+
   /// Parser for a math expression. Checks that there is nothing remaining to be parsed.
   private lazy var expression: some TokenParser = Parse {
-    additionAndSubtraction
-    ignoreSpaces
+    self.term
     End()
   }
 }

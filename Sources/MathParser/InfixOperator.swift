@@ -12,13 +12,13 @@ import Parsing
  Based on InfixOperator found in the Arithmetic perf test of https://github.com/pointfreeco/swift-parsing
  If you want support for right-associative operators, check there for a more robust implementation that does both kinds.
  */
-struct LeftAssociativeInfixOperation<Input, Operator: Parser, Operand: Parser>: Parser
+struct InfixOperation<Input, Operator: Parser, Operand: Parser>: Parser
 where Operator.Input == Input,
       Operand.Input == Input,
       Operator.Output == (Operand.Output, Operand.Output) -> Operand.Output {
+  private let associativity: Associativity
   private let `operator`: Operator
   private let operand: Operand
-  private var implied: Operator.Output?
 
   /**
    Construct new parser
@@ -26,18 +26,16 @@ where Operator.Input == Input,
    - parameter operator: the parser that recognizes valid operators at a certain precedence level
    - parameter operand: the parser for values to provide to the operator that may include operations at a higher
    precedence level
-   - parameter implied: an `Operator.Output` value to use when there is no operator to be found in the parse. This is
-   only used to inject a multiplication operation between to operands when configured to do so.
    */
   @inlinable
-  init(_ operator: Operator, higher operand: Operand, implied: Operator.Output? = nil) {
+  init(associativity: Associativity, operator: Operator, higher operand: Operand) {
+    self.associativity = associativity
     self.operator = `operator`
     self.operand = operand
-    self.implied = implied
   }
 }
 
-extension LeftAssociativeInfixOperation {
+extension InfixOperation {
 
   /**
    Implementation of Parser method. Looks for "operand operator operand" sequences. There is a special case when
@@ -49,21 +47,38 @@ extension LeftAssociativeInfixOperation {
    */
   @inlinable
   func parse(_ input: inout Input) rethrows -> Operand.Output {
-    var lhs = try self.operand.parse(&input)
-    var rest = input
-    while true {
-      if let operation = (try? self.operator.parse(&input)) ?? self.implied {
+    switch self.associativity {
+    case .left:
+      var lhs = try self.operand.parse(&input)
+      var rest = input
+      while true {
+        if let operation = (try? self.operator.parse(&input)) {
+          do {
+            let rhs = try self.operand.parse(&input)
+            rest = input
+            lhs = operation(lhs, rhs)
+            continue
+          } catch {
+          }
+        }
+        // Reset and end parse
+        input = rest
+        return lhs
+      }
+    case .right:
+
+      // Build up successive right-associative operations in a stack, which are then applied in reverse order using the
+      // final right-hand operand.
+      var lhs: [(Operator.Output, Operand.Output)] = []
+      while true {
+        let rhs = try self.operand.parse(&input)
         do {
-          let rhs = try self.operand.parse(&input)
-          rest = input
-          lhs = operation(lhs, rhs)
-          continue
+          let operation = try self.operator.parse(&input)
+          lhs.append((operation, rhs))
         } catch {
+          return lhs.reversed().reduce(rhs) { $1.0($1.1, $0) }
         }
       }
-      // Reset and end parse
-      input = rest
-      return lhs
     }
   }
 }
