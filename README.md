@@ -13,8 +13,6 @@ NOTE: v3.1.0 uses swift-parsing v0.12 which requires Xcode 14 and ideally Swift 
 (see their [What's Changed](https://github.com/pointfreeco/swift-parsing/releases/tag/0.12.0) doc for additional details).
 If you need to use an older version, use the tagged 3.0.1 release instead.
 
-**NOTE**: the `enableImpliedMultiplication` feature mentioned below is currently disabled due to an error in implementation. Creating a parser with `true` for this parameter will result in a fatal error being raised.
-
 # Usage Example
 
 ```swift
@@ -43,7 +41,8 @@ failure(error: unexpected input
 By default, the expression parser and evaluator handle the following symbols and functions:
 
 * Constants: `pi` (`π`) and `e`
-* 1-argument functions: `sin`, `cos`, `tan`, `log10`, `ln` (`loge`), `log2`, `exp`, `ceil`, `floor`, `round`, `sqrt` (`√`)
+* 1-argument functions: `sin`, `asin`, `cos`, `acos`, `tan`, `atan`, `log10`, `ln` (`loge`), `log2`, `exp`, `ceil`, 
+`floor`, `round`, `sqrt` (`√`), `cbrt` (cube root), `abs`, `sgn`
 * 2-argument functions: `atan`, `hypot`, `pow` [^1]
 * alternative math operator symbols: `×` for multiplication and `÷` for division (see example above for use of `×`)
 
@@ -106,8 +105,8 @@ considered a valid expression, resolving to `2^3 * 2^4 = 128`, and `4sin(t(pi))`
 
 You can see the entire Wolfram example in the [TestWolfram](Tests/MathParserTests/TestWolfram.swift) test case.
 
-Here is the original example expression from the start of this README file with implied multiplication in use (all of the muliplication symbols 
-have been removed):
+Here is the original example expression from the start of this README file with implied multiplication in use (all of 
+the muliplication symbols have been removed):
 
 ```swift
 let parser = MathParser(enableImpliedMultiplication: true)
@@ -132,16 +131,8 @@ However, for "+" all is well:
 * `2 + 3` => 5
 
 Unfortunately, there is no way to handle this ambiguity between implied multiplication, subtraction and negation when 
-spaces are not used to signify intent. 
-
-Also note that with `enableImpliedMultiplication` enabled, some identifiers can be broken up and treated as 
-multiplications. For instance, the function call  `pie(3.14)` will be broken into `pi` and `e` and multiplied with
-`3.14` to get `
-though one could introduce a symbol called `pie` at the evaluation stage.
-
-symbol defined with the name `pin`, this will be split into `pi` and `n` because `pi` / `π` is a known symbol. The best 
-way to protect from this happening is to not enable `enabledImpliedMultiplication` but an alternative is to always
-separate individual symbols with a space -- or place one inside a pair of parentheses.
+spaces are not used to signify intent. Further, unique symbols must be separated: `xy` is not recognized as two
+variables, but `x y` is. You *can* combine numbers and symbols without spaces: `x2y` will be treated as `x * 2 * y`.
 
 [^1]: Redundant since there is already the `^` operator.
 

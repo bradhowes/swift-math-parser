@@ -58,9 +58,12 @@ final public class MathParser {
 
    - `sin` -- trigonometric function of an angle Θ in radians that represents the the ratio of the length of the side
    of a right triangle that is opposite to angle Θ and to the length of the hypotenuse.
+   - `asin` -- calculates the arc sine of the value such that asin(sin(X)) == X for X in [-1, 1]
    - `cos` -- trigonometric function of an angle Θ in radians that represents the the ratio of the length of the side
    of a right triangle that is adjacent to angle Θ and to the length of the hypotenuse.
+   - `acos` -- calculates the arc cosine of the value such that acos(cos(X)) == X for X in [-1, 1]
    - `tan` -- trigonometric function that is the ratio of the opposite and adjacent sides of the triangle.
+   - `atan` -- calculates the arc tangent of the value such that atan(tan(x)) == X
    - `log10` -- the base-10 logarithm of the given number.
    - `ln` -- the natural (base-e) logarithm of the given number.
    - `loge` -- alias for `ln`.
@@ -76,7 +79,7 @@ final public class MathParser {
    - `sgn` -- return -1 if the given value is negative and 1 if it is positive. If zero, return 0.
    */
   public static let defaultUnaryFunctions: UnaryFunctionDict = [
-    "sin": sin, "cos": cos, "tan": tan,
+    "sin": sin, "asin": asin, "cos": cos, "acos": acos, "tan": tan, "atan": atan,
     "log10": log10, "ln": log, "loge": log, "log2": log2, "exp": exp,
     "ceil": ceil, "floor": floor, "round": round,
     "sqrt": sqrt, "√": sqrt,
