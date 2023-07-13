@@ -121,7 +121,7 @@ Be aware that with implied multiplication enabled, you could encounter strange p
 the "-" operator:
 
 * `2-3` => -6
-* `2 -3 -> -6
+* `2 -3` -> -6
 * `2 - 3` => -1
 
 However, for "+" all is well:
