@@ -166,6 +166,23 @@
                 {
                   "inlineContent" : [
                     {
+                      "code" : "asin",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " – calculates the arc sine of the value such that asin(sin(X)) == X for X in [-1, 1]",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
                       "code" : "cos",
                       "type" : "codeVoice"
                     },
@@ -191,11 +208,45 @@
                 {
                   "inlineContent" : [
                     {
+                      "code" : "acos",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " – calculates the arc cosine of the value such that acos(cos(X)) == X for X in [-1, 1]",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
                       "code" : "tan",
                       "type" : "codeVoice"
                     },
                     {
                       "text" : " – trigonometric function that is the ratio of the opposite and adjacent sides of the triangle.",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "atan",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " – calculates the arc tangent of the value such that atan(tan(x)) == X",
                       "type" : "text"
                     }
                   ],
@@ -399,6 +450,40 @@
                     },
                     {
                       "text" : " – computes the cube-root of the given number",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "abs",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " – always return a positive value",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "sgn",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " – return -1 if the given value is negative and 1 if it is positive. If zero, return 0.",
                       "type" : "text"
                     }
                   ],
