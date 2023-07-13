@@ -12,13 +12,15 @@ import Parsing
  Based on InfixOperator found in the Arithmetic perf test of https://github.com/pointfreeco/swift-parsing
  If you want support for right-associative operators, check there for a more robust implementation that does both kinds.
  */
-struct InfixOperation<Input, Operator: Parser, Operand: Parser>: Parser
-where Operator.Input == Input,
-      Operand.Input == Input,
-      Operator.Output == (Operand.Output, Operand.Output) -> Operand.Output {
+struct InfixOperation: Parser {
+  typealias Input = Substring
+  typealias Output = Token
+
+  private let name: String
   private let associativity: Associativity
-  private let `operator`: Operator
-  private let operand: Operand
+  private let `operator`: any TokenReducerParser
+  private let operand: any TokenParser
+  private let impliedOperation: TokenReducer?
 
   /**
    Construct new parser
@@ -28,10 +30,16 @@ where Operator.Input == Input,
    precedence level
    */
   @inlinable
-  init(associativity: Associativity, operator: Operator, higher operand: Operand) {
+  init(name: String,
+       associativity: Associativity,
+       operator: any TokenReducerParser,
+       operand: any TokenParser,
+       implied: TokenReducer? = nil) {
+    self.name = name
     self.associativity = associativity
     self.operator = `operator`
     self.operand = operand
+    self.impliedOperation = implied
   }
 }
 
@@ -46,30 +54,36 @@ extension InfixOperation {
    - returns: the next output value found in the stream
    */
   @inlinable
-  func parse(_ input: inout Input) rethrows -> Operand.Output {
+  func parse(_ input: inout Input) throws -> Token {
+    // print("\(name) parse: \(input)")
     switch self.associativity {
     case .left:
       var lhs = try self.operand.parse(&input)
+      // print("\(name) lhs: \(lhs)")
       var rest = input
       while true {
-        if let operation = (try? self.operator.parse(&input)) {
+        if let operation = (try? self.operator.parse(&input)) ?? impliedOperation {
+          // print("\(name) op")
           do {
             let rhs = try self.operand.parse(&input)
+            // print("\(name) rhs: \(rhs)")
             rest = input
             lhs = operation(lhs, rhs)
+            // print("\(name) new lhx: \(rhs)")
             continue
           } catch {
           }
         }
         // Reset and end parse
         input = rest
+        // print("\(name) done \(rest)")
         return lhs
       }
     case .right:
 
       // Build up successive right-associative operations in a stack, which are then applied in reverse order using the
       // final right-hand operand.
-      var lhs: [(Operator.Output, Operand.Output)] = []
+      var lhs: [(TokenReducer, Token)] = []
       while true {
         let rhs = try self.operand.parse(&input)
         do {

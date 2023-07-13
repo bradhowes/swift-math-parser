@@ -11,7 +11,7 @@ final class TestWolfram: XCTestCase {
     parser = MathParser()
   }
 
-  func _testWolframExample() {
+  func testWolframExample() {
     // The following equations come from https://www.wolframalpha.com/input?i=Sawsbuck+Winter+Form%E2%80%90like+curve
     // The two parametric functions there were copied verbatim here as xw and yw. The
     let x = """
@@ -343,9 +343,8 @@ sin(21 t + 33/13) + 269/5) θ(3 π - t) θ(t + π)) θ(sqrt(sgn(sin(t/2))))
     let unresolved = xt.unresolved
     XCTAssertTrue(unresolved.variables.contains("t") &&
                   unresolved.variables.count == 1 &&
-                  unresolved.unaryFunctions.contains("sgn") &&
                   unresolved.unaryFunctions.contains("θ") &&
-                  unresolved.unaryFunctions.count == 2 &&
+                  unresolved.unaryFunctions.count == 1 &&
                   unresolved.binaryFunctions.isEmpty)
 
     // The original Wolfram image has t going from 0 to 108π. It requires definitions for `sgn` and `θ`:
@@ -353,10 +352,7 @@ sin(21 t + 33/13) + 269/5) θ(3 π - t) θ(t + π)) θ(sqrt(sgn(sin(t/2))))
     // - θ -- 1 if number is >= 0 else 0
 
     var variables = ["t": 0.0]
-    let unary = [
-      "sgn": { x in x < 0.0 ? -1.0 : (x > 0.0 ? 1.0 : 0.0) },
-      "θ": { x in x < 0.0 ? 0.0 : 1.0 }
-    ]
+    let unary = ["θ": { (x: Double) -> Double in x < 0.0 ? 0.0 : 1.0 }]
 
     let xv = [50.872625489882026,
               33.25107337630128,
@@ -385,7 +381,7 @@ sin(21 t + 33/13) + 269/5) θ(3 π - t) θ(t + π)) θ(sqrt(sgn(sin(t/2))))
       variables["t"] = Double(t) / 10.0 * 108 * .pi
       let x = xt.eval(variables: variables.producer, unaryFunctions: unary.producer)
       let y = yt.eval(variables: variables.producer, unaryFunctions: unary.producer)
-      // print(x, y)
+      print(x, y)
       XCTAssertEqual(xv[t], x, accuracy: 1.0E-8)
       XCTAssertEqual(yv[t], y, accuracy: 1.0E-8)
     }

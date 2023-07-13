@@ -8,79 +8,10 @@ import Foundation
  additional symbols/functions will return a value, though it may be NaN if there were still unresolved symbols or
  functions in the token(s).
  */
+@usableFromInline
 enum Associativity {
   case left
   case right
-}
-
-enum Ops: CaseIterable {
-  case addition
-  case subtraction
-  case multiplication
-  case division
-  case exponentiation
-  case negation
-  case unaryCall(op: MathParser.UnaryFunction?, name: String)
-  case binaryCall(op: MathParser.BinaryFunction?, name: String)
-
-  static var allCases: [Ops] { [.addition, .subtraction, .multiplication, .division, .exponentiation, .negation] }
-
-  var name: String {
-    switch self {
-    case .addition: return "+"
-    case .subtraction: return "-"
-    case .multiplication: return "*"
-    case .division: return "/"
-    case .exponentiation: return "^"
-    case .negation: return "+/-"
-    case let .unaryCall(op: _, name: name): return name
-    case let .binaryCall(op: _, name: name): return name
-    }
-  }
-
-  var binaryOperation: ((Double, Double) -> Double) {
-    switch self {
-    case .addition: return (+)
-    case .subtraction: return (-)
-    case .multiplication: return (*)
-    case .division: return (/)
-    case .exponentiation: return pow
-    default: fatalError("logic error")
-    }
-  }
-
-  var unaryOperation: ((Double) -> Double) {
-    switch self {
-    case .negation: return { -$0 }
-    default: fatalError("logic error")
-    }
-  }
-
-  var precedence: Int {
-    switch self {
-    case .addition: return 1
-    case .subtraction: return 1
-    case .multiplication: return 2
-    case .division: return 2
-    case .exponentiation: return 3
-    case .negation: return 4
-    case .unaryCall: return 5
-    case .binaryCall: return 5
-    }
-  }
-
-  var associativity: Associativity {
-    switch self {
-    case .addition: return .left
-    case .subtraction: return .left
-    case .multiplication: return .left
-    case .division: return .left
-    case .exponentiation: return .right
-    case .negation: return .right
-    case .unaryCall: return .left
-    case .binaryCall: return .left
-    }
-  }
 }
 
 @usableFromInline
@@ -113,34 +44,22 @@ extension Token {
       return value
 
     case .variable(let name):
-      if let value = state.variables(name) {
-        return value
-      } else if state.usingImpliedMultiplication,
-                let token = Token.attemptImpliedMultiplication(name: name.prefix(name.count),
-                                                               variables: state.variables) {
-        return try token.eval(state: state)
-      } else {
-        throw MathParserError(description: "Variable '\(name)' not found")
-      }
+      if let value = state.variables(name) { return value }
+      throw MathParserError(description: "Variable '\(name)' not found")
 
     case let .unaryCall(op, name, arg):
       if let op = op { return op(try arg.eval(state: state)) }
       if let op = state.unaryFunctions(name) { return op(try arg.eval(state: state)) }
       if state.usingImpliedMultiplication,
-         let token = Token.attemptImpliedMultiplication(name: name.prefix(name.count),
-                                                        arg: arg,
-                                                        variables: state.variables,
-                                                        unaryFunctions: state.unaryFunctions) {
-        return try token.eval(state: state)
+         let value = state.variables(name) {
+        return try arg.eval(state: state) * value
       }
       throw MathParserError(description: "Function '\(name)' not found")
 
     case let .binaryCall(op, name, arg1, arg2):
       if let op = op { return op(try arg1.eval(state: state), try arg2.eval(state: state)) }
-      guard let op = state.binaryFunctions(name) else {
-        throw MathParserError(description: "Function '\(name)' not found")
-      }
-      return op(try arg1.eval(state: state), try arg2.eval(state: state))
+      if let op = state.binaryFunctions(name) { return op(try arg1.eval(state: state), try arg2.eval(state: state)) }
+      throw MathParserError(description: "Function '\(name)' not found")
     }
   }
   // swiftlint:enable cyclomatic_complexity
@@ -290,6 +209,9 @@ extension Token {
 
     return nil
   }
+
+  @inlinable
+  static func multiply(lhs: Token, rhs: Token) -> Token { .reducer(lhs: lhs, rhs: rhs, op: (*), name: "*") }
 }
 
 /**

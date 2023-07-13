@@ -90,9 +90,6 @@ evaluator?.eval(unaryFunctionDict: myEvalFuncs) // => 60910.240000000005
 
 # Implied Multiplication
 
-**NOTE**: this feature is currently disabled due to an error in implementation. Creating a parser with `true` for the
-`enableImpliedMultiplication` parameter will result in a fatal error being raise.
-
 One of the original goals of this parser was to be able to accept a Wolfram Alpha math expression more or less as-is
 -- for instance the definition https://www.wolframalpha.com/input/?i=Sawsbuck+Winter+Form%E2%80%90like+curve -- without
 any editing. Here is the start of the textual representation from the above link:
@@ -121,8 +118,27 @@ evaluator.eval("t", value: 0.5) // => 6
 evaluator.eval("t", value: 1.0) // => 0
 ```
 
-Note that with `enableImpliedMultiplication` enabled, `tπ` will be broken into `t` and `π` even though one could have a
-symbol called `tπ`. This eager splitting of a symbol may cause unexpected multiplication. For instance, if you have a 
+Be aware that with implied multiplication enabled, you could encounter strange parsing if you do not use spaces between
+the "-" operator:
+
+* `2-3` => -6
+* `2 -3 -> -6
+* `2 - 3` => -1
+
+However, for "+" all is well:
+
+* `2+3` => 5
+* `2 +3 -> 5
+* `2 + 3` => 5
+
+Unfortunately, there is no way to handle this ambiguity between implied multiplication, subtraction and negation when 
+spaces are not used to signify intent. 
+
+Also note that with `enableImpliedMultiplication` enabled, some identifiers can be broken up and treated as 
+multiplications. For instance, the function call  `pie(3.14)` will be broken into `pi` and `e` and multiplied with
+`3.14` to get `
+though one could introduce a symbol called `pie` at the evaluation stage.
+
 symbol defined with the name `pin`, this will be split into `pi` and `n` because `pi` / `π` is a known symbol. The best 
 way to protect from this happening is to not enable `enabledImpliedMultiplication` but an alternative is to always
 separate individual symbols with a space -- or place one inside a pair of parentheses.

@@ -7,7 +7,7 @@ final class TokenTests: XCTestCase {
 
   let variables = ["a": 3.0, "b": 4.0, "ab": 99.0]
   let unaryFuncs: MathParser.UnaryFunctionMap = { name in
-    if name == "FOO" { return { $0 * 2.0 } }
+    if name == "DOUBLE" { return { $0 * 2.0 } }
     return nil
   }
   let binaryFuncs: MathParser.BinaryFunctionMap = { _ in nil }
@@ -65,23 +65,6 @@ final class TokenTests: XCTestCase {
     XCTAssertTrue(token.unresolved.variables.contains("a") && token.unresolved.binaryFunctions.contains("abc"))
   }
 
-  func testUnaryCallsAndImpliedMultiplication() {
-    XCTAssertEqual(246.90, evalToken(.unaryCall(op: nil, name: "FOO", arg: .constant(value: 123.45))))
-
-    let proc: MathParser.UnaryFunction = { $0 + 321.54 }
-    XCTAssertEqual(444.99, evalToken(.unaryCall(op: proc, name: "+", arg: .constant(value: 123.45))))
-
-    XCTAssertEqual(123.45 * 6.0, evalToken(.unaryCall(op: nil, name: "aFOO", arg: .constant(value: 123.45)),
-                                           usingImpliedMultiplication: true))
-
-    // abFOO(x) -> ab * FOO(x)
-    XCTAssertEqual(99.0 * 123.45 * 2.0, evalToken(.unaryCall(op: nil, name: "abFOO", arg: .constant(value: 123.45)),
-                                                  usingImpliedMultiplication: true))
-    // aaFOO(x) -> a * a * FOO(x)
-    XCTAssertEqual(3.0 * 3.0 * 123.45 * 2.0, evalToken(.unaryCall(op: nil, name: "aaFOO", arg: .constant(value: 123.45)),
-                                                       usingImpliedMultiplication: true))
-  }
-
   func testUnaryCallResolution() {
     let variables = ["t": Double.pi / 4.0]
     XCTAssertTrue(evalToken(.unaryCall(op: nil, name: "sin", arg: .variable(name: "t"))).isNaN)
@@ -99,40 +82,6 @@ final class TokenTests: XCTestCase {
     XCTAssertTrue(Token.binaryCall(op: nil, name: "foo", arg1: .constant(value: 1.2), arg2: .constant(value: 2.1)).unresolved.count == 1)
     XCTAssertTrue(Token.binaryCall(op: hypot, name: "hypot", arg1: .constant(value: 1.2), arg2: .constant(value: 2.1)).unresolved.isEmpty)
     XCTAssertTrue(Token.binaryCall(op: +, name: "+", arg1: .variable(name: "a"), arg2: .constant(value: 1.2)).unresolved.count == 1)
-  }
-
-  func testAttemptImpliedMultiplications() {
-    let variables: (String) -> Double? = { name in
-      switch name {
-      case "a": return 2.0
-      case "b": return 3.0
-      default: return nil
-      }
-    }
-
-    let unaryFunctions: (String) -> ((Double) -> Double)? = { name in
-      switch name {
-      case "foo": return { $0 * 123 }
-      default: return nil
-      }
-    }
-
-    XCTAssertTrue(Token.attemptImpliedMultiplication(name: "foo",
-                                                      arg: .constant(value: 1.2),
-                                                      variables: variables,
-                                                      unaryFunctions: unaryFunctions) == nil)
-    XCTAssertTrue(Token.attemptImpliedMultiplication(name: "abfoo",
-                                                     arg: .constant(value: 1.2),
-                                                     variables: variables,
-                                                     unaryFunctions: unaryFunctions) != nil)
-    XCTAssertTrue(Token.attemptImpliedMultiplication(name: "xyzfoo",
-                                                     arg: .constant(value: 1.2),
-                                                     variables: variables,
-                                                     unaryFunctions: unaryFunctions) == nil)
-    XCTAssertTrue(Token.attemptImpliedMultiplication(name: "xyzbar",
-                                                     arg: .constant(value: 1.2),
-                                                     variables: variables,
-                                                     unaryFunctions: unaryFunctions) == nil)
   }
 
   func testDescription() {

@@ -72,13 +72,17 @@ final public class MathParser {
    - `sqrt` -- computes the square-root of the given number
    - `√` -- same as above but as a Unicode symbol
    - `cbrt` -- computes the cube-root of the given number
+   - `abs` -- always return a positive value
+   - `sgn` -- return -1 if the given value is negative and 1 if it is positive. If zero, return 0.
    */
   public static let defaultUnaryFunctions: UnaryFunctionDict = [
     "sin": sin, "cos": cos, "tan": tan,
     "log10": log10, "ln": log, "loge": log, "log2": log2, "exp": exp,
     "ceil": ceil, "floor": floor, "round": round,
     "sqrt": sqrt, "√": sqrt,
-    "cbrt": cbrt // cube root
+    "cbrt": cbrt, // cube root,
+    "abs": abs,
+    "sgn": { $0 > 0 ? 1 : ($0 < 0 ? -1 : 0) }
   ]
 
   /**
@@ -140,7 +144,6 @@ final public class MathParser {
               binaryFunctionDict: BinaryFunctionDict? = nil,
               enableImpliedMultiplication: Bool = false
   ) {
-    precondition(!enableImpliedMultiplication, "enableImpliedMultiplication unsupported due to errors")
     self.customVariableDict = variableDict
     self.customUnaryFunctionDict = unaryFunctionDict
     self.customBinaryFunctionDict = binaryFunctionDict
@@ -215,11 +218,6 @@ final public class MathParser {
   /// When true, two parsed operands in a row implies multiplication
   private let enableImpliedMultiplication: Bool
 
-  /// Type of the parser that returns a Token
-  private typealias TokenParser = Parser<Substring, Token>
-  private typealias Ary2Parser = Parser<Substring, (Token, Token)>
-  private typealias TokenReducer = (Token, Token) -> Token
-
   /// Parser for start of identifier (constant, variable, function). All must start with a letter.
   private let identifierStart = Parse(input: Substring.self) { Prefix(1) { $0.isLetter } }
 
@@ -227,124 +225,93 @@ final public class MathParser {
   private let identifierRemaining = Parse(input: Substring.self) {
     Prefix { $0.isNumber || $0.isLetter || $0 == Character("_") }
   }
-  /// Parser for a numeric constant
-  private let constant: some TokenParser = Parse { Double.parser().map { Token.constant(value: $0) } }
 
-  /// Parser for addition / subtraction operator.
-  private let additionOrSubtractionOperator: some Parser<Substring, TokenReducer> = Parse {
-    ignoreSpaces
-    OneOf {
-      "+".map { { Token.reducer(lhs: $0, rhs: $1, op: (+), name: "+") } }
-      "-".map { { Token.reducer(lhs: $0, rhs: $1, op: (-), name: "-") } }
-    }
-  }
-
-  /// Parser for multiplication / division operator. Also recognizes × for multiplication and ÷ for division.
-  private let multiplicationOrDivisionOperator: some Parser<Substring, TokenReducer> = Parse {
-    ignoreSpaces
-    OneOf {
-      "*".map { { Token.reducer(lhs: $0, rhs: $1, op: (*), name: "*") } }
-      "×".map { { Token.reducer(lhs: $0, rhs: $1, op: (*), name: "*") } }
-      "/".map { { Token.reducer(lhs: $0, rhs: $1, op: (/), name: "/") } }
-      "÷".map { { Token.reducer(lhs: $0, rhs: $1, op: (/), name: "/") } }
-    }
-  }
-
-  /// Parser for exponentiation (power) operator
-  private let exponentiationOperator: some Parser<Substring, TokenReducer> = Parse {
-    ignoreSpaces
-    "^".map { { Token.reducer(lhs: $0, rhs: $1, op: (pow), name: "^") } }
-  }
-
-  /// Parser for identifier such as a function name or a symbol.
-  private lazy var identifier = Parse(input: Substring.self) {
-    identifierStart
-    identifierRemaining
-  }.map { $0.0 + $0.1 }
-
-  /// Parser for valid addition / subtraction operations. This is the starting point of precedence-involved parsing.
-  /// Use type erasure due to circular references to this parser in others that follow.
-  private lazy var additionAndSubtraction: some TokenParser = InfixOperation(
-    associativity: .left,
-    operator: additionOrSubtractionOperator,
-    higher: multiplicationAndDivision
-  ).eraseToAnyParser()
-
-  /// Parser for multiplication / division operations. Higher precedence than + and -.
-  private lazy var multiplicationAndDivision: some TokenParser = InfixOperation(
-    associativity: .left,
-    operator: multiplicationOrDivisionOperator,
-    higher: exponentiation
-  )
-
-  /// Parser for exponentiation operation. Higher precedence than * and /.
-  private lazy var exponentiation: some TokenParser = InfixOperation(
-    associativity: .right,
-    operator: exponentiationOperator,
-    higher: operand
-  )
-
-  private lazy var symbolOrVariable: some TokenParser = Parse {
-    identifier
-  }.map { (name: Substring) -> Token in
-
-    // If the symbol is defined, use its value.
-    if let value = self.variables(String(name)) {
-      return .constant(value: value)
-    }
-
-    // If implied-multiplication is allowed, look for symbols next to other symbols. This is risky if one symbol name
-    // is a substring of another symbol name -- say `e` and a variable called `value` which will be taken as `value * e`
-    // by the following code. Two solutions to that: don't enable implied multiplication or avoid names that start/end
-    // with other symbols.
-    if self.enableImpliedMultiplication {
-      if let token = Token.attemptImpliedMultiplication(name: name, variables: self.variables) {
-        return token
+  /// Parser for a numeric constant. NOTE: we disallow signed numbers here due to ambiguities that are introduced if
+  /// implied multiplication mode is enabled. We allow for negative values through the negation operation which demands
+  /// that the "-" appear just before the number without any spaces between them.
+  private let constant: some TokenParser = Parse {
+    Not {
+      OneOf {
+        "+"
+        "-"
       }
     }
-
-    // Treat as a symbol that will be resolved when evaluated for a result.
-    return .variable(name: String(name))
+    Double.parser().map { Token.constant(value: $0) }
   }
 
-  /// Parser for expression term. Starts at the lowest precedence operation.
-  private lazy var term: some TokenParser = Lazy {
+  private let multiplicationReducer: TokenReducer = { Token.reducer(lhs: $0, rhs: $1, op: (*), name: "*") }
+  private let divisionReducer: TokenReducer = { Token.reducer(lhs: $0, rhs: $1, op: (/), name: "/") }
+
+  // MARK: - Token Parsers
+
+  private lazy var expression: some TokenParser = Parse {
+    self.subexpression
+    End()
+  }
+
+  private lazy var subexpression: some TokenParser = Lazy {
     self.additionAndSubtraction
     ignoreSpaces
   }
 
-  /// Parser for expression in parentheses.
-  private lazy var parenthetical: some TokenParser = Lazy {
-    "("
-    self.term
-    ")"
+  // MOTE: use type erasure due to circular references to this parser
+  private lazy var additionAndSubtraction: some TokenParser = InfixOperation(
+    name: "AddSub",
+    associativity: .left,
+    operator: additionOrSubtractionOperator,
+    operand: multiplicationAndDivision
+  ).eraseToAnyParser()
+
+  private lazy var multiplicationAndDivision: some TokenParser = InfixOperation(
+    name: "MulDiv",
+    associativity: .left,
+    operator: multiplicationOrDivisionOperator,
+    operand: exponentiation,
+    implied: enableImpliedMultiplication ? self.multiplicationReducer : nil
+  )
+
+  private lazy var exponentiation: some TokenParser = InfixOperation(
+    name: "Pow",
+    associativity: .right,
+    operator: exponentiationOperator,
+    operand: operand
+  )
+
+  /// Parser for an operand of an expression.
+  private lazy var operand: some TokenParser = Parse {
+    ignoreSpaces
+    OneOf {
+      negatedOperand
+      nonNegatedOperand
+    }
   }
 
-  /// Parser for a single argument function call (eg `sin`).
-  private lazy var unaryCall: some TokenParser = Parse {
-    self.identifier
-    "("
-    self.term
-    ")"
-  }.map { (identifier: Substring, arg: Token) -> Token in
-    let name = String(identifier)
-    guard let resolved = self.unaryFunctions(name) else {
-      return .unaryCall(op: nil, name: name, arg: arg)
-    }
-    if case .constant(let value) = arg {
-      return .constant(value: resolved(value))
-    } else {
-      return .unaryCall(op: resolved, name: name, arg: arg)
+  /// Parser for negation. Wraps the operand in a multiplication with -1.
+  /// NOTE: there must not be any separation between the "-" and the operand.
+  private lazy var negatedOperand: some TokenParser = Parse {
+    "-"
+    nonNegatedOperand
+  }.map { Token.reducer(lhs: .constant(value: -1.0), rhs: $0, op: (*), name: "*") }
+
+  /// Parser for an operand of an expression that does not include the negated operand.
+  /// NOTE: order is important since a function call is made up of an identifier
+  /// followed by a parenthetical expression, so it must be before ``parenthetical`` and ``symbolOrVariable``.
+  private lazy var nonNegatedOperand: some TokenParser = Parse {
+    OneOf {
+      binaryCall
+      unaryCall
+      parenthetical
+      symbolOrVariable
+      constant
     }
   }
 
-  /// Parser for a two-argument function call (eg `atan2`).
   private lazy var binaryCall: some TokenParser = Parse {
     self.identifier
     "("
-    self.term
+    self.subexpression
     ","
-    self.term
+    self.subexpression
     ")"
   }.map { (identifier: Substring, arg1: Token, arg2: Token) -> Token in
     let name = String(identifier)
@@ -359,41 +326,73 @@ final public class MathParser {
     }
   }
 
-  /// Parser for negation
-  private lazy var nonNegatedOperand: some TokenParser = Parse {
+  private lazy var unaryCall: some TokenParser = Parse {
+    self.identifier
+    "("
+    self.subexpression
+    ")"
+  }.map { (identifier: Substring, arg: Token) -> Token in
+    let name = String(identifier)
+    if let resolved = self.unaryFunctions(name) {
+      if case .constant(let value) = arg {
+        return .constant(value: resolved(value))
+      }
+      return .unaryCall(op: resolved, name: name, arg: arg)
+    }
+    return .unaryCall(op: nil, name: name, arg: arg)
+  }
+
+  private lazy var parenthetical: some TokenParser = Lazy {
+    "("
+    self.subexpression
+    ")"
+  }
+
+  private lazy var symbolOrVariable: some TokenParser = Parse {
+    identifier
+  }.map { (name: Substring) -> Token in
+    if let value = self.variables(String(name)) {
+      return .constant(value: value)
+    }
+    return .variable(name: String(name))
+  }
+
+  /// Parser for identifier such as a function name or a symbol.
+  private lazy var identifier = Parse(input: Substring.self) {
+    identifierStart
+    identifierRemaining
+  }.map { $0.0 + $0.1 }
+
+  // MARK - Operator Parsers
+
+  private let additionOrSubtractionOperator: some TokenReducerParser = Parse {
     ignoreSpaces
     OneOf {
-      binaryCall
-      unaryCall
-      parenthetical
-      symbolOrVariable
-      constant
+      "+".map { { Token.reducer(lhs: $0, rhs: $1, op: (+), name: "+") } }
+      "-".map { { Token.reducer(lhs: $0, rhs: $1, op: (-), name: "-") } }
     }
   }
 
-  /// Parser for negation
-  private lazy var negatedOperand: some Parser<Substring, Token> = Parse {
+  private lazy var multiplicationOrDivisionOperator: some TokenReducerParser = Parse {
     ignoreSpaces
-    "-"
-    nonNegatedOperand
-  }.map { Token.reducer(lhs: .constant(value: -1.0), rhs: $0, op: (*), name: "*") }
-
-
-  /// Parser for an operand of an expression. Note that order is important: a function call is made up of an identifier
-  /// followed by a parenthetical expression, so it must be before ``parenthetical`` and ``symbolOrVariable``.
-  private lazy var operand: some TokenParser = Parse {
     OneOf {
-      negatedOperand
-      nonNegatedOperand
+      "*".map { self.multiplicationReducer }
+      "×".map { self.multiplicationReducer }
+      "/".map { self.divisionReducer }
+      "÷".map { self.divisionReducer }
     }
   }
 
-  /// Parser for a math expression. Checks that there is nothing remaining to be parsed.
-  private lazy var expression: some TokenParser = Parse {
-    self.term
-    End()
+  private let exponentiationOperator: some TokenReducerParser = Parse {
+    ignoreSpaces
+    "^".map { { Token.reducer(lhs: $0, rhs: $1, op: (pow), name: "^") } }
   }
 }
 
 /// Common expression for ignoring spaces in other parsers
 private let ignoreSpaces = Skip { Optionally { Prefix<Substring> { $0.isWhitespace } } }
+/// Type of the parser that returns a Token
+
+typealias TokenParser = Parser<Substring, Token>
+typealias TokenReducer = (Token, Token) -> Token
+typealias TokenReducerParser = Parser<Substring, TokenReducer>
