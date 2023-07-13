@@ -131,7 +131,9 @@ However, for "+" all is well:
 * `2 + 3` => 5
 
 Unfortunately, there is no way to handle this ambiguity between implied multiplication, subtraction and negation when 
-spaces are not used to signify intent. Further, unique symbols must be separated: `xy` is not recognized as two
+spaces are not used to signify intent. 
+
+Starting with v3.4.0, unique symbols must be separated: `xy` is not recognized as two
 variables, but `x y` is. You *can* combine numbers and symbols without spaces: `x2y` will be treated as `x * 2 * y`.
 
 [^1]: Redundant since there is already the `^` operator.
