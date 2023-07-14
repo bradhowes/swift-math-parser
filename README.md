@@ -147,7 +147,7 @@ unary function map from `MathParser`:
 As you can see, this could lead to erroneous resolution of variable names and functions, but this behavior is only used
 when the initial lookup of the name fails, and it is never performed when the symbol names are separated by a space.
 However, if you make a mistake and forget to provide the definition of a custom variable or function, it could provide
-a value instead of an error. For instance, consider evaluating `tabs(3)` where `t` is a custom variable set to `1.2`
+a value instead of an error. For instance, consider evaluating `tabs(-3)` where `t` is a custom variable set to `1.2`
 and `abs` is a custom function but it is not provided for in the custom unary function map:
 
 * `tabs(-3)` => `1.2 * abs(-3)` => `3.6`
