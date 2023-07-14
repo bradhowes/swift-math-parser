@@ -121,6 +121,15 @@ struct EvalState {
   /// True if using implied multiplication to resolve symbols
   @usableFromInline let usingImpliedMultiplication: Bool
 
+  @inlinable
+  public func findVariable(name: Substring) -> Double? { self.variables(String(name)) }
+
+  @inlinable
+  public func findUnary(name: Substring) -> MathParser.UnaryFunction? { self.unaryFunctions(String(name)) }
+
+  @inlinable
+  public func findBinary(name: Substring) -> MathParser.BinaryFunction? { self.binaryFunctions(String(name)) }
+
   @usableFromInline
   init(variables: @escaping MathParser.VariableMap,
        unaryFunctions: @escaping MathParser.UnaryFunctionMap,

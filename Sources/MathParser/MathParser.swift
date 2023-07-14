@@ -201,8 +201,8 @@ final public class MathParser {
         "-"
       }
     }
-    Double.parser().map { Token.constant(value: $0) }
-  }
+    Double.parser()
+  }.map { Token.constant(value: $0) }
 
   private let multiplicationReducer: TokenReducer = { Token.reducer(lhs: $0, rhs: $1, op: (*), name: "*") }
   private let divisionReducer: TokenReducer = { Token.reducer(lhs: $0, rhs: $1, op: (/), name: "/") }
@@ -271,6 +271,8 @@ final public class MathParser {
     }
   }
 
+  private func findBinary(name: Substring) -> BinaryFunction? { self.binaryFunctions(String(name)) }
+
   private lazy var binaryCall: some TokenParser = Parse {
     self.identifier
     "("
@@ -279,17 +281,18 @@ final public class MathParser {
     self.subexpression
     ")"
   }.map { (identifier: Substring, arg1: Token, arg2: Token) -> Token in
-    let name = String(identifier)
-    guard let resolved = self.binaryFunctions(name) else {
-      return .binaryCall(op: nil, name: name, arg1: arg1, arg2: arg2)
+    guard let resolved = self.findBinary(name: identifier) else {
+      return .binaryCall(op: nil, name: identifier, arg1: arg1, arg2: arg2)
     }
     if case let .constant(value1) = arg1,
        case let .constant(value2) = arg2 {
       return .constant(value: resolved(value1, value2))
     } else {
-      return .binaryCall(op: resolved, name: name, arg1: arg1, arg2: arg2)
+      return .binaryCall(op: resolved, name: identifier, arg1: arg1, arg2: arg2)
     }
   }
+
+  private func findUnary(name: Substring) -> UnaryFunction? { self.unaryFunctions(String(name)) }
 
   private lazy var unaryCall: some TokenParser = Parse {
     self.identifier
@@ -297,14 +300,13 @@ final public class MathParser {
     self.subexpression
     ")"
   }.map { (identifier: Substring, arg: Token) -> Token in
-    let name = String(identifier)
-    if let resolved = self.unaryFunctions(name) {
+    if let resolved = self.findUnary(name: identifier) {
       if case .constant(let value) = arg {
         return .constant(value: resolved(value))
       }
-      return .unaryCall(op: resolved, name: name, arg: arg)
+      return .unaryCall(op: resolved, name: identifier, arg: arg)
     }
-    return .unaryCall(op: nil, name: name, arg: arg)
+    return .unaryCall(op: nil, name: identifier, arg: arg)
   }
 
   private lazy var parenthetical: some TokenParser = Lazy {
@@ -313,13 +315,15 @@ final public class MathParser {
     ")"
   }
 
+  private func findVariable(name: Substring) -> Double? { self.variables(String(name)) }
+
   private lazy var symbolOrVariable: some TokenParser = Parse {
     identifier
-  }.map { (name: Substring) -> Token in
-    if let value = self.variables(String(name)) {
+  }.map { (identifier: Substring) -> Token in
+    if let value = self.findVariable(name: identifier) {
       return .constant(value: value)
     }
-    return .variable(name: String(name))
+    return .variable(name: identifier)
   }
 
   /// Parser for identifier such as a function name or a symbol.

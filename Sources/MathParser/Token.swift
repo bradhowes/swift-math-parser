@@ -19,11 +19,11 @@ enum Token {
   /// Numerical value from parse
   case constant(value: Double)
   /// Unresolved variable symbol
-  case variable(name: String)
+  case variable(name: Substring)
   /// Unresolved 1-arg function call
-  indirect case unaryCall(op: MathParser.UnaryFunction?, name: String, arg: Token)
+  indirect case unaryCall(op: MathParser.UnaryFunction?, name: Substring, arg: Token)
   /// Unresolved 2-arg function call
-  indirect case binaryCall(op: MathParser.BinaryFunction?, name: String, arg1: Token, arg2: Token)
+  indirect case binaryCall(op: MathParser.BinaryFunction?, name: Substring, arg1: Token, arg2: Token)
 }
 
 extension Token {
@@ -45,7 +45,7 @@ extension Token {
 
     case .variable(let name):
       // Resolved variable, return value
-      if let value = state.variables(name) { return value }
+      if let value = state.findVariable(name: name) { return value }
       // Attempt to convert name into combination of multiplications
       if state.usingImpliedMultiplication,
          let result = splitIdentifier(name, variables: state.variables),
@@ -58,7 +58,7 @@ extension Token {
       // Have function, call on evaluated argument
       if let op = op { return op(try arg.eval(state: state)) }
       // Resolved function, call on evaluated argument
-      if let op = state.unaryFunctions(name) { return op(try arg.eval(state: state)) }
+      if let op = state.findUnary(name: name) { return op(try arg.eval(state: state)) }
       // Attempt to convert name into combination of multiplications and perhaps a function call.
       if state.usingImpliedMultiplication,
          let token = splitUnaryIdentifier(name, arg: arg, unaries: state.unaryFunctions,
@@ -69,7 +69,7 @@ extension Token {
 
     case let .binaryCall(op, name, arg1, arg2):
       if let op = op { return op(try arg1.eval(state: state), try arg2.eval(state: state)) }
-      if let op = state.binaryFunctions(name) { return op(try arg1.eval(state: state), try arg2.eval(state: state)) }
+      if let op = state.findBinary(name: name) { return op(try arg1.eval(state: state), try arg2.eval(state: state)) }
       throw MathParserError.binaryFunctionNotFound(name: name)
     }
   }
@@ -80,9 +80,9 @@ extension Token {
 
   /// Obtain the unresolved symbols for this token an all those that it references in graph form.
   var unresolved: Unresolved {
-    var variables: Set<String> = .init()
-    var unaryFunctions: Set<String> = .init()
-    var binaryFunctions: Set<String> = .init()
+    var variables: Set<Substring> = .init()
+    var unaryFunctions: Set<Substring> = .init()
+    var binaryFunctions: Set<Substring> = .init()
 
     // Using a stack to remember what needs to be worked on next. We don't care about order and we are by definition
     // directed acyclic so this is sufficient (we don't need a queue)
@@ -113,7 +113,7 @@ extension Token: CustomStringConvertible {
   var description: String {
     switch self {
     case let .constant(value: value): return "\(value)"
-    case let .variable(name: name): return name
+    case let .variable(name: name): return String(name)
     case let .unaryCall(_, name, arg): return "\(name)(\(arg.description))"
     case let .binaryCall(_, name, arg1, arg2): return "\(name)(\(arg1.description), \(arg2.description))"
     }
@@ -132,7 +132,7 @@ extension Token {
    - returns: ``.constant`` token if reduction took place; otherwise ``.binaryCall`` token
    */
   @inlinable
-  static func reducer(lhs: Token, rhs: Token, op: @escaping MathParser.BinaryFunction, name: String) -> Token {
+  static func reducer(lhs: Token, rhs: Token, op: @escaping MathParser.BinaryFunction, name: Substring) -> Token {
     if case let .constant(value: lhs) = lhs,
        case let .constant(value: rhs) = rhs {
       return .constant(value: op(lhs, rhs))
@@ -147,11 +147,11 @@ extension Token {
  */
 public struct Unresolved {
   /// The unresolved variables
-  public let variables: Set<String>
+  public let variables: Set<Substring>
   /// The unresolved unary function names
-  public let unaryFunctions: Set<String>
+  public let unaryFunctions: Set<Substring>
   /// The unresolved binary function names
-  public let binaryFunctions: Set<String>
+  public let binaryFunctions: Set<Substring>
   /// True if there are no unresolved symbols
   public var isEmpty: Bool { variables.isEmpty && unaryFunctions.isEmpty && binaryFunctions.isEmpty }
   /// Obtain the number of unresolved symbols
@@ -160,7 +160,7 @@ public struct Unresolved {
     .sum()
   }
 
-  init(variables: Set<String>, unaryFunctions: Set<String>, binaryFunctions: Set<String>) {
+  init(variables: Set<Substring>, unaryFunctions: Set<Substring>, binaryFunctions: Set<Substring>) {
     self.variables = variables
     self.unaryFunctions = unaryFunctions
     self.binaryFunctions = binaryFunctions

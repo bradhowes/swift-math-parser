@@ -9,11 +9,11 @@ public enum MathParserError: Error, Equatable {
   /// Holds error description from swift-parsing library when parsing fails
   case parseFailure(context: String)
   /// Holds error when evaluation fails to find a variable
-  case variableNotFound(name: String)
+  case variableNotFound(name: Substring)
   /// Holds error when evaluation fails to find a unary function
-  case unaryFunctionNotFound(name: String)
+  case unaryFunctionNotFound(name: Substring)
   /// Holds error when evaluation vails to find a binary function
-  case binaryFunctionNotFound(name: String)
+  case binaryFunctionNotFound(name: Substring)
 }
 
 extension MathParserError: CustomStringConvertible {
