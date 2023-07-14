@@ -11,7 +11,6 @@ final class TestWolfram: XCTestCase {
     parser = MathParser()
   }
 
-  func testWolframExample() {
     // The following equations come from https://www.wolframalpha.com/input?i=Sawsbuck+Winter+Form%E2%80%90like+curve
     // The two parametric functions there were copied verbatim here as xw and yw. The
     let x = """
@@ -333,6 +332,7 @@ sin(7 t + 5/6) + 1/10 sin(9 t + 7/6) + 1/22 sin(11 t + 7/9) + 1/35 sin(13 t + 7/
 sin(21 t + 33/13) + 269/5) θ(3 π - t) θ(t + π)) θ(sqrt(sgn(sin(t/2))))
 """
 
+  func testWolframExample() {
     let mp = MathParser(enableImpliedMultiplication: true)
     let xt: Evaluator! = mp.parse(x)
     XCTAssertNotNil(xt)
@@ -384,6 +384,13 @@ sin(21 t + 33/13) + 269/5) θ(3 π - t) θ(t + π)) θ(sqrt(sgn(sin(t/2))))
       print(x, y)
       XCTAssertEqual(xv[t], x, accuracy: 1.0E-8)
       XCTAssertEqual(yv[t], y, accuracy: 1.0E-8)
+    }
+  }
+
+  func testPerformance() {
+    let mp = MathParser(enableImpliedMultiplication: true)
+    self.measure {
+      XCTAssertNotNil(mp.parse(x))
     }
   }
 }

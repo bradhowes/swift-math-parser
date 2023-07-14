@@ -18,35 +18,35 @@ final class UtilsTests: XCTestCase {
   }
 
   func test_splitIdentifier_fails() {
-    XCTAssertNil(splitIdentifier("foo"[...], variables: variables.producer))
+    XCTAssertNil(splitIdentifier("foo", variables: variables.producer))
   }
 
   func test_splitIdentifier_findsLargestMatch() {
-    let result = splitIdentifier("abc"[...], variables: variables.producer)
+    let result = splitIdentifier("abc", variables: variables.producer)
     XCTAssertEqual(7.0, eval(result!.token))
     XCTAssertEqual("c", String(result!.remaining))
   }
 
   func test_splitIdentifier_chains() {
-    let result = splitIdentifier("abaabc"[...], variables: variables.producer)
+    let result = splitIdentifier("abaabc", variables: variables.producer)
     XCTAssertEqual(11.0 * 7, eval(result!.token))
     XCTAssertEqual("c", String(result!.remaining))
   }
 
   func test_splitIdentifier_chainsAndFindsAll() {
-    let result = splitIdentifier("abaab"[...], variables: variables.producer)
+    let result = splitIdentifier("abaab", variables: variables.producer)
     XCTAssertEqual(11.0 * 7, eval(result!.token))
     XCTAssertEqual("", String(result!.remaining))
   }
 
   func test_splitIdentifier_chainsLargestMatch() {
-    let result = splitIdentifier("abaabac"[...], variables: variables.producer)
+    let result = splitIdentifier("abaabac", variables: variables.producer)
     XCTAssertEqual(11 * 11, eval(result!.token))
     XCTAssertEqual("c", String(result!.remaining))
   }
 
   func test_splitIdentifier_chainsRepeatedly() {
-    let result = splitIdentifier("abaababaaaac"[...], variables: variables.producer)
+    let result = splitIdentifier("abaababaaaac", variables: variables.producer)
     XCTAssertEqual(11 * 11 * 5 * 3 * 3 * 3 * 3, eval(result!.token))
     XCTAssertEqual("c", String(result!.remaining))
   }
