@@ -328,7 +328,7 @@ final public class MathParser {
     identifierRemaining
   }.map { $0.0 + $0.1 }
 
-  // MARK - Operator Parsers
+  // MARK: - Operator Parsers
 
   private let additionOrSubtractionOperator: some TokenReducerParser = Parse {
     ignoreSpaces

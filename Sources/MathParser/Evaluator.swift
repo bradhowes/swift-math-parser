@@ -78,7 +78,9 @@ public extension Evaluator {
                      usingImpliedMultiplication: usingImpliedMultiplication))
       return .success(result)
     } catch {
+      // swiftlint:disable force_cast
       return .failure(error as! MathParserError)
+      // swiftlint:enable force_cast
     }
   }
 

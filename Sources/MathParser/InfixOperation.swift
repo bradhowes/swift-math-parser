@@ -113,4 +113,3 @@ extension InfixOperation {
     Self.logSink(msg)
   }
 }
-
