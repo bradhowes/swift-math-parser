@@ -1,6 +1,7 @@
 // Copyright © 2021 Brad Howes. All rights reserved.
 
 import XCTest
+import Parsing
 @testable import MathParser
 
 final class MathParserTests: XCTestCase {
@@ -90,28 +91,36 @@ final class MathParserTests: XCTestCase {
     XCTAssertEqual(2.0 + 3.0, parser.parse("2+3")?.eval())
     XCTAssertEqual(2.0 + 3.0, parser.parse("2+ 3")?.eval())
     XCTAssertEqual(2.0 * -3.0, parser.parse("2 -3")?.eval())
-    XCTAssertEqual(2.0 * -3.0, parser.parse("2-3")?.eval())
+    XCTAssertEqual(2.0 * -3.0, parser.parse("2-3")?.eval()) // !!!
     XCTAssertEqual(2.0 - 3.0, parser.parse("2- 3")?.eval())
   }
 
-  func testImpliedMultiplicationOrUnaryFunction() {
+  func testImpliedMultiplicationOnUnaryFunctionResolution() {
     parser = MathParser(enableImpliedMultiplication: true)
     var variables = ["a": 2.0, "b": 3.0, "c": 4.0]
     var unary = ["bc": { $0 * 10.0}]
     let token = parser.parse("abc(3)")
-    XCTAssertTrue(token!.eval(variables: variables.producer, unaryFunctions: unary.producer).isNaN)
+    XCTAssertEqual(1, token?.unresolved.unaryFunctions.count)
+    XCTAssertEqual(2.0 * 3.0 * 10, token!.eval(variables: variables.producer, unaryFunctions: unary.producer))
+
     unary["abc"] = { $0 + 14 }
+    XCTAssertEqual(17, token!.eval(variables: variables.producer, unaryFunctions: unary.producer))
+
     variables["abc"] = 24
-    XCTAssertEqual(72, token!.eval(variables: variables.producer))
+    XCTAssertEqual(17, token!.eval(variables: variables.producer, unaryFunctions: unary.producer))
+
+    XCTAssertEqual(72.0, token!.eval(variables: variables.producer))
   }
 
-  func testConstants() {
+  func testImpliedMultiplicationOnConstants() {
     let parser = MathParser(enableImpliedMultiplication: true)
     XCTAssertEqual(.pi, parser.parse("pi")?.eval())
     XCTAssertEqual(.pi, parser.parse("π")?.eval())
+    XCTAssertEqual(.pi * .pi, parser.parse("ππ")?.eval())
     XCTAssertEqual(.pi, parser.parse("(pi)")?.eval())
     XCTAssertEqual(2 * .pi, parser.parse("2(pi)")?.eval())
     XCTAssertEqual(2 * .pi, parser.parse("2pi")?.eval())
+    XCTAssertEqual(.e * .pi, parser.parse("pie")?.eval())
   }
 
   func testAddition() {
@@ -412,12 +421,22 @@ final class MathParserTests: XCTestCase {
   func testReadMeExample3() {
     let parser = MathParser(enableImpliedMultiplication: true)
     let evaluator = parser.parse("4 sin(t π) + 2 * sin(t π)")
+    let proc: (Double) -> Double = { 4 * sin($0 * .pi) + 2 * sin($0 * .pi) }
     for t in [0.0, 0.25, 0.5] {
       let v = evaluator!.eval("t", value: t)
-      XCTAssertEqual(4 * sin(t * .pi) + 2 * sin(t * .pi), v)
+      XCTAssertEqual(proc(t), v)
     }
     let v = evaluator!.eval("u", value: 1.0)
     XCTAssertTrue(v.isNaN)
+    XCTAssertEqual(try! evaluator!.evalResult("t", value: 0.25).get(), proc(0.25))
+
+    guard case .failure(let error) = evaluator!.evalResult("u", value: 0.25),
+          case MathParserError.variableNotFound(let name) = error,
+          name == "t"
+    else {
+      XCTFail("Unexpected result or error")
+      return
+    }
   }
 
   func testVariableDict() {
@@ -451,24 +470,6 @@ final class MathParserTests: XCTestCase {
     let binaryMap: [String: (Double, Double) -> Double] = ["a": { $0 + $1 }]
     let parser = MathParser(binaryFunctions: binaryMap.producer, binaryFunctionDict: ["a": { $0 * $1}])
     XCTAssertEqual(4.6, parser.parse("a(1.2, 3.4)")?.value)
-  }
-
-  func testDeprecations() {
-    XCTAssertTrue(!MathParser.defaultSymbols.isEmpty)
-    XCTAssertNotNil(MathParser.init(symbols: nil).symbols)
-    XCTAssertNotNil(MathParser.init(symbols: nil, binaryFunctions: nil).symbols)
-    XCTAssertNotNil(MathParser.init(symbols: { _ in nil },
-                                    functions: { _ in nil },
-                                    enableImpliedMultiplication: true).symbols)
-    XCTAssertNotNil(MathParser.init(symbols: nil,
-                                    functions:  nil,
-                                    enableImpliedMultiplication: true).symbols)
-
-    XCTAssertEqual(15, parser.parse("5 * 3")?.eval(symbols: nil))
-    XCTAssertTrue(parser.parse("5 * afwef")?.eval(symbols: nil).isNaN ?? false)
-
-    // Invoke the default binaryFunctionFunctions.producer
-    XCTAssertTrue(MathParser.init(symbols: nil, functions: nil).parse("hypot(4.0, 5.0)") != nil)
   }
 
   func expectFailure(result: Result<Evaluator, MathParserError>, expected: String) {
@@ -543,5 +544,39 @@ error: unexpected input
   func testParseWithErrorReadme() {
     let evaluator = parser.parseResult("4 × sin(t × π")
     print(evaluator)
+  }
+
+  func testInfixOperationLoggingWorks() {
+    let opParser: some TokenReducerParser = Parse {
+      "$".map { { Token.reducer(lhs: $0, rhs: $1, op: (*), name: "$") } }
+    }
+
+    let tokenParser: some TokenParser = Parse {
+      Double.parser().map { Token.constant(value: $0) }
+    }
+
+    var parser = InfixOperation(name: "testing", associativity: .left,
+                                operator: opParser,
+                                operand: tokenParser,
+                                implied: nil,
+                                logging: true)
+
+    let input = "123$456"
+    var value = try? parser.parse(input[...])
+    XCTAssertNotNil(value)
+
+    var logged = false
+    InfixOperation.logSink = { msg in
+      logged = true
+      print(msg)
+    }
+
+    parser.logging = false
+    value = try? parser.parse(input[...])
+    XCTAssertFalse(logged)
+
+    parser.logging = true
+    value = try? parser.parse(input[...])
+    XCTAssertTrue(logged)
   }
 }

@@ -25,9 +25,6 @@ final public class MathParser {
   public typealias UnaryFunction = (Double) -> Double
   /// Type definition for a reduction of two `Double` values to one such as by a 2-argument function.
   public typealias BinaryFunction = (Double, Double) -> Double
-  /// Deprecated
-  @available(*, deprecated, message: "Use VariableMap instead.")
-  public typealias SymbolMap = (String) -> Double?
   /// Mapping of variable names to an optional Double.
   public typealias VariableMap = (String) -> Double?
   /// Dictionary of variable names and their values.
@@ -40,7 +37,8 @@ final public class MathParser {
   public typealias BinaryFunctionMap = (String) -> BinaryFunction?
   /// Dictionary of binary function names and their implementations.
   public typealias BinaryFunctionDict = [String: BinaryFunction]
-
+  /// Return value for the ``parseResult`` method.
+  public typealias Result = Swift.Result<Evaluator, MathParserError>
   /**
    Default symbols to use for parsing.
 
@@ -49,9 +47,6 @@ final public class MathParser {
    - `e` -- the transcendental number that is the base of natural logarithms
    */
   public static let defaultVariables: [String: Double] = ["pi": .pi, "π": .pi, "e": .e]
-
-  @available(*, deprecated, message: "Use defaultVariables class attribute instead.")
-  public static var defaultSymbols: [String: Double] { defaultVariables }
 
   /**
    Default 1-argument functions to use for parsing and evaluation.
@@ -106,14 +101,8 @@ final public class MathParser {
 
   /// Symbol/variable mapping to use during parsing and perhaps evaluation
   public let variables: VariableMap
-
-  /// Symbol/variable mapping to use during parsing and perhaps evaluation
-  @available(*, deprecated, message: "Use variables attribute instead.")
-  public var symbols: VariableMap { variables }
-
   /// Function mapping to use during parsing and perhaps evaluation
   public let unaryFunctions: UnaryFunctionMap
-
   /// Function mapping to use during parsing and perhaps evaluation
   public let binaryFunctions: BinaryFunctionMap
 
@@ -157,33 +146,6 @@ final public class MathParser {
     self.enableImpliedMultiplication = enableImpliedMultiplication
   }
 
-  @available(*, deprecated, message: "Use init with variables and binaryFunction parameters.")
-  public init(symbols: SymbolMap?,
-              unaryFunctions: UnaryFunctionMap? = nil,
-              binaryFunctions: BinaryFunctionMap? = nil,
-              enableImpliedMultiplication: Bool = false) {
-    self.variables = symbols ?? Self.defaultVariables.producer
-    self.unaryFunctions = unaryFunctions ?? Self.defaultUnaryFunctions.producer
-    self.binaryFunctions = binaryFunctions ?? Self.defaultBinaryFunctions.producer
-    self.enableImpliedMultiplication = enableImpliedMultiplication
-    self.customVariableDict = nil
-    self.customUnaryFunctionDict = nil
-    self.customBinaryFunctionDict = nil
-  }
-
-  @available(*, deprecated, message: "Use init with variables and binaryFunction parameters.")
-  public init(symbols: SymbolMap?,
-              functions: UnaryFunctionMap? = nil,
-              enableImpliedMultiplication: Bool = false) {
-    self.variables = symbols ?? Self.defaultVariables.producer
-    self.unaryFunctions = functions ?? Self.defaultUnaryFunctions.producer
-    self.binaryFunctions = Self.defaultBinaryFunctions.producer
-    self.enableImpliedMultiplication = enableImpliedMultiplication
-    self.customVariableDict = nil
-    self.customUnaryFunctionDict = nil
-    self.customBinaryFunctionDict = nil
-  }
-
   // MARK: -
 
   /**
@@ -207,12 +169,12 @@ final public class MathParser {
    - parameter text: the expression to parse
    - returns: `Result` enum
    */
-  public func parseResult(_ text: String) -> Result<Evaluator, MathParserError> {
+  public func parseResult(_ text: String) -> Result {
     do {
       let token = try expression.parse(text)
       return .success(Evaluator(token: token, usingImpliedMultiplication: enableImpliedMultiplication))
     } catch {
-      return .failure(MathParserError(description: "\(error)"))
+      return .failure(.parseFailure(context: "\(error)"))
     }
   }
 

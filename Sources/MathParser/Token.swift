@@ -44,22 +44,33 @@ extension Token {
       return value
 
     case .variable(let name):
+      // Resolved variable, return value
       if let value = state.variables(name) { return value }
-      throw MathParserError(description: "Variable '\(name)' not found")
+      // Attempt to convert name into combination of multiplications
+      if state.usingImpliedMultiplication,
+         let result = splitIdentifier(name, variables: state.variables),
+         result.remaining.isEmpty {
+        return try result.token.eval(state: state)
+      }
+      throw MathParserError.variableNotFound(name: name)
 
     case let .unaryCall(op, name, arg):
+      // Have function, call on evaluated argument
       if let op = op { return op(try arg.eval(state: state)) }
+      // Resolved function, call on evaluated argument
       if let op = state.unaryFunctions(name) { return op(try arg.eval(state: state)) }
+      // Attempt to convert name into combination of multiplications and perhaps a function call.
       if state.usingImpliedMultiplication,
-         let value = state.variables(name) {
-        return try arg.eval(state: state) * value
+         let token = splitUnaryIdentifier(name, arg: arg, unaries: state.unaryFunctions,
+                                          variables: state.variables) {
+        return try token.eval(state: state)
       }
-      throw MathParserError(description: "Function '\(name)' not found")
+      throw MathParserError.unaryFunctionNotFound(name: name)
 
     case let .binaryCall(op, name, arg1, arg2):
       if let op = op { return op(try arg1.eval(state: state), try arg2.eval(state: state)) }
       if let op = state.binaryFunctions(name) { return op(try arg1.eval(state: state), try arg2.eval(state: state)) }
-      throw MathParserError(description: "Function '\(name)' not found")
+      throw MathParserError.binaryFunctionNotFound(name: name)
     }
   }
   // swiftlint:enable cyclomatic_complexity

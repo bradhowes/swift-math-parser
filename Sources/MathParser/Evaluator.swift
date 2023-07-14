@@ -5,6 +5,8 @@
  */
 public struct Evaluator {
 
+  public typealias Result = Swift.Result<Double, MathParserError>
+
   /// The parsed token chain that can be evaluated
   @usableFromInline let token: Token
 
@@ -34,18 +36,21 @@ public extension Evaluator {
   /**
    Evaluate the token to obtain a value. By default will use symbol map and function map given to `init`.
 
-   - parameter variables: optional mapping of names to constants to use during evaluation
-   - parameter unaryFunctions: optional mapping of names to 1 parameter functions to use during evaluation
-   - parameter binaryFunctions: optional mapping of names to 2 parameter functions to use during evaluation
+   - parameter variables: optional mapping of names to constants to use during evaluation.
+   Default is to use ``MathParser.defaultVariables`` value.
+   - parameter unaryFunctions: optional mapping of names to 1 parameter functions to use during evaluation.
+   Default is to use ``MathParser.defaultUnaryFunctions``
+   - parameter binaryFunctions: optional mapping of names to 2 parameter functions to use during evaluation.
+   Default is to use ``MathParser.defaultBinaryFunctions``
    - returns: Double value that is NaN when evaluation cannot finish due to unresolved symbol
    */
   @inlinable
   func eval(variables: MathParser.VariableMap? = nil,
             unaryFunctions: MathParser.UnaryFunctionMap? = nil,
             binaryFunctions: MathParser.BinaryFunctionMap? = nil) -> Double {
-    (try? token.eval(state: .init(variables: variables,
-                                  unaryFunctions: unaryFunctions,
-                                  binaryFunctions: binaryFunctions,
+    (try? token.eval(state: .init(variables: variables ?? MathParser.defaultVariables.producer,
+                                  unaryFunctions: unaryFunctions ?? MathParser.defaultUnaryFunctions.producer,
+                                  binaryFunctions: binaryFunctions ?? MathParser.defaultBinaryFunctions.producer,
                                   usingImpliedMultiplication: usingImpliedMultiplication))) ?? .nan
   }
 
@@ -53,34 +58,28 @@ public extension Evaluator {
    Evaluate the token to obtain a `Result` value that indicates a success or failure. The `.success` case holds a valid
    `Double` value, while the `.failure` case holds a string describing the failure.
 
-   - parameter variables: optional mapping of names to constants to use during evaluation
-   - parameter unaryFunctions: optional mapping of names to 1 parameter functions to use during evaluation
-   - parameter binaryFunctions: optional mapping of names to 2 parameter functions to use during evaluation
+   - parameter variables: optional mapping of names to constants to use during evaluation.
+   Default is to use ``MathParser.defaultVariables`` value.
+   - parameter unaryFunctions: optional mapping of names to 1 parameter functions to use during evaluation.
+   Default is to use ``MathParser.defaultUnaryFunctions``
+   - parameter binaryFunctions: optional mapping of names to 2 parameter functions to use during evaluation.
+   Default is to use ``MathParser.defaultBinaryFunctions``
    - returns: `Result` enum
    */
   @inlinable
   func evalResult(variables: MathParser.VariableMap? = nil,
                   unaryFunctions: MathParser.UnaryFunctionMap? = nil,
-                  binaryFunctions: MathParser.BinaryFunctionMap? = nil) -> Result<Double, Error> {
+                  binaryFunctions: MathParser.BinaryFunctionMap? = nil) -> Result {
     do {
-      return .success(try token.eval(state: .init(variables: variables,
-                                                  unaryFunctions: unaryFunctions,
-                                                  binaryFunctions: binaryFunctions,
-                                                  usingImpliedMultiplication: usingImpliedMultiplication)))
+      let result = try token.eval(
+        state: .init(variables: variables ?? MathParser.defaultVariables.producer,
+                     unaryFunctions: unaryFunctions ?? MathParser.defaultUnaryFunctions.producer,
+                     binaryFunctions: binaryFunctions ?? MathParser.defaultBinaryFunctions.producer,
+                     usingImpliedMultiplication: usingImpliedMultiplication))
+      return .success(result)
     } catch {
-      return .failure(error)
+      return .failure(error as! MathParserError)
     }
-  }
-
-  @available(*, deprecated, message: "Use init with variables parameter.")
-  @inlinable
-  func eval(symbols: MathParser.SymbolMap?,
-            unaryFunctions: MathParser.UnaryFunctionMap? = nil,
-            binaryFunctions: MathParser.BinaryFunctionMap? = nil) -> Double {
-    (try? token.eval(state: .init(variables: symbols,
-                                  unaryFunctions: unaryFunctions,
-                                  binaryFunctions: binaryFunctions,
-                                  usingImpliedMultiplication: usingImpliedMultiplication))) ?? .nan
   }
 
   /**
@@ -91,10 +90,18 @@ public extension Evaluator {
    */
   @inlinable
   func eval(_ name: String, value: Double) -> Double {
-    (try? token.eval(state: .init(variables: {$0 == name ? value : nil},
-                                  unaryFunctions: nil,
-                                  binaryFunctions: nil,
-                                  usingImpliedMultiplication: usingImpliedMultiplication))) ?? .nan
+    eval(variables: {$0 == name ? value : nil})
+  }
+
+  /**
+   Convenience method to evaluate an expression with one unknown symbol.
+
+   - parameter name: the name of a symbol to resolve
+   - parameter value: the value to use for the symbol
+   */
+  @inlinable
+  func evalResult(_ name: String, value: Double) -> Result {
+    evalResult(variables: {$0 == name ? value : nil})
   }
 }
 
@@ -113,13 +120,13 @@ struct EvalState {
   @usableFromInline let usingImpliedMultiplication: Bool
 
   @usableFromInline
-  init(variables: MathParser.VariableMap?,
-       unaryFunctions: MathParser.UnaryFunctionMap?,
-       binaryFunctions: MathParser.BinaryFunctionMap?,
+  init(variables: @escaping MathParser.VariableMap,
+       unaryFunctions: @escaping MathParser.UnaryFunctionMap,
+       binaryFunctions: @escaping MathParser.BinaryFunctionMap,
        usingImpliedMultiplication: Bool) {
-    self.variables = variables ?? { _ in nil }
-    self.unaryFunctions = unaryFunctions ?? { _ in nil }
-    self.binaryFunctions = binaryFunctions ?? { _ in nil }
+    self.variables = variables
+    self.unaryFunctions = unaryFunctions
+    self.binaryFunctions = binaryFunctions
     self.usingImpliedMultiplication = usingImpliedMultiplication
   }
 }

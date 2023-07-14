@@ -10,7 +10,6 @@ import Parsing
  have an alternative case for a failed binary expression.
 
  Based on InfixOperator found in the Arithmetic perf test of https://github.com/pointfreeco/swift-parsing
- If you want support for right-associative operators, check there for a more robust implementation that does both kinds.
  */
 struct InfixOperation: Parser {
   typealias Input = Substring
@@ -21,25 +20,31 @@ struct InfixOperation: Parser {
   private let `operator`: any TokenReducerParser
   private let operand: any TokenParser
   private let impliedOperation: TokenReducer?
+  public var logging: Bool
 
   /**
    Construct new parser
 
+   - parameter name: the name assigned to the parser
+   - parameter associativity: determines how operators bind to their operands
    - parameter operator: the parser that recognizes valid operators at a certain precedence level
    - parameter operand: the parser for values to provide to the operator that may include operations at a higher
    precedence level
+   - parameter impliedOperation: optional ``TokenReducer`` that if present will be used if there is no operator token
    */
   @inlinable
   init(name: String,
        associativity: Associativity,
        operator: any TokenReducerParser,
        operand: any TokenParser,
-       implied: TokenReducer? = nil) {
+       implied: TokenReducer? = nil,
+       logging: Bool = false) {
     self.name = name
     self.associativity = associativity
     self.operator = `operator`
     self.operand = operand
     self.impliedOperation = implied
+    self.logging = logging
   }
 }
 
@@ -55,28 +60,28 @@ extension InfixOperation {
    */
   @inlinable
   func parse(_ input: inout Input) throws -> Token {
-    // print("\(name) parse: \(input)")
+    log("parse", rest: input.prefix(40))
     switch self.associativity {
     case .left:
       var lhs = try self.operand.parse(&input)
-      // print("\(name) lhs: \(lhs)")
+      log("got", lhs: lhs)
       var rest = input
       while true {
         if let operation = (try? self.operator.parse(&input)) ?? impliedOperation {
-          // print("\(name) op")
+          log("got op")
           do {
             let rhs = try self.operand.parse(&input)
-            // print("\(name) rhs: \(rhs)")
+            log("got", rhs: rhs)
             rest = input
             lhs = operation(lhs, rhs)
-            // print("\(name) new lhx: \(rhs)")
+            log("new", lhs: lhs)
             continue
           } catch {
           }
         }
         // Reset and end parse
         input = rest
-        // print("\(name) done \(rest)")
+        log("done", rest: rest.prefix(40))
         return lhs
       }
     case .right:
@@ -95,4 +100,17 @@ extension InfixOperation {
       }
     }
   }
+
+  // Default action is to print log messages. Test case adapts to check logging is working.
+  static var logSink: (String) -> Void = { print($0) }
+
+  private func log(_ msg: String, lhs: Token? = nil, rhs: Token? = nil, rest: Substring? = nil) {
+    guard self.logging else { return }
+    var msg = "\(name) - \(msg)"
+    if let lhs = lhs { msg += " lhs: \(lhs)" }
+    if let rhs = rhs { msg += " rhs: \(rhs)" }
+    if let rest = rest { msg += " rest: \(rest)" }
+    Self.logSink(msg)
+  }
 }
+

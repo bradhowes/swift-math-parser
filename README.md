@@ -63,8 +63,8 @@ evaluation but also obtain a description of the failure when the evaluation fail
 
 # Custom Symbols
 
-Below is an example that provides a custom unary function that returns the twice the value it receives. There is also a custom
-variable called `foo` which holds the constant `123.4`.
+Below is an example that provides a custom unary function that returns the twice the value it receives. There is also a
+custom variable called `foo` which holds the constant `123.4`.
 
 ```swift
 let myVariables = ["foo": 123.4]
@@ -80,7 +80,7 @@ let myEvalFuncs: [String:(Double)->Double] = ["power": {$0 * $0}]
 evaluator?.eval(unaryFunctions: myEvalFuncs.producer) // => 60910.240000000005
 ```
 
-Instead of passing in a closure to access the dictionary of symbols, you can pass the dictionary itself:
+Instead of passing a closure to access the dictionary of symbols, you can pass the dictionary itself:
 
 ```
 let parser = MathParser(variableDict: myVariables, unaryFunctionDict: myFuncs)
@@ -133,8 +133,27 @@ However, for "+" all is well:
 Unfortunately, there is no way to handle this ambiguity between implied multiplication, subtraction and negation when 
 spaces are not used to signify intent. 
 
-Starting with v3.4.0, unique symbols must be separated: `xy` is not recognized as two
-variables, but `x y` is. You *can* combine numbers and symbols without spaces: `x2y` will be treated as `x * 2 * y`.
+## Symbol Splitting
+
+When implied multiplication mode is active and the name of a variable or a 1-parameter (unary) function is not found in
+their corresponding map, the token evaluation routine will attempt to resolve them by splitting the names into two or
+more pieces that all resolve to known variables and/or functions. For example, using the default variable map and 
+unary function map from `MathParser`:
+
+* `pie` => `pi * e`
+* `esin(2π)` => `e * sin(2 * pi)`
+* `eeesgn(-1)` => `e * e * e * -1`
+
+As you can see, this could lead to erroneous resolution of variable names and functions, but this behavior is only used
+when the initial lookup of the name fails, and it is never performed when the symbol names are separated by a space.
+However, if you make a mistake and forget to provide the definition of a custom variable or function, it could provide
+a value instead of an error. For instance, consider evaluating `tabs(3)` where `t` is a custom variable set to `1.2`
+and `abs` is a custom function but it is not provided for in the custom unary function map:
+
+* `tabs(-3)` => `1.2 * abs(-3)` => `3.6`
+
+If implied multiplication had not been active, the evaluator would have correctly reported an issue -- either returning
+NaN or a `Result.failure` describing the missing function.
 
 [^1]: Redundant since there is already the `^` operator.
 
