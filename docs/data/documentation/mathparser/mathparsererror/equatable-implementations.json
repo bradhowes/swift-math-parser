@@ -9,7 +9,7 @@
   },
   "identifier" : {
     "interfaceLanguage" : "swift",
-    "url" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/Error-Implementations"
+    "url" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/Equatable-Implementations"
   },
   "kind" : "article",
   "metadata" : {
@@ -19,7 +19,7 @@
       }
     ],
     "role" : "collectionGroup",
-    "title" : "Error Implementations"
+    "title" : "Equatable Implementations"
   },
   "schemaVersion" : {
     "major" : 0,
@@ -33,15 +33,15 @@
     {
       "generated" : true,
       "identifiers" : [
-        "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/localizedDescription"
+        "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/!=(_:_:)"
       ],
-      "title" : "Instance Properties"
+      "title" : "Operators"
     }
   ],
   "variants" : [
     {
       "paths" : [
-        "\/documentation\/mathparser\/mathparsererror\/error-implementations"
+        "\/documentation\/mathparser\/mathparsererror\/equatable-implementations"
       ],
       "traits" : [
         {
@@ -97,14 +97,22 @@
   "type" : "topic",
   "url" : "\/documentation\/mathparser\/mathparsererror"
 },
-"doc://MathParser/documentation/MathParser/MathParserError/localizedDescription": {
+"doc://MathParser/documentation/MathParser/MathParserError/!=(_:_:)": {
   "abstract" : [
 
   ],
   "fragments" : [
     {
       "kind" : "keyword",
-      "text" : "var"
+      "text" : "static"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "keyword",
+      "text" : "func"
     },
     {
       "kind" : "text",
@@ -112,24 +120,44 @@
     },
     {
       "kind" : "identifier",
-      "text" : "localizedDescription"
+      "text" : "!="
     },
     {
       "kind" : "text",
-      "text" : ": "
+      "text" : " "
+    },
+    {
+      "kind" : "text",
+      "text" : "("
     },
     {
       "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:SS",
-      "text" : "String"
+      "text" : "Self"
+    },
+    {
+      "kind" : "text",
+      "text" : ", "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "text" : "Self"
+    },
+    {
+      "kind" : "text",
+      "text" : ") -> "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sb",
+      "text" : "Bool"
     }
   ],
-  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/localizedDescription",
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/!=(_:_:)",
   "kind" : "symbol",
   "role" : "symbol",
-  "title" : "localizedDescription",
+  "title" : "!=(_:_:)",
   "type" : "topic",
-  "url" : "\/documentation\/mathparser\/mathparsererror\/localizeddescription"
+  "url" : "\/documentation\/mathparser\/mathparsererror\/!=(_:_:)"
 }
 }
 }

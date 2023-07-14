@@ -9,7 +9,7 @@
   },
   "identifier" : {
     "interfaceLanguage" : "swift",
-    "url" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/Error-Implementations"
+    "url" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/CustomStringConvertible-Implementations"
   },
   "kind" : "article",
   "metadata" : {
@@ -19,7 +19,7 @@
       }
     ],
     "role" : "collectionGroup",
-    "title" : "Error Implementations"
+    "title" : "CustomStringConvertible Implementations"
   },
   "schemaVersion" : {
     "major" : 0,
@@ -33,7 +33,7 @@
     {
       "generated" : true,
       "identifiers" : [
-        "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/localizedDescription"
+        "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/description"
       ],
       "title" : "Instance Properties"
     }
@@ -41,7 +41,7 @@
   "variants" : [
     {
       "paths" : [
-        "\/documentation\/mathparser\/mathparsererror\/error-implementations"
+        "\/documentation\/mathparser\/mathparsererror\/customstringconvertible-implementations"
       ],
       "traits" : [
         {
@@ -97,7 +97,7 @@
   "type" : "topic",
   "url" : "\/documentation\/mathparser\/mathparsererror"
 },
-"doc://MathParser/documentation/MathParser/MathParserError/localizedDescription": {
+"doc://MathParser/documentation/MathParser/MathParserError/description": {
   "abstract" : [
 
   ],
@@ -112,7 +112,7 @@
     },
     {
       "kind" : "identifier",
-      "text" : "localizedDescription"
+      "text" : "description"
     },
     {
       "kind" : "text",
@@ -124,12 +124,12 @@
       "text" : "String"
     }
   ],
-  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/localizedDescription",
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/description",
   "kind" : "symbol",
   "role" : "symbol",
-  "title" : "localizedDescription",
+  "title" : "description",
   "type" : "topic",
-  "url" : "\/documentation\/mathparser\/mathparsererror\/localizeddescription"
+  "url" : "\/documentation\/mathparser\/mathparsererror\/description"
 }
 }
 }

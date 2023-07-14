@@ -234,8 +234,6 @@
   "topicSections" : [
     {
       "identifiers" : [
-        "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/init(symbols:functions:enableImpliedMultiplication:)",
-        "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/init(symbols:unaryFunctions:binaryFunctions:enableImpliedMultiplication:)",
         "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/init(variables:variableDict:unaryFunctions:unaryFunctionDict:binaryFunctions:binaryFunctionDict:enableImpliedMultiplication:)"
       ],
       "title" : "Initializers"
@@ -243,7 +241,6 @@
     {
       "identifiers" : [
         "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/binaryFunctions",
-        "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/symbols",
         "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/unaryFunctions",
         "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/variables"
       ],
@@ -261,7 +258,7 @@
         "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/BinaryFunction",
         "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/BinaryFunctionDict",
         "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/BinaryFunctionMap",
-        "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/SymbolMap",
+        "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/Result",
         "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/UnaryFunction",
         "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/UnaryFunctionDict",
         "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/UnaryFunctionMap",
@@ -273,7 +270,6 @@
     {
       "identifiers" : [
         "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/defaultBinaryFunctions",
-        "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/defaultSymbols",
         "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/defaultUnaryFunctions",
         "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/defaultVariables"
       ],
@@ -515,14 +511,21 @@
   "type" : "topic",
   "url" : "\/documentation\/mathparser\/mathparser\/binaryfunctionmap"
 },
-"doc://MathParser/documentation/MathParser/MathParser/SymbolMap": {
+"doc://MathParser/documentation/MathParser/MathParser/Result": {
   "abstract" : [
     {
-      "text" : "Deprecated",
+      "text" : "Return value for the ",
+      "type" : "text"
+    },
+    {
+      "code" : "parseResult",
+      "type" : "codeVoice"
+    },
+    {
+      "text" : " method.",
       "type" : "text"
     }
   ],
-  "deprecated" : true,
   "fragments" : [
     {
       "kind" : "keyword",
@@ -534,21 +537,21 @@
     },
     {
       "kind" : "identifier",
-      "text" : "SymbolMap"
+      "text" : "Result"
     }
   ],
-  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/SymbolMap",
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/Result",
   "kind" : "symbol",
   "navigatorTitle" : [
     {
       "kind" : "identifier",
-      "text" : "SymbolMap"
+      "text" : "Result"
     }
   ],
   "role" : "symbol",
-  "title" : "MathParser.SymbolMap",
+  "title" : "MathParser.Result",
   "type" : "topic",
-  "url" : "\/documentation\/mathparser\/mathparser\/symbolmap"
+  "url" : "\/documentation\/mathparser\/mathparser\/result"
 },
 "doc://MathParser/documentation/MathParser/MathParser/UnaryFunction": {
   "abstract" : [
@@ -828,62 +831,6 @@
   "type" : "topic",
   "url" : "\/documentation\/mathparser\/mathparser\/defaultbinaryfunctions"
 },
-"doc://MathParser/documentation/MathParser/MathParser/defaultSymbols": {
-  "abstract" : [
-
-  ],
-  "deprecated" : true,
-  "fragments" : [
-    {
-      "kind" : "keyword",
-      "text" : "static"
-    },
-    {
-      "kind" : "text",
-      "text" : " "
-    },
-    {
-      "kind" : "keyword",
-      "text" : "var"
-    },
-    {
-      "kind" : "text",
-      "text" : " "
-    },
-    {
-      "kind" : "identifier",
-      "text" : "defaultSymbols"
-    },
-    {
-      "kind" : "text",
-      "text" : ": ["
-    },
-    {
-      "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:SS",
-      "text" : "String"
-    },
-    {
-      "kind" : "text",
-      "text" : " : "
-    },
-    {
-      "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:Sd",
-      "text" : "Double"
-    },
-    {
-      "kind" : "text",
-      "text" : "]"
-    }
-  ],
-  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/defaultSymbols",
-  "kind" : "symbol",
-  "role" : "symbol",
-  "title" : "defaultSymbols",
-  "type" : "topic",
-  "url" : "\/documentation\/mathparser\/mathparser\/defaultsymbols"
-},
 "doc://MathParser/documentation/MathParser/MathParser/defaultUnaryFunctions": {
   "abstract" : [
     {
@@ -995,214 +942,6 @@
   "title" : "defaultVariables",
   "type" : "topic",
   "url" : "\/documentation\/mathparser\/mathparser\/defaultvariables"
-},
-"doc://MathParser/documentation/MathParser/MathParser/init(symbols:functions:enableImpliedMultiplication:)": {
-  "abstract" : [
-
-  ],
-  "deprecated" : true,
-  "fragments" : [
-    {
-      "kind" : "identifier",
-      "text" : "init"
-    },
-    {
-      "kind" : "text",
-      "text" : "("
-    },
-    {
-      "kind" : "externalParam",
-      "text" : "symbols"
-    },
-    {
-      "kind" : "text",
-      "text" : ": "
-    },
-    {
-      "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:10MathParserAAC",
-      "text" : "MathParser"
-    },
-    {
-      "kind" : "text",
-      "text" : "."
-    },
-    {
-      "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:10MathParserAAC9SymbolMapa",
-      "text" : "SymbolMap"
-    },
-    {
-      "kind" : "text",
-      "text" : "?, "
-    },
-    {
-      "kind" : "externalParam",
-      "text" : "functions"
-    },
-    {
-      "kind" : "text",
-      "text" : ": "
-    },
-    {
-      "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:10MathParserAAC",
-      "text" : "MathParser"
-    },
-    {
-      "kind" : "text",
-      "text" : "."
-    },
-    {
-      "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:10MathParserAAC16UnaryFunctionMapa",
-      "text" : "UnaryFunctionMap"
-    },
-    {
-      "kind" : "text",
-      "text" : "?, "
-    },
-    {
-      "kind" : "externalParam",
-      "text" : "enableImpliedMultiplication"
-    },
-    {
-      "kind" : "text",
-      "text" : ": "
-    },
-    {
-      "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:Sb",
-      "text" : "Bool"
-    },
-    {
-      "kind" : "text",
-      "text" : ")"
-    }
-  ],
-  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/init(symbols:functions:enableImpliedMultiplication:)",
-  "kind" : "symbol",
-  "role" : "symbol",
-  "title" : "init(symbols:functions:enableImpliedMultiplication:)",
-  "type" : "topic",
-  "url" : "\/documentation\/mathparser\/mathparser\/init(symbols:functions:enableimpliedmultiplication:)"
-},
-"doc://MathParser/documentation/MathParser/MathParser/init(symbols:unaryFunctions:binaryFunctions:enableImpliedMultiplication:)": {
-  "abstract" : [
-
-  ],
-  "deprecated" : true,
-  "fragments" : [
-    {
-      "kind" : "identifier",
-      "text" : "init"
-    },
-    {
-      "kind" : "text",
-      "text" : "("
-    },
-    {
-      "kind" : "externalParam",
-      "text" : "symbols"
-    },
-    {
-      "kind" : "text",
-      "text" : ": "
-    },
-    {
-      "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:10MathParserAAC",
-      "text" : "MathParser"
-    },
-    {
-      "kind" : "text",
-      "text" : "."
-    },
-    {
-      "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:10MathParserAAC9SymbolMapa",
-      "text" : "SymbolMap"
-    },
-    {
-      "kind" : "text",
-      "text" : "?, "
-    },
-    {
-      "kind" : "externalParam",
-      "text" : "unaryFunctions"
-    },
-    {
-      "kind" : "text",
-      "text" : ": "
-    },
-    {
-      "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:10MathParserAAC",
-      "text" : "MathParser"
-    },
-    {
-      "kind" : "text",
-      "text" : "."
-    },
-    {
-      "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:10MathParserAAC16UnaryFunctionMapa",
-      "text" : "UnaryFunctionMap"
-    },
-    {
-      "kind" : "text",
-      "text" : "?, "
-    },
-    {
-      "kind" : "externalParam",
-      "text" : "binaryFunctions"
-    },
-    {
-      "kind" : "text",
-      "text" : ": "
-    },
-    {
-      "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:10MathParserAAC",
-      "text" : "MathParser"
-    },
-    {
-      "kind" : "text",
-      "text" : "."
-    },
-    {
-      "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:10MathParserAAC17BinaryFunctionMapa",
-      "text" : "BinaryFunctionMap"
-    },
-    {
-      "kind" : "text",
-      "text" : "?, "
-    },
-    {
-      "kind" : "externalParam",
-      "text" : "enableImpliedMultiplication"
-    },
-    {
-      "kind" : "text",
-      "text" : ": "
-    },
-    {
-      "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:Sb",
-      "text" : "Bool"
-    },
-    {
-      "kind" : "text",
-      "text" : ")"
-    }
-  ],
-  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/init(symbols:unaryFunctions:binaryFunctions:enableImpliedMultiplication:)",
-  "kind" : "symbol",
-  "role" : "symbol",
-  "title" : "init(symbols:unaryFunctions:binaryFunctions:enableImpliedMultiplication:)",
-  "type" : "topic",
-  "url" : "\/documentation\/mathparser\/mathparser\/init(symbols:unaryfunctions:binaryfunctions:enableimpliedmultiplication:)"
 },
 "doc://MathParser/documentation/MathParser/MathParser/init(variables:variableDict:unaryFunctions:unaryFunctionDict:binaryFunctions:binaryFunctionDict:enableImpliedMultiplication:)": {
   "abstract" : [
@@ -1494,66 +1233,6 @@
     },
     {
       "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:s6ResultO",
-      "text" : "Result"
-    },
-    {
-      "kind" : "text",
-      "text" : "<"
-    },
-    {
-      "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:10MathParser9EvaluatorV",
-      "text" : "Evaluator"
-    },
-    {
-      "kind" : "text",
-      "text" : ", "
-    },
-    {
-      "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:10MathParser0aB5ErrorV",
-      "text" : "MathParserError"
-    },
-    {
-      "kind" : "text",
-      "text" : ">"
-    }
-  ],
-  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/parseResult(_:)",
-  "kind" : "symbol",
-  "role" : "symbol",
-  "title" : "parseResult(_:)",
-  "type" : "topic",
-  "url" : "\/documentation\/mathparser\/mathparser\/parseresult(_:)"
-},
-"doc://MathParser/documentation/MathParser/MathParser/symbols": {
-  "abstract" : [
-    {
-      "text" : "Symbol\/variable mapping to use during parsing and perhaps evaluation",
-      "type" : "text"
-    }
-  ],
-  "deprecated" : true,
-  "fragments" : [
-    {
-      "kind" : "keyword",
-      "text" : "var"
-    },
-    {
-      "kind" : "text",
-      "text" : " "
-    },
-    {
-      "kind" : "identifier",
-      "text" : "symbols"
-    },
-    {
-      "kind" : "text",
-      "text" : ": "
-    },
-    {
-      "kind" : "typeIdentifier",
       "preciseIdentifier" : "s:10MathParserAAC",
       "text" : "MathParser"
     },
@@ -1563,16 +1242,16 @@
     },
     {
       "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:10MathParserAAC11VariableMapa",
-      "text" : "VariableMap"
+      "preciseIdentifier" : "s:10MathParserAAC6Resulta",
+      "text" : "Result"
     }
   ],
-  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/symbols",
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/parseResult(_:)",
   "kind" : "symbol",
   "role" : "symbol",
-  "title" : "symbols",
+  "title" : "parseResult(_:)",
   "type" : "topic",
-  "url" : "\/documentation\/mathparser\/mathparser\/symbols"
+  "url" : "\/documentation\/mathparser\/mathparser\/parseresult(_:)"
 },
 "doc://MathParser/documentation/MathParser/MathParser/unaryFunctions": {
   "abstract" : [

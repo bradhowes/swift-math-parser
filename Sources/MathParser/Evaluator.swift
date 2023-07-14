@@ -37,11 +37,11 @@ public extension Evaluator {
    Evaluate the token to obtain a value. By default will use symbol map and function map given to `init`.
 
    - parameter variables: optional mapping of names to constants to use during evaluation.
-   Default is to use ``MathParser.defaultVariables`` value.
+   Default is to use `MathParser.defaultVariables` value.
    - parameter unaryFunctions: optional mapping of names to 1 parameter functions to use during evaluation.
-   Default is to use ``MathParser.defaultUnaryFunctions``
+   Default is to use `MathParser.defaultUnaryFunctions`
    - parameter binaryFunctions: optional mapping of names to 2 parameter functions to use during evaluation.
-   Default is to use ``MathParser.defaultBinaryFunctions``
+   Default is to use `MathParser.defaultBinaryFunctions`
    - returns: Double value that is NaN when evaluation cannot finish due to unresolved symbol
    */
   @inlinable
@@ -59,11 +59,11 @@ public extension Evaluator {
    `Double` value, while the `.failure` case holds a string describing the failure.
 
    - parameter variables: optional mapping of names to constants to use during evaluation.
-   Default is to use ``MathParser.defaultVariables`` value.
+   Default is to use `MathParser.defaultVariables` value.
    - parameter unaryFunctions: optional mapping of names to 1 parameter functions to use during evaluation.
-   Default is to use ``MathParser.defaultUnaryFunctions``
+   Default is to use `MathParser.defaultUnaryFunctions`
    - parameter binaryFunctions: optional mapping of names to 2 parameter functions to use during evaluation.
-   Default is to use ``MathParser.defaultBinaryFunctions``
+   Default is to use `MathParser.defaultBinaryFunctions`
    - returns: `Result` enum
    */
   @inlinable

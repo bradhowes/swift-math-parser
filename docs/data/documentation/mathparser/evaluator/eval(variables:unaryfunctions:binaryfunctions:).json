@@ -269,7 +269,23 @@
             {
               "inlineContent" : [
                 {
-                  "text" : "optional mapping of names to constants to use during evaluation",
+                  "text" : "optional mapping of names to constants to use during evaluation.",
+                  "type" : "text"
+                },
+                {
+                  "text" : " ",
+                  "type" : "text"
+                },
+                {
+                  "text" : "Default is to use ",
+                  "type" : "text"
+                },
+                {
+                  "code" : "MathParser.defaultVariables",
+                  "type" : "codeVoice"
+                },
+                {
+                  "text" : " value.",
                   "type" : "text"
                 }
               ],
@@ -283,8 +299,20 @@
             {
               "inlineContent" : [
                 {
-                  "text" : "optional mapping of names to 1 parameter functions to use during evaluation",
+                  "text" : "optional mapping of names to 1 parameter functions to use during evaluation.",
                   "type" : "text"
+                },
+                {
+                  "text" : " ",
+                  "type" : "text"
+                },
+                {
+                  "text" : "Default is to use ",
+                  "type" : "text"
+                },
+                {
+                  "code" : "MathParser.defaultUnaryFunctions",
+                  "type" : "codeVoice"
                 }
               ],
               "type" : "paragraph"
@@ -297,8 +325,20 @@
             {
               "inlineContent" : [
                 {
-                  "text" : "optional mapping of names to 2 parameter functions to use during evaluation",
+                  "text" : "optional mapping of names to 2 parameter functions to use during evaluation.",
                   "type" : "text"
+                },
+                {
+                  "text" : " ",
+                  "type" : "text"
+                },
+                {
+                  "text" : "Default is to use ",
+                  "type" : "text"
+                },
+                {
+                  "code" : "MathParser.defaultBinaryFunctions",
+                  "type" : "codeVoice"
                 }
               ],
               "type" : "paragraph"

@@ -97,11 +97,17 @@
     {
       "identifiers" : [
         "doc:\/\/MathParser\/documentation\/MathParser\/Evaluator\/eval(_:value:)",
-        "doc:\/\/MathParser\/documentation\/MathParser\/Evaluator\/eval(symbols:unaryFunctions:binaryFunctions:)",
         "doc:\/\/MathParser\/documentation\/MathParser\/Evaluator\/eval(variables:unaryFunctions:binaryFunctions:)",
+        "doc:\/\/MathParser\/documentation\/MathParser\/Evaluator\/evalResult(_:value:)",
         "doc:\/\/MathParser\/documentation\/MathParser\/Evaluator\/evalResult(variables:unaryFunctions:binaryFunctions:)"
       ],
       "title" : "Instance Methods"
+    },
+    {
+      "identifiers" : [
+        "doc:\/\/MathParser\/documentation\/MathParser\/Evaluator\/Result"
+      ],
+      "title" : "Type Aliases"
     }
   ],
   "variants" : [
@@ -162,6 +168,37 @@
   "title" : "Evaluator",
   "type" : "topic",
   "url" : "\/documentation\/mathparser\/evaluator"
+},
+"doc://MathParser/documentation/MathParser/Evaluator/Result": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "typealias"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "Result"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/Evaluator\/Result",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "Result"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "Evaluator.Result",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/evaluator\/result"
 },
 "doc://MathParser/documentation/MathParser/Evaluator/eval(_:value:)": {
   "abstract" : [
@@ -225,119 +262,6 @@
   "title" : "eval(_:value:)",
   "type" : "topic",
   "url" : "\/documentation\/mathparser\/evaluator\/eval(_:value:)"
-},
-"doc://MathParser/documentation/MathParser/Evaluator/eval(symbols:unaryFunctions:binaryFunctions:)": {
-  "abstract" : [
-
-  ],
-  "deprecated" : true,
-  "fragments" : [
-    {
-      "kind" : "keyword",
-      "text" : "func"
-    },
-    {
-      "kind" : "text",
-      "text" : " "
-    },
-    {
-      "kind" : "identifier",
-      "text" : "eval"
-    },
-    {
-      "kind" : "text",
-      "text" : "("
-    },
-    {
-      "kind" : "externalParam",
-      "text" : "symbols"
-    },
-    {
-      "kind" : "text",
-      "text" : ": "
-    },
-    {
-      "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:10MathParserAAC",
-      "text" : "MathParser"
-    },
-    {
-      "kind" : "text",
-      "text" : "."
-    },
-    {
-      "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:10MathParserAAC9SymbolMapa",
-      "text" : "SymbolMap"
-    },
-    {
-      "kind" : "text",
-      "text" : "?, "
-    },
-    {
-      "kind" : "externalParam",
-      "text" : "unaryFunctions"
-    },
-    {
-      "kind" : "text",
-      "text" : ": "
-    },
-    {
-      "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:10MathParserAAC",
-      "text" : "MathParser"
-    },
-    {
-      "kind" : "text",
-      "text" : "."
-    },
-    {
-      "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:10MathParserAAC16UnaryFunctionMapa",
-      "text" : "UnaryFunctionMap"
-    },
-    {
-      "kind" : "text",
-      "text" : "?, "
-    },
-    {
-      "kind" : "externalParam",
-      "text" : "binaryFunctions"
-    },
-    {
-      "kind" : "text",
-      "text" : ": "
-    },
-    {
-      "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:10MathParserAAC",
-      "text" : "MathParser"
-    },
-    {
-      "kind" : "text",
-      "text" : "."
-    },
-    {
-      "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:10MathParserAAC17BinaryFunctionMapa",
-      "text" : "BinaryFunctionMap"
-    },
-    {
-      "kind" : "text",
-      "text" : "?) -> "
-    },
-    {
-      "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:Sd",
-      "text" : "Double"
-    }
-  ],
-  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/Evaluator\/eval(symbols:unaryFunctions:binaryFunctions:)",
-  "kind" : "symbol",
-  "role" : "symbol",
-  "title" : "eval(symbols:unaryFunctions:binaryFunctions:)",
-  "type" : "topic",
-  "url" : "\/documentation\/mathparser\/evaluator\/eval(symbols:unaryfunctions:binaryfunctions:)"
 },
 "doc://MathParser/documentation/MathParser/Evaluator/eval(variables:unaryFunctions:binaryFunctions:)": {
   "abstract" : [
@@ -461,6 +385,78 @@
   "title" : "eval(variables:unaryFunctions:binaryFunctions:)",
   "type" : "topic",
   "url" : "\/documentation\/mathparser\/evaluator\/eval(variables:unaryfunctions:binaryfunctions:)"
+},
+"doc://MathParser/documentation/MathParser/Evaluator/evalResult(_:value:)": {
+  "abstract" : [
+    {
+      "text" : "Convenience method to evaluate an expression with one unknown symbol.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "evalResult"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    },
+    {
+      "kind" : "text",
+      "text" : ", "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "value"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sd",
+      "text" : "Double"
+    },
+    {
+      "kind" : "text",
+      "text" : ") -> "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParser9EvaluatorV",
+      "text" : "Evaluator"
+    },
+    {
+      "kind" : "text",
+      "text" : "."
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParser9EvaluatorV6Resulta",
+      "text" : "Result"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/Evaluator\/evalResult(_:value:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "evalResult(_:value:)",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/evaluator\/evalresult(_:value:)"
 },
 "doc://MathParser/documentation/MathParser/Evaluator/evalResult(variables:unaryFunctions:binaryFunctions:)": {
   "abstract" : [
@@ -602,30 +598,17 @@
     },
     {
       "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:s6ResultO",
+      "preciseIdentifier" : "s:10MathParser9EvaluatorV",
+      "text" : "Evaluator"
+    },
+    {
+      "kind" : "text",
+      "text" : "."
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParser9EvaluatorV6Resulta",
       "text" : "Result"
-    },
-    {
-      "kind" : "text",
-      "text" : "<"
-    },
-    {
-      "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:Sd",
-      "text" : "Double"
-    },
-    {
-      "kind" : "text",
-      "text" : ", "
-    },
-    {
-      "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:s5ErrorP",
-      "text" : "Error"
-    },
-    {
-      "kind" : "text",
-      "text" : ">"
     }
   ],
   "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/Evaluator\/evalResult(variables:unaryFunctions:binaryFunctions:)",

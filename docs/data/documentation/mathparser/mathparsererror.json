@@ -18,11 +18,11 @@
   },
   "kind" : "symbol",
   "metadata" : {
-    "externalID" : "s:10MathParser0aB5ErrorV",
+    "externalID" : "s:10MathParser0aB5ErrorO",
     "fragments" : [
       {
         "kind" : "keyword",
-        "text" : "struct"
+        "text" : "enum"
       },
       {
         "kind" : "text",
@@ -45,8 +45,8 @@
       }
     ],
     "role" : "symbol",
-    "roleHeading" : "Structure",
-    "symbolKind" : "struct",
+    "roleHeading" : "Enumeration",
+    "symbolKind" : "enum",
     "title" : "MathParserError"
   },
   "primaryContentSections" : [
@@ -62,7 +62,7 @@
           "tokens" : [
             {
               "kind" : "keyword",
-              "text" : "struct"
+              "text" : "enum"
             },
             {
               "kind" : "text",
@@ -82,6 +82,7 @@
     {
       "identifiers" : [
         "doc:\/\/MathParser\/s23CustomStringConvertibleP",
+        "doc:\/\/MathParser\/SQ",
         "doc:\/\/MathParser\/s5ErrorP",
         "doc:\/\/MathParser\/s8SendableP"
       ],
@@ -101,19 +102,18 @@
   "topicSections" : [
     {
       "identifiers" : [
-        "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/init(description:)"
+        "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/binaryFunctionNotFound(name:)",
+        "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/parseFailure(context:)",
+        "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/unaryFunctionNotFound(name:)",
+        "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/variableNotFound(name:)"
       ],
-      "title" : "Initializers"
-    },
-    {
-      "identifiers" : [
-        "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/description"
-      ],
-      "title" : "Instance Properties"
+      "title" : "Enumeration Cases"
     },
     {
       "generated" : true,
       "identifiers" : [
+        "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/CustomStringConvertible-Implementations",
+        "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/Equatable-Implementations",
         "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/Error-Implementations"
       ],
       "title" : "Default Implementations"
@@ -133,6 +133,11 @@
   ]
 , 
 "references": {
+"doc://MathParser/SQ": {
+  "identifier" : "doc:\/\/MathParser\/SQ",
+  "title" : "Swift.Equatable",
+  "type" : "unresolvable"
+},
 "doc://MathParser/documentation/MathParser": {
   "abstract" : [
 
@@ -154,7 +159,7 @@
   "fragments" : [
     {
       "kind" : "keyword",
-      "text" : "struct"
+      "text" : "enum"
     },
     {
       "kind" : "text",
@@ -178,6 +183,28 @@
   "type" : "topic",
   "url" : "\/documentation\/mathparser\/mathparsererror"
 },
+"doc://MathParser/documentation/MathParser/MathParserError/CustomStringConvertible-Implementations": {
+  "abstract" : [
+
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/CustomStringConvertible-Implementations",
+  "kind" : "article",
+  "role" : "collectionGroup",
+  "title" : "CustomStringConvertible Implementations",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparsererror\/customstringconvertible-implementations"
+},
+"doc://MathParser/documentation/MathParser/MathParserError/Equatable-Implementations": {
+  "abstract" : [
+
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/Equatable-Implementations",
+  "kind" : "article",
+  "role" : "collectionGroup",
+  "title" : "Equatable Implementations",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparsererror\/equatable-implementations"
+},
 "doc://MathParser/documentation/MathParser/MathParserError/Error-Implementations": {
   "abstract" : [
 
@@ -189,14 +216,17 @@
   "type" : "topic",
   "url" : "\/documentation\/mathparser\/mathparsererror\/error-implementations"
 },
-"doc://MathParser/documentation/MathParser/MathParserError/description": {
+"doc://MathParser/documentation/MathParser/MathParserError/binaryFunctionNotFound(name:)": {
   "abstract" : [
-
+    {
+      "text" : "Holds error when evaluation vails to find a binary function",
+      "type" : "text"
+    }
   ],
   "fragments" : [
     {
       "kind" : "keyword",
-      "text" : "let"
+      "text" : "case"
     },
     {
       "kind" : "text",
@@ -204,33 +234,7 @@
     },
     {
       "kind" : "identifier",
-      "text" : "description"
-    },
-    {
-      "kind" : "text",
-      "text" : ": "
-    },
-    {
-      "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:SS",
-      "text" : "String"
-    }
-  ],
-  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/description",
-  "kind" : "symbol",
-  "role" : "symbol",
-  "title" : "description",
-  "type" : "topic",
-  "url" : "\/documentation\/mathparser\/mathparsererror\/description"
-},
-"doc://MathParser/documentation/MathParser/MathParserError/init(description:)": {
-  "abstract" : [
-
-  ],
-  "fragments" : [
-    {
-      "kind" : "identifier",
-      "text" : "init"
+      "text" : "binaryFunctionNotFound"
     },
     {
       "kind" : "text",
@@ -238,7 +242,7 @@
     },
     {
       "kind" : "externalParam",
-      "text" : "description"
+      "text" : "name"
     },
     {
       "kind" : "text",
@@ -254,12 +258,159 @@
       "text" : ")"
     }
   ],
-  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/init(description:)",
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/binaryFunctionNotFound(name:)",
   "kind" : "symbol",
   "role" : "symbol",
-  "title" : "init(description:)",
+  "title" : "MathParserError.binaryFunctionNotFound(name:)",
   "type" : "topic",
-  "url" : "\/documentation\/mathparser\/mathparsererror\/init(description:)"
+  "url" : "\/documentation\/mathparser\/mathparsererror\/binaryfunctionnotfound(name:)"
+},
+"doc://MathParser/documentation/MathParser/MathParserError/parseFailure(context:)": {
+  "abstract" : [
+    {
+      "text" : "Holds error description from swift-parsing library when parsing fails",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "case"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "parseFailure"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "context"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    },
+    {
+      "kind" : "text",
+      "text" : ")"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/parseFailure(context:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "MathParserError.parseFailure(context:)",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparsererror\/parsefailure(context:)"
+},
+"doc://MathParser/documentation/MathParser/MathParserError/unaryFunctionNotFound(name:)": {
+  "abstract" : [
+    {
+      "text" : "Holds error when evaluation fails to find a unary function",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "case"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "unaryFunctionNotFound"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "name"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    },
+    {
+      "kind" : "text",
+      "text" : ")"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/unaryFunctionNotFound(name:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "MathParserError.unaryFunctionNotFound(name:)",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparsererror\/unaryfunctionnotfound(name:)"
+},
+"doc://MathParser/documentation/MathParser/MathParserError/variableNotFound(name:)": {
+  "abstract" : [
+    {
+      "text" : "Holds error when evaluation fails to find a variable",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "case"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "variableNotFound"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "name"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    },
+    {
+      "kind" : "text",
+      "text" : ")"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/variableNotFound(name:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "MathParserError.variableNotFound(name:)",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparsererror\/variablenotfound(name:)"
 },
 "doc://MathParser/s23CustomStringConvertibleP": {
   "identifier" : "doc:\/\/MathParser\/s23CustomStringConvertibleP",

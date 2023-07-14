@@ -56,7 +56,7 @@
   "kind" : "symbol",
   "metadata" : {
     "extendedModule" : "MathParser",
-    "externalID" : "s:10MathParser9EvaluatorV10evalResult9variables14unaryFunctions06binaryH0s0E0OySds5Error_pGSdSgSScSg_S2dcSgSScSgS2d_SdtcSgSScSgtF",
+    "externalID" : "s:10MathParser9EvaluatorV10evalResult9variables14unaryFunctions06binaryH0s0E0OySdAA0aB5ErrorOGSdSgSScSg_S2dcSgSScSgS2d_SdtcSgSScSgtF",
     "fragments" : [
       {
         "kind" : "keyword",
@@ -154,30 +154,17 @@
       },
       {
         "kind" : "typeIdentifier",
-        "preciseIdentifier" : "s:s6ResultO",
+        "preciseIdentifier" : "s:10MathParser9EvaluatorV",
+        "text" : "Evaluator"
+      },
+      {
+        "kind" : "text",
+        "text" : "."
+      },
+      {
+        "kind" : "typeIdentifier",
+        "preciseIdentifier" : "s:10MathParser9EvaluatorV6Resulta",
         "text" : "Result"
-      },
-      {
-        "kind" : "text",
-        "text" : "<"
-      },
-      {
-        "kind" : "typeIdentifier",
-        "preciseIdentifier" : "s:Sd",
-        "text" : "Double"
-      },
-      {
-        "kind" : "text",
-        "text" : ", "
-      },
-      {
-        "kind" : "typeIdentifier",
-        "preciseIdentifier" : "s:s5ErrorP",
-        "text" : "Error"
-      },
-      {
-        "kind" : "text",
-        "text" : ">"
       }
     ],
     "modules" : [
@@ -302,31 +289,20 @@
               "text" : "? = nil) -> "
             },
             {
+              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/Evaluator",
               "kind" : "typeIdentifier",
-              "preciseIdentifier" : "s:s6ResultO",
+              "preciseIdentifier" : "s:10MathParser9EvaluatorV",
+              "text" : "Evaluator"
+            },
+            {
+              "kind" : "text",
+              "text" : "."
+            },
+            {
+              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/Evaluator\/Result",
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:10MathParser9EvaluatorV6Resulta",
               "text" : "Result"
-            },
-            {
-              "kind" : "text",
-              "text" : "<"
-            },
-            {
-              "kind" : "typeIdentifier",
-              "preciseIdentifier" : "s:Sd",
-              "text" : "Double"
-            },
-            {
-              "kind" : "text",
-              "text" : ", "
-            },
-            {
-              "kind" : "typeIdentifier",
-              "preciseIdentifier" : "s:s5ErrorP",
-              "text" : "Error"
-            },
-            {
-              "kind" : "text",
-              "text" : ">"
             }
           ]
         }
@@ -341,7 +317,23 @@
             {
               "inlineContent" : [
                 {
-                  "text" : "optional mapping of names to constants to use during evaluation",
+                  "text" : "optional mapping of names to constants to use during evaluation.",
+                  "type" : "text"
+                },
+                {
+                  "text" : " ",
+                  "type" : "text"
+                },
+                {
+                  "text" : "Default is to use ",
+                  "type" : "text"
+                },
+                {
+                  "code" : "MathParser.defaultVariables",
+                  "type" : "codeVoice"
+                },
+                {
+                  "text" : " value.",
                   "type" : "text"
                 }
               ],
@@ -355,8 +347,20 @@
             {
               "inlineContent" : [
                 {
-                  "text" : "optional mapping of names to 1 parameter functions to use during evaluation",
+                  "text" : "optional mapping of names to 1 parameter functions to use during evaluation.",
                   "type" : "text"
+                },
+                {
+                  "text" : " ",
+                  "type" : "text"
+                },
+                {
+                  "text" : "Default is to use ",
+                  "type" : "text"
+                },
+                {
+                  "code" : "MathParser.defaultUnaryFunctions",
+                  "type" : "codeVoice"
                 }
               ],
               "type" : "paragraph"
@@ -369,8 +373,20 @@
             {
               "inlineContent" : [
                 {
-                  "text" : "optional mapping of names to 2 parameter functions to use during evaluation",
+                  "text" : "optional mapping of names to 2 parameter functions to use during evaluation.",
                   "type" : "text"
+                },
+                {
+                  "text" : " ",
+                  "type" : "text"
+                },
+                {
+                  "text" : "Default is to use ",
+                  "type" : "text"
+                },
+                {
+                  "code" : "MathParser.defaultBinaryFunctions",
+                  "type" : "codeVoice"
                 }
               ],
               "type" : "paragraph"
@@ -475,6 +491,37 @@
   "title" : "Evaluator",
   "type" : "topic",
   "url" : "\/documentation\/mathparser\/evaluator"
+},
+"doc://MathParser/documentation/MathParser/Evaluator/Result": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "typealias"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "Result"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/Evaluator\/Result",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "Result"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "Evaluator.Result",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/evaluator\/result"
 },
 "doc://MathParser/documentation/MathParser/Evaluator/evalResult(variables:unaryFunctions:binaryFunctions:)": {
   "abstract" : [
@@ -616,30 +663,17 @@
     },
     {
       "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:s6ResultO",
+      "preciseIdentifier" : "s:10MathParser9EvaluatorV",
+      "text" : "Evaluator"
+    },
+    {
+      "kind" : "text",
+      "text" : "."
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParser9EvaluatorV6Resulta",
       "text" : "Result"
-    },
-    {
-      "kind" : "text",
-      "text" : "<"
-    },
-    {
-      "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:Sd",
-      "text" : "Double"
-    },
-    {
-      "kind" : "text",
-      "text" : ", "
-    },
-    {
-      "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:s5ErrorP",
-      "text" : "Error"
-    },
-    {
-      "kind" : "text",
-      "text" : ">"
     }
   ],
   "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/Evaluator\/evalResult(variables:unaryFunctions:binaryFunctions:)",

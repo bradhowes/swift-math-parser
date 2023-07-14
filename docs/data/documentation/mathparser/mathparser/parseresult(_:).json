@@ -27,7 +27,7 @@
   },
   "kind" : "symbol",
   "metadata" : {
-    "externalID" : "s:10MathParserAAC11parseResultys0D0OyAA9EvaluatorVAA0aB5ErrorVGSSF",
+    "externalID" : "s:10MathParserAAC11parseResultys0D0OyAA9EvaluatorVAA0aB5ErrorOGSSF",
     "fragments" : [
       {
         "kind" : "keyword",
@@ -56,30 +56,17 @@
       },
       {
         "kind" : "typeIdentifier",
-        "preciseIdentifier" : "s:s6ResultO",
+        "preciseIdentifier" : "s:10MathParserAAC",
+        "text" : "MathParser"
+      },
+      {
+        "kind" : "text",
+        "text" : "."
+      },
+      {
+        "kind" : "typeIdentifier",
+        "preciseIdentifier" : "s:10MathParserAAC6Resulta",
         "text" : "Result"
-      },
-      {
-        "kind" : "text",
-        "text" : "<"
-      },
-      {
-        "kind" : "typeIdentifier",
-        "preciseIdentifier" : "s:10MathParser9EvaluatorV",
-        "text" : "Evaluator"
-      },
-      {
-        "kind" : "text",
-        "text" : ", "
-      },
-      {
-        "kind" : "typeIdentifier",
-        "preciseIdentifier" : "s:10MathParser0aB5ErrorV",
-        "text" : "MathParserError"
-      },
-      {
-        "kind" : "text",
-        "text" : ">"
       }
     ],
     "modules" : [
@@ -145,33 +132,20 @@
               "text" : ") -> "
             },
             {
+              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser",
               "kind" : "typeIdentifier",
-              "preciseIdentifier" : "s:s6ResultO",
+              "preciseIdentifier" : "s:10MathParserAAC",
+              "text" : "MathParser"
+            },
+            {
+              "kind" : "text",
+              "text" : "."
+            },
+            {
+              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/Result",
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:10MathParserAAC6Resulta",
               "text" : "Result"
-            },
-            {
-              "kind" : "text",
-              "text" : "<"
-            },
-            {
-              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/Evaluator",
-              "kind" : "typeIdentifier",
-              "preciseIdentifier" : "s:10MathParser9EvaluatorV",
-              "text" : "Evaluator"
-            },
-            {
-              "kind" : "text",
-              "text" : ", "
-            },
-            {
-              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError",
-              "kind" : "typeIdentifier",
-              "preciseIdentifier" : "s:10MathParser0aB5ErrorV",
-              "text" : "MathParserError"
-            },
-            {
-              "kind" : "text",
-              "text" : ">"
             }
           ]
         }
@@ -427,6 +401,48 @@
   "type" : "topic",
   "url" : "\/documentation\/mathparser\/mathparser"
 },
+"doc://MathParser/documentation/MathParser/MathParser/Result": {
+  "abstract" : [
+    {
+      "text" : "Return value for the ",
+      "type" : "text"
+    },
+    {
+      "code" : "parseResult",
+      "type" : "codeVoice"
+    },
+    {
+      "text" : " method.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "typealias"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "Result"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/Result",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "Result"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "MathParser.Result",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparser\/result"
+},
 "doc://MathParser/documentation/MathParser/MathParser/parseResult(_:)": {
   "abstract" : [
     {
@@ -470,30 +486,17 @@
     },
     {
       "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:s6ResultO",
+      "preciseIdentifier" : "s:10MathParserAAC",
+      "text" : "MathParser"
+    },
+    {
+      "kind" : "text",
+      "text" : "."
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC6Resulta",
       "text" : "Result"
-    },
-    {
-      "kind" : "text",
-      "text" : "<"
-    },
-    {
-      "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:10MathParser9EvaluatorV",
-      "text" : "Evaluator"
-    },
-    {
-      "kind" : "text",
-      "text" : ", "
-    },
-    {
-      "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:10MathParser0aB5ErrorV",
-      "text" : "MathParserError"
-    },
-    {
-      "kind" : "text",
-      "text" : ">"
     }
   ],
   "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/parseResult(_:)",
@@ -513,7 +516,7 @@
   "fragments" : [
     {
       "kind" : "keyword",
-      "text" : "struct"
+      "text" : "enum"
     },
     {
       "kind" : "text",

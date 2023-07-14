@@ -17,7 +17,8 @@
     "paths" : [
       [
         "doc:\/\/MathParser\/documentation\/MathParser",
-        "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError"
+        "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError",
+        "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/CustomStringConvertible-Implementations"
       ]
     ]
   },
@@ -27,11 +28,12 @@
   },
   "kind" : "symbol",
   "metadata" : {
-    "externalID" : "s:10MathParser0aB5ErrorV11descriptionSSvp",
+    "extendedModule" : "MathParser",
+    "externalID" : "s:10MathParser0aB5ErrorO11descriptionSSvp",
     "fragments" : [
       {
         "kind" : "keyword",
-        "text" : "let"
+        "text" : "var"
       },
       {
         "kind" : "text",
@@ -74,7 +76,7 @@
           "tokens" : [
             {
               "kind" : "keyword",
-              "text" : "let"
+              "text" : "var"
             },
             {
               "kind" : "text",
@@ -92,6 +94,18 @@
               "kind" : "typeIdentifier",
               "preciseIdentifier" : "s:SS",
               "text" : "String"
+            },
+            {
+              "kind" : "text",
+              "text" : " { "
+            },
+            {
+              "kind" : "keyword",
+              "text" : "get"
+            },
+            {
+              "kind" : "text",
+              "text" : " }"
             }
           ]
         }
@@ -142,7 +156,7 @@
   "fragments" : [
     {
       "kind" : "keyword",
-      "text" : "struct"
+      "text" : "enum"
     },
     {
       "kind" : "text",
@@ -166,6 +180,17 @@
   "type" : "topic",
   "url" : "\/documentation\/mathparser\/mathparsererror"
 },
+"doc://MathParser/documentation/MathParser/MathParserError/CustomStringConvertible-Implementations": {
+  "abstract" : [
+
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/CustomStringConvertible-Implementations",
+  "kind" : "article",
+  "role" : "collectionGroup",
+  "title" : "CustomStringConvertible Implementations",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparsererror\/customstringconvertible-implementations"
+},
 "doc://MathParser/documentation/MathParser/MathParserError/description": {
   "abstract" : [
 
@@ -173,7 +198,7 @@
   "fragments" : [
     {
       "kind" : "keyword",
-      "text" : "let"
+      "text" : "var"
     },
     {
       "kind" : "text",

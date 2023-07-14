@@ -37,7 +37,7 @@ final public class MathParser {
   public typealias BinaryFunctionMap = (String) -> BinaryFunction?
   /// Dictionary of binary function names and their implementations.
   public typealias BinaryFunctionDict = [String: BinaryFunction]
-  /// Return value for the ``parseResult`` method.
+  /// Return value for the `parseResult` method.
   public typealias Result = Swift.Result<Evaluator, MathParserError>
   /**
    Default symbols to use for parsing.

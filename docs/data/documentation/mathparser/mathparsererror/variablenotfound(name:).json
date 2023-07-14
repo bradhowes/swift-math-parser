@@ -1,15 +1,7 @@
 {
   "abstract" : [
     {
-      "text" : "Inherited from ",
-      "type" : "text"
-    },
-    {
-      "code" : "Error.localizedDescription",
-      "type" : "codeVoice"
-    },
-    {
-      "text" : ".",
+      "text" : "Holds error when evaluation fails to find a variable",
       "type" : "text"
     }
   ],
@@ -17,23 +9,21 @@
     "paths" : [
       [
         "doc:\/\/MathParser\/documentation\/MathParser",
-        "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError",
-        "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/Error-Implementations"
+        "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError"
       ]
     ]
   },
   "identifier" : {
     "interfaceLanguage" : "swift",
-    "url" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/localizedDescription"
+    "url" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/variableNotFound(name:)"
   },
   "kind" : "symbol",
   "metadata" : {
-    "extendedModule" : "Swift",
-    "externalID" : "s:s5ErrorP10FoundationE20localizedDescriptionSSvp::SYNTHESIZED::s:10MathParser0aB5ErrorO",
+    "externalID" : "s:10MathParser0aB5ErrorO16variableNotFoundyACSS_tcACmF",
     "fragments" : [
       {
         "kind" : "keyword",
-        "text" : "var"
+        "text" : "case"
       },
       {
         "kind" : "text",
@@ -41,7 +31,15 @@
       },
       {
         "kind" : "identifier",
-        "text" : "localizedDescription"
+        "text" : "variableNotFound"
+      },
+      {
+        "kind" : "text",
+        "text" : "("
+      },
+      {
+        "kind" : "externalParam",
+        "text" : "name"
       },
       {
         "kind" : "text",
@@ -51,6 +49,10 @@
         "kind" : "typeIdentifier",
         "preciseIdentifier" : "s:SS",
         "text" : "String"
+      },
+      {
+        "kind" : "text",
+        "text" : ")"
       }
     ],
     "modules" : [
@@ -59,9 +61,9 @@
       }
     ],
     "role" : "symbol",
-    "roleHeading" : "Instance Property",
-    "symbolKind" : "property",
-    "title" : "localizedDescription"
+    "roleHeading" : "Case",
+    "symbolKind" : "case",
+    "title" : "MathParserError.variableNotFound(name:)"
   },
   "primaryContentSections" : [
     {
@@ -76,7 +78,7 @@
           "tokens" : [
             {
               "kind" : "keyword",
-              "text" : "var"
+              "text" : "case"
             },
             {
               "kind" : "text",
@@ -84,7 +86,15 @@
             },
             {
               "kind" : "identifier",
-              "text" : "localizedDescription"
+              "text" : "variableNotFound"
+            },
+            {
+              "kind" : "text",
+              "text" : "("
+            },
+            {
+              "kind" : "externalParam",
+              "text" : "name"
             },
             {
               "kind" : "text",
@@ -97,15 +107,7 @@
             },
             {
               "kind" : "text",
-              "text" : " { "
-            },
-            {
-              "kind" : "keyword",
-              "text" : "get"
-            },
-            {
-              "kind" : "text",
-              "text" : " }"
+              "text" : ")"
             }
           ]
         }
@@ -124,7 +126,7 @@
   "variants" : [
     {
       "paths" : [
-        "\/documentation\/mathparser\/mathparsererror\/localizeddescription"
+        "\/documentation\/mathparser\/mathparsererror\/variablenotfound(name:)"
       ],
       "traits" : [
         {
@@ -180,25 +182,17 @@
   "type" : "topic",
   "url" : "\/documentation\/mathparser\/mathparsererror"
 },
-"doc://MathParser/documentation/MathParser/MathParserError/Error-Implementations": {
+"doc://MathParser/documentation/MathParser/MathParserError/variableNotFound(name:)": {
   "abstract" : [
-
-  ],
-  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/Error-Implementations",
-  "kind" : "article",
-  "role" : "collectionGroup",
-  "title" : "Error Implementations",
-  "type" : "topic",
-  "url" : "\/documentation\/mathparser\/mathparsererror\/error-implementations"
-},
-"doc://MathParser/documentation/MathParser/MathParserError/localizedDescription": {
-  "abstract" : [
-
+    {
+      "text" : "Holds error when evaluation fails to find a variable",
+      "type" : "text"
+    }
   ],
   "fragments" : [
     {
       "kind" : "keyword",
-      "text" : "var"
+      "text" : "case"
     },
     {
       "kind" : "text",
@@ -206,7 +200,15 @@
     },
     {
       "kind" : "identifier",
-      "text" : "localizedDescription"
+      "text" : "variableNotFound"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "name"
     },
     {
       "kind" : "text",
@@ -216,14 +218,18 @@
       "kind" : "typeIdentifier",
       "preciseIdentifier" : "s:SS",
       "text" : "String"
+    },
+    {
+      "kind" : "text",
+      "text" : ")"
     }
   ],
-  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/localizedDescription",
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/variableNotFound(name:)",
   "kind" : "symbol",
   "role" : "symbol",
-  "title" : "localizedDescription",
+  "title" : "MathParserError.variableNotFound(name:)",
   "type" : "topic",
-  "url" : "\/documentation\/mathparser\/mathparsererror\/localizeddescription"
+  "url" : "\/documentation\/mathparser\/mathparsererror\/variablenotfound(name:)"
 }
 }
 }

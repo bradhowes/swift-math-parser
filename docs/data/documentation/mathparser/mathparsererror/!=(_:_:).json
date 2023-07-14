@@ -1,30 +1,35 @@
 {
-  "deprecationSummary" : [
+  "abstract" : [
     {
-      "inlineContent" : [
-        {
-          "text" : "Use defaultVariables class attribute instead.",
-          "type" : "text"
-        }
-      ],
-      "type" : "paragraph"
+      "text" : "Inherited from ",
+      "type" : "text"
+    },
+    {
+      "code" : "Equatable.!=(_:_:)",
+      "type" : "codeVoice"
+    },
+    {
+      "text" : ".",
+      "type" : "text"
     }
   ],
   "hierarchy" : {
     "paths" : [
       [
         "doc:\/\/MathParser\/documentation\/MathParser",
-        "doc:\/\/MathParser\/documentation\/MathParser\/MathParser"
+        "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError",
+        "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/Equatable-Implementations"
       ]
     ]
   },
   "identifier" : {
     "interfaceLanguage" : "swift",
-    "url" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/defaultSymbols"
+    "url" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/!=(_:_:)"
   },
   "kind" : "symbol",
   "metadata" : {
-    "externalID" : "s:10MathParserAAC14defaultSymbolsSDySSSdGvpZ",
+    "extendedModule" : "Swift",
+    "externalID" : "s:SQsE2neoiySbx_xtFZ::SYNTHESIZED::s:10MathParser0aB5ErrorO",
     "fragments" : [
       {
         "kind" : "keyword",
@@ -36,7 +41,7 @@
       },
       {
         "kind" : "keyword",
-        "text" : "var"
+        "text" : "func"
       },
       {
         "kind" : "text",
@@ -44,29 +49,36 @@
       },
       {
         "kind" : "identifier",
-        "text" : "defaultSymbols"
+        "text" : "!="
       },
       {
         "kind" : "text",
-        "text" : ": ["
+        "text" : " "
+      },
+      {
+        "kind" : "text",
+        "text" : "("
       },
       {
         "kind" : "typeIdentifier",
-        "preciseIdentifier" : "s:SS",
-        "text" : "String"
+        "text" : "Self"
       },
       {
         "kind" : "text",
-        "text" : " : "
+        "text" : ", "
       },
       {
         "kind" : "typeIdentifier",
-        "preciseIdentifier" : "s:Sd",
-        "text" : "Double"
+        "text" : "Self"
       },
       {
         "kind" : "text",
-        "text" : "]"
+        "text" : ") -> "
+      },
+      {
+        "kind" : "typeIdentifier",
+        "preciseIdentifier" : "s:Sb",
+        "text" : "Bool"
       }
     ],
     "modules" : [
@@ -74,13 +86,10 @@
         "name" : "MathParser"
       }
     ],
-    "platforms" : [
-
-    ],
     "role" : "symbol",
-    "roleHeading" : "Type Property",
-    "symbolKind" : "property",
-    "title" : "defaultSymbols"
+    "roleHeading" : "Operator",
+    "symbolKind" : "op",
+    "title" : "!=(_:_:)"
   },
   "primaryContentSections" : [
     {
@@ -103,7 +112,7 @@
             },
             {
               "kind" : "keyword",
-              "text" : "var"
+              "text" : "func"
             },
             {
               "kind" : "text",
@@ -111,37 +120,52 @@
             },
             {
               "kind" : "identifier",
-              "text" : "defaultSymbols"
+              "text" : "!="
             },
             {
               "kind" : "text",
-              "text" : ": ["
+              "text" : " "
+            },
+            {
+              "kind" : "text",
+              "text" : "("
+            },
+            {
+              "kind" : "internalParam",
+              "text" : "lhs"
+            },
+            {
+              "kind" : "text",
+              "text" : ": "
             },
             {
               "kind" : "typeIdentifier",
-              "preciseIdentifier" : "s:SS",
-              "text" : "String"
+              "text" : "Self"
             },
             {
               "kind" : "text",
-              "text" : " : "
+              "text" : ", "
+            },
+            {
+              "kind" : "internalParam",
+              "text" : "rhs"
+            },
+            {
+              "kind" : "text",
+              "text" : ": "
             },
             {
               "kind" : "typeIdentifier",
-              "preciseIdentifier" : "s:Sd",
-              "text" : "Double"
+              "text" : "Self"
             },
             {
               "kind" : "text",
-              "text" : "] { "
+              "text" : ") -> "
             },
             {
-              "kind" : "keyword",
-              "text" : "get"
-            },
-            {
-              "kind" : "text",
-              "text" : " }"
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:Sb",
+              "text" : "Bool"
             }
           ]
         }
@@ -160,7 +184,7 @@
   "variants" : [
     {
       "paths" : [
-        "\/documentation\/mathparser\/mathparser\/defaultsymbols"
+        "\/documentation\/mathparser\/mathparsererror\/!=(_:_:)"
       ],
       "traits" : [
         {
@@ -182,49 +206,17 @@
   "type" : "topic",
   "url" : "\/documentation\/mathparser"
 },
-"doc://MathParser/documentation/MathParser/MathParser": {
+"doc://MathParser/documentation/MathParser/MathParserError": {
   "abstract" : [
     {
-      "text" : "A parser for simple math expressions made up of five common operations addition, subtraction, multiplication,",
-      "type" : "text"
-    },
-    {
-      "text" : " ",
-      "type" : "text"
-    },
-    {
-      "text" : "division, and exponentiation, as well as one- and two-argument functions like ",
-      "type" : "text"
-    },
-    {
-      "code" : "sqrt",
-      "type" : "codeVoice"
-    },
-    {
-      "text" : " and ",
-      "type" : "text"
-    },
-    {
-      "code" : "sin",
-      "type" : "codeVoice"
-    },
-    {
-      "text" : ", and named",
-      "type" : "text"
-    },
-    {
-      "text" : " ",
-      "type" : "text"
-    },
-    {
-      "text" : "variables \/ symbols.",
+      "text" : "Error type that describes a failure in either text parsing or token evaluation.",
       "type" : "text"
     }
   ],
   "fragments" : [
     {
       "kind" : "keyword",
-      "text" : "class"
+      "text" : "enum"
     },
     {
       "kind" : "text",
@@ -232,27 +224,26 @@
     },
     {
       "kind" : "identifier",
-      "text" : "MathParser"
+      "text" : "MathParserError"
     }
   ],
-  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser",
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError",
   "kind" : "symbol",
   "navigatorTitle" : [
     {
       "kind" : "identifier",
-      "text" : "MathParser"
+      "text" : "MathParserError"
     }
   ],
   "role" : "symbol",
-  "title" : "MathParser",
+  "title" : "MathParserError",
   "type" : "topic",
-  "url" : "\/documentation\/mathparser\/mathparser"
+  "url" : "\/documentation\/mathparser\/mathparsererror"
 },
-"doc://MathParser/documentation/MathParser/MathParser/defaultSymbols": {
+"doc://MathParser/documentation/MathParser/MathParserError/!=(_:_:)": {
   "abstract" : [
 
   ],
-  "deprecated" : true,
   "fragments" : [
     {
       "kind" : "keyword",
@@ -264,7 +255,7 @@
     },
     {
       "kind" : "keyword",
-      "text" : "var"
+      "text" : "func"
     },
     {
       "kind" : "text",
@@ -272,37 +263,55 @@
     },
     {
       "kind" : "identifier",
-      "text" : "defaultSymbols"
+      "text" : "!="
     },
     {
       "kind" : "text",
-      "text" : ": ["
+      "text" : " "
+    },
+    {
+      "kind" : "text",
+      "text" : "("
     },
     {
       "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:SS",
-      "text" : "String"
+      "text" : "Self"
     },
     {
       "kind" : "text",
-      "text" : " : "
+      "text" : ", "
     },
     {
       "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:Sd",
-      "text" : "Double"
+      "text" : "Self"
     },
     {
       "kind" : "text",
-      "text" : "]"
+      "text" : ") -> "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sb",
+      "text" : "Bool"
     }
   ],
-  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/defaultSymbols",
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/!=(_:_:)",
   "kind" : "symbol",
   "role" : "symbol",
-  "title" : "defaultSymbols",
+  "title" : "!=(_:_:)",
   "type" : "topic",
-  "url" : "\/documentation\/mathparser\/mathparser\/defaultsymbols"
+  "url" : "\/documentation\/mathparser\/mathparsererror\/!=(_:_:)"
+},
+"doc://MathParser/documentation/MathParser/MathParserError/Equatable-Implementations": {
+  "abstract" : [
+
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParserError\/Equatable-Implementations",
+  "kind" : "article",
+  "role" : "collectionGroup",
+  "title" : "Equatable Implementations",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparsererror\/equatable-implementations"
 }
 }
 }
