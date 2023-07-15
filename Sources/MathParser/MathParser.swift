@@ -357,7 +357,7 @@ final public class MathParser {
   }
 
   private let exponentiationOperator: some TokenReducerParser = Parse {
-    Skip { Whitespace(0...) }
+    ignoreSpaces
     "^".map { { Token.reducer(lhs: $0, rhs: $1, op: (pow), name: "^") } }
   }
 
