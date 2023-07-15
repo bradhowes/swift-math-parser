@@ -13,9 +13,9 @@ evaluator.eval("t", value: 0.5) // => 6
 evaluator.eval("t", value: 1.0) // => 0
 ```
 
-The parser will return `nil` if it is unable to completely parse the expression. Alternatively, you can call the
-`parseResult` to obtain a Swift `Result` enum that will have a `MathParserError` value when parsing fails. This
-will contain a description of the parsing failure that comes from the swift-parsing library.
+The parser will return `nil` if it is unable to completely parse the expression. Alternatively, you can call 
+``MathParser/parseResult(_:)`` to obtain a Swift `Result` enum that will have a ``MathParserError`` value when
+parsing fails. This will contain a description of the parsing failure that comes from the swift-parsing library.
 
 ```swift
 let evaluator = parser.parseResult("4 × sin(t × π")
@@ -38,17 +38,16 @@ By default, the expression parser and evaluator handle the following symbols and
 You can reference additional symbols or variables and functions by providing your own mapping functions. There are two
 places where this can be done:
 
-* `MathParser.init`
-* `Evaluator.eval`
+* ``MathParser/init(variables:variableDict:unaryFunctions:unaryFunctionDict:binaryFunctions:binaryFunctionDict:enableImpliedMultiplication:)``
+* ``Evaluator/eval(variables:unaryFunctions:binaryFunctions:)``
 
 If a symbol or function does not exist during an `eval` call, the final result will be `NaN`. If a symbol is resolved
-during parsing, it will be replaced with the symbol's value. Otherwise, it will be resolved during a future `eval` call.
-Same for function calls -- if the function is known during parsing _and_ all arguments have a known value, then it will
-be replaced with the function result. Otherwise, the function call will take place during an `eval` call.
+during parsing, it will be replaced with the symbol's value, and likewise for any math expressions and function calls
+that can be resolved to constant values during the parse. Otherwise, the symbols will be resolved during a future 
+`eval` call. 
 
-You can get the unresolved symbol names from the `Evaluator.unresolved` attribute. It returns three collections for
-unresolved variables, unary functions, and binary function names. You can also use the `evalResult` to attempt an
-evaluation but also obtain a description of the failure when the evaluation fails.
+You can get the unresolved symbol names from the ``Evaluator/unresolved`` attribute. It returns three collections for
+unresolved variables, unary functions, and binary function names.
 
 ## Custom Symbols
 
@@ -75,74 +74,6 @@ Instead of passing a closure to access the dictionary of symbols, you can pass t
 let parser = MathParser(variableDict: myVariables, unaryFunctionDict: myFuncs)
 evaluator?.eval(unaryFunctionDict: myEvalFuncs) // => 60910.240000000005
 ```
-
-## Implied Multiplication
-
-One of the original goals of this parser was to be able to accept a Wolfram Alpha math expression more or less as-is
--- for instance the definition https://www.wolframalpha.com/input/?i=Sawsbuck+Winter+Form%E2%80%90like+curve -- without
-any editing. Here is the start of the textual representation from the above link:
-
-```
-x(t) = ((-2/9 sin(11/7 - 4 t) + 78/11 sin(t + 11/7) + 2/7 sin(2 t + 8/5) ...
-```
-
-Skipping over the assignment one can readily see that the representation includes implied multiplication between terms
-when there are no explicit math operators present (eg `-2/9` __x__ `sin(11/7 - 4` __x__ `t)`). There is support for this
-sort of operation in the parser that can be enabled by setting `enableImpliedMultiplication` when creating a new
-`MathParser` instance (it defaults to `false`). Note that when enabled, an expression such as `2^3 2^4` would be
-considered a valid expression, resolving to `2^3 * 2^4 = 128`, and `4sin(t(pi))` would become `4 * sin(t * pi)`.
-
-You can see the entire Wolfram example in the [TestWolfram](Tests/MathParserTests/TestWolfram.swift) test case.
-
-Here is the original example expression from the start of this README file with implied multiplication in use (all of 
-the muliplication symbols have been removed):
-
-```swift
-let parser = MathParser(enableImpliedMultiplication: true)
-let evaluator = parser.parse("4sin(t π) + 2sin(t π)")
-evaluator.eval("t", value: 0.0) // => 0.0
-evaluator.eval("t", value: 0.25) // => 4.2426406871192848
-evaluator.eval("t", value: 0.5) // => 6
-evaluator.eval("t", value: 1.0) // => 0
-```
-
-Be aware that with implied multiplication enabled, you could encounter strange parsing if you do not use spaces between
-the "-" operator:
-
-* `2-3` => -6
-* `2 -3` -> -6
-* `2 - 3` => -1
-
-However, for "+" all is well:
-
-* `2+3` => 5
-* `2 +3` -> 5
-* `2 + 3` => 5
-
-Unfortunately, there is no way to handle this ambiguity between implied multiplication, subtraction and negation when 
-spaces are not used to signify intent. 
-
-### Symbol Splitting
-
-When implied multiplication mode is active and the name of a variable or a 1-parameter (unary) function is not found in
-their corresponding map, the token evaluation routine will attempt to resolve them by splitting the names into two or
-more pieces that all resolve to known variables and/or functions. For example, using the default variable map and 
-unary function map from `MathParser`:
-
-* `pie` => `pi * e`
-* `esin(2π)` => `e * sin(2 * pi)`
-* `eeesgn(-1)` => `e * e * e * -1`
-
-As you can see, this could lead to erroneous resolution of variable names and functions, but this behavior is only used
-when the initial lookup of the name fails, and it is never performed when the symbol names are separated by a space.
-However, if you make a mistake and forget to provide the definition of a custom variable or function, it could provide
-a value instead of an error. For instance, consider evaluating `tabs(-3)` where `t` is a custom variable set to `1.2`
-and `tabs` is a custom function but it is not provided for in the custom unary function map:
-
-* `tabs(-3)` => `1.2 * abs(-3)` => `3.6`
-
-If implied multiplication had not been active, the evaluator would have correctly reported an issue -- either returning
-NaN or a `Result.failure` describing the missing function.
 
 [^1]: Redundant since there is already the `^` operator.
 

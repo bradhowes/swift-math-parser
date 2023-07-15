@@ -8,8 +8,18 @@
             "type" : "groupMarker"
           },
           {
+            "path" : "\/documentation\/mathparser\/customsymbols",
+            "title" : "Custom Symbols",
+            "type" : "article"
+          },
+          {
             "path" : "\/documentation\/mathparser\/gettinstarted",
             "title" : "Overview",
+            "type" : "article"
+          },
+          {
+            "path" : "\/documentation\/mathparser\/impliedmultiplication",
+            "title" : "ImpliedMultiplication",
             "type" : "article"
           },
           {

@@ -1,0 +1,809 @@
+{
+  "abstract" : [
+    {
+      "text" : "Math expression are often written without explicitly indicating when multiplication takes place, and instead rely on",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "convention. For instance, instead of writing ",
+      "type" : "text"
+    },
+    {
+      "code" : "2 * (3 + 4)",
+      "type" : "codeVoice"
+    },
+    {
+      "text" : " one usually writes ",
+      "type" : "text"
+    },
+    {
+      "code" : "2(3 + 4)",
+      "type" : "codeVoice"
+    },
+    {
+      "text" : ". Likewise, it is not uncommon",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "to see numeric values before a function or a common constant such as ",
+      "type" : "text"
+    },
+    {
+      "code" : "π",
+      "type" : "codeVoice"
+    },
+    {
+      "text" : ", so instead of ",
+      "type" : "text"
+    },
+    {
+      "code" : "3 * sin(0.5 * π)",
+      "type" : "codeVoice"
+    },
+    {
+      "text" : " we might",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "write ",
+      "type" : "text"
+    },
+    {
+      "code" : "3sin(0.5π)",
+      "type" : "codeVoice"
+    },
+    {
+      "text" : " or perhaps ",
+      "type" : "text"
+    },
+    {
+      "code" : "3 sin(0.5 π)",
+      "type" : "codeVoice"
+    },
+    {
+      "text" : " to make it a little easier to read.",
+      "type" : "text"
+    }
+  ],
+  "hierarchy" : {
+    "paths" : [
+      [
+        "doc:\/\/MathParser\/documentation\/MathParser"
+      ]
+    ]
+  },
+  "identifier" : {
+    "interfaceLanguage" : "swift",
+    "url" : "doc:\/\/MathParser\/documentation\/MathParser\/ImpliedMultiplication"
+  },
+  "kind" : "article",
+  "metadata" : {
+    "modules" : [
+      {
+        "name" : "MathParser"
+      }
+    ],
+    "role" : "article",
+    "roleHeading" : "Article",
+    "title" : "ImpliedMultiplication"
+  },
+  "primaryContentSections" : [
+    {
+      "content" : [
+        {
+          "anchor" : "overview",
+          "level" : 2,
+          "text" : "Overview",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser",
+              "isActive" : true,
+              "type" : "reference"
+            },
+            {
+              "text" : " supports parsing of math expressions where a multiplication symbol might not be present between two",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "terms. It is disabled by default, but the",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/init(variables:variableDict:unaryFunctions:unaryFunctionDict:binaryFunctions:binaryFunctionDict:enableImpliedMultiplication:)",
+              "isActive" : true,
+              "type" : "reference"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "initializer allows it to be enabled via the ",
+              "type" : "text"
+            },
+            {
+              "code" : "enableImpliedMultiplication",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " parameter.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "anchor" : "Notes",
+          "level" : 2,
+          "text" : "Notes",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Be aware that with implied multiplication enabled, you could encounter strange parsing if you do not use spaces between",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "the “-” operator:",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "items" : [
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "2-3",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " => -6",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "2 -3",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " -> -6",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "2 - 3",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " => -1",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            }
+          ],
+          "type" : "unorderedList"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "However, for “+” all is well:",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "items" : [
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "2+3",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " => 5",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "2 +3",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " -> 5",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "2 + 3",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " => 5",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            }
+          ],
+          "type" : "unorderedList"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Unfortunately, there is no way to handle this ambiguity between implied multiplication, subtraction and negation when",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "spaces are not used to signify intent.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "anchor" : "Symbol-Splitting",
+          "level" : 2,
+          "text" : "Symbol Splitting",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "When implied multiplication mode is active and the name of a variable or a 1-parameter (unary) function is not found in",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "their corresponding map, the token evaluation routine will attempt to resolve them by splitting the names into two or",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "more pieces that all resolve to known variables and\/or functions. For example, using the default variable map and",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "unary function map from ",
+              "type" : "text"
+            },
+            {
+              "code" : "MathParser",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : ":",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "items" : [
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "pie",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " => ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "pi * e",
+                      "type" : "codeVoice"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "esin(2π)",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " => ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "e * sin(2 * pi)",
+                      "type" : "codeVoice"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "eeesgn(-1)",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " => ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "e * e * e * -1",
+                      "type" : "codeVoice"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            }
+          ],
+          "type" : "unorderedList"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "As you can imagine, this could lead to erroneous resolution of variable names and functions, but this behavior is only",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "used when the initial lookup of the name fails, and it is never performed when the symbol names are separated by a",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "space. However, if you make a mistake and forget to provide the definition of a custom variable or function, this",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "special processing could provide a value instead of an error. For instance, consider evaluating ",
+              "type" : "text"
+            },
+            {
+              "code" : "tabs(-3)",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " where ",
+              "type" : "text"
+            },
+            {
+              "code" : "t",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " is",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "a custom variable set to ",
+              "type" : "text"
+            },
+            {
+              "code" : "1.2",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " and ",
+              "type" : "text"
+            },
+            {
+              "code" : "tabs",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " is a custom function but it is not provided for in the custom unary function",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "map:",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "items" : [
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "tabs(-3)",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " => ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "1.2 * abs(-3)",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " => ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "3.6",
+                      "type" : "codeVoice"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            }
+          ],
+          "type" : "unorderedList"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "If implied multiplication had not been active, the evaluator would have correctly reported an issue – either returning",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "NaN or a ",
+              "type" : "text"
+            },
+            {
+              "code" : "Result.failure",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " describing the missing function.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        }
+      ],
+      "kind" : "content"
+    }
+  ],
+  "schemaVersion" : {
+    "major" : 0,
+    "minor" : 3,
+    "patch" : 0
+  },
+  "sections" : [
+
+  ],
+  "variants" : [
+    {
+      "paths" : [
+        "\/documentation\/mathparser\/impliedmultiplication"
+      ],
+      "traits" : [
+        {
+          "interfaceLanguage" : "swift"
+        }
+      ]
+    }
+  ]
+, 
+"references": {
+"doc://MathParser/documentation/MathParser": {
+  "abstract" : [
+
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser",
+  "kind" : "symbol",
+  "role" : "collection",
+  "title" : "MathParser",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser"
+},
+"doc://MathParser/documentation/MathParser/MathParser/init(variables:variableDict:unaryFunctions:unaryFunctionDict:binaryFunctions:binaryFunctionDict:enableImpliedMultiplication:)": {
+  "abstract" : [
+    {
+      "text" : "Construct new parser.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "identifier",
+      "text" : "init"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "variables"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC",
+      "text" : "MathParser"
+    },
+    {
+      "kind" : "text",
+      "text" : "."
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC11VariableMapa",
+      "text" : "VariableMap"
+    },
+    {
+      "kind" : "text",
+      "text" : "?, "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "variableDict"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC",
+      "text" : "MathParser"
+    },
+    {
+      "kind" : "text",
+      "text" : "."
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC12VariableDicta",
+      "text" : "VariableDict"
+    },
+    {
+      "kind" : "text",
+      "text" : "?, "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "unaryFunctions"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC",
+      "text" : "MathParser"
+    },
+    {
+      "kind" : "text",
+      "text" : "."
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC16UnaryFunctionMapa",
+      "text" : "UnaryFunctionMap"
+    },
+    {
+      "kind" : "text",
+      "text" : "?, "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "unaryFunctionDict"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC",
+      "text" : "MathParser"
+    },
+    {
+      "kind" : "text",
+      "text" : "."
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC17UnaryFunctionDicta",
+      "text" : "UnaryFunctionDict"
+    },
+    {
+      "kind" : "text",
+      "text" : "?, "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "binaryFunctions"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC",
+      "text" : "MathParser"
+    },
+    {
+      "kind" : "text",
+      "text" : "."
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC17BinaryFunctionMapa",
+      "text" : "BinaryFunctionMap"
+    },
+    {
+      "kind" : "text",
+      "text" : "?, "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "binaryFunctionDict"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC",
+      "text" : "MathParser"
+    },
+    {
+      "kind" : "text",
+      "text" : "."
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC18BinaryFunctionDicta",
+      "text" : "BinaryFunctionDict"
+    },
+    {
+      "kind" : "text",
+      "text" : "?, "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "enableImpliedMultiplication"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sb",
+      "text" : "Bool"
+    },
+    {
+      "kind" : "text",
+      "text" : ")"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/init(variables:variableDict:unaryFunctions:unaryFunctionDict:binaryFunctions:binaryFunctionDict:enableImpliedMultiplication:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "init(variables:variableDict:unaryFunctions:unaryFunctionDict:binaryFunctions:binaryFunctionDict:enableImpliedMultiplication:)",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparser\/init(variables:variabledict:unaryfunctions:unaryfunctiondict:binaryfunctions:binaryfunctiondict:enableimpliedmultiplication:)"
+}
+}
+}

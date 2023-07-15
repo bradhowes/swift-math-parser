@@ -2,6 +2,11 @@
 
 /**
  Evaluator of parsed tokens.
+
+ An evaluator attempts to resolve any remaining symbols in order to return a value from a parsed expression.
+ The ``eval(variables:unaryFunctions:binaryFunctions:)`` and
+ ``evalResult(_:value:)`` methods accept additional definitions for variables and functions. If all are then
+ resolved, then the evaluator can return a specific value from the parsed expression.
  */
 public struct Evaluator {
 

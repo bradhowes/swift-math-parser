@@ -1,0 +1,799 @@
+{
+  "abstract" : [
+    {
+      "text" : "By default, ",
+      "type" : "text"
+    },
+    {
+      "identifier" : "doc:\/\/MathParser\/documentation\/MathParser",
+      "isActive" : true,
+      "type" : "reference"
+    },
+    {
+      "text" : " provides two constants (",
+      "type" : "text"
+    },
+    {
+      "code" : "π",
+      "type" : "codeVoice"
+    },
+    {
+      "text" : " and ",
+      "type" : "text"
+    },
+    {
+      "code" : "e",
+      "type" : "codeVoice"
+    },
+    {
+      "text" : ") and a large number of common functions by default for",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "all math expression parsing and evaluation:",
+      "type" : "text"
+    }
+  ],
+  "hierarchy" : {
+    "paths" : [
+      [
+        "doc:\/\/MathParser\/documentation\/MathParser"
+      ]
+    ]
+  },
+  "identifier" : {
+    "interfaceLanguage" : "swift",
+    "url" : "doc:\/\/MathParser\/documentation\/MathParser\/CustomSymbols"
+  },
+  "kind" : "article",
+  "metadata" : {
+    "modules" : [
+      {
+        "name" : "MathParser"
+      }
+    ],
+    "role" : "article",
+    "roleHeading" : "Article",
+    "title" : "Custom Symbols"
+  },
+  "primaryContentSections" : [
+    {
+      "content" : [
+        {
+          "anchor" : "overview",
+          "level" : 2,
+          "text" : "Overview",
+          "type" : "heading"
+        },
+        {
+          "items" : [
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "1-argument functions: ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "sin",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ", ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "asin",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ", ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "cos",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ", ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "acos",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ", ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "tan",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ", ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "atan",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ", ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "log10",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ", ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "ln",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " (",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "loge",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : "), ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "log2",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ", ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "exp",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ", ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "ceil",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ",",
+                      "type" : "text"
+                    },
+                    {
+                      "text" : " ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "floor",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ", ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "round",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ", ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "sqrt",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " (",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "√",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : "), ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "cbrt",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " (cube root), ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "abs",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ", ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "sgn",
+                      "type" : "codeVoice"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "2-argument functions: ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "atan",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ", ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "hypot",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ", ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "pow",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " [^1]",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            }
+          ],
+          "type" : "unorderedList"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "You can also provide additional definitions or redefine the defaults by providing your own mapping function for any or",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "all of the three collections (variables, 1-arg (unary) functions, and 2-arg (binary) functions).",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "anchor" : "Customized-Parsing",
+          "level" : 2,
+          "text" : "Customized Parsing",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Below shows how to provide to the parser a custom unary function called ",
+              "type" : "text"
+            },
+            {
+              "code" : "twice",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " that returns twice the value it",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "receives, and a custom variable called ",
+              "type" : "text"
+            },
+            {
+              "code" : "foo",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " which holds the constant ",
+              "type" : "text"
+            },
+            {
+              "code" : "123.4",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : ".",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "code" : [
+            "let myVariables = [\"foo\": 123.4]",
+            "let myFunctions: [String:(Double)->Double] = [\"twice\": {$0 + $0}]",
+            "let parser = MathParser(variables: myVariables.producer, unaryFunctions: myFunctions.producer)",
+            "let evaluator = parser.parse(\"power(twice(foo))\")"
+          ],
+          "syntax" : "swift",
+          "type" : "codeListing"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "In the above parsed expression ",
+              "type" : "text"
+            },
+            {
+              "code" : "power(twice(foo))",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " everything is resolved except for ",
+              "type" : "text"
+            },
+            {
+              "code" : "power",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : ". Since the expression is a",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "valid one according to ",
+              "type" : "text"
+            },
+            {
+              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser",
+              "isActive" : true,
+              "type" : "reference"
+            },
+            {
+              "text" : ", the returned ",
+              "type" : "text"
+            },
+            {
+              "code" : "evaluator",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " is not ",
+              "type" : "text"
+            },
+            {
+              "code" : "nil",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : ", but asking the evaluator for a value now",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "will return a ",
+              "type" : "text"
+            },
+            {
+              "code" : "NaN",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " because of the undefined ",
+              "type" : "text"
+            },
+            {
+              "code" : "power",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " function.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "code" : [
+            "evaluator?.value \/\/ => nan"
+          ],
+          "syntax" : "swift",
+          "type" : "codeListing"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "In this example, we know that ",
+              "type" : "text"
+            },
+            {
+              "code" : "power",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " must be a function because the parser was not created with implied multiplication",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "enabled. If that had not been the case, then the unknown ",
+              "type" : "text"
+            },
+            {
+              "code" : "power",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " symbol could also be a variable which once resolved",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "would be multiplied with the result from ",
+              "type" : "text"
+            },
+            {
+              "code" : "twice(foo)",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : ".",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "anchor" : "Customized-Evaluation",
+          "level" : 2,
+          "text" : "Customized Evaluation",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "We can also ask the ",
+              "type" : "text"
+            },
+            {
+              "code" : "evaluator",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " for any unresolved symbols via its ",
+              "type" : "text"
+            },
+            {
+              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/Evaluator\/unresolved",
+              "isActive" : true,
+              "type" : "reference"
+            },
+            {
+              "text" : " attribute:",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "code" : [
+            "evaluator?.unresolved.unaryFunctions \/\/ => ['power']'"
+          ],
+          "syntax" : "swift",
+          "type" : "codeListing"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Supply addition variable and methods to the evaluator’s",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/Evaluator\/eval(variables:unaryFunctions:binaryFunctions:)",
+              "isActive" : true,
+              "type" : "reference"
+            },
+            {
+              "text" : " method. Below, we supply it with a definition for ",
+              "type" : "text"
+            },
+            {
+              "code" : "power",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : ".",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "code" : [
+            "let myEvalFuncs: [String:(Double)->Double] = [\"power\": {$0 * $0}]",
+            "evaluator?.eval(unaryFunctions: myEvalFuncs.producer) \/\/ => 60910.240000000005"
+          ],
+          "syntax" : null,
+          "type" : "codeListing"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Just like for the ",
+              "type" : "text"
+            },
+            {
+              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser",
+              "isActive" : true,
+              "type" : "reference"
+            },
+            {
+              "text" : " initialization method, instead of passing a closure to access the dictionary of",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "symbols, you can pass the dictionary itself:",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "code" : [
+            "evaluator?.eval(unaryFunctionDict: myEvalFuncs) \/\/ => 60910.240000000005"
+          ],
+          "syntax" : null,
+          "type" : "codeListing"
+        }
+      ],
+      "kind" : "content"
+    }
+  ],
+  "schemaVersion" : {
+    "major" : 0,
+    "minor" : 3,
+    "patch" : 0
+  },
+  "sections" : [
+
+  ],
+  "variants" : [
+    {
+      "paths" : [
+        "\/documentation\/mathparser\/customsymbols"
+      ],
+      "traits" : [
+        {
+          "interfaceLanguage" : "swift"
+        }
+      ]
+    }
+  ]
+, 
+"references": {
+"doc://MathParser/documentation/MathParser": {
+  "abstract" : [
+
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser",
+  "kind" : "symbol",
+  "role" : "collection",
+  "title" : "MathParser",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser"
+},
+"doc://MathParser/documentation/MathParser/Evaluator/eval(variables:unaryFunctions:binaryFunctions:)": {
+  "abstract" : [
+    {
+      "text" : "Evaluate the token to obtain a value. By default will use symbol map and function map given to ",
+      "type" : "text"
+    },
+    {
+      "code" : "init",
+      "type" : "codeVoice"
+    },
+    {
+      "text" : ".",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "eval"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "variables"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC",
+      "text" : "MathParser"
+    },
+    {
+      "kind" : "text",
+      "text" : "."
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC11VariableMapa",
+      "text" : "VariableMap"
+    },
+    {
+      "kind" : "text",
+      "text" : "?, "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "unaryFunctions"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC",
+      "text" : "MathParser"
+    },
+    {
+      "kind" : "text",
+      "text" : "."
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC16UnaryFunctionMapa",
+      "text" : "UnaryFunctionMap"
+    },
+    {
+      "kind" : "text",
+      "text" : "?, "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "binaryFunctions"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC",
+      "text" : "MathParser"
+    },
+    {
+      "kind" : "text",
+      "text" : "."
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC17BinaryFunctionMapa",
+      "text" : "BinaryFunctionMap"
+    },
+    {
+      "kind" : "text",
+      "text" : "?) -> "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sd",
+      "text" : "Double"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/Evaluator\/eval(variables:unaryFunctions:binaryFunctions:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "eval(variables:unaryFunctions:binaryFunctions:)",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/evaluator\/eval(variables:unaryfunctions:binaryfunctions:)"
+},
+"doc://MathParser/documentation/MathParser/Evaluator/unresolved": {
+  "abstract" : [
+    {
+      "text" : "Obtain unresolved names of symbols for variables and functions",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "var"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "unresolved"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParser10UnresolvedV",
+      "text" : "Unresolved"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/Evaluator\/unresolved",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "unresolved",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/evaluator\/unresolved"
+}
+}
+}
