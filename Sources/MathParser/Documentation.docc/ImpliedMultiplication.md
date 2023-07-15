@@ -1,7 +1,7 @@
 # Implied Multiplication
 
-Math expression are often written without explicitly indicating when multiplication takes place, and instead rely on
-convention.
+Math expression are often written without explicitly indicating when multiplication takes place. Instead there is a
+convention that dictates where a multiplication takes place between two terms.
 
 Often instead of writing `2 * (3 + 4)` one usually writes `2(3 + 4)` with the understanding that `2` is being
 multiplied to the value of `3 + 4`. Likewise, it is not uncommon to see numeric values before a function or a constant 
@@ -28,15 +28,19 @@ However, for "+" all is well:
 * `2 +3` -> 5
 * `2 + 3` => 5
 
-Unfortunately, there is no way to handle this ambiguity between implied multiplication, subtraction and negation when 
-spaces are not used to signify intent. 
+At the moment, there is no way to handle this ambiguity between implied multiplication, subtraction and negation without
+increasing the parsing code just to fix this rare edge-case. So to be safe:
+
+- do not use implied multiplication, or
+- if you do, ensure that your math operators are always surrounded by spaces (the `negation` operator being the 
+exception as it must always come just before the value it is negating).
 
 ## Symbol Splitting
 
 When implied multiplication mode is active and the name of a variable or a 1-parameter (unary) function is not found in
 their corresponding map, the token evaluation routine will attempt to resolve them by splitting the names into two or
 more pieces that all resolve to known variables and/or functions. For example, using the default variable map and 
-unary function map from `MathParser`:
+unary function map from ``MathParser``:
 
 * `pie` => `pi * e`
 * `esin(2π)` => `e * sin(2 * pi)`

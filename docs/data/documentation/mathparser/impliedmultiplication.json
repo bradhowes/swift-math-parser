@@ -1,7 +1,7 @@
 {
   "abstract" : [
     {
-      "text" : "Math expression are often written without explicitly indicating when multiplication takes place, and instead rely on",
+      "text" : "Math expression are often written without explicitly indicating when multiplication takes place. Instead there is a",
       "type" : "text"
     },
     {
@@ -9,7 +9,7 @@
       "type" : "text"
     },
     {
-      "text" : "convention.",
+      "text" : "convention that dictates where a multiplication takes place between two terms.",
       "type" : "text"
     }
   ],
@@ -335,7 +335,7 @@
         {
           "inlineContent" : [
             {
-              "text" : "Unfortunately, there is no way to handle this ambiguity between implied multiplication, subtraction and negation when",
+              "text" : "At the moment, there is no way to handle this ambiguity between implied multiplication, subtraction and negation without",
               "type" : "text"
             },
             {
@@ -343,11 +343,58 @@
               "type" : "text"
             },
             {
-              "text" : "spaces are not used to signify intent.",
+              "text" : "increasing the parsing code just to fix this rare edge-case. So to be safe:",
               "type" : "text"
             }
           ],
           "type" : "paragraph"
+        },
+        {
+          "items" : [
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "do not use implied multiplication, or",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "if you do, ensure that your math operators are always surrounded by spaces (the ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "negation",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " operator being the",
+                      "type" : "text"
+                    },
+                    {
+                      "text" : " ",
+                      "type" : "text"
+                    },
+                    {
+                      "text" : "exception as it must always come just before the value it is negating).",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            }
+          ],
+          "type" : "unorderedList"
         },
         {
           "anchor" : "Symbol-Splitting",
@@ -386,8 +433,9 @@
               "type" : "text"
             },
             {
-              "code" : "MathParser",
-              "type" : "codeVoice"
+              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser",
+              "isActive" : true,
+              "type" : "reference"
             },
             {
               "text" : ":",

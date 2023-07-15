@@ -176,7 +176,7 @@
 "doc://MathParser/documentation/MathParser/ImpliedMultiplication": {
   "abstract" : [
     {
-      "text" : "Math expression are often written without explicitly indicating when multiplication takes place, and instead rely on",
+      "text" : "Math expression are often written without explicitly indicating when multiplication takes place. Instead there is a",
       "type" : "text"
     },
     {
@@ -184,7 +184,7 @@
       "type" : "text"
     },
     {
-      "text" : "convention.",
+      "text" : "convention that dictates where a multiplication takes place between two terms.",
       "type" : "text"
     }
   ],
