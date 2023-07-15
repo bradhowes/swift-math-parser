@@ -252,7 +252,7 @@ final public class MathParser {
   )
 
   private lazy var operand: some TokenParser = Parse {
-    Skip { Whitespace(0...) }
+    ignoreSpaces
     OneOf {
       negatedOperand
       nonNegatedOperand
@@ -280,11 +280,11 @@ final public class MathParser {
       "("
       self.subexpression
       Optionally {
-        Skip { Whitespace(0...) }
+        ignoreSpaces
         ","
         self.subexpression
       }
-      Skip { Whitespace(0...) }
+      ignoreSpaces
       ")"
     }
   }.map { (identifier: Substring, call: (Token, Token?)?) -> Token in
@@ -339,7 +339,7 @@ final public class MathParser {
   // MARK: - Operator Parsers
 
   private let additionOrSubtractionOperator: some TokenReducerParser = Parse {
-    Skip { Whitespace(0...) }
+    ignoreSpaces
     OneOf {
       "+".map { { Token.reducer(lhs: $0, rhs: $1, op: (+), name: "+") } }
       "-".map { { Token.reducer(lhs: $0, rhs: $1, op: (-), name: "-") } }
@@ -347,7 +347,7 @@ final public class MathParser {
   }
 
   private lazy var multiplicationOrDivisionOperator: some TokenReducerParser = Parse {
-    Skip { Whitespace(0...) }
+    ignoreSpaces
     OneOf {
       "*".map { self.multiplicationReducer }
       "×".map { self.multiplicationReducer }
@@ -365,6 +365,9 @@ final public class MathParser {
   private func findBinary(name: Substring) -> BinaryFunction? { self.binaryFunctions(String(name)) }
   private func findUnary(name: Substring) -> UnaryFunction? { self.unaryFunctions(String(name)) }
 }
+
+/// Common expression for ignoring spaces in other parsers
+private let ignoreSpaces = Skip { Optionally { Prefix<Substring> { $0.isWhitespace } } }
 
 typealias TokenParser = Parser<Substring, Token>
 typealias TokenReducer = (Token, Token) -> Token
