@@ -209,25 +209,25 @@ final public class MathParser {
 
   // MARK: - Token Parsers
 
+  // Entry point for math parsing
   private lazy var expression: some TokenParser = Parse {
     self.subexpression
     End()
   }
 
+  // NOTE: the chain of expression parsers from here to exponentiation causes a loop so we need to be Lazy here.
   private lazy var subexpression: some TokenParser = Lazy {
     self.additionAndSubtraction
-    ignoreSpaces
   }
 
-  // MOTE: use type erasure due to circular references to this parser
-  private lazy var additionAndSubtraction: some TokenParser = InfixOperation(
+  private lazy var additionAndSubtraction = InfixOperation(
     name: "AddSub",
     associativity: .left,
     operator: additionOrSubtractionOperator,
     operand: multiplicationAndDivision
-  ).eraseToAnyParser()
+  )
 
-  private lazy var multiplicationAndDivision: some TokenParser = InfixOperation(
+  private lazy var multiplicationAndDivision = InfixOperation(
     name: "MulDiv",
     associativity: .left,
     operator: multiplicationOrDivisionOperator,
@@ -235,40 +235,37 @@ final public class MathParser {
     implied: enableImpliedMultiplication ? self.multiplicationReducer : nil
   )
 
-  private lazy var exponentiation: some TokenParser = InfixOperation(
+  private lazy var exponentiation = InfixOperation(
     name: "Pow",
     associativity: .right,
     operator: exponentiationOperator,
     operand: operand
   )
 
-  /// Parser for an operand of an expression.
   private lazy var operand: some TokenParser = Parse {
-    ignoreSpaces
+    Skip {
+      Whitespace(0...)
+    }
     OneOf {
       negatedOperand
       nonNegatedOperand
     }
   }
 
-  /// Parser for negation. Wraps the operand in a multiplication with -1.
-  /// NOTE: there must not be any separation between the "-" and the operand.
+  // NOTE: there must not be any separation between the "-" and the operand.
   private lazy var negatedOperand: some TokenParser = Parse {
     "-"
     nonNegatedOperand
-  }.map { Token.reducer(lhs: .constant(value: -1.0), rhs: $0, op: (*), name: "*") }
+  }.map { multiply(lhs: .constant(value: -1.0), rhs: $0) }
 
-  /// Parser for an operand of an expression that does not include the negated operand.
-  /// NOTE: order is important since a function call is made up of an identifier
-  /// followed by a parenthetical expression, so it must be before ``parenthetical`` and ``symbolOrVariable``.
-  private lazy var nonNegatedOperand: some TokenParser = Parse {
-    OneOf {
-      binaryCall
-      unaryCall
-      parenthetical
-      symbolOrVariable
-      constant
-    }
+  // NOTE: order is important since a function call is made up of an identifier
+  // followed by a parenthetical expression, so it must be before ``parenthetical`` and ``symbolOrVariable``.
+  private lazy var nonNegatedOperand: some TokenParser = OneOf {
+    binaryCall
+    unaryCall
+    parenthetical
+    symbolOrVariable
+    constant
   }
 
   private func findBinary(name: Substring) -> BinaryFunction? { self.binaryFunctions(String(name)) }
@@ -335,7 +332,7 @@ final public class MathParser {
   // MARK: - Operator Parsers
 
   private let additionOrSubtractionOperator: some TokenReducerParser = Parse {
-    ignoreSpaces
+    Skip { Whitespace(0...) }
     OneOf {
       "+".map { { Token.reducer(lhs: $0, rhs: $1, op: (+), name: "+") } }
       "-".map { { Token.reducer(lhs: $0, rhs: $1, op: (-), name: "-") } }
@@ -343,7 +340,7 @@ final public class MathParser {
   }
 
   private lazy var multiplicationOrDivisionOperator: some TokenReducerParser = Parse {
-    ignoreSpaces
+    Skip { Whitespace(0...) }
     OneOf {
       "*".map { self.multiplicationReducer }
       "×".map { self.multiplicationReducer }
@@ -353,14 +350,10 @@ final public class MathParser {
   }
 
   private let exponentiationOperator: some TokenReducerParser = Parse {
-    ignoreSpaces
+    Skip { Whitespace(0...) }
     "^".map { { Token.reducer(lhs: $0, rhs: $1, op: (pow), name: "^") } }
   }
 }
-
-/// Common expression for ignoring spaces in other parsers
-private let ignoreSpaces = Skip { Optionally { Prefix<Substring> { $0.isWhitespace } } }
-/// Type of the parser that returns a Token
 
 typealias TokenParser = Parser<Substring, Token>
 typealias TokenReducer = (Token, Token) -> Token
