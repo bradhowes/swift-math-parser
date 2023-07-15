@@ -1,4 +1,4 @@
-# ImpliedMultiplication
+# Implied Multiplication
 
 Math expression are often written without explicitly indicating when multiplication takes place, and instead rely on
 convention. For instance, instead of writing `2 * (3 + 4)` one usually writes `2(3 + 4)`. Likewise, it is not uncommon
