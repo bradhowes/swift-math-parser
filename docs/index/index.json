@@ -4,6 +4,136 @@
       {
         "children" : [
           {
+            "title" : "Articles",
+            "type" : "groupMarker"
+          },
+          {
+            "path" : "\/documentation\/mathparser\/gettinstarted",
+            "title" : "MathParser",
+            "type" : "article"
+          },
+          {
+            "title" : "Classes",
+            "type" : "groupMarker"
+          },
+          {
+            "children" : [
+              {
+                "title" : "Initializers",
+                "type" : "groupMarker"
+              },
+              {
+                "path" : "\/documentation\/mathparser\/mathparser\/init(variables:variabledict:unaryfunctions:unaryfunctiondict:binaryfunctions:binaryfunctiondict:enableimpliedmultiplication:)",
+                "title" : "init(variables: MathParser.VariableMap?, variableDict: MathParser.VariableDict?, unaryFunctions: MathParser.UnaryFunctionMap?, unaryFunctionDict: MathParser.UnaryFunctionDict?, binaryFunctions: MathParser.BinaryFunctionMap?, binaryFunctionDict: MathParser.BinaryFunctionDict?, enableImpliedMultiplication: Bool)",
+                "type" : "init"
+              },
+              {
+                "title" : "Instance Properties",
+                "type" : "groupMarker"
+              },
+              {
+                "path" : "\/documentation\/mathparser\/mathparser\/binaryfunctions",
+                "title" : "let binaryFunctions: MathParser.BinaryFunctionMap",
+                "type" : "property"
+              },
+              {
+                "path" : "\/documentation\/mathparser\/mathparser\/unaryfunctions",
+                "title" : "let unaryFunctions: MathParser.UnaryFunctionMap",
+                "type" : "property"
+              },
+              {
+                "path" : "\/documentation\/mathparser\/mathparser\/variables",
+                "title" : "let variables: MathParser.VariableMap",
+                "type" : "property"
+              },
+              {
+                "title" : "Instance Methods",
+                "type" : "groupMarker"
+              },
+              {
+                "path" : "\/documentation\/mathparser\/mathparser\/parse(_:)",
+                "title" : "func parse(String) -> Evaluator?",
+                "type" : "method"
+              },
+              {
+                "path" : "\/documentation\/mathparser\/mathparser\/parseresult(_:)",
+                "title" : "func parseResult(String) -> MathParser.Result",
+                "type" : "method"
+              },
+              {
+                "title" : "Type Aliases",
+                "type" : "groupMarker"
+              },
+              {
+                "path" : "\/documentation\/mathparser\/mathparser\/binaryfunction",
+                "title" : "MathParser.BinaryFunction",
+                "type" : "typealias"
+              },
+              {
+                "path" : "\/documentation\/mathparser\/mathparser\/binaryfunctiondict",
+                "title" : "MathParser.BinaryFunctionDict",
+                "type" : "typealias"
+              },
+              {
+                "path" : "\/documentation\/mathparser\/mathparser\/binaryfunctionmap",
+                "title" : "MathParser.BinaryFunctionMap",
+                "type" : "typealias"
+              },
+              {
+                "path" : "\/documentation\/mathparser\/mathparser\/result",
+                "title" : "MathParser.Result",
+                "type" : "typealias"
+              },
+              {
+                "path" : "\/documentation\/mathparser\/mathparser\/unaryfunction",
+                "title" : "MathParser.UnaryFunction",
+                "type" : "typealias"
+              },
+              {
+                "path" : "\/documentation\/mathparser\/mathparser\/unaryfunctiondict",
+                "title" : "MathParser.UnaryFunctionDict",
+                "type" : "typealias"
+              },
+              {
+                "path" : "\/documentation\/mathparser\/mathparser\/unaryfunctionmap",
+                "title" : "MathParser.UnaryFunctionMap",
+                "type" : "typealias"
+              },
+              {
+                "path" : "\/documentation\/mathparser\/mathparser\/variabledict",
+                "title" : "MathParser.VariableDict",
+                "type" : "typealias"
+              },
+              {
+                "path" : "\/documentation\/mathparser\/mathparser\/variablemap",
+                "title" : "MathParser.VariableMap",
+                "type" : "typealias"
+              },
+              {
+                "title" : "Type Properties",
+                "type" : "groupMarker"
+              },
+              {
+                "path" : "\/documentation\/mathparser\/mathparser\/defaultbinaryfunctions",
+                "title" : "static let defaultBinaryFunctions: MathParser.BinaryFunctionDict",
+                "type" : "property"
+              },
+              {
+                "path" : "\/documentation\/mathparser\/mathparser\/defaultunaryfunctions",
+                "title" : "static let defaultUnaryFunctions: MathParser.UnaryFunctionDict",
+                "type" : "property"
+              },
+              {
+                "path" : "\/documentation\/mathparser\/mathparser\/defaultvariables",
+                "title" : "static let defaultVariables: [String : Double]",
+                "type" : "property"
+              }
+            ],
+            "path" : "\/documentation\/mathparser\/mathparser",
+            "title" : "MathParser",
+            "type" : "class"
+          },
+          {
             "title" : "Structures",
             "type" : "groupMarker"
           },
@@ -188,123 +318,6 @@
         "path" : "\/documentation\/mathparser",
         "title" : "MathParser",
         "type" : "module"
-      },
-      {
-        "children" : [
-          {
-            "title" : "Initializers",
-            "type" : "groupMarker"
-          },
-          {
-            "path" : "\/documentation\/mathparser\/mathparser\/init(variables:variabledict:unaryfunctions:unaryfunctiondict:binaryfunctions:binaryfunctiondict:enableimpliedmultiplication:)",
-            "title" : "init(variables: MathParser.VariableMap?, variableDict: MathParser.VariableDict?, unaryFunctions: MathParser.UnaryFunctionMap?, unaryFunctionDict: MathParser.UnaryFunctionDict?, binaryFunctions: MathParser.BinaryFunctionMap?, binaryFunctionDict: MathParser.BinaryFunctionDict?, enableImpliedMultiplication: Bool)",
-            "type" : "init"
-          },
-          {
-            "title" : "Instance Properties",
-            "type" : "groupMarker"
-          },
-          {
-            "path" : "\/documentation\/mathparser\/mathparser\/binaryfunctions",
-            "title" : "let binaryFunctions: MathParser.BinaryFunctionMap",
-            "type" : "property"
-          },
-          {
-            "path" : "\/documentation\/mathparser\/mathparser\/unaryfunctions",
-            "title" : "let unaryFunctions: MathParser.UnaryFunctionMap",
-            "type" : "property"
-          },
-          {
-            "path" : "\/documentation\/mathparser\/mathparser\/variables",
-            "title" : "let variables: MathParser.VariableMap",
-            "type" : "property"
-          },
-          {
-            "title" : "Instance Methods",
-            "type" : "groupMarker"
-          },
-          {
-            "path" : "\/documentation\/mathparser\/mathparser\/parse(_:)",
-            "title" : "func parse(String) -> Evaluator?",
-            "type" : "method"
-          },
-          {
-            "path" : "\/documentation\/mathparser\/mathparser\/parseresult(_:)",
-            "title" : "func parseResult(String) -> MathParser.Result",
-            "type" : "method"
-          },
-          {
-            "title" : "Type Aliases",
-            "type" : "groupMarker"
-          },
-          {
-            "path" : "\/documentation\/mathparser\/mathparser\/binaryfunction",
-            "title" : "MathParser.BinaryFunction",
-            "type" : "typealias"
-          },
-          {
-            "path" : "\/documentation\/mathparser\/mathparser\/binaryfunctiondict",
-            "title" : "MathParser.BinaryFunctionDict",
-            "type" : "typealias"
-          },
-          {
-            "path" : "\/documentation\/mathparser\/mathparser\/binaryfunctionmap",
-            "title" : "MathParser.BinaryFunctionMap",
-            "type" : "typealias"
-          },
-          {
-            "path" : "\/documentation\/mathparser\/mathparser\/result",
-            "title" : "MathParser.Result",
-            "type" : "typealias"
-          },
-          {
-            "path" : "\/documentation\/mathparser\/mathparser\/unaryfunction",
-            "title" : "MathParser.UnaryFunction",
-            "type" : "typealias"
-          },
-          {
-            "path" : "\/documentation\/mathparser\/mathparser\/unaryfunctiondict",
-            "title" : "MathParser.UnaryFunctionDict",
-            "type" : "typealias"
-          },
-          {
-            "path" : "\/documentation\/mathparser\/mathparser\/unaryfunctionmap",
-            "title" : "MathParser.UnaryFunctionMap",
-            "type" : "typealias"
-          },
-          {
-            "path" : "\/documentation\/mathparser\/mathparser\/variabledict",
-            "title" : "MathParser.VariableDict",
-            "type" : "typealias"
-          },
-          {
-            "path" : "\/documentation\/mathparser\/mathparser\/variablemap",
-            "title" : "MathParser.VariableMap",
-            "type" : "typealias"
-          },
-          {
-            "title" : "Type Properties",
-            "type" : "groupMarker"
-          },
-          {
-            "path" : "\/documentation\/mathparser\/mathparser\/defaultbinaryfunctions",
-            "title" : "static let defaultBinaryFunctions: MathParser.BinaryFunctionDict",
-            "type" : "property"
-          },
-          {
-            "path" : "\/documentation\/mathparser\/mathparser\/defaultunaryfunctions",
-            "title" : "static let defaultUnaryFunctions: MathParser.UnaryFunctionDict",
-            "type" : "property"
-          },
-          {
-            "path" : "\/documentation\/mathparser\/mathparser\/defaultvariables",
-            "title" : "static let defaultVariables: [String : Double]",
-            "type" : "property"
-          }
-        ],
-        "path" : "\/documentation\/mathparser\/mathparser",
-        "title" : "MathParser",
-        "type" : "article"
       }
     ]
   },

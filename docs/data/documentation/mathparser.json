@@ -33,6 +33,19 @@
   ],
   "topicSections" : [
     {
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/MathParser\/documentation\/MathParser\/GettinStarted"
+      ],
+      "title" : "Articles"
+    },
+    {
+      "identifiers" : [
+        "doc:\/\/MathParser\/documentation\/MathParser\/MathParser"
+      ],
+      "title" : "Classes"
+    },
+    {
       "identifiers" : [
         "doc:\/\/MathParser\/documentation\/MathParser\/Evaluator",
         "doc:\/\/MathParser\/documentation\/MathParser\/Unresolved"
@@ -104,6 +117,86 @@
   "title" : "Evaluator",
   "type" : "topic",
   "url" : "\/documentation\/mathparser\/evaluator"
+},
+"doc://MathParser/documentation/MathParser/GettinStarted": {
+  "abstract" : [
+    {
+      "text" : "Basic math expression parser built with Point•Free’s swift-parsing package (v0.12.0).",
+      "type" : "text"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/GettinStarted",
+  "kind" : "article",
+  "role" : "article",
+  "title" : "MathParser",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/gettinstarted"
+},
+"doc://MathParser/documentation/MathParser/MathParser": {
+  "abstract" : [
+    {
+      "text" : "A parser for simple math expressions made up of five common operations addition, subtraction, multiplication,",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "division, and exponentiation, as well as one- and two-argument functions like ",
+      "type" : "text"
+    },
+    {
+      "code" : "sqrt",
+      "type" : "codeVoice"
+    },
+    {
+      "text" : " and ",
+      "type" : "text"
+    },
+    {
+      "code" : "sin",
+      "type" : "codeVoice"
+    },
+    {
+      "text" : ", and named",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "variables \/ symbols.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "class"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "MathParser"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "MathParser"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "MathParser",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparser"
 },
 "doc://MathParser/documentation/MathParser/MathParserError": {
   "abstract" : [

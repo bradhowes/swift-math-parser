@@ -678,13 +678,65 @@
 "doc://MathParser/documentation/MathParser/MathParser": {
   "abstract" : [
     {
-      "text" : "Basic math expression parser built with Point•Free’s swift-parsing package (v0.12.0).",
+      "text" : "A parser for simple math expressions made up of five common operations addition, subtraction, multiplication,",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "division, and exponentiation, as well as one- and two-argument functions like ",
+      "type" : "text"
+    },
+    {
+      "code" : "sqrt",
+      "type" : "codeVoice"
+    },
+    {
+      "text" : " and ",
+      "type" : "text"
+    },
+    {
+      "code" : "sin",
+      "type" : "codeVoice"
+    },
+    {
+      "text" : ", and named",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "variables \/ symbols.",
       "type" : "text"
     }
   ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "class"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "MathParser"
+    }
+  ],
   "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser",
-  "kind" : "article",
-  "role" : "article",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "MathParser"
+    }
+  ],
+  "role" : "symbol",
   "title" : "MathParser",
   "type" : "topic",
   "url" : "\/documentation\/mathparser\/mathparser"
