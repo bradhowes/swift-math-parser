@@ -269,7 +269,7 @@
             {
               "inlineContent" : [
                 {
-                  "text" : "optional mapping of names to constants to use during evaluation.",
+                  "text" : "optional mapping of names to constants to use during evaluation in addition to",
                   "type" : "text"
                 },
                 {
@@ -277,16 +277,8 @@
                   "type" : "text"
                 },
                 {
-                  "text" : "Default is to use ",
-                  "type" : "text"
-                },
-                {
                   "code" : "MathParser.defaultVariables",
                   "type" : "codeVoice"
-                },
-                {
-                  "text" : " value.",
-                  "type" : "text"
                 }
               ],
               "type" : "paragraph"
@@ -299,7 +291,7 @@
             {
               "inlineContent" : [
                 {
-                  "text" : "optional mapping of names to 1 parameter functions to use during evaluation.",
+                  "text" : "optional mapping of names to 1 parameter functions to use during evaluation in addition",
                   "type" : "text"
                 },
                 {
@@ -307,7 +299,7 @@
                   "type" : "text"
                 },
                 {
-                  "text" : "Default is to use ",
+                  "text" : "to ",
                   "type" : "text"
                 },
                 {
@@ -325,7 +317,7 @@
             {
               "inlineContent" : [
                 {
-                  "text" : "optional mapping of names to 2 parameter functions to use during evaluation.",
+                  "text" : "optional mapping of names to 2 parameter functions to use during evaluation in addition",
                   "type" : "text"
                 },
                 {
@@ -333,7 +325,7 @@
                   "type" : "text"
                 },
                 {
-                  "text" : "Default is to use ",
+                  "text" : "to ",
                   "type" : "text"
                 },
                 {

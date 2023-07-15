@@ -19,7 +19,7 @@
   },
   "kind" : "symbol",
   "metadata" : {
-    "externalID" : "s:10MathParser0aB5ErrorO21unaryFunctionNotFoundyACSS_tcACmF",
+    "externalID" : "s:10MathParser0aB5ErrorO21unaryFunctionNotFoundyACSs_tcACmF",
     "fragments" : [
       {
         "kind" : "keyword",
@@ -47,8 +47,8 @@
       },
       {
         "kind" : "typeIdentifier",
-        "preciseIdentifier" : "s:SS",
-        "text" : "String"
+        "preciseIdentifier" : "s:Ss",
+        "text" : "Substring"
       },
       {
         "kind" : "text",
@@ -102,8 +102,8 @@
             },
             {
               "kind" : "typeIdentifier",
-              "preciseIdentifier" : "s:SS",
-              "text" : "String"
+              "preciseIdentifier" : "s:Ss",
+              "text" : "Substring"
             },
             {
               "kind" : "text",
@@ -216,8 +216,8 @@
     },
     {
       "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:SS",
-      "text" : "String"
+      "preciseIdentifier" : "s:Ss",
+      "text" : "Substring"
     },
     {
       "kind" : "text",

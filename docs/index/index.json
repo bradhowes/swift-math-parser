@@ -190,7 +190,7 @@
               },
               {
                 "path" : "\/documentation\/mathparser\/unresolved\/binaryfunctions",
-                "title" : "let binaryFunctions: Set<String>",
+                "title" : "let binaryFunctions: Set<Substring>",
                 "type" : "property"
               },
               {
@@ -205,12 +205,12 @@
               },
               {
                 "path" : "\/documentation\/mathparser\/unresolved\/unaryfunctions",
-                "title" : "let unaryFunctions: Set<String>",
+                "title" : "let unaryFunctions: Set<Substring>",
                 "type" : "property"
               },
               {
                 "path" : "\/documentation\/mathparser\/unresolved\/variables",
-                "title" : "let variables: Set<String>",
+                "title" : "let variables: Set<Substring>",
                 "type" : "property"
               }
             ],
@@ -230,7 +230,7 @@
               },
               {
                 "path" : "\/documentation\/mathparser\/mathparsererror\/binaryfunctionnotfound(name:)",
-                "title" : "case binaryFunctionNotFound(name: String)",
+                "title" : "case binaryFunctionNotFound(name: Substring)",
                 "type" : "case"
               },
               {
@@ -240,12 +240,12 @@
               },
               {
                 "path" : "\/documentation\/mathparser\/mathparsererror\/unaryfunctionnotfound(name:)",
-                "title" : "case unaryFunctionNotFound(name: String)",
+                "title" : "case unaryFunctionNotFound(name: Substring)",
                 "type" : "case"
               },
               {
                 "path" : "\/documentation\/mathparser\/mathparsererror\/variablenotfound(name:)",
-                "title" : "case variableNotFound(name: String)",
+                "title" : "case variableNotFound(name: Substring)",
                 "type" : "case"
               },
               {

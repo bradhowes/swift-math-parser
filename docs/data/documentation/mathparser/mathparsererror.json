@@ -250,8 +250,8 @@
     },
     {
       "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:SS",
-      "text" : "String"
+      "preciseIdentifier" : "s:Ss",
+      "text" : "Substring"
     },
     {
       "kind" : "text",
@@ -348,8 +348,8 @@
     },
     {
       "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:SS",
-      "text" : "String"
+      "preciseIdentifier" : "s:Ss",
+      "text" : "Substring"
     },
     {
       "kind" : "text",
@@ -397,8 +397,8 @@
     },
     {
       "kind" : "typeIdentifier",
-      "preciseIdentifier" : "s:SS",
-      "text" : "String"
+      "preciseIdentifier" : "s:Ss",
+      "text" : "Substring"
     },
     {
       "kind" : "text",

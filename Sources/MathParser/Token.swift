@@ -48,7 +48,7 @@ extension Token {
       if let value = state.findVariable(name: name) { return value }
       // Attempt to convert name into combination of multiplications
       if state.usingImpliedMultiplication,
-         let result = splitIdentifier(name, variables: state.variables),
+         let result = splitIdentifier(name, state: state),
          result.remaining.isEmpty {
         return try result.token.eval(state: state)
       }
@@ -61,8 +61,7 @@ extension Token {
       if let op = state.findUnary(name: name) { return op(try arg.eval(state: state)) }
       // Attempt to convert name into combination of multiplications and perhaps a function call.
       if state.usingImpliedMultiplication,
-         let token = splitUnaryIdentifier(name, arg: arg, unaries: state.unaryFunctions,
-                                          variables: state.variables) {
+         let token = splitUnaryIdentifier(name, arg: arg, state: state) {
         return try token.eval(state: state)
       }
       throw MathParserError.unaryFunctionNotFound(name: name)
@@ -155,18 +154,11 @@ public struct Unresolved {
   /// True if there are no unresolved symbols
   public var isEmpty: Bool { variables.isEmpty && unaryFunctions.isEmpty && binaryFunctions.isEmpty }
   /// Obtain the number of unresolved symbols
-  public var count: Int { [variables, unaryFunctions, binaryFunctions]
-    .map { $0.count }
-    .sum()
-  }
+  public var count: Int { [variables, unaryFunctions, binaryFunctions].map { $0.count }.reduce(.zero, (+)) }
 
   init(variables: Set<Substring>, unaryFunctions: Set<Substring>, binaryFunctions: Set<Substring>) {
     self.variables = variables
     self.unaryFunctions = unaryFunctions
     self.binaryFunctions = binaryFunctions
   }
-}
-
-private extension Sequence where Element: AdditiveArithmetic {
-  func sum() -> Element { reduce(.zero, +) }
 }

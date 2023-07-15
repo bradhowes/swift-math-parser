@@ -36,12 +36,12 @@ public extension Evaluator {
   /**
    Evaluate the token to obtain a value. By default will use symbol map and function map given to `init`.
 
-   - parameter variables: optional mapping of names to constants to use during evaluation.
-   Default is to use `MathParser.defaultVariables` value.
-   - parameter unaryFunctions: optional mapping of names to 1 parameter functions to use during evaluation.
-   Default is to use `MathParser.defaultUnaryFunctions`
-   - parameter binaryFunctions: optional mapping of names to 2 parameter functions to use during evaluation.
-   Default is to use `MathParser.defaultBinaryFunctions`
+   - parameter variables: optional mapping of names to constants to use during evaluation in addition to
+   `MathParser.defaultVariables`
+   - parameter unaryFunctions: optional mapping of names to 1 parameter functions to use during evaluation in addition
+   to `MathParser.defaultUnaryFunctions`
+   - parameter binaryFunctions: optional mapping of names to 2 parameter functions to use during evaluation in addition
+   to `MathParser.defaultBinaryFunctions`
    - returns: Double value that is NaN when evaluation cannot finish due to unresolved symbol
    */
   @inlinable
@@ -58,13 +58,13 @@ public extension Evaluator {
    Evaluate the token to obtain a `Result` value that indicates a success or failure. The `.success` case holds a valid
    `Double` value, while the `.failure` case holds a string describing the failure.
 
-   - parameter variables: optional mapping of names to constants to use during evaluation.
-   Default is to use `MathParser.defaultVariables` value.
-   - parameter unaryFunctions: optional mapping of names to 1 parameter functions to use during evaluation.
-   Default is to use `MathParser.defaultUnaryFunctions`
-   - parameter binaryFunctions: optional mapping of names to 2 parameter functions to use during evaluation.
-   Default is to use `MathParser.defaultBinaryFunctions`
-   - returns: `Result` enum
+   - parameter variables: optional mapping of names to constants to use during evaluation in addition to
+   `MathParser.defaultVariables`
+   - parameter unaryFunctions: optional mapping of names to 1 parameter functions to use during evaluation in addition
+   to `MathParser.defaultUnaryFunctions`
+   - parameter binaryFunctions: optional mapping of names to 2 parameter functions to use during evaluation in addition
+   to `MathParser.defaultBinaryFunctions`
+   - returns: `Result` enum which hold value on success or error description on failure.
    */
   @inlinable
   func evalResult(variables: MathParser.VariableMap? = nil,
@@ -113,27 +113,33 @@ public extension Evaluator {
 @usableFromInline
 struct EvalState {
   /// Map to use any unresolved symbols from parse
-  @usableFromInline let variables: MathParser.VariableMap
+  @usableFromInline let variables: MathParser.VariableMap?
   /// Map to use any unresolved unary functions from parse
-  @usableFromInline let unaryFunctions: MathParser.UnaryFunctionMap
+  @usableFromInline let unaryFunctions: MathParser.UnaryFunctionMap?
   /// Map to use any unresolved binary functions from parse
-  @usableFromInline let binaryFunctions: MathParser.BinaryFunctionMap
+  @usableFromInline let binaryFunctions: MathParser.BinaryFunctionMap?
   /// True if using implied multiplication to resolve symbols
   @usableFromInline let usingImpliedMultiplication: Bool
 
   @inlinable
-  public func findVariable(name: Substring) -> Double? { self.variables(String(name)) }
+  public func findVariable(name: Substring) -> Double? {
+    self.variables?(String(name)) ?? MathParser.defaultVariables.producer(String(name))
+  }
 
   @inlinable
-  public func findUnary(name: Substring) -> MathParser.UnaryFunction? { self.unaryFunctions(String(name)) }
+  public func findUnary(name: Substring) -> MathParser.UnaryFunction? {
+    self.unaryFunctions?(String(name)) ?? MathParser.defaultUnaryFunctions.producer(String(name))
+  }
 
   @inlinable
-  public func findBinary(name: Substring) -> MathParser.BinaryFunction? { self.binaryFunctions(String(name)) }
+  public func findBinary(name: Substring) -> MathParser.BinaryFunction? {
+    self.binaryFunctions?(String(name)) ?? MathParser.defaultBinaryFunctions.producer(String(name))
+  }
 
   @usableFromInline
-  init(variables: @escaping MathParser.VariableMap,
-       unaryFunctions: @escaping MathParser.UnaryFunctionMap,
-       binaryFunctions: @escaping MathParser.BinaryFunctionMap,
+  init(variables: MathParser.VariableMap?,
+       unaryFunctions: MathParser.UnaryFunctionMap?,
+       binaryFunctions: MathParser.BinaryFunctionMap?,
        usingImpliedMultiplication: Bool) {
     self.variables = variables
     self.unaryFunctions = unaryFunctions
