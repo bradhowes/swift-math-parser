@@ -37,7 +37,7 @@ final public class MathParser {
   public typealias BinaryFunctionMap = (String) -> BinaryFunction?
   /// Dictionary of binary function names and their implementations.
   public typealias BinaryFunctionDict = [String: BinaryFunction]
-  /// Return value for the `parseResult` method.
+  /// Return value for the ``MathParser/parseResult(_:)`` method.
   public typealias Result = Swift.Result<Evaluator, MathParserError>
   /**
    Default symbols to use for parsing.
@@ -152,8 +152,8 @@ final public class MathParser {
    Parse an expression into a token that can be evaluated at a later time.
 
    - parameter text: the expression to parse
-   - returns: optional Evaluator to use to obtain results from the parsed expression. This is nil if
-   the given expression is not valid.
+   - returns: optional ``Evaluator`` to use to obtain results from the parsed expression. This is nil if
+   the given expression to parse is not valid.
    */
   public func parse(_ text: String) -> Evaluator? {
     guard let token = try? expression.parse(text) else { return nil }
@@ -161,7 +161,10 @@ final public class MathParser {
   }
 
   /**
-   Parse an expression into a token that can be evaluated at a later time. Returns a `Result` enum with two cases:
+   Parse an expression into a token that can be evaluated at a later time, and returns a `Result` value that conveys
+   information about the parsing result.
+
+   The `Result` enum has two cases:
 
    - `.success` -- holds an ``Evaluator`` instance for evaluations of the parsed expression
    - `.failure` -- holds a ``MathParserError`` instance that describes the parse failure
@@ -180,7 +183,7 @@ final public class MathParser {
 
   // MARK: - implementation details
 
-  /// When true, two parsed operands in a row implies multiplication
+  // When true, two parsed operands in a row implies multiplication
   private let enableImpliedMultiplication: Bool
 
   // Any of these will terminate an identifier (as well as whitespace). NOTE: this must be kept up-to-date with any
@@ -198,7 +201,7 @@ final public class MathParser {
     ","
   ]
 
-  /**
+  /*
    Parser for a numeric constant. NOTE: we disallow signed numbers here due to ambiguities that are introduced if
    implied multiplication mode is enabled. We allow for negative values through the negation operation which demands
    that the "-" appear just before the number without any spaces between them.
@@ -224,19 +227,19 @@ final public class MathParser {
     End()
   }
 
-  // NOTE: the chain of expression parsers from here to exponentiation causes a loop so we need to be Lazy here.
+  // NOTE: the chain of expression parsers from here to exponentiation causes a loop so we need to be "lazy" here.
   private lazy var subexpression: some TokenParser = Lazy {
     self.additionAndSubtraction
   }
 
-  lazy var additionAndSubtraction = InfixOperation(
+  private lazy var additionAndSubtraction = InfixOperation(
     name: "+|-",
     associativity: .left,
     operator: additionOrSubtractionOperator,
     operand: multiplicationAndDivision
   )
 
-  lazy var multiplicationAndDivision = InfixOperation(
+  private lazy var multiplicationAndDivision = InfixOperation(
     name: "*|/",
     associativity: .left,
     operator: multiplicationOrDivisionOperator,
@@ -244,7 +247,7 @@ final public class MathParser {
     implied: enableImpliedMultiplication ? self.multiplicationReducer : nil
   )
 
-  lazy var exponentiation = InfixOperation(
+  private lazy var exponentiation = InfixOperation(
     name: "Pow",
     associativity: .right,
     operator: exponentiationOperator,

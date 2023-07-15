@@ -5,8 +5,9 @@
       "type" : "text"
     },
     {
-      "code" : "parseResult",
-      "type" : "codeVoice"
+      "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/parseResult(_:)",
+      "isActive" : true,
+      "type" : "reference"
     },
     {
       "text" : " method.",
@@ -260,8 +261,9 @@
       "type" : "text"
     },
     {
-      "code" : "parseResult",
-      "type" : "codeVoice"
+      "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/parseResult(_:)",
+      "isActive" : true,
+      "type" : "reference"
     },
     {
       "text" : " method.",
@@ -294,6 +296,77 @@
   "title" : "MathParser.Result",
   "type" : "topic",
   "url" : "\/documentation\/mathparser\/mathparser\/result"
+},
+"doc://MathParser/documentation/MathParser/MathParser/parseResult(_:)": {
+  "abstract" : [
+    {
+      "text" : "Parse an expression into a token that can be evaluated at a later time, and returns a ",
+      "type" : "text"
+    },
+    {
+      "code" : "Result",
+      "type" : "codeVoice"
+    },
+    {
+      "text" : " value that conveys",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "information about the parsing result.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "parseResult"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    },
+    {
+      "kind" : "text",
+      "text" : ") -> "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC",
+      "text" : "MathParser"
+    },
+    {
+      "kind" : "text",
+      "text" : "."
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10MathParserAAC6Resulta",
+      "text" : "Result"
+    }
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/parseResult(_:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "parseResult(_:)",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser\/mathparser\/parseresult(_:)"
 },
 "doc://MathParser/documentation/MathParser/MathParserError": {
   "abstract" : [

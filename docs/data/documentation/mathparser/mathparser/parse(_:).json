@@ -163,7 +163,16 @@
         {
           "inlineContent" : [
             {
-              "text" : "optional Evaluator to use to obtain results from the parsed expression. This is nil if",
+              "text" : "optional ",
+              "type" : "text"
+            },
+            {
+              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/Evaluator",
+              "isActive" : true,
+              "type" : "reference"
+            },
+            {
+              "text" : " to use to obtain results from the parsed expression. This is nil if",
               "type" : "text"
             },
             {
@@ -171,7 +180,7 @@
               "type" : "text"
             },
             {
-              "text" : "the given expression is not valid.",
+              "text" : "the given expression to parse is not valid.",
               "type" : "text"
             }
           ],

@@ -1,4 +1,4 @@
-# Overview
+# Getting Started
 
 Basic math expression parser built with Point•Free's swift-parsing package (v0.12.0). 
 

@@ -1,7 +1,7 @@
 {
   "abstract" : [
     {
-      "text" : "Parse an expression into a token that can be evaluated at a later time. Returns a ",
+      "text" : "Parse an expression into a token that can be evaluated at a later time, and returns a ",
       "type" : "text"
     },
     {
@@ -9,7 +9,15 @@
       "type" : "codeVoice"
     },
     {
-      "text" : " enum with two cases:",
+      "text" : " value that conveys",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "information about the parsing result.",
       "type" : "text"
     }
   ],
@@ -206,6 +214,23 @@
           "level" : 2,
           "text" : "Discussion",
           "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "The ",
+              "type" : "text"
+            },
+            {
+              "code" : "Result",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " enum has two cases:",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
         },
         {
           "items" : [
@@ -408,8 +433,9 @@
       "type" : "text"
     },
     {
-      "code" : "parseResult",
-      "type" : "codeVoice"
+      "identifier" : "doc:\/\/MathParser\/documentation\/MathParser\/MathParser\/parseResult(_:)",
+      "isActive" : true,
+      "type" : "reference"
     },
     {
       "text" : " method.",
@@ -446,7 +472,7 @@
 "doc://MathParser/documentation/MathParser/MathParser/parseResult(_:)": {
   "abstract" : [
     {
-      "text" : "Parse an expression into a token that can be evaluated at a later time. Returns a ",
+      "text" : "Parse an expression into a token that can be evaluated at a later time, and returns a ",
       "type" : "text"
     },
     {
@@ -454,7 +480,15 @@
       "type" : "codeVoice"
     },
     {
-      "text" : " enum with two cases:",
+      "text" : " value that conveys",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "information about the parsing result.",
       "type" : "text"
     }
   ],
