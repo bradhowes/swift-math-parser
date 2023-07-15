@@ -9,71 +9,7 @@
       "type" : "text"
     },
     {
-      "text" : "convention. For instance, instead of writing ",
-      "type" : "text"
-    },
-    {
-      "code" : "2 * (3 + 4)",
-      "type" : "codeVoice"
-    },
-    {
-      "text" : " one usually writes ",
-      "type" : "text"
-    },
-    {
-      "code" : "2(3 + 4)",
-      "type" : "codeVoice"
-    },
-    {
-      "text" : ". Likewise, it is not uncommon",
-      "type" : "text"
-    },
-    {
-      "text" : " ",
-      "type" : "text"
-    },
-    {
-      "text" : "to see numeric values before a function or a common constant such as ",
-      "type" : "text"
-    },
-    {
-      "code" : "π",
-      "type" : "codeVoice"
-    },
-    {
-      "text" : ", so instead of ",
-      "type" : "text"
-    },
-    {
-      "code" : "3 * sin(0.5 * π)",
-      "type" : "codeVoice"
-    },
-    {
-      "text" : " we might",
-      "type" : "text"
-    },
-    {
-      "text" : " ",
-      "type" : "text"
-    },
-    {
-      "text" : "write ",
-      "type" : "text"
-    },
-    {
-      "code" : "3sin(0.5π)",
-      "type" : "codeVoice"
-    },
-    {
-      "text" : " or perhaps ",
-      "type" : "text"
-    },
-    {
-      "code" : "3 sin(0.5 π)",
-      "type" : "codeVoice"
-    },
-    {
-      "text" : " to make it a little easier to read.",
+      "text" : "convention.",
       "type" : "text"
     }
   ],
@@ -107,6 +43,103 @@
           "level" : 2,
           "text" : "Overview",
           "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Often instead of writing ",
+              "type" : "text"
+            },
+            {
+              "code" : "2 * (3 + 4)",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " one usually writes ",
+              "type" : "text"
+            },
+            {
+              "code" : "2(3 + 4)",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " with the understanding that ",
+              "type" : "text"
+            },
+            {
+              "code" : "2",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " is being",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "multiplied to the value of ",
+              "type" : "text"
+            },
+            {
+              "code" : "3 + 4",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : ". Likewise, it is not uncommon to see numeric values before a function or a constant",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "such as ",
+              "type" : "text"
+            },
+            {
+              "code" : "π",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : ", so instead of ",
+              "type" : "text"
+            },
+            {
+              "code" : "3 * sin(0.5 * π)",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " we might see ",
+              "type" : "text"
+            },
+            {
+              "code" : "3sin(0.5π)",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " or perhaps ",
+              "type" : "text"
+            },
+            {
+              "code" : "3 sin(0.5 π)",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " to make it a little",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "easier to read.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
         },
         {
           "inlineContent" : [
@@ -156,9 +189,9 @@
           "type" : "paragraph"
         },
         {
-          "anchor" : "Notes",
+          "anchor" : "Space-Oddities",
           "level" : 2,
-          "text" : "Notes",
+          "text" : "Space Oddities",
           "type" : "heading"
         },
         {

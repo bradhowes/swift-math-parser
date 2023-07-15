@@ -1,7 +1,7 @@
 {
   "abstract" : [
     {
-      "text" : "By default, ",
+      "text" : "The ",
       "type" : "text"
     },
     {
@@ -10,23 +10,7 @@
       "type" : "reference"
     },
     {
-      "text" : " provides two constants (",
-      "type" : "text"
-    },
-    {
-      "code" : "π",
-      "type" : "codeVoice"
-    },
-    {
-      "text" : " and ",
-      "type" : "text"
-    },
-    {
-      "code" : "e",
-      "type" : "codeVoice"
-    },
-    {
-      "text" : ") and a large number of common functions by default for",
+      "text" : " package tries to offer a great out-of-the-box experience without any configuration. It also offers",
       "type" : "text"
     },
     {
@@ -34,7 +18,15 @@
       "type" : "text"
     },
     {
-      "text" : "all math expression parsing and evaluation:",
+      "text" : "a way to integrate your own functionality by way of providing custom variables and functions which the parser and",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "evaluator can then use to successfully resolve and evaluate your math expressions.",
       "type" : "text"
     }
   ],
@@ -68,6 +60,57 @@
           "level" : 2,
           "text" : "Overview",
           "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "By default, ",
+              "type" : "text"
+            },
+            {
+              "identifier" : "doc:\/\/MathParser\/documentation\/MathParser",
+              "isActive" : true,
+              "type" : "reference"
+            },
+            {
+              "text" : " provides two constants (",
+              "type" : "text"
+            },
+            {
+              "code" : "π",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " and ",
+              "type" : "text"
+            },
+            {
+              "code" : "e",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : ") and a large number of common functions by default for",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "all math expression parsing and evaluation.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "The functions provided are those that are often used in math and programming:",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
         },
         {
           "items" : [
@@ -263,10 +306,6 @@
                     {
                       "code" : "pow",
                       "type" : "codeVoice"
-                    },
-                    {
-                      "text" : " [^1]",
-                      "type" : "text"
                     }
                   ],
                   "type" : "paragraph"

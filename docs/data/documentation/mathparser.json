@@ -89,7 +89,7 @@
 "doc://MathParser/documentation/MathParser/CustomSymbols": {
   "abstract" : [
     {
-      "text" : "By default, ",
+      "text" : "The ",
       "type" : "text"
     },
     {
@@ -98,23 +98,7 @@
       "type" : "reference"
     },
     {
-      "text" : " provides two constants (",
-      "type" : "text"
-    },
-    {
-      "code" : "π",
-      "type" : "codeVoice"
-    },
-    {
-      "text" : " and ",
-      "type" : "text"
-    },
-    {
-      "code" : "e",
-      "type" : "codeVoice"
-    },
-    {
-      "text" : ") and a large number of common functions by default for",
+      "text" : " package tries to offer a great out-of-the-box experience without any configuration. It also offers",
       "type" : "text"
     },
     {
@@ -122,7 +106,15 @@
       "type" : "text"
     },
     {
-      "text" : "all math expression parsing and evaluation:",
+      "text" : "a way to integrate your own functionality by way of providing custom variables and functions which the parser and",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "evaluator can then use to successfully resolve and evaluate your math expressions.",
       "type" : "text"
     }
   ],
@@ -192,71 +184,7 @@
       "type" : "text"
     },
     {
-      "text" : "convention. For instance, instead of writing ",
-      "type" : "text"
-    },
-    {
-      "code" : "2 * (3 + 4)",
-      "type" : "codeVoice"
-    },
-    {
-      "text" : " one usually writes ",
-      "type" : "text"
-    },
-    {
-      "code" : "2(3 + 4)",
-      "type" : "codeVoice"
-    },
-    {
-      "text" : ". Likewise, it is not uncommon",
-      "type" : "text"
-    },
-    {
-      "text" : " ",
-      "type" : "text"
-    },
-    {
-      "text" : "to see numeric values before a function or a common constant such as ",
-      "type" : "text"
-    },
-    {
-      "code" : "π",
-      "type" : "codeVoice"
-    },
-    {
-      "text" : ", so instead of ",
-      "type" : "text"
-    },
-    {
-      "code" : "3 * sin(0.5 * π)",
-      "type" : "codeVoice"
-    },
-    {
-      "text" : " we might",
-      "type" : "text"
-    },
-    {
-      "text" : " ",
-      "type" : "text"
-    },
-    {
-      "text" : "write ",
-      "type" : "text"
-    },
-    {
-      "code" : "3sin(0.5π)",
-      "type" : "codeVoice"
-    },
-    {
-      "text" : " or perhaps ",
-      "type" : "text"
-    },
-    {
-      "code" : "3 sin(0.5 π)",
-      "type" : "codeVoice"
-    },
-    {
-      "text" : " to make it a little easier to read.",
+      "text" : "convention.",
       "type" : "text"
     }
   ],

@@ -1,16 +1,19 @@
 # Implied Multiplication
 
 Math expression are often written without explicitly indicating when multiplication takes place, and instead rely on
-convention. For instance, instead of writing `2 * (3 + 4)` one usually writes `2(3 + 4)`. Likewise, it is not uncommon
-to see numeric values before a function or a common constant such as `π`, so instead of `3 * sin(0.5 * π)` we might
-write `3sin(0.5π)` or perhaps `3 sin(0.5 π)` to make it a little easier to read.
+convention.
+
+Often instead of writing `2 * (3 + 4)` one usually writes `2(3 + 4)` with the understanding that `2` is being
+multiplied to the value of `3 + 4`. Likewise, it is not uncommon to see numeric values before a function or a constant 
+such as `π`, so instead of `3 * sin(0.5 * π)` we might see `3sin(0.5π)` or perhaps `3 sin(0.5 π)` to make it a little 
+easier to read.
 
 ``MathParser`` supports parsing of math expressions where a multiplication symbol might not be present between two
 terms. It is disabled by default, but the 
 ``MathParser/init(variables:variableDict:unaryFunctions:unaryFunctionDict:binaryFunctions:binaryFunctionDict:enableImpliedMultiplication:)``
 initializer allows it to be enabled via the `enableImpliedMultiplication` parameter.
 
-## Notes
+## Space Oddities
 
 Be aware that with implied multiplication enabled, you could encounter strange parsing if you do not use spaces between
 the "-" operator:
