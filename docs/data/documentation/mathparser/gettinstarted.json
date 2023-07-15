@@ -1,0 +1,1336 @@
+{
+  "abstract" : [
+    {
+      "text" : "Basic math expression parser built with Point•Free’s swift-parsing package (v0.12.0).",
+      "type" : "text"
+    }
+  ],
+  "hierarchy" : {
+    "paths" : [
+      [
+        "doc:\/\/MathParser\/documentation\/MathParser"
+      ]
+    ]
+  },
+  "identifier" : {
+    "interfaceLanguage" : "swift",
+    "url" : "doc:\/\/MathParser\/documentation\/MathParser\/GettinStarted"
+  },
+  "kind" : "article",
+  "metadata" : {
+    "modules" : [
+      {
+        "name" : "MathParser"
+      }
+    ],
+    "role" : "article",
+    "roleHeading" : "Article",
+    "title" : "Overview"
+  },
+  "primaryContentSections" : [
+    {
+      "content" : [
+        {
+          "anchor" : "Usage-Example",
+          "level" : 2,
+          "text" : "Usage Example",
+          "type" : "heading"
+        },
+        {
+          "code" : [
+            "let parser = MathParser()",
+            "let evaluator = parser.parse(\"4 × sin(t × π) + 2 × sin(t × π)\")",
+            "evaluator.eval(\"t\", value: 0.0) \/\/ => 0.0",
+            "evaluator.eval(\"t\", value: 0.25) \/\/ => 4.2426406871192848",
+            "evaluator.eval(\"t\", value: 0.5) \/\/ => 6",
+            "evaluator.eval(\"t\", value: 1.0) \/\/ => 0"
+          ],
+          "syntax" : "swift",
+          "type" : "codeListing"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "The parser will return ",
+              "type" : "text"
+            },
+            {
+              "code" : "nil",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " if it is unable to completely parse the expression. Alternatively, you can call the",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "code" : "parseResult",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " to obtain a Swift ",
+              "type" : "text"
+            },
+            {
+              "code" : "Result",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " enum that will have a ",
+              "type" : "text"
+            },
+            {
+              "code" : "MathParserError",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " value when parsing fails. This",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "will contain a description of the parsing failure that comes from the swift-parsing library.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "code" : [
+            "let evaluator = parser.parseResult(\"4 × sin(t × π\")",
+            "print(evaluator)",
+            "failure(error: unexpected input",
+            "--> input:1:8",
+            "1 | 4 × sin(t × π",
+            "|        ^ expected end of input)",
+            ""
+          ],
+          "syntax" : "swift",
+          "type" : "codeListing"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "By default, the expression parser and evaluator handle the following symbols and functions:",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "items" : [
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "Constants: ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "pi",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " (",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "π",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ") and ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "e",
+                      "type" : "codeVoice"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "1-argument functions: ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "sin",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ", ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "asin",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ", ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "cos",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ", ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "acos",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ", ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "tan",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ", ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "atan",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ", ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "log10",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ", ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "ln",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " (",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "loge",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : "), ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "log2",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ", ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "exp",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ", ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "ceil",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ",",
+                      "type" : "text"
+                    },
+                    {
+                      "text" : " ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "floor",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ", ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "round",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ", ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "sqrt",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " (",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "√",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : "), ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "cbrt",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " (cube root), ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "abs",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ", ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "sgn",
+                      "type" : "codeVoice"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "2-argument functions: ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "atan",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ", ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "hypot",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ", ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "pow",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " [^1]",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "alternative math operator symbols: ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "×",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " for multiplication and ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "÷",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " for division (see example above for use of ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "×",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ")",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            }
+          ],
+          "type" : "unorderedList"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "You can reference additional symbols or variables and functions by providing your own mapping functions. There are two",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "places where this can be done:",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "items" : [
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "MathParser.init",
+                      "type" : "codeVoice"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "Evaluator.eval",
+                      "type" : "codeVoice"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            }
+          ],
+          "type" : "unorderedList"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "If a symbol or function does not exist during an ",
+              "type" : "text"
+            },
+            {
+              "code" : "eval",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " call, the final result will be ",
+              "type" : "text"
+            },
+            {
+              "code" : "NaN",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : ". If a symbol is resolved",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "during parsing, it will be replaced with the symbol’s value. Otherwise, it will be resolved during a future ",
+              "type" : "text"
+            },
+            {
+              "code" : "eval",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " call.",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "Same for function calls – if the function is known during parsing ",
+              "type" : "text"
+            },
+            {
+              "inlineContent" : [
+                {
+                  "text" : "and",
+                  "type" : "text"
+                }
+              ],
+              "type" : "emphasis"
+            },
+            {
+              "text" : " all arguments have a known value, then it will",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "be replaced with the function result. Otherwise, the function call will take place during an ",
+              "type" : "text"
+            },
+            {
+              "code" : "eval",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " call.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "You can get the unresolved symbol names from the ",
+              "type" : "text"
+            },
+            {
+              "code" : "Evaluator.unresolved",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " attribute. It returns three collections for",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "unresolved variables, unary functions, and binary function names. You can also use the ",
+              "type" : "text"
+            },
+            {
+              "code" : "evalResult",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " to attempt an",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "evaluation but also obtain a description of the failure when the evaluation fails.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "anchor" : "Custom-Symbols",
+          "level" : 2,
+          "text" : "Custom Symbols",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Below is an example that provides a custom unary function that returns the twice the value it receives. There is also a",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "custom variable called ",
+              "type" : "text"
+            },
+            {
+              "code" : "foo",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " which holds the constant ",
+              "type" : "text"
+            },
+            {
+              "code" : "123.4",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : ".",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "code" : [
+            "let myVariables = [\"foo\": 123.4]",
+            "let myFuncs: [String:(Double)->Double] = [\"twice\": {$0 + $0}]",
+            "let parser = MathParser(variables: myVariables.producer, unaryFunctions: myFuncs.producer)",
+            "let evaluator = parser.parse(\"power(twice(foo))\")",
+            "",
+            "# Expression parsed and `twice(foo)` resolved to `246.8` but `power` is still unknown",
+            "evaluator?.value \/\/ => nan",
+            "evaluator?.unresolved.unaryFunctions \/\/ => ['power']'",
+            "# Give evaluator way to resolve `power(246.8)`",
+            "let myEvalFuncs: [String:(Double)->Double] = [\"power\": {$0 * $0}]",
+            "evaluator?.eval(unaryFunctions: myEvalFuncs.producer) \/\/ => 60910.240000000005"
+          ],
+          "syntax" : "swift",
+          "type" : "codeListing"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Instead of passing a closure to access the dictionary of symbols, you can pass the dictionary itself:",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "code" : [
+            "let parser = MathParser(variableDict: myVariables, unaryFunctionDict: myFuncs)",
+            "evaluator?.eval(unaryFunctionDict: myEvalFuncs) \/\/ => 60910.240000000005"
+          ],
+          "syntax" : null,
+          "type" : "codeListing"
+        },
+        {
+          "anchor" : "Implied-Multiplication",
+          "level" : 2,
+          "text" : "Implied Multiplication",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "One of the original goals of this parser was to be able to accept a Wolfram Alpha math expression more or less as-is",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "– for instance the definition https:\/\/www.wolframalpha.com\/input\/?i=Sawsbuck+Winter+Form%E2%80%90like+curve – without",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "any editing. Here is the start of the textual representation from the above link:",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "code" : [
+            "x(t) = ((-2\/9 sin(11\/7 - 4 t) + 78\/11 sin(t + 11\/7) + 2\/7 sin(2 t + 8\/5) ..."
+          ],
+          "syntax" : null,
+          "type" : "codeListing"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Skipping over the assignment one can readily see that the representation includes implied multiplication between terms",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "when there are no explicit math operators present (eg ",
+              "type" : "text"
+            },
+            {
+              "code" : "-2\/9",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "inlineContent" : [
+                {
+                  "text" : "x",
+                  "type" : "text"
+                }
+              ],
+              "type" : "strong"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "code" : "sin(11\/7 - 4",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "inlineContent" : [
+                {
+                  "text" : "x",
+                  "type" : "text"
+                }
+              ],
+              "type" : "strong"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "code" : "t)",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : "). There is support for this",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "sort of operation in the parser that can be enabled by setting ",
+              "type" : "text"
+            },
+            {
+              "code" : "enableImpliedMultiplication",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " when creating a new",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "code" : "MathParser",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " instance (it defaults to ",
+              "type" : "text"
+            },
+            {
+              "code" : "false",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : "). Note that when enabled, an expression such as ",
+              "type" : "text"
+            },
+            {
+              "code" : "2^3 2^4",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " would be",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "considered a valid expression, resolving to ",
+              "type" : "text"
+            },
+            {
+              "code" : "2^3 * 2^4 = 128",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : ", and ",
+              "type" : "text"
+            },
+            {
+              "code" : "4sin(t(pi))",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " would become ",
+              "type" : "text"
+            },
+            {
+              "code" : "4 * sin(t * pi)",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : ".",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "You can see the entire Wolfram example in the ",
+              "type" : "text"
+            },
+            {
+              "identifier" : "Tests\/MathParserTests\/TestWolfram.swift",
+              "isActive" : true,
+              "type" : "reference"
+            },
+            {
+              "text" : " test case.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Here is the original example expression from the start of this README file with implied multiplication in use (all of",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "the muliplication symbols have been removed):",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "code" : [
+            "let parser = MathParser(enableImpliedMultiplication: true)",
+            "let evaluator = parser.parse(\"4sin(t π) + 2sin(t π)\")",
+            "evaluator.eval(\"t\", value: 0.0) \/\/ => 0.0",
+            "evaluator.eval(\"t\", value: 0.25) \/\/ => 4.2426406871192848",
+            "evaluator.eval(\"t\", value: 0.5) \/\/ => 6",
+            "evaluator.eval(\"t\", value: 1.0) \/\/ => 0"
+          ],
+          "syntax" : "swift",
+          "type" : "codeListing"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Be aware that with implied multiplication enabled, you could encounter strange parsing if you do not use spaces between",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "the “-” operator:",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "items" : [
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "2-3",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " => -6",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "2 -3",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " -> -6",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "2 - 3",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " => -1",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            }
+          ],
+          "type" : "unorderedList"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "However, for “+” all is well:",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "items" : [
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "2+3",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " => 5",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "2 +3",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " -> 5",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "2 + 3",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " => 5",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            }
+          ],
+          "type" : "unorderedList"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Unfortunately, there is no way to handle this ambiguity between implied multiplication, subtraction and negation when",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "spaces are not used to signify intent.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "anchor" : "Symbol-Splitting",
+          "level" : 3,
+          "text" : "Symbol Splitting",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "When implied multiplication mode is active and the name of a variable or a 1-parameter (unary) function is not found in",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "their corresponding map, the token evaluation routine will attempt to resolve them by splitting the names into two or",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "more pieces that all resolve to known variables and\/or functions. For example, using the default variable map and",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "unary function map from ",
+              "type" : "text"
+            },
+            {
+              "code" : "MathParser",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : ":",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "items" : [
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "pie",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " => ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "pi * e",
+                      "type" : "codeVoice"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "esin(2π)",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " => ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "e * sin(2 * pi)",
+                      "type" : "codeVoice"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "eeesgn(-1)",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " => ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "e * e * e * -1",
+                      "type" : "codeVoice"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            }
+          ],
+          "type" : "unorderedList"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "As you can see, this could lead to erroneous resolution of variable names and functions, but this behavior is only used",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "when the initial lookup of the name fails, and it is never performed when the symbol names are separated by a space.",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "However, if you make a mistake and forget to provide the definition of a custom variable or function, it could provide",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "a value instead of an error. For instance, consider evaluating ",
+              "type" : "text"
+            },
+            {
+              "code" : "tabs(-3)",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " where ",
+              "type" : "text"
+            },
+            {
+              "code" : "t",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " is a custom variable set to ",
+              "type" : "text"
+            },
+            {
+              "code" : "1.2",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "and ",
+              "type" : "text"
+            },
+            {
+              "code" : "tabs",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " is a custom function but it is not provided for in the custom unary function map:",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "items" : [
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "tabs(-3)",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " => ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "1.2 * abs(-3)",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " => ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "3.6",
+                      "type" : "codeVoice"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            }
+          ],
+          "type" : "unorderedList"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "If implied multiplication had not been active, the evaluator would have correctly reported an issue – either returning",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "NaN or a ",
+              "type" : "text"
+            },
+            {
+              "code" : "Result.failure",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " describing the missing function.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "[^1]: Redundant since there is already the ",
+              "type" : "text"
+            },
+            {
+              "code" : "^",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " operator.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        }
+      ],
+      "kind" : "content"
+    }
+  ],
+  "schemaVersion" : {
+    "major" : 0,
+    "minor" : 3,
+    "patch" : 0
+  },
+  "sections" : [
+
+  ],
+  "variants" : [
+    {
+      "paths" : [
+        "\/documentation\/mathparser\/gettinstarted"
+      ],
+      "traits" : [
+        {
+          "interfaceLanguage" : "swift"
+        }
+      ]
+    }
+  ]
+, 
+"references": {
+"Tests/MathParserTests/TestWolfram.swift": {
+  "identifier" : "Tests\/MathParserTests\/TestWolfram.swift",
+  "title" : "TestWolfram",
+  "titleInlineContent" : [
+    {
+      "text" : "TestWolfram",
+      "type" : "text"
+    }
+  ],
+  "type" : "link",
+  "url" : "Tests\/MathParserTests\/TestWolfram.swift"
+},
+"doc://MathParser/documentation/MathParser": {
+  "abstract" : [
+
+  ],
+  "identifier" : "doc:\/\/MathParser\/documentation\/MathParser",
+  "kind" : "symbol",
+  "role" : "collection",
+  "title" : "MathParser",
+  "type" : "topic",
+  "url" : "\/documentation\/mathparser"
+}
+}
+}
