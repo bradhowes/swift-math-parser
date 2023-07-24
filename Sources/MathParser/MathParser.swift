@@ -80,7 +80,8 @@ final public class MathParser {
     "sqrt": sqrt, "√": sqrt,
     "cbrt": cbrt, // cube root,
     "abs": abs,
-    "sgn": { $0 < 0 ? -1 : $0 > 0 ? 1 : 0 }
+    "sgn": { $0 < 0 ? -1 : $0 > 0 ? 1 : 0 },
+    "!": { factorial($0) }
   ]
 
   /**
@@ -258,7 +259,19 @@ final public class MathParser {
     ignoreSpaces
     OneOf {
       negatedOperand
-      nonNegatedOperand
+      Parse {
+        nonNegatedOperand
+        Optionally {
+          "!"
+        }
+      }.map { (operand, factorialOp) in
+        guard let factorialOp = factorialOp else { return operand }
+        if case let Token.constant(value) = operand {
+          return Token.constant(value: factorial(value))
+        } else {
+          return .unaryCall(op: self.findUnary(name: "!"), name: "!", arg: operand)
+        }
+      }
     }
   }
 

@@ -630,4 +630,13 @@ error: unexpected input
     value = try? parser.parse(input[...])
     XCTAssertTrue(logged)
   }
+
+  func testFactorial() {
+    XCTAssertEqual(24.0, parser.parse("4!")?.value)
+    XCTAssertEqual(3 + 24.0, parser.parse("3 + 4!")?.value)
+    XCTAssertEqual(3 * 24.0, parser.parse("3 * 4!")?.value)
+    XCTAssertEqual(pow(3, 24), parser.parse("3^4!")?.value)
+    XCTAssertEqual(2.43290200817664e+18, parser.parse("20!")?.value)
+    XCTAssertEqual(9.33262154439441e+157, parser.parse("100!")?.value)
+  }
 }
