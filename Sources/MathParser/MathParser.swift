@@ -255,6 +255,9 @@ final public class MathParser {
     operand: operand
   )
 
+  // Semi-hacky support of a factorial operation. This works but implies that the factorial operation is at the highest
+  // precedence of all other math operations (reasonable). We only operate on positive values so we don't have to handle
+  // the error case if the value is negative.
   private lazy var operand: some TokenParser = Parse {
     ignoreSpaces
     OneOf {
@@ -266,11 +269,10 @@ final public class MathParser {
         }
       }.map { (operand, factorialOp) in
         guard let factorialOp = factorialOp else { return operand }
-        if case let Token.constant(value) = operand {
-          return Token.constant(value: factorial(value))
-        } else {
+        guard case let Token.constant(value) = operand else {
           return .unaryCall(op: self.findUnary(name: "!"), name: "!", arg: operand)
         }
+        return Token.constant(value: factorial(value))
       }
     }
   }
