@@ -132,6 +132,88 @@
                 {
                   "inlineContent" : [
                     {
+                      "text" : "Standard math operations: addition (",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "+",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : "), subtraction (",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "-",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : "), multiplication (",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "*",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : "), division (",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "\/",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : "),",
+                      "type" : "text"
+                    },
+                    {
+                      "text" : " ",
+                      "type" : "text"
+                    },
+                    {
+                      "text" : "and exponentiation (",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "^",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ")",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "The factorial of a number (",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "!",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ")",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
                       "text" : "Constants: ",
                       "type" : "text"
                     },
@@ -319,6 +401,18 @@
                     {
                       "code" : "sgn",
                       "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ", ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "!",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " (factorial)",
+                      "type" : "text"
                     }
                   ],
                   "type" : "paragraph"
@@ -397,6 +491,55 @@
             }
           ],
           "type" : "unorderedList"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Note that the factorial operator and function (",
+              "type" : "text"
+            },
+            {
+              "code" : "!",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : ") only give exact values up to ",
+              "type" : "text"
+            },
+            {
+              "code" : "20!",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : ". They treat all values as",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "if truncated to an integer before performing the multiplications. Thus, ",
+              "type" : "text"
+            },
+            {
+              "code" : "12.3!",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " is only ",
+              "type" : "text"
+            },
+            {
+              "code" : "12!",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : ".",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
         },
         {
           "inlineContent" : [
