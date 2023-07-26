@@ -40,9 +40,12 @@ failure(error: unexpected input
 
 By default, the expression parser and evaluator handle the following symbols and functions:
 
+* Standard math operations: addition (`+`), subtraction (`-`), multiplication (`*`), division (`/`), 
+and exponentiation (`^`)
+* The factorial of a number (`!`) [^2]
 * Constants: `pi` (`π`) and `e`
 * 1-argument functions: `sin`, `asin`, `cos`, `acos`, `tan`, `atan`, `log10`, `ln` (`loge`), `log2`, `exp`, `ceil`, 
-`floor`, `round`, `sqrt` (`√`), `cbrt` (cube root), `abs`, `sgn`
+`floor`, `round`, `sqrt` (`√`), `cbrt` (cube root), `abs`, `sgn`, and `!` for factorial (see [^2])
 * 2-argument functions: `atan`, `hypot`, `pow` [^1]
 * alternative math operator symbols: `×` for multiplication and `÷` for division (see example above for use of `×`)
 
@@ -86,6 +89,23 @@ Instead of passing a closure to access the dictionary of symbols, you can pass t
 let parser = MathParser(variableDict: myVariables, unaryFunctionDict: myFuncs)
 evaluator?.eval(unaryFunctionDict: myEvalFuncs) // => 60910.240000000005
 ```
+
+# Precedence
+
+The usual math operations follow the traditional precedence hierarchy: multiplication and division is above addition 
+and subtraction, so `1 + 2 * 3 - 4 / 5 + 6` evaluates the same as `1 + (2 * 3) - (4 / 5) + 6`. There are three 
+additional operators, one for exponentiations (^) which is higher than the previous ones, so `2 * 3 ^ 4 + 5` is the 
+same as `2 * (3 ^ 4) + 5`. It is also right-associative, so `2 ^ 3 ^ 4` is evaluated as `2 ^ (3 ^ 4)` instead of 
+`(2 ^ 3) ^ 4`.
+
+There are two other operations that are even higher in precedence than exponentiation:
+
+* negation (`-`) -- `-3.4`
+* factorial (`!`) -- `12!`
+
+Note that factorial of a negative number is undefined, so negation and factorial cannot be combined. In other words,
+parsing `-3!` returns `nil`. Also, factorial is only done on the integral portion of a number, so `12.3!` will parse but
+the resulting value will be the same as `12!`. In effect, factorial always operates as `floor(x)!` or `!(floor(x))`.
 
 # Implied Multiplication
 
@@ -156,4 +176,4 @@ If implied multiplication had not been active, the evaluator would have correctl
 NaN or a `Result.failure` describing the missing function.
 
 [^1]: Redundant since there is already the `^` operator.
-
+[^2]: Exact up to 20! -- larger numbers are approximations

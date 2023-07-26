@@ -29,11 +29,17 @@ failure(error: unexpected input
 
 By default, the expression parser and evaluator handle the following symbols and functions:
 
+* Standard math operations: addition (`+`), subtraction (`-`), multiplication (`*`), division (`/`), 
+and exponentiation (`^`)
+* The factorial of a number (`!`)
 * Constants: `pi` (`π`) and `e`
 * 1-argument functions: `sin`, `asin`, `cos`, `acos`, `tan`, `atan`, `log10`, `ln` (`loge`), `log2`, `exp`, `ceil`, 
-`floor`, `round`, `sqrt` (`√`), `cbrt` (cube root), `abs`, `sgn`
+`floor`, `round`, `sqrt` (`√`), `cbrt` (cube root), `abs`, `sgn`, `!` (factorial)
 * 2-argument functions: `atan`, `hypot`, `pow`
 * alternative math operator symbols: `×` for multiplication and `÷` for division (see example above for use of `×`)
+
+Note that the factorial operator and function (`!`) only give exact values up to `20!`. They treat all values as 
+if truncated to an integer before performing the multiplications. Thus, `12.3!` is only `12!`.
 
 You can reference additional symbols or variables and functions by providing your own mapping functions. There are two
 places where this can be done:

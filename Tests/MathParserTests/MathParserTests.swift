@@ -635,10 +635,17 @@ error: unexpected input
     XCTAssertEqual(24.0, parser.parse("4!")?.value)
     XCTAssertEqual(3 + 24.0, parser.parse("3 + 4!")?.value)
     XCTAssertEqual(3 * 24.0, parser.parse("3 * 4!")?.value)
+    XCTAssertNil(parser.parse("3 * -4!"))
     XCTAssertEqual(24.0, parser.parse("ceil(π)!")?.value)
     XCTAssertTrue(parser.parse("ceil(zeta)!")!.value.isNaN)
     XCTAssertEqual(pow(3, 24), parser.parse("3^4!")?.value)
     XCTAssertEqual(2.43290200817664e+18, parser.parse("20!")?.value)
     XCTAssertEqual(9.33262154439441e+157, parser.parse("100!")?.value)
+  }
+
+  func testExponentiation() {
+    XCTAssertEqual(2 * pow(3, 4) + 5, parser.parse("2 * 3 ^ 4 + 5")?.value)
+    XCTAssertEqual(2 * pow(3, 4) * 5, parser.parse("2 * 3 ^ 4 * 5")?.value)
+    XCTAssertEqual(2 * pow(3, pow(4,  5)), parser.parse("2 * 3 ^ 4 ^ 5")?.value)
   }
 }
