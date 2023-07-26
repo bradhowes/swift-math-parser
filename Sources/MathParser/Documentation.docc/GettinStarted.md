@@ -54,3 +54,21 @@ that can be resolved to constant values during the parse. Otherwise, the symbols
 
 You can get the unresolved symbol names from the ``Evaluator/unresolved`` attribute. It returns three collections for
 unresolved variables, unary functions, and binary function names.
+
+## Precedence
+
+The usual math operations follow the traditional precedence hierarchy: multiplication and division operations happen
+before addition and subtraction, so `1 + 2 * 3 - 4 / 5 + 6` evaluates the same as `1 + (2 * 3) - (4 / 5) + 6`. 
+There are three additional operators, one for exponentiations (^) which is higher than the previous ones, 
+so `2 * 3 ^ 4 + 5` is the same as `2 * (3 ^ 4) + 5`. It is also right-associative, so `2 ^ 3 ^ 4` is evaluated as 
+`2 ^ (3 ^ 4)` instead of `(2 ^ 3) ^ 4`.
+
+There are two other operations that are even higher in precedence than exponentiation:
+
+* negation (`-`) -- `-3.4`
+* factorial (`!`) -- `12!`
+
+Note that factorial of a negative number is undefined, so negation and factorial cannot be combined. In other words,
+parsing `-3!` returns `nil`. Also, factorial is only done on the integral portion of a number, so `12.3!` will parse but
+the resulting value will be the same as `12!`. In effect, factorial always operates as `floor(x)!` or `!(floor(x))`.
+

@@ -92,11 +92,11 @@ evaluator?.eval(unaryFunctionDict: myEvalFuncs) // => 60910.240000000005
 
 # Precedence
 
-The usual math operations follow the traditional precedence hierarchy: multiplication and division is above addition 
-and subtraction, so `1 + 2 * 3 - 4 / 5 + 6` evaluates the same as `1 + (2 * 3) - (4 / 5) + 6`. There are three 
-additional operators, one for exponentiations (^) which is higher than the previous ones, so `2 * 3 ^ 4 + 5` is the 
-same as `2 * (3 ^ 4) + 5`. It is also right-associative, so `2 ^ 3 ^ 4` is evaluated as `2 ^ (3 ^ 4)` instead of 
-`(2 ^ 3) ^ 4`.
+The usual math operations follow the traditional precedence hierarchy: multiplication and division operations happen
+before addition and subtraction, so `1 + 2 * 3 - 4 / 5 + 6` evaluates the same as `1 + (2 * 3) - (4 / 5) + 6`. 
+There are three additional operators, one for exponentiations (^) which is higher than the previous ones, 
+so `2 * 3 ^ 4 + 5` is the same as `2 * (3 ^ 4) + 5`. It is also right-associative, so `2 ^ 3 ^ 4` is evaluated as 
+`2 ^ (3 ^ 4)` instead of `(2 ^ 3) ^ 4`.
 
 There are two other operations that are even higher in precedence than exponentiation:
 
