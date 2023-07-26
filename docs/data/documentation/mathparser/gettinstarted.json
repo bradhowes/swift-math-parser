@@ -669,6 +669,242 @@
             }
           ],
           "type" : "paragraph"
+        },
+        {
+          "anchor" : "Precedence",
+          "level" : 2,
+          "text" : "Precedence",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "The usual math operations follow the traditional precedence hierarchy: multiplication and division operations happen",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "before addition and subtraction, so ",
+              "type" : "text"
+            },
+            {
+              "code" : "1 + 2 * 3 - 4 \/ 5 + 6",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " evaluates the same as ",
+              "type" : "text"
+            },
+            {
+              "code" : "1 + (2 * 3) - (4 \/ 5) + 6",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : ".",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "There are three additional operators, one for exponentiations (^) which is higher than the previous ones,",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "so ",
+              "type" : "text"
+            },
+            {
+              "code" : "2 * 3 ^ 4 + 5",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " is the same as ",
+              "type" : "text"
+            },
+            {
+              "code" : "2 * (3 ^ 4) + 5",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : ". It is also right-associative, so ",
+              "type" : "text"
+            },
+            {
+              "code" : "2 ^ 3 ^ 4",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " is evaluated as",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "code" : "2 ^ (3 ^ 4)",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " instead of ",
+              "type" : "text"
+            },
+            {
+              "code" : "(2 ^ 3) ^ 4",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : ".",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "There are two other operations that are even higher in precedence than exponentiation:",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "items" : [
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "negation (",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "-",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ") – ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "-3.4",
+                      "type" : "codeVoice"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "factorial (",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "!",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ") – ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "12!",
+                      "type" : "codeVoice"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            }
+          ],
+          "type" : "unorderedList"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Note that factorial of a negative number is undefined, so negation and factorial cannot be combined. In other words,",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "parsing ",
+              "type" : "text"
+            },
+            {
+              "code" : "-3!",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " returns ",
+              "type" : "text"
+            },
+            {
+              "code" : "nil",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : ". Also, factorial is only done on the integral portion of a number, so ",
+              "type" : "text"
+            },
+            {
+              "code" : "12.3!",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " will parse but",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "the resulting value will be the same as ",
+              "type" : "text"
+            },
+            {
+              "code" : "12!",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : ". In effect, factorial always operates as ",
+              "type" : "text"
+            },
+            {
+              "code" : "floor(x)!",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " or ",
+              "type" : "text"
+            },
+            {
+              "code" : "!(floor(x))",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : ".",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
         }
       ],
       "kind" : "content"
