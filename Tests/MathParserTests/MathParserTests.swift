@@ -384,6 +384,14 @@ final class MathParserTests: XCTestCase {
     let parser = MathParser(enableImpliedMultiplication: true)
     let token = parser.parse("2+5")
     XCTAssertEqual(7, token?.eval())
+    let token2 = parser.parse("t+4")
+    XCTAssertEqual(7, token2?.eval("t", value: 3))
+  }
+
+  func testEval() {
+    let parser = MathParser(enableImpliedMultiplication: false)
+    let token = parser.parse("t+4")
+    XCTAssertEqual(7, token?.eval("t", value: 3))
   }
 
   func testBuggyImpliedMultiplication() {
@@ -647,5 +655,17 @@ error: unexpected input
     XCTAssertEqual(2 * pow(3, 4) + 5, parser.parse("2 * 3 ^ 4 + 5")?.value)
     XCTAssertEqual(2 * pow(3, 4) * 5, parser.parse("2 * 3 ^ 4 * 5")?.value)
     XCTAssertEqual(2 * pow(3, pow(4,  5)), parser.parse("2 * 3 ^ 4 ^ 5")?.value)
+  }
+
+  func testDegTrig() {
+    var unaryFunctions = MathParser.defaultUnaryFunctions
+    unaryFunctions["sin"] = { sin($0 * Double.pi / 180.0) }
+    unaryFunctions["cos"] = { cos($0 * Double.pi / 180.0) }
+    var binaryFunctions = MathParser.defaultBinaryFunctions
+    binaryFunctions["atan2"] = { atan2($0, $1) * 180.0 / Double.pi }
+    let parser = MathParser(unaryFunctionDict: unaryFunctions, binaryFunctionDict: binaryFunctions)
+    XCTAssertEqual(sin(Double.pi / 6), parser.parse("sin(30)")?.value)
+    XCTAssertEqual(cos(Double.pi / 3), parser.parse("cos(60)")?.value)
+    XCTAssertEqual(atan2(1.0, 1.0) * 180.0 / Double.pi, parser.parse("atan2(1.0, 1.0)")?.value)
   }
 }
