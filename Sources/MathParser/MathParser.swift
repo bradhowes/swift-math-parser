@@ -75,13 +75,17 @@ final public class MathParser {
    */
   public static let defaultUnaryFunctions: UnaryFunctionDict = [
     "sin": sin, "asin": asin, "cos": cos, "acos": acos, "tan": tan, "atan": atan,
-    "log10": log10, "ln": log, "loge": log, "log2": log2, "exp": exp,
+    "sinh": sinh, "asinh": asinh, "cosh": cosh, "acosh": acosh, "tanh": tanh, "atanh": atanh,
+    "log": log10, "log10": log10, "ln": log, "loge": log, "log2": log2, "exp": exp, 
     "ceil": ceil, "floor": floor, "round": round,
     "sqrt": sqrt, "√": sqrt,
     "cbrt": cbrt, // cube root,
     "abs": abs,
     "sgn": { $0 < 0 ? -1 : $0 > 0 ? 1 : 0 },
-    "!": { factorial($0) }
+    "!": { factorial($0) },
+    "sec": { 1 / cos($0) },
+    "csc": { 1 / sin($0) },
+    "cot": { 1 / tan($0) }
   ]
 
   /**
@@ -97,7 +101,8 @@ final public class MathParser {
   public static let defaultBinaryFunctions: BinaryFunctionDict = [
     "atan2": atan2,
     "hypot": hypot,
-    "pow": pow // Redundant since we support x^b expressions
+    "pow": pow, // Redundant since we support x^b expressions
+   "mod": { $0.truncatingRemainder(dividingBy: $1) }
   ]
 
   /// Symbol/variable mapping to use during parsing and perhaps evaluation
