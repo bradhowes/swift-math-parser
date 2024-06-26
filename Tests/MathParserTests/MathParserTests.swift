@@ -668,4 +668,27 @@ error: unexpected input
     XCTAssertEqual(cos(Double.pi / 3), parser.parse("cos(60)")?.value)
     XCTAssertEqual(atan2(1.0, 1.0) * 180.0 / Double.pi, parser.parse("atan2(1.0, 1.0)")?.value)
   }
+
+  func testMod() {
+    XCTAssertEqual(5.truncatingRemainder(dividingBy: 3), parser.parse("mod(5, 3)")?.value)
+    XCTAssertEqual(3.truncatingRemainder(dividingBy: 5), parser.parse("mod(3, 5)")?.value)
+    XCTAssertEqual(55.truncatingRemainder(dividingBy: 3), parser.parse("mod(55, 3)")?.value)
+    XCTAssertEqual(35.truncatingRemainder(dividingBy: 5), parser.parse("mod(35, 5)")?.value)
+
+    XCTAssertEqual(-2, parser.parse("mod(-5, 3)")?.value)
+    XCTAssertEqual(-3, parser.parse("mod(-3, 5)")?.value)
+    XCTAssertEqual(-1, parser.parse("mod(-55, 3)")?.value)
+    XCTAssertEqual(0, parser.parse("mod(-35, 5)")?.value)
+
+    XCTAssertEqual(2, parser.parse("mod(5, -3)")?.value)
+    XCTAssertEqual(3, parser.parse("mod(3, -5)")?.value)
+    XCTAssertEqual(1, parser.parse("mod(55, -3)")?.value)
+    XCTAssertEqual(0, parser.parse("mod(35, -5)")?.value)
+
+    XCTAssertEqual(-2, parser.parse("mod(-5, -3)")?.value)
+    XCTAssertEqual(-3, parser.parse("mod(-3, -5)")?.value)
+    XCTAssertEqual(-1, parser.parse("mod(-55, -3)")?.value)
+    XCTAssertEqual(0, parser.parse("mod(-35, -5)")?.value)
+  }
 }
+
