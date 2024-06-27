@@ -670,10 +670,10 @@ error: unexpected input
   }
 
   func testMod() {
-    XCTAssertEqual(5.truncatingRemainder(dividingBy: 3), parser.parse("mod(5, 3)")?.value)
-    XCTAssertEqual(3.truncatingRemainder(dividingBy: 5), parser.parse("mod(3, 5)")?.value)
-    XCTAssertEqual(55.truncatingRemainder(dividingBy: 3), parser.parse("mod(55, 3)")?.value)
-    XCTAssertEqual(35.truncatingRemainder(dividingBy: 5), parser.parse("mod(35, 5)")?.value)
+    XCTAssertEqual(2, parser.parse("mod(5, 3)")?.value)
+    XCTAssertEqual(3, parser.parse("mod(3, 5)")?.value)
+    XCTAssertEqual(1, parser.parse("mod(55, 3)")?.value)
+    XCTAssertEqual(0, parser.parse("mod(35, 5)")?.value)
 
     XCTAssertEqual(-2, parser.parse("mod(-5, 3)")?.value)
     XCTAssertEqual(-3, parser.parse("mod(-3, 5)")?.value)
@@ -690,5 +690,31 @@ error: unexpected input
     XCTAssertEqual(-1, parser.parse("mod(-55, -3)")?.value)
     XCTAssertEqual(0, parser.parse("mod(-35, -5)")?.value)
   }
-}
 
+  func testTrigonometric() {
+    for index in 0..<11 {
+      let theta = Double(index - 5) / 10.0 * .pi
+      XCTAssertEqual(sin(theta), parser.parse("sin(\(theta))")?.value)
+      XCTAssertEqual(cos(theta), parser.parse("cos(\(theta))")?.value)
+      XCTAssertEqual(tan(theta), parser.parse("tan(\(theta))")?.value)
+
+      XCTAssertEqual(asin(sin(theta)), parser.parse("asin(sin(\(theta)))")?.value)
+      XCTAssertEqual(acos(cos(theta)), parser.parse("acos(cos(\(theta)))")?.value)
+      XCTAssertEqual(atan(tan(theta)), parser.parse("atan(tan(\(theta)))")?.value)
+
+      XCTAssertEqual(1.0 / cos(theta), parser.parse("sec(\(theta))")?.value)
+      XCTAssertEqual(1.0 / sin(theta), parser.parse("csc(\(theta))")?.value)
+      XCTAssertEqual(1.0 / tan(theta), parser.parse("cot(\(theta))")?.value)
+    }
+  }
+
+  func testHyperbolic() {
+    XCTAssertNotNil(parser.parse("sinh(0)"))
+    for index in 0..<11 {
+      let theta = Double(index - 5) / 10.0
+      XCTAssertEqual(sinh(theta), parser.parse("sinh(\(theta))")?.value)
+      XCTAssertEqual(cosh(theta), parser.parse("cosh(\(theta))")?.value)
+      XCTAssertEqual(tanh(theta), parser.parse("tanh(\(theta))")?.value)
+    }
+  }
+}

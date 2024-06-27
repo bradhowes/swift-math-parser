@@ -59,6 +59,15 @@ final public class MathParser {
    - `acos` -- calculates the arc cosine of the value such that acos(cos(X)) == X for X in [-1, 1]
    - `tan` -- trigonometric function that is the ratio of the opposite and adjacent sides of the triangle.
    - `atan` -- calculates the arc tangent of the value such that atan(tan(x)) == X
+   - `sec` -- returns the secant -- the reciprocal of `cos(x)`
+   - `csc` -- returns the cosecant -- the reciprocal of `sin(x)`
+   - `cot` -- returns the cotangent -- the reciprocal of `tan(x)`
+   - `sinh` -- hyperbolic sine function based on the hyperbola rather than the circle
+   - `asinh` -- inverse of `sinh`
+   - `cosh` -- hyperbolic cosine function based on the hyperbola rather than the circle
+   - `acosh` -- inverse of `acosh`
+   - `tanh` -- hyberbolic tangent function defined as `sinh(x) / cosh(x)`
+   - `atanh` -- inverse of `tanh`
    - `log10` -- the base-10 logarithm of the given number.
    - `ln` -- the natural (base-e) logarithm of the given number.
    - `loge` -- alias for `ln`.
