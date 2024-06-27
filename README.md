@@ -45,10 +45,10 @@ and exponentiation (`^`)
 * The factorial operator (`!`) [^2]
 * Constants: `pi` (`π`) and `e`
 * 1-argument functions: 
-** trigonometric functions: `sin`, `asin`, `cos`, `acos`, `tan`, `atan`, `sec`, `csc`, `ctn`
-** hyperbolic functions: `sinh`, `asinh`, `cosh`, `acosh`, `tanh`, `atanh`
-** logarithmic and exponential functions: `log10`, `ln` (`loge`), `log2`, `exp`
-** others: `ceil`, `floor`, `round`, `sqrt` (`√`), `cbrt` (cube root), `abs`, and `sgn`
+  * trigonometric functions: `sin`, `asin`, `cos`, `acos`, `tan`, `atan`, `sec`, `csc`, `ctn`
+  * hyperbolic functions: `sinh`, `asinh`, `cosh`, `acosh`, `tanh`, `atanh`
+  * logarithmic and exponential functions: `log10`, `ln` (`loge`), `log2`, `exp`
+  * others: `ceil`, `floor`, `round`, `sqrt` (`√`), `cbrt` (cube root), `abs`, and `sgn`
 * 2-argument functions: `atan2`, `hypot`, `pow` [^1]
 * alternative math operator symbols: `×` for multiplication and `÷` for division (see example above for use of `×`)
 
