@@ -1,4 +1,4 @@
-// Copyright © 2023 Brad Howes. All rights reserved.
+// Copyright © 2023, 2024 Brad Howes. All rights reserved.
 
 import Parsing
 import Foundation
@@ -85,7 +85,7 @@ final public class MathParser {
   public static let defaultUnaryFunctions: UnaryFunctionDict = [
     "sin": sin, "asin": asin, "cos": cos, "acos": acos, "tan": tan, "atan": atan,
     "sinh": sinh, "asinh": asinh, "cosh": cosh, "acosh": acosh, "tanh": tanh, "atanh": atanh,
-    "log": log10, "log10": log10, "ln": log, "loge": log, "log2": log2, "exp": exp, 
+    "log": log10, "log10": log10, "ln": log, "loge": log, "log2": log2, "exp": exp,
     "ceil": ceil, "floor": floor, "round": round,
     "sqrt": sqrt, "√": sqrt,
     "cbrt": cbrt, // cube root,

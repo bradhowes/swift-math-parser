@@ -141,6 +141,7 @@ struct EvalState {
     self.binaryFunctions?(String(name)) ?? MathParser.defaultBinaryFunctions.producer(String(name))
   }
 
+  // swiftlint:disable unneeded_synthesized_initializer
   @usableFromInline
   init(variables: MathParser.VariableMap?,
        unaryFunctions: MathParser.UnaryFunctionMap?,
@@ -151,4 +152,5 @@ struct EvalState {
     self.binaryFunctions = binaryFunctions
     self.usingImpliedMultiplication = usingImpliedMultiplication
   }
+  // swiftlint:enable unneeded_synthesized_initializer
 }

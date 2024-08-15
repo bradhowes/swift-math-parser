@@ -1,9 +1,9 @@
-// Copyright © 2023 Brad Howes. All rights reserved.
+// Copyright © 2023, 2024 Brad Howes. All rights reserved.
 
 import Foundation
 
 @inlinable
-func factorial(_ n: Double) -> Double { (1...Int(n)).map(Double.init).reduce(1.0, *) }
+func factorial(_ value: Double) -> Double { (1...Int(value)).map(Double.init).reduce(1.0, *) }
 
 @inlinable
 func multiply(lhs: Token, rhs: Token) -> Token { Token.reducer(lhs: lhs, rhs: rhs, op: (*), name: "*") }
