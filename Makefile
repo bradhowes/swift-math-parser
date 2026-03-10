@@ -1,64 +1,30 @@
-PLATFORM_IOS = iOS Simulator,name=iPhone 14 Pro
+PLATFORM_IOS = iOS Simulator,name=iPad mini (A17 Pro)
 PLATFORM_MACOS = macOS
 PLATFORM_TVOS = tvOS Simulator,name=Apple TV 4K (3rd generation) (at 1080p)
-TARGET = MathParser
+SCHEME = MathParser
 DOCC_DIR = ./docs
 QUIET = -quiet
-WORKSPACE = $(PWD)/.workspace
+WORKSPACE = $(PWD)/$(SCHEME).workspace
+SKIPS = -skipMacroValidation -skipPackagePluginValidation
+BUILD_FLAGS = $(SKIPS) -scheme $(SCHEME) $(QUIET) -clonedSourcePackagesDirPath "$(WORKSPACE)"
 
-default: percentage
+default: test-ios
 
-clean:
-	rm -rf "$(PWD)/.DerivedData-macos" "$(PWD)/.DerivedData-ios" "$(PWD)/.DerivedData-tvos" "$(WORKSPACE)"
-
-docc:
-	DOCC_JSON_PRETTYPRINT="YES" \
-	swift package \
-		--allow-writing-to-directory $(DOCC_DIR) \
-		generate-documentation \
-		--target $(TARGET) \
-		--disable-indexing \
-		--transform-for-static-hosting \
-		--hosting-base-path swift-math-parser \
-		--output-path $(DOCC_DIR)
-
-lint: clean
-	@if command -v swiftlint; then swiftlint; fi
-
-resolve-deps: lint
-	xcodebuild \
-		$(QUIET) \
-		-resolvePackageDependencies \
-		-clonedSourcePackagesDirPath "$(WORKSPACE)" \
-		-scheme $(TARGET)
-
-test-ios: resolve-deps
+test-ios: lint
 	xcodebuild test \
-		$(QUIET) \
-		-clonedSourcePackagesDirPath "$(WORKSPACE)" \
-		-scheme $(TARGET) \
+		$(BUILD_FLAGS) \
 		-derivedDataPath "$(PWD)/.DerivedData-ios" \
 		-destination platform="$(PLATFORM_IOS)"
 
-test-tvos: resolve-deps
+test-tvos:
 	xcodebuild test \
-		$(QUIET) \
-		-clonedSourcePackagesDirPath "$(WORKSPACE)" \
-		-scheme $(TARGET) \
+		$(BUILD_FLAGS) \
 		-derivedDataPath "$(PWD)/.DerivedData-tvos" \
 		-destination platform="$(PLATFORM_TVOS)"
 
-test-macos: resolve-deps
-	xcodebuild build-for-testing \
-		$(QUIET) \
-		-clonedSourcePackagesDirPath "$(WORKSPACE)" \
-		-scheme $(TARGET) \
-		-derivedDataPath "$(PWD)/.DerivedData-macos" \
-		-destination platform="$(PLATFORM_MACOS)"
-	xcodebuild test-without-building \
-		$(QUIET) \
-		-clonedSourcePackagesDirPath "$(WORKSPACE)" \
-		-scheme $(TARGET) \
+test-macos:
+	xcodebuild test \
+		$(BUILD_FLAGS) \
 		-derivedDataPath "$(PWD)/.DerivedData-macos" \
 		-destination platform="$(PLATFORM_MACOS)" \
 		-enableCodeCoverage YES
@@ -80,9 +46,24 @@ coverage: test-macos
 	cat coverage.txt
 
 percentage: coverage
-	awk '/ $(TARGET) / { if ($$3 > 0) print $$4; }' coverage.txt > percentage.txt
+	awk '/ $(SCHEME) / { if ($$3 > 0) print $$4; }' coverage.txt > percentage.txt
 	cat percentage.txt
 
-test: test-ios test-tvos percentage
+docc:
+	DOCC_JSON_PRETTYPRINT="YES" \
+	swift package \
+		--allow-writing-to-directory $(DOCC_DIR) \
+		generate-documentation \
+		--target $(SCHEME) \
+		--disable-indexing \
+		--transform-for-static-hosting \
+		--hosting-base-path swift-math-parser \
+		--output-path $(DOCC_DIR)
+
+lint: clean
+	@if command -v swiftlint; then swiftlint; fi
+
+clean:
+	rm -rf "$(PWD)/.DerivedData-macos" "$(PWD)/.DerivedData-ios" "$(PWD)/.DerivedData-tvos" "$(WORKSPACE)"
 
 .PHONY: test test-ios test-macos test-tvos coverage percentage test-linux test-swift

@@ -8,14 +8,16 @@ on:
     - main
 
 jobs:
-  build_macos:
-    runs-on: macos-12
+  macos15:
+    name: macOS (Swift 6)
+    runs-on: macos-15
     strategy:
       matrix:
         xcode:
-          - "14.2"
+          - "26.3"
+
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Select Xcode ${{ matrix.xcode }}
       run: sudo xcode-select -s /Applications/Xcode_${{ matrix.xcode }}.app
     - name: Run make
@@ -34,15 +36,16 @@ jobs:
         message: ${{ env.PERCENTAGE }}
         color: success
 
-  build_ubuntu:
+  linux:
     strategy:
       matrix:
-        os: [ubuntu-20.04]
-
+        os: [ubuntu-latest]
+        swift:
+          - '6.0'
     runs-on: ${{ matrix.os }}
-
+    container: swift:${{ matrix.swift }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Build
         run: swift build
       - name: Run tests
