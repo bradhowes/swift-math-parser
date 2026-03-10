@@ -1,20 +1,22 @@
 PLATFORM_IOS = iOS Simulator,name=iPad mini (A17 Pro)
 PLATFORM_MACOS = macOS
-PLATFORM_TVOS = tvOS Simulator,name=Apple TV 4K (3rd generation) (at 1080p)
 SCHEME = MathParser
 DOCC_DIR = ./docs
 QUIET = -quiet
 WORKSPACE = $(PWD)/$(SCHEME).workspace
 SKIPS = -skipMacroValidation -skipPackagePluginValidation
 BUILD_FLAGS = $(SKIPS) -scheme $(SCHEME) $(QUIET) -clonedSourcePackagesDirPath "$(WORKSPACE)"
+XCCOV = xcrun xccov view --report --only-targets
 
-default: test-ios
+default: report
 
 test-ios: lint
+	rm -rf "${PWD}/.DerivedData-iOS"
 	xcodebuild test \
 		$(BUILD_FLAGS) \
 		-derivedDataPath "$(PWD)/.DerivedData-ios" \
-		-destination platform="$(PLATFORM_IOS)"
+		-destination platform="$(PLATFORM_IOS)" \
+		-enableCodeCoverage YES
 
 test-tvos:
 	xcodebuild test \
@@ -41,13 +43,19 @@ test-linux: lint
 test-swift: lint
 	swift test --parallel
 
-coverage: test-macos
-	xcrun xccov view --report --only-targets $(PWD)/.DerivedData-macos/Logs/Test/*.xcresult > coverage.txt
-	cat coverage.txt
+coverage-macos: test-macos
+	$(XCCOV) "$(PWD)/.DerivedData-macos/Logs/Test/Test-MathParser-"*.xcresult > coverage_macOS.txt
+	echo "macOS Coverage:"
+	cat coverage_macOS.txt
 
-percentage: coverage
-	awk '/ $(SCHEME) / { if ($$3 > 0) print $$4; }' coverage.txt > percentage.txt
-	cat percentage.txt
+percentage-macos: coverage-macos
+	awk '/ $(SCHEME) / { if ($$3 > 0) print $$4; }' coverage_macOS.txt > percentage_macOS.txt
+	cat percentage_macOS.txt
+
+report: percentage-macos
+	@if [[ -n "$$GITHUB_ENV" ]]; then \
+		echo "PERCENTAGE=$$(< percentage_macOS.txt)" >> $$GITHUB_ENV; \
+	fi
 
 docc:
 	DOCC_JSON_PRETTYPRINT="YES" \
