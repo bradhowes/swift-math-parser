@@ -44,12 +44,13 @@ test-swift: lint
 	swift test --parallel
 
 coverage-macos: test-macos
-	$(XCCOV) "$(PWD)/.DerivedData-macos/Logs/Test/Test-MathParser-"*.xcresult > coverage_macOS.txt
+	$(XCCOV) "$(PWD)/.DerivedData-macos/Logs/Test/"*.xcresult > coverage_macOS.txt
 	echo "macOS Coverage:"
 	cat coverage_macOS.txt
 
 percentage-macos: coverage-macos
 	awk '/ $(SCHEME) / { if ($$3 > 0) print $$4; }' coverage_macOS.txt > percentage_macOS.txt
+	echo "macOS Percentage:"
 	cat percentage_macOS.txt
 
 report: percentage-macos
