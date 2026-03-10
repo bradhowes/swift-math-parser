@@ -27,7 +27,7 @@ jobs:
         set -- $(< percentage.txt)
         echo "PERCENTAGE=${1}" >> $GITHUB_ENV
     - name: Create Coverage Badge
-      uses: schneegans/dynamic-badges-action@v1.1.0
+      uses: schneegans/dynamic-badges-action@v1.7.0
       with:
         auth: ${{ secrets.GIST_UPDATE }}
         gistID: ad941184ed256708952a2057fc5d7bb4
