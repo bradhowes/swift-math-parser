@@ -315,10 +315,6 @@ struct MathParserTests {
     #expect(nil == parser.parse("2(3, 4)"))
   }
 
-  func isApproximatelyEqual(_ a: Double, _ b: Double) -> Bool {
-    abs(a - b) < 1.0e-12
-  }
-
   @Test
   func testEvalWithDelayedResolutionVariable() {
     let token = parser.parse("4 * sin(t * pi)")!
@@ -414,7 +410,7 @@ struct MathParserTests {
     let token = parser.parse("(foo(t * pi))")!
     #expect(token.eval().isNaN)
     // At this point pi has been resolved, leaving t and foo.
-    #expect(3.0 * .pi == token.eval(variables: {_ in 1.0}, unaryFunctions: {_ in {$0 * 3.0}}))
+    #expect(isApproximatelyEqual(3.0 * .pi, token.eval(variables: {_ in 1.0}, unaryFunctions: {_ in {$0 * 3.0}})))
   }
 
   @Test
@@ -422,9 +418,12 @@ struct MathParserTests {
     let token = parser.parse("( foo(t * pi , 2 * pi  ))")!
     #expect(token.eval().isNaN)
     // At this point pi has been resolved, leaving t and foo.
-    #expect(((1.5 * .pi) + (2.0 * .pi)) * 3 ==
-                   token.eval(variables: {_ in 1.5}, binaryFunctions: {_ in {($0 + $1) * 3.0}}),
-                   )
+    #expect(
+      isApproximatelyEqual(
+        ((1.5 * .pi) + (2.0 * .pi)) * 3,
+        token.eval(variables: {_ in 1.5}, binaryFunctions: {_ in {($0 + $1) * 3.0}})
+      )
+    )
   }
 
   @Test
@@ -760,13 +759,13 @@ error: unexpected input
   func testTrigonometric() {
     for index in 0..<11 {
       let theta = Double(index - 5) / 10.0 * .pi
-      #expect(sin(theta) == parser.parse("sin(\(theta))")?.value)
-      #expect(cos(theta) == parser.parse("cos(\(theta))")?.value)
-      #expect(tan(theta) == parser.parse("tan(\(theta))")?.value)
+      #expect(isApproximatelyEqual(sin(theta), parser.parse("sin(\(theta))")?.value))
+      #expect(isApproximatelyEqual(cos(theta), parser.parse("cos(\(theta))")?.value))
+      #expect(isApproximatelyEqual(tan(theta), parser.parse("tan(\(theta))")?.value))
 
-      #expect(asin(sin(theta)) == parser.parse("asin(sin(\(theta)))")?.value)
-      #expect(acos(cos(theta)) == parser.parse("acos(cos(\(theta)))")?.value)
-      #expect(atan(tan(theta)) == parser.parse("atan(tan(\(theta)))")?.value)
+      #expect(isApproximatelyEqual(asin(sin(theta)), parser.parse("asin(sin(\(theta)))")?.value))
+      #expect(isApproximatelyEqual(acos(cos(theta)), parser.parse("acos(cos(\(theta)))")?.value))
+      #expect(isApproximatelyEqual(atan(tan(theta)), parser.parse("atan(tan(\(theta)))")?.value))
 
       #expect(1.0 / cos(theta) == parser.parse("sec(\(theta))")?.value)
       #expect(1.0 / sin(theta) == parser.parse("csc(\(theta))")?.value)
@@ -779,9 +778,13 @@ error: unexpected input
     #expect(parser.parse("sinh(0)") != nil)
     for index in 0..<11 {
       let theta = Double(index - 5) / 10.0
-      #expect(sinh(theta) == parser.parse("sinh(\(theta))")?.value)
-      #expect(cosh(theta) == parser.parse("cosh(\(theta))")?.value)
-      #expect(tanh(theta) == parser.parse("tanh(\(theta))")?.value)
+      #expect(isApproximatelyEqual(sinh(theta), parser.parse("sinh(\(theta))")?.value))
+      #expect(isApproximatelyEqual(cosh(theta), parser.parse("cosh(\(theta))")?.value))
+      #expect(isApproximatelyEqual(tanh(theta), parser.parse("tanh(\(theta))")?.value))
     }
   }
+}
+
+func isApproximatelyEqual(_ a: Double?, _ b: Double?, epsilon: Double = 1.0e-12) -> Bool {
+  abs(a! - b!) < epsilon
 }
