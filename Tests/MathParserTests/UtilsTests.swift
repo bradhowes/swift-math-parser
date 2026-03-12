@@ -50,14 +50,15 @@ struct UtilsTests {
   @Test
   func splitIdentifier_chainsLargestMatch() {
     let result = splitIdentifier("abaabac", state: state)
-    #expect(11 * 11 == eval(result!.token))
+    #expect(11.0 * 11.0 == eval(result!.token))
     #expect("c" == String(result!.remaining))
   }
 
   @Test
   func splitIdentifier_chainsRepeatedly() {
     let result = splitIdentifier("abaababaaaac", state: state)
-    #expect(11 * 11 * 5 * 3 * 3 * 3 * 3 == eval(result!.token))
+    let expected: Double = 11.0 * 11.0 * 5.0 * 3.0 * 3.0 * 3.0 * 3.0
+    #expect(expected == eval(result!.token))
     #expect("c" == String(result!.remaining))
   }
 
