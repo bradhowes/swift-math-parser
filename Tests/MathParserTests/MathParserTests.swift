@@ -1,91 +1,101 @@
 // Copyright © 2021-2026 Brad Howes. All rights reserved.
 
-import XCTest
+import Foundation
 import Parsing
+import Testing
 @testable import MathParser
 
-final class MathParserTests: XCTestCase {
+@Suite
+struct MathParserTests {
 
-  var parser: MathParser!
+  let parser = MathParser()
 
-  override func setUp() {
-    parser = MathParser()
-  }
-
+  @Test
   func testIdentifiersCanHoldEmojis() {
-    XCTAssertEqual(sin(1.5), parser.parse("sin(🌍)")?.eval("🌍", value: 1.5))
-    XCTAssertEqual(1.5 + sin(1.5), parser.parse("🌍🌍 + sin(🌍🌍)")?.eval("🌍🌍", value: 1.5))
-    XCTAssertEqual(1.3, parser.parse("💐power🤷‍♂️")?.eval("💐power🤷‍♂️", value: 1.3))
+    #expect(sin(1.5) == parser.parse("sin(🌍)")?.eval("🌍", value: 1.5))
+    #expect(1.5 + sin(1.5) == parser.parse("🌍🌍 + sin(🌍🌍)")?.eval("🌍🌍", value: 1.5))
+    #expect(1.3 == parser.parse("💐power🤷‍♂️")?.eval("💐power🤷‍♂️", value: 1.3))
   }
 
+  @Test
   func testSpacesAreSkippedAroundSymbols() {
-    XCTAssertEqual(8.0, parser.parse(" pow( 2 , 3 ) * 1")?.eval())
+    #expect(8.0 == parser.parse(" pow( 2 , 3 ) * 1")?.eval())
   }
 
+  @Test
   func testSpacesAreNotRequiredAroundSymbols() {
-    XCTAssertEqual(8.0, parser.parse("pow(2,3)*1")?.eval())
+    #expect(8.0 == parser.parse("pow(2,3)*1")?.eval())
   }
 
+  @Test
   func testNoSpacesBetweenFunctionNamesAndParenthesis() {
-    XCTAssertNil(parser.parse(" pow ( 2 , 3 ) "))
+    #expect(nil == parser.parse(" pow ( 2 , 3 ) "))
   }
 
+  @Test
   func testIntegersAreProperlyParsedAsDoubles() {
-    XCTAssertEqual(3, parser.parse("3")?.eval())
-    XCTAssertEqual(3, parser.parse(" 3")?.eval())
-    XCTAssertEqual(3, parser.parse(" 3 ")?.eval())
+    #expect(3 == parser.parse("3")?.eval())
+    #expect(3 == parser.parse(" 3")?.eval())
+    #expect(3 == parser.parse(" 3 ")?.eval())
   }
 
+  @Test
   func testNegativeIntegersAreParsedAsDoubles() {
-    XCTAssertEqual(-3, parser.parse(" -3")?.eval())
-    XCTAssertEqual(-3, parser.parse("-3 ")?.eval())
-    XCTAssertEqual(-3, parser.parse(" -3 ")?.eval())
+    #expect(-3 == parser.parse(" -3")?.eval())
+    #expect(-3 == parser.parse("-3 ")?.eval())
+    #expect(-3 == parser.parse(" -3 ")?.eval())
   }
 
+  @Test
   func testNegationOperatorMustBeNextToNumber() {
-    XCTAssertNil(parser.parse("- 3")?.eval())
+    #expect(nil == parser.parse("- 3")?.eval())
   }
 
+  @Test
   func testFloatingPointLiteralsAreParsedAsDoubles() {
-    XCTAssertEqual(-3.45, parser.parse("-3.45")?.eval())
-    XCTAssertEqual(-3.45E2, parser.parse("-3.45E2 ")?.eval())
-    XCTAssertEqual(-3.45E-2, parser.parse(" -3.45e-2 ")?.eval())
+    #expect(-3.45 == parser.parse("-3.45")?.eval())
+    #expect(-3.45E2 == parser.parse("-3.45E2 ")?.eval())
+    #expect(-3.45E-2 == parser.parse(" -3.45e-2 ")?.eval())
   }
 
+  @Test
   func testNonArabicNumbersAreNotParsedAsNumbers() {
     // We don't support non-Arabic numbers -- below is Thai 3.
-    XCTAssertNil(parser.parse("๓")?.eval())
+    #expect(nil == parser.parse("๓")?.eval())
   }
 
+  @Test
   func testNegation() {
-    XCTAssertEqual(-2, parser.parse("-2")?.eval())
-    XCTAssertNil(parser.parse("- 2")?.eval())
+    #expect(-2 == parser.parse("-2")?.eval())
+    #expect(nil == parser.parse("- 2")?.eval())
 
-    XCTAssertNil(parser.parse("--2")?.eval())
-    XCTAssertNil(parser.parse("- -2")?.eval())
-    XCTAssertNil(parser.parse("--3-2")?.eval())
+    #expect(nil == parser.parse("--2")?.eval())
+    #expect(nil == parser.parse("- -2")?.eval())
+    #expect(nil == parser.parse("--3-2")?.eval())
 
-    XCTAssertEqual(2, parser.parse("-(-2)")?.eval())
-    XCTAssertEqual(5, parser.parse("-(-3-2)")?.eval())
-    XCTAssertEqual(pow(2, -(1 - 8)), parser.parse("2^-(1-8)")?.eval())
-    XCTAssertEqual(5.0 * -.pi, parser.parse("5 * -pi")?.eval())
-    XCTAssertEqual(5.0 * -.pi * -3, parser.parse("5 * -pi * -t")?.eval("t", value: 3))
+    #expect(2 == parser.parse("-(-2)")?.eval())
+    #expect(5 == parser.parse("-(-3-2)")?.eval())
+    #expect(pow(2, -(1 - 8)) == parser.parse("2^-(1-8)")?.eval())
+    #expect(5.0 * -.pi == parser.parse("5 * -pi")?.eval())
+    #expect(5.0 * -.pi * -3 == parser.parse("5 * -pi * -t")?.eval("t", value: 3))
   }
 
+  @Test
   func testParserUsesCustomVariableMap() {
-    parser = MathParser(variables: {name in
+    let parser = MathParser(variables: {name in
       switch name {
       case "a": return 1.0
       case "b": return 2.0
       default: return nil
       }
     })
-    XCTAssertEqual(6, parser.parse("3*b")?.eval())
-    XCTAssertEqual(1.5, parser.parse("3÷b")?.eval())
+    #expect(6 == parser.parse("3*b")?.eval())
+    #expect(1.5 == parser.parse("3÷b")?.eval())
   }
 
+  @Test
   func testParserCustomVariableMapIgnoredByEval() {
-    parser = MathParser(variables: {name in
+    let parser = MathParser(variables: {name in
       switch name {
       case "a": return 1.0
       case "b": return 2.0
@@ -94,203 +104,236 @@ final class MathParserTests: XCTestCase {
     })
 
     let z = parser.parse("b*pi")
-    XCTAssertEqual(1, z?.unresolved.variables.count)
-    XCTAssertEqual(2.0 * .pi, z?.eval())
+    #expect(1 == z?.unresolved.variables.count)
+    #expect(2.0 * .pi == z?.eval())
   }
 
+  @Test
   func testParserUsesCustomUnaryFunctionMap() {
-    parser = MathParser(unaryFunctions: {name in
+    let parser = MathParser(unaryFunctions: {name in
       switch name {
       case "foo": return {(value: Double) -> Double in value * 3}
       default: return nil
       }
     })
-    XCTAssertEqual(sin(3.0 * .pi), parser.parse("sin(foo(pi))")?.eval())
+    #expect(sin(3.0 * .pi) == parser.parse("sin(foo(pi))")?.eval())
   }
 
+  @Test
   func testParserUsesCustomBinaryFunctionMap() {
-    parser = MathParser(binaryFunctions: {name in
+    let parser = MathParser(binaryFunctions: {name in
       switch name {
       case "bar": return {(x: Double, y: Double) -> Double in x * y}
       default: return nil
       }
     })
-    XCTAssertEqual(.pi * .e, parser.parse("bar(pi, e)")?.eval())
+    #expect(.pi * .e == parser.parse("bar(pi, e)")?.eval())
   }
 
+  @Test
   func testImpliedMultiplicationWithConstants() {
     let parser = MathParser(enableImpliedMultiplication: true)
-    XCTAssertEqual(.pi, parser.parse("pi")?.eval())
-    XCTAssertEqual(.pi, parser.parse("π")?.eval())
-    XCTAssertEqual(.pi * .pi, parser.parse("ππ")?.eval())
-    XCTAssertEqual(.e * .pi, parser.parse("e(pi)")?.eval())
-    XCTAssertEqual(.e * .pi, parser.parse("epi")?.eval())
-    XCTAssertEqual(.e * .pi, parser.parse("pie")?.eval())
+    #expect(.pi == parser.parse("pi")?.eval())
+    #expect(.pi == parser.parse("π")?.eval())
+    #expect(.pi * .pi == parser.parse("ππ")?.eval())
+    #expect(.e * .pi == parser.parse("e(pi)")?.eval())
+    #expect(.e * .pi == parser.parse("epi")?.eval())
+    #expect(.e * .pi == parser.parse("pie")?.eval())
   }
 
+  @Test
   func testImpliedMultiplicationWithNumbers() {
-    parser = MathParser(enableImpliedMultiplication: true)
-    XCTAssertEqual(2.0 * 3.0, parser.parse("2 3")?.eval())
-    XCTAssertEqual(2.0 + 3.0, parser.parse("2 +3")?.eval())
-    XCTAssertEqual(2.0 + 3.0, parser.parse("2+3")?.eval())
-    XCTAssertEqual(2.0 + 3.0, parser.parse("2+ 3")?.eval())
-    XCTAssertEqual(2.0 * -3.0, parser.parse("2 -3")?.eval())
-    XCTAssertEqual(2.0 * -3.0, parser.parse("2-3")?.eval()) // !!!
-    XCTAssertEqual(2.0 - 3.0, parser.parse("2- 3")?.eval())
+    let parser = MathParser(enableImpliedMultiplication: true)
+    #expect(2.0 * 3.0 == parser.parse("2 3")?.eval())
+    #expect(2.0 + 3.0 == parser.parse("2 +3")?.eval())
+    #expect(2.0 + 3.0 == parser.parse("2+3")?.eval())
+    #expect(2.0 + 3.0 == parser.parse("2+ 3")?.eval())
+    #expect(2.0 * -3.0 == parser.parse("2 -3")?.eval())
+    #expect(2.0 * -3.0 == parser.parse("2-3")?.eval()) // !!!
+    #expect(2.0 - 3.0 == parser.parse("2- 3")?.eval())
   }
 
+  @Test
   func testImpliedMultiplicationWithNumberAndSymbol() {
-    parser = MathParser(enableImpliedMultiplication: true)
-    XCTAssertEqual(2.0 * .pi, parser.parse("2pi")?.eval())
-    XCTAssertEqual(2.0 * .pi, parser.parse("2(pi)")?.eval())
-    XCTAssertEqual(2.0 * .pi, parser.parse("2.000pi")?.eval())
-    XCTAssertEqual(2.0 * .pi, parser.parse("2 pi")?.eval())
-    XCTAssertEqual(2.0 * .pi, parser.parse("pi 2")?.eval())
+    let parser = MathParser(enableImpliedMultiplication: true)
+    #expect(2.0 * .pi == parser.parse("2pi")?.eval())
+    #expect(2.0 * .pi == parser.parse("2(pi)")?.eval())
+    #expect(2.0 * .pi == parser.parse("2.000pi")?.eval())
+    #expect(2.0 * .pi == parser.parse("2 pi")?.eval())
+    #expect(2.0 * .pi == parser.parse("pi 2")?.eval())
   }
 
+  @Test
   func testImpliedMultiplicationOnUnaryFunctionResolution() {
-    parser = MathParser(enableImpliedMultiplication: true)
+    let parser = MathParser(enableImpliedMultiplication: true)
     var variables = ["a": 2.0, "b": 3.0, "c": 4.0]
     var unary = ["bc": { $0 * 10.0}]
     let token = parser.parse("abc(3)")
-    XCTAssertEqual(1, token?.unresolved.unaryFunctions.count)
-    XCTAssertEqual(2.0 * 3.0 * 10, token!.eval(variables: variables.producer, unaryFunctions: unary.producer))
+    #expect(1 == token?.unresolved.unaryFunctions.count)
+    #expect(2.0 * 3.0 * 10 == token!.eval(variables: variables.producer, unaryFunctions: unary.producer))
 
     unary["abc"] = { $0 + 14 }
-    XCTAssertEqual(17, token!.eval(variables: variables.producer, unaryFunctions: unary.producer))
+    #expect(17 == token!.eval(variables: variables.producer, unaryFunctions: unary.producer))
 
     variables["abc"] = 24
-    XCTAssertEqual(17, token!.eval(variables: variables.producer, unaryFunctions: unary.producer))
+    #expect(17 == token!.eval(variables: variables.producer, unaryFunctions: unary.producer))
 
-    XCTAssertEqual(72.0, token!.eval(variables: variables.producer))
+    #expect(72.0 == token!.eval(variables: variables.producer))
   }
 
+  @Test
   func testAddition() {
-    XCTAssertEqual(3, parser.parse("1+2")?.eval())
-    XCTAssertEqual(6, parser.parse("1+2+3")?.eval())
-    XCTAssertEqual(6, parser.parse(" 1+ 2 + 3 ")?.eval())
-    XCTAssertEqual(-1, parser.parse("1+-2")?.eval())
-    XCTAssertEqual(-1, parser.parse("1+ -2")?.eval())
-    XCTAssertEqual(-3, parser.parse("-1+ -2")?.eval())
+    #expect(3 == parser.parse("1+2")?.eval())
+    #expect(6 == parser.parse("1+2+3")?.eval())
+    #expect(6 == parser.parse(" 1+ 2 + 3 ")?.eval())
+    #expect(-1 == parser.parse("1+-2")?.eval())
+    #expect(-1 == parser.parse("1+ -2")?.eval())
+    #expect(-3 == parser.parse("-1+ -2")?.eval())
   }
 
+  @Test
   func testSubtraction() {
-    XCTAssertEqual(-1, parser.parse("1 - 2")?.eval())
-    XCTAssertEqual(-4, parser.parse("1 - 2 - 3")?.eval())
-    XCTAssertEqual(-4, parser.parse(" 1 - 2 - 3 ")?.eval())
+    #expect(-1 == parser.parse("1 - 2")?.eval())
+    #expect(-4 == parser.parse("1 - 2 - 3")?.eval())
+    #expect(-4 == parser.parse(" 1 - 2 - 3 ")?.eval())
   }
 
+  @Test
   func testAdditionAndSubtraction() {
-    XCTAssertEqual(0, parser.parse("1 + 2 - 3")?.eval())
-    XCTAssertEqual(0, parser.parse("1 + (2 - 3)")?.eval())
-    XCTAssertEqual(0, parser.parse("(1 + 2) - 3 ")?.eval())
+    #expect(0 == parser.parse("1 + 2 - 3")?.eval())
+    #expect(0 == parser.parse("1 + (2 - 3)")?.eval())
+    #expect(0 == parser.parse("(1 + 2) - 3 ")?.eval())
 
-    XCTAssertEqual(2, parser.parse("1 - 2 + 3")?.eval())
-    XCTAssertEqual(-4, parser.parse("1 - (2 + 3)")?.eval())
-    XCTAssertEqual(2, parser.parse("(1 - 2) + 3 ")?.eval())
+    #expect(2 == parser.parse("1 - 2 + 3")?.eval())
+    #expect(-4 == parser.parse("1 - (2 + 3)")?.eval())
+    #expect(2 == parser.parse("(1 - 2) + 3 ")?.eval())
   }
 
+  @Test
   func testExponentiationIsRightAssociative() {
-    XCTAssertEqual(pow(5.0, pow(2, pow(3, 4))), parser.parse("5^2^3^4")?.eval())
+    #expect(pow(5.0, pow(2, pow(3, 4))) == parser.parse("5^2^3^4")?.eval())
   }
 
+  @Test
   func testOrderOfOperations() {
-    XCTAssertEqual(1.0 + 2.0 * 3.0 / 4.0 - pow(5.0, pow(2, 3)), parser.parse("1+2*3/4-5^2^3")?.eval())
+    #expect(1.0 + 2.0 * 3.0 / 4.0 - pow(5.0, pow(2, 3)) == parser.parse("1+2*3/4-5^2^3")?.eval())
   }
 
+  @Test
   func testParenthesesAltersOrderOfOperations() {
-    XCTAssertEqual((1.0 + 2.0 ) * 3.0 / 4.0 - pow(5.0, (6.0 + 7.0)), parser.parse("(1+2)*3/4-5^(6+7)")?.eval())
-    XCTAssertEqual(((8 + 9) * 3), parser.parse("((8+9)*3) ")?.eval())
+    #expect((1.0 + 2.0 ) * 3.0 / 4.0 - pow(5.0, (6.0 + 7.0)) == parser.parse("(1+2)*3/4-5^(6+7)")?.eval())
+    #expect(((8 + 9) * 3) == parser.parse("((8+9)*3) ")?.eval())
   }
 
+  @Test
   func testEmptyParenthesesIsFailure() {
-    XCTAssertNil(parser.parse(" () ")?.eval())
+    #expect(nil == parser.parse(" () ")?.eval())
   }
 
+  @Test
   func testParenthesesAroundConstantOrSymbolIsOk() {
-    XCTAssertEqual(1, parser.parse(" (1) ")?.eval())
-    XCTAssertEqual(.pi, parser.parse(" (pi) ")?.eval())
+    #expect(1 == parser.parse(" (1) ")?.eval())
+    #expect(.pi == parser.parse(" (pi) ")?.eval())
   }
 
+  @Test
   func testNestedParentheses() {
-    XCTAssertEqual(1, parser.parse("((((((1))))))")?.eval())
-    XCTAssertEqual(((1.0 + 2.0) * (3.0 + 4.0)) / pow(5.0, 1.0 + 3.0), parser.parse("((1+2)*(3+4))/5^(1+3)")?.eval())
+    #expect(1 == parser.parse("((((((1))))))")?.eval())
+    #expect(((1.0 + 2.0) * (3.0 + 4.0)) / pow(5.0, 1.0 + 3.0) == parser.parse("((1+2)*(3+4))/5^(1+3)")?.eval())
   }
 
+  @Test
   func testMissingClosingParenthesisFails() {
-    XCTAssertNil(parser.parse("(1 + 2"))
+    #expect(nil == parser.parse("(1 + 2"))
   }
 
+  @Test
   func testMissingOpeningParenthesisFails() {
-    XCTAssertNil(parser.parse("1 + 2)"))
+    #expect(nil == parser.parse("1 + 2)"))
   }
 
+  @Test
   func testDefaultSymbolsAreFound() {
-    XCTAssertEqual(pow(1 + 2 * .pi, 2 * .e), parser.parse("(1 + 2 * pi) ^ (2 * e)")?.eval())
+    #expect(pow(1 + 2 * .pi, 2 * .e) == parser.parse("(1 + 2 * pi) ^ (2 * e)")?.eval())
   }
 
+  @Test
   func testEvalWithUndefinedSymbolFails() {
-    XCTAssertTrue(parser.parse("(1 + 2 * pip) ^ 2")!.eval().isNaN)
+    #expect(parser.parse("(1 + 2 * pip) ^ 2")!.eval().isNaN)
   }
 
+  @Test
   func testDefaultUnaryFunctionsAreFound() {
     let sgn: (Double) -> Double = { $0 < 0 ? -1 : $0 > 0 ? 1 : 0 }
-    XCTAssertEqual(tan(sin(cos(.pi/4.0))), parser.parse("tan(sin(cos(pi/4)))")?.eval())
-    XCTAssertEqual(log10(log(log(log2(exp(.pi))))),
+    #expect(tan(sin(cos(.pi/4.0))) == parser.parse("tan(sin(cos(pi/4)))")?.eval())
+    #expect(log10(log(log(log2(exp(.pi))))) ==
                    parser.parse("log10(ln(loge(log2(exp(pi)))))")?.eval())
-    XCTAssertEqual(ceil(floor(round(sqrt(sqrt(cbrt(abs(sgn(-3)))))))),
-                   parser.parse("ceil(floor(round(sqrt(√(cbrt(abs(sgn(-3))))))))")?.eval())
+    #expect(ceil(floor(round(sqrt(sqrt(cbrt(abs(sgn(-3)))))))) ==
+            parser.parse("ceil(floor(round(sqrt(√(cbrt(abs(sgn(-3))))))))")?.eval())
   }
 
+  @Test
   func testSgnFunction() {
-    XCTAssertEqual(-1, parser.parse("sgn(-1.33433)")?.eval())
-    XCTAssertEqual(1, parser.parse("sgn(1.33433)")?.eval())
-    XCTAssertEqual(0, parser.parse("sgn(0.00000)")?.eval())
+    #expect(-1 == parser.parse("sgn(-1.33433)")?.eval())
+    #expect(1 == parser.parse("sgn(1.33433)")?.eval())
+    #expect(0 == parser.parse("sgn(0.00000)")?.eval())
   }
 
+  @Test
   func testFunction1NotFoundFails() {
-    XCTAssertTrue(parser.parse(" sinc(2 * pi)")!.eval().isNaN)
+    #expect(parser.parse(" sinc(2 * pi)")!.eval().isNaN)
   }
 
+  @Test
   func testFunction2NotFoundFails() {
-    XCTAssertTrue(parser.parse(" blah(2 * pi, 3.4)")!.eval().isNaN)
+    #expect(parser.parse(" blah(2 * pi, 3.4)")!.eval().isNaN)
   }
 
+  @Test
   func testImpliedMultiplicationIsDisableByDefault() {
-    XCTAssertNil(parser.parse("2 pi"))
-    XCTAssertNil(parser.parse("2pi"))
-    XCTAssertNil(parser.parse("2 sin(pi / 2)"))
-    XCTAssertNil(parser.parse("2 (1 + 2)"))
+    #expect(nil == parser.parse("2 pi"))
+    #expect(nil == parser.parse("2pi"))
+    #expect(nil == parser.parse("2 sin(pi / 2)"))
+    #expect(nil == parser.parse("2 (1 + 2)"))
   }
 
+  @Test
   func testImpliedMultiplicationWithBinaryArgumentFails() {
-    XCTAssertNil(parser.parse("2(3, 4)"))
+    #expect(nil == parser.parse("2(3, 4)"))
   }
 
+  @Test
   func testImpliedMultiplicationExamples() {
     let parser = MathParser(enableImpliedMultiplication: true)
-    XCTAssertEqual(2.0 * .pi * 3.0, parser.parse("2 pi * 3")?.eval())
-    XCTAssertEqual(.pi * 3.0, parser.parse("π 3")?.eval())
-    XCTAssertEqual(2.0 * .pi * 3.0, parser.parse("2pi 3")?.eval())
-    XCTAssertEqual(2.0 * sin(.pi / 2), parser.parse("2 sin(pi / 2)")?.eval())
-    XCTAssertEqual(2.0 * (1 + 2), parser.parse("2(1 + 2)")?.eval())
-    XCTAssertEqual(2.0 * .pi, parser.parse("2pi")?.eval())
-    XCTAssertEqual(2.0 * 3, parser.parse("(3)2")?.eval())
-    XCTAssertNil(parser.parse("2(3, 4)"))
+    #expect(2.0 * .pi * 3.0 == parser.parse("2 pi * 3")?.eval())
+    #expect(.pi * 3.0 == parser.parse("π 3")?.eval())
+    #expect(2.0 * .pi * 3.0 == parser.parse("2pi 3")?.eval())
+    #expect(2.0 * sin(.pi / 2) == parser.parse("2 sin(pi / 2)")?.eval())
+    #expect(2.0 * (1 + 2) == parser.parse("2(1 + 2)")?.eval())
+    #expect(2.0 * .pi == parser.parse("2pi")?.eval())
+    #expect(2.0 * 3 == parser.parse("(3)2")?.eval())
+    #expect(nil == parser.parse("2(3, 4)"))
   }
 
+  func isApproximatelyEqual(_ a: Double, _ b: Double) -> Bool {
+    abs(a - b) < 1.0e-12
+  }
+
+  @Test
   func testEvalWithDelayedResolutionVariable() {
     let token = parser.parse("4 * sin(t * pi)")!
-    XCTAssertEqual(0.0, token.eval("t", value: 0.0), accuracy: 1e-5)
-    XCTAssertEqual(4.0, token.eval("t", value: 0.5), accuracy: 1e-5)
-    XCTAssertEqual(0.0, token.eval("t", value: 1.0), accuracy: 1e-5)
+    #expect(0.0 == token.eval("t", value: 0.0))
+    #expect(4.0 == token.eval("t", value: 0.5))
+    #expect(isApproximatelyEqual(0.0, token.eval("t", value: 1.0)))
   }
 
+  @Test
   func testEvalWithDelayedResolutionVariableAndUnknownSymbolFails() {
     let token = parser.parse("4 * sin(t * pi) + u")!
-    XCTAssertTrue(token.eval("t", value: 0.0).isNaN)
+    #expect(token.eval("t", value: 0.0).isNaN)
   }
 
+  @Test
   func testCustomEvalSymbolMap() {
     let token = parser.parse("4 * sin(t * pi)")!
     var variables = ["t": 0.0]
@@ -300,11 +343,12 @@ final class MathParserTests: XCTestCase {
       return token.eval(variables: variables.producer)
     }
 
-    XCTAssertEqual(0.0, eval(at: 0.0), accuracy: 1e-5)
-    XCTAssertEqual(4.0, eval(at: 0.5), accuracy: 1e-5)
-    XCTAssertEqual(0.0, eval(at: 1.0), accuracy: 1e-5)
+    #expect(isApproximatelyEqual(0.0, eval(at: 0.0)))
+    #expect(isApproximatelyEqual(4.0, eval(at: 0.5)))
+    #expect(isApproximatelyEqual(0.0, eval(at: 1.0)))
   }
 
+  @Test
   func testCustomEvalSymbolMapDoesNotOverrideMathParserSymbolMap() {
     let proc: (Double) -> Double = { 4 * sin($0 * .pi) }
     let token = parser.parse("4 * sin(t * pi)")
@@ -315,11 +359,12 @@ final class MathParserTests: XCTestCase {
       return token?.eval(variables: variables.producer)
     }
 
-    XCTAssertEqual(proc(0.0), eval(at: 0.0))
-    XCTAssertEqual(proc(0.5), eval(at: 0.5))
-    XCTAssertEqual(proc(1.0), eval(at: 1.0))
+    #expect(proc(0.0) == eval(at: 0.0))
+    #expect(proc(0.5) == eval(at: 0.5))
+    #expect(proc(1.0) == eval(at: 1.0))
   }
 
+  @Test
   func testCustomEvalUnaryFunctionMapDoesNotOverrideMathParserUnaryFunctionMap() {
     let functions: [String: (Double)->Double] = ["sin": cos]
     let proc: (Double) -> Double = { 4 * sin($0 * .pi) }
@@ -331,11 +376,12 @@ final class MathParserTests: XCTestCase {
       return token?.eval(variables: variables.producer, unaryFunctions: functions.producer)
     }
 
-    XCTAssertEqual(proc(0.0), eval(at: 0.0))
-    XCTAssertEqual(proc(0.5), eval(at: 0.5))
-    XCTAssertEqual(proc(1.0), eval(at: 1.0))
+    #expect(proc(0.0) == eval(at: 0.0))
+    #expect(proc(0.5) == eval(at: 0.5))
+    #expect(proc(1.0) == eval(at: 1.0))
   }
 
+  @Test
   func testCustomEvalBinaryFunctionMap() {
     let token = parser.parse("4 * sin(foobar(t, 0.25) * pi)")
     let proc: (Double) -> Double = { 4 * sin(($0 + 0.25) * .pi) }
@@ -347,59 +393,64 @@ final class MathParserTests: XCTestCase {
       return token?.eval(variables: variables.producer, binaryFunctions: functions.producer)
     }
 
-    XCTAssertEqual(proc(0.0), eval(at: 0.0))
-    XCTAssertEqual(proc(0.5), eval(at: 0.5))
-    XCTAssertEqual(proc(1.0), eval(at: 1.0))
+    #expect(proc(0.0) == eval(at: 0.0))
+    #expect(proc(0.5) == eval(at: 0.5))
+    #expect(proc(1.0) == eval(at: 1.0))
   }
 
+  @Test
   func testUnresolvedVariableWithImpliedMultiplication1() {
     let parser = MathParser(enableImpliedMultiplication: true)
     let token = parser.parse("tπ t")
     let proc: (Double) -> Double = { $0 * .pi * $0 }
-    XCTAssertTrue(token!.eval().isNaN)
-    XCTAssertEqual(proc(0.0), token?.eval("t", value: 0.0))
-    XCTAssertEqual(proc(0.5), token?.eval("t", value: 0.5))
-    XCTAssertEqual(proc(1.0), token?.eval("t", value: 1.0))
+    #expect(token!.eval().isNaN)
+    #expect(proc(0.0) == token?.eval("t", value: 0.0))
+    #expect(proc(0.5) == token?.eval("t", value: 0.5))
+    #expect(proc(1.0) == token?.eval("t", value: 1.0))
   }
 
+  @Test
   func testUnaryFunction() {
     let token = parser.parse("(foo(t * pi))")!
-    XCTAssertNotNil(token)
-    XCTAssertTrue(token.eval().isNaN)
+    #expect(token.eval().isNaN)
     // At this point pi has been resolved, leaving t and foo.
-    XCTAssertEqual(3.0 * .pi, token.eval(variables: {_ in 1.0}, unaryFunctions: {_ in {$0 * 3.0}}), accuracy: 1e-5)
+    #expect(3.0 * .pi == token.eval(variables: {_ in 1.0}, unaryFunctions: {_ in {$0 * 3.0}}))
   }
 
+  @Test
   func testBinaryFunction() {
     let token = parser.parse("( foo(t * pi , 2 * pi  ))")!
-    XCTAssertNotNil(token)
-    XCTAssertTrue(token.eval().isNaN)
+    #expect(token.eval().isNaN)
     // At this point pi has been resolved, leaving t and foo.
-    XCTAssertEqual(((1.5 * .pi) + (2.0 * .pi)) * 3,
+    #expect(((1.5 * .pi) + (2.0 * .pi)) * 3 ==
                    token.eval(variables: {_ in 1.5}, binaryFunctions: {_ in {($0 + $1) * 3.0}}),
-                   accuracy: 1e-5)
+                   )
   }
 
+  @Test
   func testBuggyAddition() {
     let parser = MathParser(enableImpliedMultiplication: true)
     let token = parser.parse("2+5")
-    XCTAssertEqual(7, token?.eval())
+    #expect(7 == token?.eval())
     let token2 = parser.parse("t+4")
-    XCTAssertEqual(7, token2?.eval("t", value: 3))
+    #expect(7 == token2?.eval("t", value: 3))
   }
 
+  @Test
   func testEval() {
     let parser = MathParser(enableImpliedMultiplication: false)
     let token = parser.parse("t+4")
-    XCTAssertEqual(7, token?.eval("t", value: 3))
+    #expect(7 == token?.eval("t", value: 3))
   }
 
+  @Test
   func testBuggyImpliedMultiplication() {
     let parser = MathParser(enableImpliedMultiplication: true)
     let token = parser.parse("6.0 / 2(1 + 2)")
-    XCTAssertEqual(3*3, token?.eval())
+    #expect(3*3 == token?.eval())
   }
 
+  @Test
   func testArcTan() {
     struct State {
       var x: Double;
@@ -414,132 +465,142 @@ final class MathParserTests: XCTestCase {
       }
     }
 
-    let epsilon = 1e-5
     let token = parser.parse("atan2(y, x)")!
-    XCTAssertNotNil(token)
-    XCTAssertTrue(token.eval().isNaN)
+    #expect(token.eval().isNaN)
 
     var s = State(x: 0.0, y: 0.0)
     let evaluator: () -> Double = { token.eval(variables: s.lookup) }
-    XCTAssertEqual(evaluator(), 0.0, accuracy: epsilon)
+    #expect(evaluator() == 0.0)
     s.x = -1.0
-    XCTAssertEqual(evaluator(), .pi, accuracy: epsilon)
+    #expect(evaluator() == .pi)
     s.x = 1.0
-    XCTAssertEqual(evaluator(), 0.0, accuracy: epsilon)
+    #expect(evaluator() == 0.0)
     s.x = 0.0
     s.y = -0.5
-    XCTAssertEqual(evaluator(), -.pi / 2, accuracy: epsilon)
+    #expect(evaluator() == -.pi / 2)
     s.y = 0.5
-    XCTAssertEqual(evaluator(), .pi / 2, accuracy: epsilon)
+    #expect(evaluator() == .pi / 2)
     s.y = .nan
-    XCTAssertTrue(evaluator().isNaN)
+    #expect(evaluator().isNaN)
     s.x = 0.5
     s.y = 0.5
-    XCTAssertEqual(evaluator(), 0.7853981633974483, accuracy: epsilon)
+    #expect(isApproximatelyEqual(evaluator(), 0.7853981633974483))
   }
 
+  @Test
   func testReadMeExample1() {
     let parser = MathParser()
     let evaluator = parser.parse("4 × sin(t × π) + 2 × sin(t × π)")
     var t = 0.0
     var v = evaluator!.eval("t", value: t)
-    XCTAssertEqual(4 * sin(t * .pi) + 2 * sin(t * .pi), v)
+    #expect(4 * sin(t * .pi) + 2 * sin(t * .pi) == v)
     t = 0.25
     v = evaluator!.eval("t", value: t)
-    XCTAssertEqual(4 * sin(t * .pi) + 2 * sin(t * .pi), v)
+    #expect(4 * sin(t * .pi) + 2 * sin(t * .pi) == v)
     t = 0.5
     v = evaluator!.eval("t", value: t)
-    XCTAssertEqual(4 * sin(t * .pi) + 2 * sin(t * .pi), v)
+    #expect(4 * sin(t * .pi) + 2 * sin(t * .pi) == v)
     v = evaluator!.eval("u", value: 1.0)
-    XCTAssertTrue(v.isNaN)
+    #expect(v.isNaN)
   }
 
+  @Test
   func testReadMeExample2() {
     let myVariables = ["foo": 123.4]
     let myFuncs: [String:(Double)->Double] = ["twice": {$0 + $0}]
     let parser = MathParser(variables: myVariables.producer, unaryFunctions: myFuncs.producer)
     let myEvalFuncs: [String:(Double)->Double] = ["power": {$0 * $0}]
     let evaluator = parser.parse("power(twice(foo))")
-    XCTAssertEqual(evaluator?.eval(unaryFunctions: myEvalFuncs.producer), pow(123.4 * 2, 2))
+    #expect(evaluator?.eval(unaryFunctions: myEvalFuncs.producer) == pow(123.4 * 2, 2))
   }
 
+  @Test
   func testImpliedNumberFunction() {
     let parser = MathParser(enableImpliedMultiplication: true)
-    XCTAssertEqual(4 * cos(1.25 * .pi), parser.parse("4 cos(1.25 π)")?.eval())
-    XCTAssertEqual(4 * cos(1.25 * .pi), parser.parse("4cos(1.25π)")?.eval())
+    #expect(4 * cos(1.25 * .pi) == parser.parse("4 cos(1.25 π)")?.eval())
+    #expect(4 * cos(1.25 * .pi) == parser.parse("4cos(1.25π)")?.eval())
   }
 
+  @Test
   func testFaultyAdditionRegression() {
     let parser = MathParser(enableImpliedMultiplication: true)
-    XCTAssertEqual(4.0 * .pi + 2.0 * .pi, parser.parse("4 * π + 2 * π")?.eval())
-    XCTAssertEqual(4.0 * .pi + 2.0 * .pi, parser.parse("4 π + 2 π")?.eval())
-    XCTAssertEqual(4.0 * .pi + 2.0 * .pi, parser.parse("4π + 2 π")?.eval())
-    XCTAssertEqual(4.0 * .pi + 2.0 * .pi, parser.parse("4π+ 2 π")?.eval())
-    XCTAssertEqual(4.0 * .pi + 2.0 * .pi, parser.parse("4π+2 π")?.eval())
-    XCTAssertEqual(4.0 * .pi + 2.0 * .pi, parser.parse("4π+2π")?.eval())
+    #expect(4.0 * .pi + 2.0 * .pi == parser.parse("4 * π + 2 * π")?.eval())
+    #expect(4.0 * .pi + 2.0 * .pi == parser.parse("4 π + 2 π")?.eval())
+    #expect(4.0 * .pi + 2.0 * .pi == parser.parse("4π + 2 π")?.eval())
+    #expect(4.0 * .pi + 2.0 * .pi == parser.parse("4π+ 2 π")?.eval())
+    #expect(4.0 * .pi + 2.0 * .pi == parser.parse("4π+2 π")?.eval())
+    #expect(4.0 * .pi + 2.0 * .pi == parser.parse("4π+2π")?.eval())
   }
 
+  @Test
   func testReadMeExample3() {
     let parser = MathParser(enableImpliedMultiplication: true)
     let evaluator = parser.parse("4 sin(t π) + 2 * sin(t π)")
     let proc: (Double) -> Double = { 4 * sin($0 * .pi) + 2 * sin($0 * .pi) }
     for t in [0.0, 0.25, 0.5] {
       let v = evaluator!.eval("t", value: t)
-      XCTAssertEqual(proc(t), v)
+      #expect(proc(t) == v)
     }
     let v = evaluator!.eval("u", value: 1.0)
-    XCTAssertTrue(v.isNaN)
-    XCTAssertEqual(try! evaluator!.evalResult("t", value: 0.25).get(), proc(0.25))
+    #expect(v.isNaN)
+    #expect(try! evaluator!.evalResult("t", value: 0.25).get() == proc(0.25))
 
     guard case .failure(let error) = evaluator!.evalResult("u", value: 0.25),
           case MathParserError.variableNotFound(let name) = error,
           name == "t"
     else {
-      XCTFail("Unexpected result or error")
+      Issue.record("Unexpected result or error")
       return
     }
   }
 
+  @Test
   func testVariableDict() {
     let parser = MathParser(variableDict: ["a": 1.0, "b": 2.0])
-    XCTAssertEqual(3.0, parser.parse("a + b")?.value)
+    #expect(3.0 == parser.parse("a + b")?.value)
   }
 
+  @Test
   func testVariableDictIgnoredIfVariablesAlsoPresent() {
     let varMap = ["a": 10.0, "b": 20.0]
     let parser = MathParser(variables: varMap.producer, variableDict: ["a": 1.0, "b": 2.0])
-    XCTAssertEqual(30.0, parser.parse("a + b")?.value)
+    #expect(30.0 == parser.parse("a + b")?.value)
   }
 
+  @Test
   func testUnaryFunctionDict() {
     let parser = MathParser(unaryFunctionDict: ["a": { $0 * 100.0 }])
-    XCTAssertEqual(123.0, parser.parse("a(1.23)")?.value)
+    #expect(123.0 == parser.parse("a(1.23)")?.value)
   }
 
+  @Test
   func testUnaryFunctionDictIgnoredIfUnaryFunctionsAlsoPresent() {
     let unaryMap = ["a": { $0 * 1000.0}]
     let parser = MathParser(unaryFunctions: unaryMap.producer, unaryFunctionDict: ["a": { $0 * 2.0}])
-    XCTAssertEqual(1230.0, parser.parse("a(1.23)")?.value)
+    #expect(1230.0 == parser.parse("a(1.23)")?.value)
   }
 
+  @Test
   func testBinaryFunctionDict() {
     let parser = MathParser(binaryFunctionDict: ["a": { $0 * $1 }])
-    XCTAssertEqual(12.0, parser.parse("a(3.0, 4.0)")?.value)
+    #expect(12.0 == parser.parse("a(3.0, 4.0)")?.value)
   }
 
+  @Test
   func testBinaryFunctionDictIgnoredIfBinaryFunctionsAlsoPresent() {
     let binaryMap: [String: (Double, Double) -> Double] = ["a": { $0 + $1 }]
     let parser = MathParser(binaryFunctions: binaryMap.producer, binaryFunctionDict: ["a": { $0 * $1}])
-    XCTAssertEqual(4.6, parser.parse("a(1.2, 3.4)")?.value)
+    #expect(4.6 == parser.parse("a(1.2, 3.4)")?.value)
   }
 
   func expectFailure(result: Result<Evaluator, MathParserError>, expected: String) {
     switch result {
-    case .success: XCTFail("Expected a failure case")
-    case .failure(let err): XCTAssertEqual(err.description, expected)
+    case .success: Issue.record("Expected a failure case")
+    case .failure(let err): #expect(err.description == expected)
     }
   }
 
+  @Test
   func testParseWithErrorMissingOperand() {
     expectFailure(result: parser.parseResult("4.0 +"),
                   expected: """
@@ -550,6 +611,7 @@ error: unexpected input
 """)
   }
 
+  @Test
   func testParseWithErrorOpenParenthesis() {
     expectFailure(result: parser.parseResult("(4.0 + 3.0"),
                   expected: """
@@ -569,6 +631,7 @@ error: unexpected input
 """)
   }
 
+  @Test
   func testParseWithErrorExtraCloseParenthesis() {
     expectFailure(result: parser.parseResult("(4.0 + 3.0))"),
                   expected: """
@@ -579,6 +642,7 @@ error: unexpected input
 """)
   }
 
+  @Test
   func testParseWithErrorMissingOperator() {
     expectFailure(result: parser.parseResult("4.0 3.0"),
                   expected: """
@@ -589,22 +653,25 @@ error: unexpected input
 """)
   }
 
+  @Test
   func testEvalWithErrorFailsWithUnknownVariable() {
     let evaluator = parser.parse("undefined(1.2)")!
-    XCTAssertTrue(evaluator.value.isNaN)
+    #expect(evaluator.value.isNaN)
     let result = evaluator.evalResult()
     switch result {
-    case .success: XCTFail()
+    case .success: Issue.record("unexpected success")
     case .failure(let error):
-      XCTAssertEqual("\(error)", "Function 'undefined' not found")
+      #expect("\(error)" == "Function 'undefined' not found")
     }
   }
 
+  @Test
   func testParseWithErrorReadme() {
     let evaluator = parser.parseResult("4 × sin(t × π")
     print(evaluator)
   }
 
+  @Test
   func testInfixOperationLoggingWorks() {
     let opParser: some TokenReducerParser = Parse {
       "$".map { { Token.reducer(lhs: $0, rhs: $1, op: (*), name: "$") } }
@@ -629,28 +696,31 @@ error: unexpected input
 
     let input = "123$456"
     let value = try? parser.parse(input[...])
-    XCTAssertNotNil(value)
-    XCTAssertTrue(logged)
+    #expect(nil != value)
+    #expect(logged)
   }
 
+  @Test
   func testFactorial() {
-    XCTAssertEqual(24.0, parser.parse("4!")?.value)
-    XCTAssertEqual(3 + 24.0, parser.parse("3 + 4!")?.value)
-    XCTAssertEqual(3 * 24.0, parser.parse("3 * 4!")?.value)
-    XCTAssertNil(parser.parse("3 * -4!"))
-    XCTAssertEqual(24.0, parser.parse("ceil(π)!")?.value)
-    XCTAssertTrue(parser.parse("ceil(zeta)!")!.value.isNaN)
-    XCTAssertEqual(pow(3, 24), parser.parse("3^4!")?.value)
-    XCTAssertEqual(2.43290200817664e+18, parser.parse("20!")?.value)
-    XCTAssertEqual(9.33262154439441e+157, parser.parse("100!")?.value)
+    #expect(24.0 == parser.parse("4!")?.value)
+    #expect(3 + 24.0 == parser.parse("3 + 4!")?.value)
+    #expect(3 * 24.0 == parser.parse("3 * 4!")?.value)
+    #expect(nil == parser.parse("3 * -4!"))
+    #expect(24.0 == parser.parse("ceil(π)!")?.value)
+    #expect(parser.parse("ceil(zeta)!")!.value.isNaN)
+    #expect(pow(3, 24) == parser.parse("3^4!")?.value)
+    #expect(2.43290200817664e+18 == parser.parse("20!")?.value)
+    #expect(9.33262154439441e+157 == parser.parse("100!")?.value)
   }
 
+  @Test
   func testExponentiation() {
-    XCTAssertEqual(2 * pow(3, 4) + 5, parser.parse("2 * 3 ^ 4 + 5")?.value)
-    XCTAssertEqual(2 * pow(3, 4) * 5, parser.parse("2 * 3 ^ 4 * 5")?.value)
-    XCTAssertEqual(2 * pow(3, pow(4,  5)), parser.parse("2 * 3 ^ 4 ^ 5")?.value)
+    #expect(2.0 * pow(3, 4) + 5 == parser.parse("2 * 3 ^ 4 + 5")?.value)
+    #expect(2.0 * pow(3, 4) * 5 == parser.parse("2 * 3 ^ 4 * 5")?.value)
+    #expect(2.0 * pow(3, pow(4,  5)) == parser.parse("2 * 3 ^ 4 ^ 5")?.value)
   }
 
+  @Test
   func testDegTrig() {
     var unaryFunctions = MathParser.defaultUnaryFunctions
     unaryFunctions["sin"] = { sin($0 * Double.pi / 180.0) }
@@ -658,57 +728,60 @@ error: unexpected input
     var binaryFunctions = MathParser.defaultBinaryFunctions
     binaryFunctions["atan2"] = { atan2($0, $1) * 180.0 / Double.pi }
     let parser = MathParser(unaryFunctionDict: unaryFunctions, binaryFunctionDict: binaryFunctions)
-    XCTAssertEqual(sin(Double.pi / 6), parser.parse("sin(30)")?.value)
-    XCTAssertEqual(cos(Double.pi / 3), parser.parse("cos(60)")?.value)
-    XCTAssertEqual(atan2(1.0, 1.0) * 180.0 / Double.pi, parser.parse("atan2(1.0, 1.0)")?.value)
+    #expect(sin(Double.pi / 6) == parser.parse("sin(30)")?.value)
+    #expect(cos(Double.pi / 3) == parser.parse("cos(60)")?.value)
+    #expect(atan2(1.0, 1.0) * 180.0 / Double.pi == parser.parse("atan2(1.0, 1.0)")?.value)
   }
 
+  @Test
   func testMod() {
-    XCTAssertEqual(2, parser.parse("mod(5, 3)")?.value)
-    XCTAssertEqual(3, parser.parse("mod(3, 5)")?.value)
-    XCTAssertEqual(1, parser.parse("mod(55, 3)")?.value)
-    XCTAssertEqual(0, parser.parse("mod(35, 5)")?.value)
+    #expect(2 == parser.parse("mod(5, 3)")?.value)
+    #expect(3 == parser.parse("mod(3, 5)")?.value)
+    #expect(1 == parser.parse("mod(55, 3)")?.value)
+    #expect(0 == parser.parse("mod(35, 5)")?.value)
 
-    XCTAssertEqual(-2, parser.parse("mod(-5, 3)")?.value)
-    XCTAssertEqual(-3, parser.parse("mod(-3, 5)")?.value)
-    XCTAssertEqual(-1, parser.parse("mod(-55, 3)")?.value)
-    XCTAssertEqual(0, parser.parse("mod(-35, 5)")?.value)
+    #expect(-2 == parser.parse("mod(-5, 3)")?.value)
+    #expect(-3 == parser.parse("mod(-3, 5)")?.value)
+    #expect(-1 == parser.parse("mod(-55, 3)")?.value)
+    #expect(0 == parser.parse("mod(-35, 5)")?.value)
 
-    XCTAssertEqual(2, parser.parse("mod(5, -3)")?.value)
-    XCTAssertEqual(3, parser.parse("mod(3, -5)")?.value)
-    XCTAssertEqual(1, parser.parse("mod(55, -3)")?.value)
-    XCTAssertEqual(0, parser.parse("mod(35, -5)")?.value)
+    #expect(2 == parser.parse("mod(5, -3)")?.value)
+    #expect(3 == parser.parse("mod(3, -5)")?.value)
+    #expect(1 == parser.parse("mod(55, -3)")?.value)
+    #expect(0 == parser.parse("mod(35, -5)")?.value)
 
-    XCTAssertEqual(-2, parser.parse("mod(-5, -3)")?.value)
-    XCTAssertEqual(-3, parser.parse("mod(-3, -5)")?.value)
-    XCTAssertEqual(-1, parser.parse("mod(-55, -3)")?.value)
-    XCTAssertEqual(0, parser.parse("mod(-35, -5)")?.value)
+    #expect(-2 == parser.parse("mod(-5, -3)")?.value)
+    #expect(-3 == parser.parse("mod(-3, -5)")?.value)
+    #expect(-1 == parser.parse("mod(-55, -3)")?.value)
+    #expect(0 == parser.parse("mod(-35, -5)")?.value)
   }
 
+  @Test
   func testTrigonometric() {
     for index in 0..<11 {
       let theta = Double(index - 5) / 10.0 * .pi
-      XCTAssertEqual(sin(theta), parser.parse("sin(\(theta))")?.value)
-      XCTAssertEqual(cos(theta), parser.parse("cos(\(theta))")?.value)
-      XCTAssertEqual(tan(theta), parser.parse("tan(\(theta))")?.value)
+      #expect(sin(theta) == parser.parse("sin(\(theta))")?.value)
+      #expect(cos(theta) == parser.parse("cos(\(theta))")?.value)
+      #expect(tan(theta) == parser.parse("tan(\(theta))")?.value)
 
-      XCTAssertEqual(asin(sin(theta)), parser.parse("asin(sin(\(theta)))")?.value)
-      XCTAssertEqual(acos(cos(theta)), parser.parse("acos(cos(\(theta)))")?.value)
-      XCTAssertEqual(atan(tan(theta)), parser.parse("atan(tan(\(theta)))")?.value)
+      #expect(asin(sin(theta)) == parser.parse("asin(sin(\(theta)))")?.value)
+      #expect(acos(cos(theta)) == parser.parse("acos(cos(\(theta)))")?.value)
+      #expect(atan(tan(theta)) == parser.parse("atan(tan(\(theta)))")?.value)
 
-      XCTAssertEqual(1.0 / cos(theta), parser.parse("sec(\(theta))")?.value)
-      XCTAssertEqual(1.0 / sin(theta), parser.parse("csc(\(theta))")?.value)
-      XCTAssertEqual(1.0 / tan(theta), parser.parse("cot(\(theta))")?.value)
+      #expect(1.0 / cos(theta) == parser.parse("sec(\(theta))")?.value)
+      #expect(1.0 / sin(theta) == parser.parse("csc(\(theta))")?.value)
+      #expect(1.0 / tan(theta) == parser.parse("cot(\(theta))")?.value)
     }
   }
 
+  @Test
   func testHyperbolic() {
-    XCTAssertNotNil(parser.parse("sinh(0)"))
+    #expect(parser.parse("sinh(0)") != nil)
     for index in 0..<11 {
       let theta = Double(index - 5) / 10.0
-      XCTAssertEqual(sinh(theta), parser.parse("sinh(\(theta))")?.value)
-      XCTAssertEqual(cosh(theta), parser.parse("cosh(\(theta))")?.value)
-      XCTAssertEqual(tanh(theta), parser.parse("tanh(\(theta))")?.value)
+      #expect(sinh(theta) == parser.parse("sinh(\(theta))")?.value)
+      #expect(cosh(theta) == parser.parse("cosh(\(theta))")?.value)
+      #expect(tanh(theta) == parser.parse("tanh(\(theta))")?.value)
     }
   }
 }
