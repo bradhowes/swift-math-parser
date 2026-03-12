@@ -1,4 +1,4 @@
-// Copyright © 2023 Brad Howes. All rights reserved.
+// Copyright © 2022-2026 Brad Howes. All rights reserved.
 
 import Parsing
 
@@ -20,7 +20,7 @@ struct InfixOperation: Parser {
   private let `operator`: any TokenReducerParser
   private let operand: any TokenParser
   private let impliedOperation: TokenReducer?
-  public var logging: Bool
+  private let logSink: ((String) -> Void)?
 
   /**
    Construct new parser
@@ -30,21 +30,30 @@ struct InfixOperation: Parser {
    - parameter operator: the parser that recognizes valid operators at a certain precedence level
    - parameter operand: the parser for values to provide to the operator that may include operations at a higher
    precedence level
-   - parameter impliedOperation: optional ``TokenReducer`` that if present will be used if there is no operator token
+   - parameter implied: optional ``TokenReducer`` that if present will be used if there is no operator token
+   - parameter logging: if `true` and `logSink` is `nil` then install a closure that will `print` log messages.
+   - parameter logSink: closure to call with each log message
    */
   @inlinable
-  init(name: String,
-       associativity: Associativity,
-       operator: any TokenReducerParser,
-       operand: any TokenParser,
-       implied: TokenReducer? = nil,
-       logging: Bool = false) {
+  init(
+    name: String,
+    associativity: Associativity,
+    operator: any TokenReducerParser,
+    operand: any TokenParser,
+    implied: TokenReducer? = nil,
+    logging: Bool = false,
+    logSink: ((String) -> Void)? = nil
+  ) {
     self.name = name
     self.associativity = associativity
     self.operator = `operator`
     self.operand = operand
     self.impliedOperation = implied
-    self.logging = logging
+    if logging && logSink == nil {
+      self.logSink = { print($0) }
+    } else {
+      self.logSink = logSink
+    }
   }
 }
 
@@ -101,15 +110,12 @@ extension InfixOperation {
     }
   }
 
-  // Default action is to print log messages. Test case adapts to check logging is working.
-  static var logSink: (String) -> Void = { print($0) }
-
   private func log(_ msg: String, lhs: Token? = nil, rhs: Token? = nil, rest: Substring? = nil) {
-    guard self.logging else { return }
+    guard let logSink else { return }
     var msg = "\(name) - \(msg)"
     if let lhs = lhs { msg += " lhs: \(lhs)" }
     if let rhs = rhs { msg += " rhs: \(rhs)" }
     if let rest = rest { msg += " rest: \(rest)" }
-    Self.logSink(msg)
+    logSink(msg)
   }
 }

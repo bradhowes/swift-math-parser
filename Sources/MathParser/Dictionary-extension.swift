@@ -1,4 +1,4 @@
-// Copyright © 2022 Brad Howes. All rights reserved.
+// Copyright © 2022-2026 Brad Howes. All rights reserved.
 
 public extension Dictionary where Key == String, Value == Double {
   /// Obtain a symbol mapping function for the dictionary

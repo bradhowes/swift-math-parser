@@ -1,4 +1,4 @@
-// Copyright © 2023 Brad Howes. All rights reserved.
+// Copyright © 2022-2026 Brad Howes. All rights reserved.
 
 import Foundation
 

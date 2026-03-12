@@ -1,4 +1,4 @@
-// Copyright © 2022 Brad Howes. All rights reserved.
+// Copyright © 2022-2026 Brad Howes. All rights reserved.
 
 #if canImport(Darwin)
 import Darwin.C

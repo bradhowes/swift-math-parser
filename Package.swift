@@ -1,4 +1,4 @@
-// swift-tools-version:5.7
+// swift-tools-version:6.1
 
 import PackageDescription
 
@@ -23,11 +23,12 @@ let package = Package(
   targets: [
     .target(
       name: "MathParser",
-      dependencies: [.product(name: "Parsing", package: "swift-parsing")]
+      dependencies: [.product(name: "Parsing", package: "swift-parsing")],
     ),
     .testTarget(
       name: "MathParserTests",
       dependencies: [.product(name: "Parsing", package: "swift-parsing"), "MathParser"]
     )
-  ]
+  ],
+  swiftLanguageModes: [.v6]
 )

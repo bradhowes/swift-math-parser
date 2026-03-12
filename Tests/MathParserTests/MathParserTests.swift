@@ -1,4 +1,4 @@
-// Copyright © 2021 Brad Howes. All rights reserved.
+// Copyright © 2021-2026 Brad Howes. All rights reserved.
 
 import XCTest
 import Parsing
@@ -614,28 +614,22 @@ error: unexpected input
       Double.parser().map { Token.constant(value: $0) }
     }
 
-    var parser = InfixOperation(name: "testing", associativity: .left,
-                                operator: opParser,
-                                operand: tokenParser,
-                                implied: nil,
-                                logging: true)
+    var logged = false
+    let parser = InfixOperation(
+      name: "testing", associativity: .left,
+      operator: opParser,
+      operand: tokenParser,
+      implied: nil,
+      logging: true,
+      logSink: { msg in
+        logged = true
+        print(msg)
+      }
+    )
 
     let input = "123$456"
-    var value = try? parser.parse(input[...])
+    let value = try? parser.parse(input[...])
     XCTAssertNotNil(value)
-
-    var logged = false
-    InfixOperation.logSink = { msg in
-      logged = true
-      print(msg)
-    }
-
-    parser.logging = false
-    value = try? parser.parse(input[...])
-    XCTAssertFalse(logged)
-
-    parser.logging = true
-    value = try? parser.parse(input[...])
     XCTAssertTrue(logged)
   }
 

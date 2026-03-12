@@ -1,4 +1,4 @@
-// Copyright © 2023, 2024 Brad Howes. All rights reserved.
+// Copyright © 2022-2026 Brad Howes. All rights reserved.
 
 import Parsing
 import Foundation
@@ -20,7 +20,7 @@ import Foundation
  `Double` results from the expression, such as when the value for `t` is known.
  */
 
-final public class MathParser {
+public final class MathParser {
   /// Type definition for a mapping of one `Double` value to another such as by a 1-argument function.
   public typealias UnaryFunction = (Double) -> Double
   /// Type definition for a reduction of two `Double` values to one such as by a 2-argument function.
@@ -46,7 +46,7 @@ final public class MathParser {
    - `π` -- same as above but as a Unicode symbol
    - `e` -- the transcendental number that is the base of natural logarithms
    */
-  public static let defaultVariables: [String: Double] = ["pi": .pi, "π": .pi, "e": .e]
+  public static var defaultVariables: [String: Double] { ["pi": .pi, "π": .pi, "e": .e] }
 
   /**
    Default 1-argument functions to use for parsing and evaluation.
@@ -82,20 +82,22 @@ final public class MathParser {
    - `abs` -- always return a positive value
    - `sgn` -- return -1 if the given value is negative and 1 if it is positive. If zero, return 0.
    */
-  public static let defaultUnaryFunctions: UnaryFunctionDict = [
-    "sin": sin, "asin": asin, "cos": cos, "acos": acos, "tan": tan, "atan": atan,
-    "sinh": sinh, "asinh": asinh, "cosh": cosh, "acosh": acosh, "tanh": tanh, "atanh": atanh,
-    "log": log10, "log10": log10, "ln": log, "loge": log, "log2": log2, "exp": exp,
-    "ceil": ceil, "floor": floor, "round": round,
-    "sqrt": sqrt, "√": sqrt,
-    "cbrt": cbrt, // cube root,
-    "abs": abs,
-    "sgn": { $0 < 0 ? -1 : $0 > 0 ? 1 : 0 },
-    "!": { factorial($0) },
-    "sec": { 1 / cos($0) },
-    "csc": { 1 / sin($0) },
-    "cot": { 1 / tan($0) }
-  ]
+  public static var defaultUnaryFunctions: UnaryFunctionDict {
+    [
+      "sin": sin, "asin": asin, "cos": cos, "acos": acos, "tan": tan, "atan": atan,
+      "sinh": sinh, "asinh": asinh, "cosh": cosh, "acosh": acosh, "tanh": tanh, "atanh": atanh,
+      "log": log10, "log10": log10, "ln": log, "loge": log, "log2": log2, "exp": exp,
+      "ceil": ceil, "floor": floor, "round": round,
+      "sqrt": sqrt, "√": sqrt,
+      "cbrt": cbrt, // cube root,
+      "abs": abs,
+      "sgn": { $0 < 0 ? -1 : $0 > 0 ? 1 : 0 },
+      "!": { factorial($0) },
+      "sec": { 1 / cos($0) },
+      "csc": { 1 / sin($0) },
+      "cot": { 1 / tan($0) }
+    ]
+  }
 
   /**
    Default 2-argument functions to use for parsing and evaluation.
@@ -106,13 +108,15 @@ final public class MathParser {
    Note that the argument order to `hypot` is `x` then `y` unlike that of `atan2`.
    - `pow` -- calculate the result of raising the first argument to the power of the second. Thus `pow(x, y)` is the
    same as writing `x ^ y`.
-  */
-  public static let defaultBinaryFunctions: BinaryFunctionDict = [
-    "atan2": atan2,
-    "hypot": hypot,
-    "pow": pow, // Redundant since we support x^b expressions
-   "mod": { $0.truncatingRemainder(dividingBy: $1) }
-  ]
+   */
+  public static var defaultBinaryFunctions: BinaryFunctionDict {
+    [
+      "atan2": atan2,
+      "hypot": hypot,
+      "pow": pow, // Redundant since we support x^b expressions
+      "mod": { $0.truncatingRemainder(dividingBy: $1) }
+    ]
+  }
 
   /// Symbol/variable mapping to use during parsing and perhaps evaluation
   public let variables: VariableMap
@@ -273,7 +277,7 @@ final public class MathParser {
   // precedence of all other math operations (reasonable). We only operate on positive values so we don't have to handle
   // the error case if the value is negative.
   private lazy var operand: some TokenParser = Parse {
-    ignoreSpaces
+    MathParser.ignoreSpaces()
     OneOf {
       negatedOperand
       Parse {
@@ -312,11 +316,11 @@ final public class MathParser {
       "("
       self.subexpression
       Optionally {
-        ignoreSpaces
+        MathParser.ignoreSpaces()
         ","
         self.subexpression
       }
-      ignoreSpaces
+      MathParser.ignoreSpaces()
       ")"
     }
   }.map { (identifier: Substring, call: (Token, Token?)?) -> Token in
@@ -371,7 +375,7 @@ final public class MathParser {
   // MARK: - Operator Parsers
 
   private let additionOrSubtractionOperator: some TokenReducerParser = Parse {
-    ignoreSpaces
+    MathParser.ignoreSpaces()
     OneOf {
       "+".map { { Token.reducer(lhs: $0, rhs: $1, op: (+), name: "+") } }
       "-".map { { Token.reducer(lhs: $0, rhs: $1, op: (-), name: "-") } }
@@ -379,7 +383,7 @@ final public class MathParser {
   }
 
   private lazy var multiplicationOrDivisionOperator: some TokenReducerParser = Parse {
-    ignoreSpaces
+    MathParser.ignoreSpaces()
     OneOf {
       "*".map { self.multiplicationReducer }
       "×".map { self.multiplicationReducer }
@@ -389,17 +393,19 @@ final public class MathParser {
   }
 
   private let exponentiationOperator: some TokenReducerParser = Parse {
-    ignoreSpaces
+    ignoreSpaces()
     "^".map { { Token.reducer(lhs: $0, rhs: $1, op: (pow), name: "^") } }
   }
 
   private func findVariable(name: Substring) -> Double? { self.variables(String(name)) }
   private func findBinary(name: Substring) -> BinaryFunction? { self.binaryFunctions(String(name)) }
   private func findUnary(name: Substring) -> UnaryFunction? { self.unaryFunctions(String(name)) }
-}
 
-/// Common expression for ignoring spaces in other parsers
-private let ignoreSpaces = Skip { Optionally { Prefix<Substring> { $0.isWhitespace } } }
+  /// Common expression for ignoring spaces in other parsers
+  private static func ignoreSpaces() -> Skip<Substring, Optionally<Substring, Prefix<Substring>>> {
+    Skip { Optionally { Prefix<Substring> { $0.isWhitespace } } }
+  }
+}
 
 typealias TokenParser = Parser<Substring, Token>
 typealias TokenReducer = (Token, Token) -> Token

@@ -4,6 +4,30 @@
 <dict>
 	<key>runDestinationsByUUID</key>
 	<dict>
+		<key>6E22AE01-607E-4DF4-854E-68254290F026</key>
+		<dict>
+			<key>localComputer</key>
+			<dict>
+				<key>busSpeedInMHz</key>
+				<integer>0</integer>
+				<key>cpuCount</key>
+				<integer>1</integer>
+				<key>cpuKind</key>
+				<string>Apple M1 Pro</string>
+				<key>cpuSpeedInMHz</key>
+				<integer>0</integer>
+				<key>logicalCPUCoresPerPackage</key>
+				<integer>10</integer>
+				<key>modelCode</key>
+				<string>MacBookPro18,1</string>
+				<key>physicalCPUCoresPerPackage</key>
+				<integer>10</integer>
+				<key>platformIdentifier</key>
+				<string>com.apple.platform.macosx</string>
+			</dict>
+			<key>targetArchitecture</key>
+			<string>arm64</string>
+		</dict>
 		<key>86E03732-FEDA-48F2-ACF3-D768F3C52CD6</key>
 		<dict>
 			<key>localComputer</key>

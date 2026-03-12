@@ -1,83 +1,101 @@
-// Copyright © 2023 Brad Howes. All rights reserved.
+// Copyright © 2021-2026 Brad Howes. All rights reserved.
 
-import XCTest
+import Testing
 @testable import MathParser
 
-final class UtilsTests: XCTestCase {
+@Suite
+struct UtilsTests {
 
   let variables = ["a": 3.0, "b": 5.0, "ab": 7.0, "aba": 11.0]
   let unaries = ["OO": { $0 * 2.0 }, "FOO": { $0 * 3.0 }]
-  lazy var state = EvalState(variables: self.variables.producer, unaryFunctions: self.unaries.producer,
-                             binaryFunctions: nil, usingImpliedMultiplication: true)
-
-  override func setUp() {}
+  var state: EvalState {
+    EvalState(
+      variables: self.variables.producer,
+      unaryFunctions: self.unaries.producer,
+      binaryFunctions: nil,
+      usingImpliedMultiplication: true
+    )
+  }
 
   func eval(_ token: Token?) -> Double {
     (try? token?.eval(state: state)) ?? .nan
   }
 
-  func test_splitIdentifier_fails() {
-    XCTAssertNil(splitIdentifier("foo", state: state))
+  @Test
+  func splitIdentifier_fails() {
+    #expect(splitIdentifier("foo", state: state) == nil)
   }
 
-  func test_splitIdentifier_findsLargestMatch() {
+  @Test
+  func splitIdentifier_findsLargestMatch() {
     let result = splitIdentifier("abc", state: state)
-    XCTAssertEqual(7.0, eval(result!.token))
-    XCTAssertEqual("c", String(result!.remaining))
+    #expect(7.0 == eval(result!.token))
+    #expect("c" == String(result!.remaining))
   }
 
-  func test_splitIdentifier_chains() {
+  @Test
+  func splitIdentifier_chains() {
     let result = splitIdentifier("abaabc", state: state)
-    XCTAssertEqual(11.0 * 7, eval(result!.token))
-    XCTAssertEqual("c", String(result!.remaining))
+    #expect(11.0 * 7 == eval(result!.token))
+    #expect("c" == String(result!.remaining))
   }
 
-  func test_splitIdentifier_chainsAndFindsAll() {
+  @Test
+  func splitIdentifier_chainsAndFindsAll() {
     let result = splitIdentifier("abaab", state: state)
-    XCTAssertEqual(11.0 * 7, eval(result!.token))
-    XCTAssertEqual("", String(result!.remaining))
+    #expect(11.0 * 7 == eval(result!.token))
+    #expect("" == String(result!.remaining))
   }
 
-  func test_splitIdentifier_chainsLargestMatch() {
+  @Test
+  func splitIdentifier_chainsLargestMatch() {
     let result = splitIdentifier("abaabac", state: state)
-    XCTAssertEqual(11 * 11, eval(result!.token))
-    XCTAssertEqual("c", String(result!.remaining))
+    #expect(11 * 11 == eval(result!.token))
+    #expect("c" == String(result!.remaining))
   }
 
-  func test_splitIdentifier_chainsRepeatedly() {
+  @Test
+  func splitIdentifier_chainsRepeatedly() {
     let result = splitIdentifier("abaababaaaac", state: state)
-    XCTAssertEqual(11 * 11 * 5 * 3 * 3 * 3 * 3, eval(result!.token))
-    XCTAssertEqual("c", String(result!.remaining))
+    #expect(11 * 11 * 5 * 3 * 3 * 3 * 3 == eval(result!.token))
+    #expect("c" == String(result!.remaining))
   }
 
-  func test_searchForUnaryIdentifier_failsWithNil() {
+  @Test
+  func searchForUnaryIdentifier_failsWithNil() {
     let result = searchForUnaryIdentifier("blah", state: state)
-    XCTAssertNil(result)
+    #expect(nil == result)
   }
 
-  func test_searchForUnaryIdentifier_findsMatch() {
+  @Test
+  func searchForUnaryIdentifier_findsMatch() {
     let result = searchForUnaryIdentifier("abcOO", state: state)
-    XCTAssertEqual("OO", result?.name)
-    XCTAssertEqual(22, result?.op(11.0))
+    #expect("OO" == result?.name)
+    #expect(22 == result?.op(11.0))
   }
 
-  func test_searchForUnaryIdentifier_findsLongestMatch() {
+  @Test
+  func searchForUnaryIdentifier_findsLongestMatch() {
     let result = searchForUnaryIdentifier("abcFOO", state: state)
-    XCTAssertEqual("FOO", result?.name)
-    XCTAssertEqual(33, result?.op(11.0))
+    #expect("FOO" == result?.name)
+    #expect(33 == result?.op(11.0))
   }
 
-  func test_splitUnaryIdentifier_fails() {
-    XCTAssertNil(splitUnaryIdentifier("D", arg: .constant(value: 13.0), state: state))
-    XCTAssertNil(splitUnaryIdentifier("FOOD", arg: .constant(value: 13.0), state: state))
-    XCTAssertNil(splitUnaryIdentifier("OOD", arg: .constant(value: 13.0), state: state))
-    XCTAssertNil(splitUnaryIdentifier("abcOO", arg: .constant(value: 13.0), state: state))
+  @Test
+  func splitUnaryIdentifier_fails() {
+    let state = self.state
+    #expect(nil == splitUnaryIdentifier("D", arg: .constant(value: 13.0), state: state))
+    #expect(nil == splitUnaryIdentifier("FOOD", arg: .constant(value: 13.0), state: state))
+    #expect(nil == splitUnaryIdentifier("OOD", arg: .constant(value: 13.0), state: state))
+    #expect(nil == splitUnaryIdentifier("abcOO", arg: .constant(value: 13.0), state: state))
   }
 
-  func test_splitUnaryIdentifier_matches() {
-    XCTAssertEqual(7 * 13, eval(splitUnaryIdentifier("ab", arg: .constant(value: 13.0), state: state)))
-    XCTAssertEqual(3 * 13 * 2, eval(splitUnaryIdentifier("aOO", arg: .constant(value: 13.0), state: state)))
-    XCTAssertEqual(3 * 13 * 3, eval(splitUnaryIdentifier("aFOO", arg: .constant(value: 13.0), state: state)))
-    XCTAssertEqual(7 * 13 * 3, eval(splitUnaryIdentifier("abFOO", arg: .constant(value: 13.0), state: state)))
+  @Test
+  func splitUnaryIdentifier_matches() {
+    let state = self.state
+    #expect(7 * 13 == eval(splitUnaryIdentifier("ab", arg: .constant(value: 13.0), state: state)))
+    #expect(3 * 13 * 2 == eval(splitUnaryIdentifier("aOO", arg: .constant(value: 13.0), state: state)))
+    #expect(3 * 13 * 3 == eval(splitUnaryIdentifier("aFOO", arg: .constant(value: 13.0), state: state)))
+    #expect(7 * 13 * 3 == eval(splitUnaryIdentifier("abFOO", arg: .constant(value: 13.0), state: state)))
   }
 }
