@@ -20,7 +20,7 @@ internal import Foundation
  `Double` results from the expression, such as when the value for `t` is known.
  */
 
-public final class MathParser {
+public struct MathParser {
   /// Type definition for a mapping of one `Double` value to another such as by a 1-argument function.
   public typealias UnaryFunction = (Double) -> Double
   /// Type definition for a reduction of two `Double` values to one such as by a 2-argument function.
@@ -252,111 +252,127 @@ public final class MathParser {
   }
 
   // NOTE: the chain of expression parsers from here to exponentiation causes a loop so we need to be "lazy" here.
-  private lazy var subexpression: some TokenParser = Lazy {
-    self.additionAndSubtraction
+  private var subexpression: some TokenParser {
+    Lazy {
+      self.additionAndSubtraction
+    }
   }
 
-  private lazy var additionAndSubtraction = InfixOperation(
-    name: "+|-",
-    associativity: .left,
-    operator: additionOrSubtractionOperator,
-    operand: multiplicationAndDivision
-  )
+  private var additionAndSubtraction: InfixOperation {
+    .init(
+      name: "+|-",
+      associativity: .left,
+      operator: additionOrSubtractionOperator,
+      operand: multiplicationAndDivision
+    )
+  }
 
-  private lazy var multiplicationAndDivision = InfixOperation(
-    name: "*|/",
-    associativity: .left,
-    operator: multiplicationOrDivisionOperator,
-    operand: exponentiation,
-    implied: enableImpliedMultiplication ? self.multiplicationReducer : nil
-  )
+  private var multiplicationAndDivision: InfixOperation {
+    .init(
+      name: "*|/",
+      associativity: .left,
+      operator: multiplicationOrDivisionOperator,
+      operand: exponentiation,
+      implied: enableImpliedMultiplication ? self.multiplicationReducer : nil
+    )
+  }
 
-  private lazy var exponentiation = InfixOperation(
-    name: "Pow",
-    associativity: .right,
-    operator: exponentiationOperator,
-    operand: operand
-  )
+  private var exponentiation: InfixOperation {
+    .init(
+      name: "Pow",
+      associativity: .right,
+      operator: exponentiationOperator,
+      operand: operand
+    )
+  }
 
   // Semi-hacky support of a factorial operation. This works but implies that the factorial operation is at the highest
   // precedence of all other math operations (reasonable). We only operate on positive values so we don't have to handle
   // the error case if the value is negative.
-  private lazy var operand: some TokenParser = Parse {
-    MathParser.ignoreSpaces()
-    OneOf {
-      negatedOperand
-      Parse {
-        nonNegatedOperand
-        Optionally {
-          "!"
+  private var operand: some TokenParser {
+    Parse {
+      ignoreSpaces
+      OneOf {
+        negatedOperand
+        Parse {
+          nonNegatedOperand
+          Optionally {
+            "!"
+          }
+        }.map { (operand, factorialOp) in
+          guard factorialOp != nil else { return operand }
+          guard case let Token.constant(value) = operand else {
+            return .unaryCall(op: self.findUnary(name: "!"), name: "!", arg: operand)
+          }
+          return Token.constant(value: factorial(value))
         }
-      }.map { (operand, factorialOp) in
-        guard let factorialOp = factorialOp else { return operand }
-        guard case let Token.constant(value) = operand else {
-          return .unaryCall(op: self.findUnary(name: "!"), name: "!", arg: operand)
-        }
-        return Token.constant(value: factorial(value))
       }
     }
   }
 
   // NOTE: there must not be any separation between the "-" and the operand.
-  private lazy var negatedOperand: some TokenParser = Parse {
-    "-"
-    nonNegatedOperand
-  }.map { multiply(lhs: .constant(value: -1.0), rhs: $0) }
+  private var negatedOperand: some TokenParser {
+    Parse {
+      "-"
+      nonNegatedOperand
+    }.map { multiply(lhs: .constant(value: -1.0), rhs: $0) }
+  }
 
   // NOTE: order is important since a function call is made up of an identifier followed by a parenthetical expression.
-  private lazy var nonNegatedOperand: some TokenParser = OneOf {
-    symbolOrCall
-    parenthetical
-    constant
+  private var nonNegatedOperand: some TokenParser {
+    OneOf {
+      symbolOrCall
+      parenthetical
+      constant
+    }
   }
 
   // Try to parse an identifier, if possible a one or two arg function call. NOTE: for a function call the name must
   // be immediately followed by a "(".
-  private lazy var symbolOrCall: some TokenParser = Parse {
-    identifier
-    Optionally {
-      "("
-      self.subexpression
+  private var symbolOrCall: some TokenParser {
+    Parse {
+      identifier
       Optionally {
-        MathParser.ignoreSpaces()
-        ","
+        "("
         self.subexpression
+        Optionally {
+          ignoreSpaces
+          ","
+          self.subexpression
+        }
+        ignoreSpaces
+        ")"
       }
-      MathParser.ignoreSpaces()
-      ")"
-    }
-  }.map { (identifier: Substring, call: (Token, Token?)?) -> Token in
-    // Variable if no call information
-    guard let call = call else {
-      if let value = self.findVariable(name: identifier) {
-        return .constant(value: value)
+    }.map { (identifier: String, call: (Token, Token?)?) -> Token in
+      // Variable if no call information
+      guard let call = call else {
+        if let value = self.findVariable(name: identifier) {
+          return .constant(value: value)
+        }
+        return .variable(name: identifier)
       }
-      return .variable(name: identifier)
-    }
 
-    // 2-arg function call if valid second argument
-    let arg1 = call.0
-    if let arg2 = call.1 {
-      let op = self.findBinary(name: identifier)
+      // 2-arg function call if valid second argument
+      let arg1 = call.0
+      if let arg2 = call.1 {
+        let op = self.findBinary(name: identifier)
+        if let op = op,
+           case let .constant(value1) = arg1,
+           case let .constant(value2) = arg2 {
+          return .constant(value: op(value1, value2))
+        }
+        return .binaryCall(op: op, name: identifier, arg1: arg1, arg2: arg2)
+      }
+
+      // 1-arg function call
+      let op = self.findUnary(name: identifier)
       if let op = op,
-         case let .constant(value1) = arg1,
-         case let .constant(value2) = arg2 {
-        return .constant(value: op(value1, value2))
+         case let .constant(value1) = arg1 {
+        return .constant(value: op(value1))
       }
-      return .binaryCall(op: op, name: identifier, arg1: arg1, arg2: arg2)
-    }
 
-    // 1-arg function call
-    let op = self.findUnary(name: identifier)
-    if let op = op,
-       case let .constant(value1) = arg1 {
-      return .constant(value: op(value1))
+      return .unaryCall(op: op, name: identifier, arg: arg1)
     }
-
-    return .unaryCall(op: op, name: identifier, arg: arg1)
   }
 
   // For our purposes, an identifier for a variable or function is anything that does not:
@@ -366,49 +382,66 @@ public final class MathParser {
   //
   // This means that they can include anything else that is representable in UTF-8, including
   // emoji and other characters and symbols, including non-Latin languages.
-  private lazy var identifier = Parse(input: Substring.self) {
-    Prefix(1) { !(self.identifierTerminalSymbols.contains($0) || $0.isNumber || $0.isWhitespace) }
-    Prefix { !(self.identifierTerminalSymbols.contains($0) || $0.isWhitespace) }
-  }.map { $0 + $1 }
+  typealias IdentifierParser = Parsers.Map<Parse<Substring, ParserBuilder<Substring>
+    .Take2<Prefix<Substring>, Prefix<Substring>>
+    .Map<(Substring, Substring)>>, String>
 
-  private lazy var parenthetical: some TokenParser = Lazy {
-    "("
-    self.subexpression
-    ")"
+  private var identifier: IdentifierParser {
+    Parse {
+      Prefix(1) {
+        !(self.identifierTerminalSymbols.contains($0) || $0.isNumber || $0.isWhitespace)
+      }
+      Prefix {
+        !(self.identifierTerminalSymbols.contains($0) || $0.isWhitespace)
+      }
+    }.map { String($0 + $1) }
+  }
+
+  // NOTE: need "lazy" here since `parenthetical` is a subexpression
+  private var parenthetical: some TokenParser {
+    Lazy {
+      "("
+      self.subexpression
+      ")"
+    }
   }
 
   // MARK: - Operator Parsers
 
-  private let additionOrSubtractionOperator: some TokenReducerParser = Parse {
-    MathParser.ignoreSpaces()
-    OneOf {
-      "+".map { { Token.reducer(lhs: $0, rhs: $1, op: (+), name: "+") } }
-      "-".map { { Token.reducer(lhs: $0, rhs: $1, op: (-), name: "-") } }
+  private var additionOrSubtractionOperator: some TokenReducerParser {
+    Parse {
+      ignoreSpaces
+      OneOf {
+        "+".map { { Token.reducer(lhs: $0, rhs: $1, op: (+), name: "+") } }
+        "-".map { { Token.reducer(lhs: $0, rhs: $1, op: (-), name: "-") } }
+      }
     }
   }
 
-  private lazy var multiplicationOrDivisionOperator: some TokenReducerParser = Parse {
-    MathParser.ignoreSpaces()
-    OneOf {
-      "*".map { self.multiplicationReducer }
-      "×".map { self.multiplicationReducer }
-      "/".map { self.divisionReducer }
-      "÷".map { self.divisionReducer }
-      "%".map { self.moduloReducer }
+  private var multiplicationOrDivisionOperator: some TokenReducerParser {
+    Parse {
+      ignoreSpaces
+      OneOf {
+        "*".map { self.multiplicationReducer }
+        "×".map { self.multiplicationReducer }
+        "/".map { self.divisionReducer }
+        "÷".map { self.divisionReducer }
+        "%".map { self.moduloReducer }
+      }
     }
   }
 
-  private let exponentiationOperator: some TokenReducerParser = Parse {
-    ignoreSpaces()
-    "^".map { { Token.reducer(lhs: $0, rhs: $1, op: (pow), name: "^") } }
+  private var exponentiationOperator: some TokenReducerParser {
+    Parse {
+      ignoreSpaces
+      "^".map { { Token.reducer(lhs: $0, rhs: $1, op: (pow), name: "^") } }
+    }
   }
 
-  private func findVariable(name: Substring) -> Double? { self.variables(String(name)) }
-  private func findBinary(name: Substring) -> BinaryFunction? { self.binaryFunctions(String(name)) }
-  private func findUnary(name: Substring) -> UnaryFunction? { self.unaryFunctions(String(name)) }
-
-  /// Common expression for ignoring spaces in other parsers
-  private static func ignoreSpaces() -> Skip<Substring, Optionally<Substring, Prefix<Substring>>> {
+  private func findVariable(name: String) -> Double? { self.variables(String(name)) }
+  private func findBinary(name: String) -> BinaryFunction? { self.binaryFunctions(String(name)) }
+  private func findUnary(name: String) -> UnaryFunction? { self.unaryFunctions(String(name)) }
+  private var ignoreSpaces: Skip<Substring, Optionally<Substring, Prefix<Substring>>> {
     Skip { Optionally { Prefix<Substring> { $0.isWhitespace } } }
   }
 }

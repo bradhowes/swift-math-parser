@@ -13,12 +13,12 @@ typealias SplitResult = (token: Token, remaining: Substring)
 
 @inlinable
 func splitIdentifier(_ identifier: Substring, state: EvalState) -> SplitResult? {
-  if let value = state.findVariable(name: identifier) {
+  if let value = state.findVariable(name: String(identifier)) {
     return (token: .constant(value: value), identifier.dropLast(identifier.count))
   }
   for count in 1..<identifier.count {
     let name = identifier.dropLast(count)
-    let value = state.findVariable(name: name)
+    let value = state.findVariable(name: String(name))
     if let value = value {
       let lhs: Token = .constant(value: value)
       let rightIdent = identifier.suffix(count)
@@ -38,7 +38,7 @@ typealias SearchResult = (op: MathParser.UnaryFunction, name: Substring)
 func searchForUnaryIdentifier(_ identifier: Substring, state: EvalState) -> SearchResult? {
   for count in 0..<identifier.count {
     let name = identifier.dropFirst(count)
-    if let op = state.findUnary(name: name) {
+    if let op = state.findUnary(name: String(name)) {
       return (op: op, name: name)
     }
   }
@@ -50,7 +50,7 @@ func splitUnaryIdentifier(_ identifier: Substring, arg: Token, state: EvalState)
   if let op = searchForUnaryIdentifier(identifier, state: state),
      let split = splitIdentifier(identifier.dropLast(op.name.count), state: state) {
     if split.remaining.isEmpty {
-      return multiply(lhs: split.token, rhs: .unaryCall(op: op.op, name: op.name, arg: arg))
+      return multiply(lhs: split.token, rhs: .unaryCall(op: op.op, name: String(op.name), arg: arg))
     }
     return nil
   }

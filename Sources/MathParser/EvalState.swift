@@ -15,18 +15,18 @@ struct EvalState {
   @usableFromInline let usingImpliedMultiplication: Bool
 
   @inlinable
-  func findVariable(name: Substring) -> Double? {
-    self.variables?(String(name)) ?? MathParser.defaultVariables[String(name)]
+  func findVariable(name: String) -> Double? {
+    self.variables?(name) ?? MathParser.defaultVariables[name]
   }
 
   @inlinable
-  func findUnary(name: Substring) -> MathParser.UnaryFunction? {
-    self.unaryFunctions?(String(name)) ?? MathParser.defaultUnaryFunctions[String(name)]
+  func findUnary(name: String) -> MathParser.UnaryFunction? {
+    self.unaryFunctions?(name) ?? MathParser.defaultUnaryFunctions[name]
   }
 
   @inlinable
-  func findBinary(name: Substring) -> MathParser.BinaryFunction? {
-    self.binaryFunctions?(String(name)) ?? MathParser.defaultBinaryFunctions[String(name)]
+  func findBinary(name: String) -> MathParser.BinaryFunction? {
+    self.binaryFunctions?(name) ?? MathParser.defaultBinaryFunctions[name]
   }
 
   @usableFromInline
