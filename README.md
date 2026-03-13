@@ -9,7 +9,7 @@
 Basic math expression parser built with [Point•Free's](https://www.pointfree.co/)
 [swift-parsing](https://github.com/pointfreeco/swift-parsing) package (v0.12.0+). See the [API documentation](https://bradhowes.github.io/swift-math-parser/documentation/mathparser/) for developer info.
 
-* NOTE: v4.0.0 requires Swift 6
+* NOTE: v4.0.0 requires Swift 6 or greater
 * NOTE: v3.1.0 uses swift-parsing v0.12 which requires Xcode 14 and ideally Swift 5.8 
   (see their [What's Changed](https://github.com/pointfreeco/swift-parsing/releases/tag/0.12.0) doc for additional details).
   If you need to use an older version, use the tagged 3.0.1 release instead.
@@ -46,11 +46,11 @@ and exponentiation (`^`)
 * The factorial operator (`!`) [^2]
 * Constants: `pi` (`π`) and `e`
 * 1-argument functions: 
-  * trigonometric functions: `sin`, `asin`, `cos`, `acos`, `tan`, `atan`, `sec`, `csc`, `ctn`
-  * hyperbolic functions: `sinh`, `asinh`, `cosh`, `acosh`, `tanh`, `atanh`
-  * logarithmic and exponential functions: `log10`, `ln` (`loge`), `log2`, `exp`
-  * others: `ceil`, `floor`, `round`, `sqrt` (`√`), `cbrt` (cube root), `abs`, and `sgn`
-* 2-argument functions: `atan2`, `hypot`, `pow` [^1]
+  * trigonometric: `sin`, `asin`, `cos`, `acos`, `tan`, `atan`, `sec`, `csc`, `ctn`
+  * hyperbolics: `sinh`, `asinh`, `cosh`, `acosh`, `tanh`, `atanh`
+  * logarithmics: `log10`, `ln` (`loge`), `log2`, `exp`
+  * numerics: `ceil`, `floor`, `round`, `sqrt` (`√`), `cbrt` (cube root), `abs`, `sgn`
+* 2-argument functions: `atan2`, `hypot`, `pow` [^1], `mod`
 * alternative math operator symbols: `×` for multiplication and `÷` for division (see example above for use of `×`)
 
 You can reference additional symbols or variables and functions by providing your own mapping functions. There are two

@@ -29,7 +29,7 @@ failure(error: unexpected input
 
 By default, the expression parser and evaluator handle the following symbols and functions:
 
-* Standard math operations: addition (`+`), subtraction (`-`), multiplication (`*`), division (`/`), 
+* Standard math operations: addition (`+`), subtraction (`-`), multiplication (`*`), division (`/`), modulo (`%`),
 and exponentiation (`^`)
 * The factorial of a number (`!`)
 * Constants: `pi` (`π`) and `e`
@@ -38,8 +38,12 @@ and exponentiation (`^`)
 * 2-argument functions: `atan`, `hypot`, `pow`
 * alternative math operator symbols: `×` for multiplication and `÷` for division (see example above for use of `×`)
 
-Note that the factorial operator and function (`!`) only give exact values up to `20!`. They treat all values as 
+> **Note**: the factorial operator and function (`!`) only give exact values up to `20!`. They treat all values as 
 if truncated to an integer before performing the multiplications. Thus, `12.3!` is only `12!`.
+
+> **Note**: `mod` uses Swift's 
+[truncatingRemainder](https://developer.apple.com/documentation/swift/float/truncatingremainder(dividingby:\)) 
+function which may not align with expectations or results from other languages, especially with negative values.
 
 You can reference additional symbols or variables and functions by providing your own mapping functions. There are two
 places where this can be done:
@@ -57,7 +61,7 @@ unresolved variables, unary functions, and binary function names.
 
 ## Precedence
 
-The usual math operations follow the traditional precedence hierarchy: multiplication and division operations happen
+The usual math operations follow the traditional precedence hierarchy: multiplication, division, and modulo operations happen
 before addition and subtraction, so `1 + 2 * 3 - 4 / 5 + 6` evaluates the same as `1 + (2 * 3) - (4 / 5) + 6`. 
 There are three additional operators, one for exponentiations (^) which is higher than the previous ones, 
 so `2 * 3 ^ 4 + 5` is the same as `2 * (3 ^ 4) + 5`. It is also right-associative, so `2 ^ 3 ^ 4` is evaluated as 

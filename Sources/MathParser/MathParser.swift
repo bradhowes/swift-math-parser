@@ -99,6 +99,7 @@ public final class MathParser {
     ]
   }
 
+  public static var moduloFunction: BinaryFunction { { $0.truncatingRemainder(dividingBy: $1) } }
   /**
    Default 2-argument functions to use for parsing and evaluation.
 
@@ -114,7 +115,7 @@ public final class MathParser {
       "atan2": atan2,
       "hypot": hypot,
       "pow": pow, // Redundant since we support x^b expressions
-      "mod": { $0.truncatingRemainder(dividingBy: $1) }
+      "mod": Self.moduloFunction
     ]
   }
 
@@ -212,10 +213,10 @@ public final class MathParser {
     "+",
     "-",
     "*",
-    "×",
+    "×", // alternate multiplication symbol
     "/",
-    "÷",
-    "^",
+    "÷", // alternate division symbol
+    "^", // power
     "(",
     ")",
     ","
@@ -238,6 +239,7 @@ public final class MathParser {
 
   private let multiplicationReducer: TokenReducer = { Token.reducer(lhs: $0, rhs: $1, op: (*), name: "*") }
   private let divisionReducer: TokenReducer = { Token.reducer(lhs: $0, rhs: $1, op: (/), name: "/") }
+  private let moduloReducer: TokenReducer = { Token.reducer(lhs: $0, rhs: $1, op: moduloFunction, name: "%") }
 
   // MARK: - Token Parsers
 
@@ -390,6 +392,7 @@ public final class MathParser {
       "×".map { self.multiplicationReducer }
       "/".map { self.divisionReducer }
       "÷".map { self.divisionReducer }
+      "%".map { self.moduloReducer }
     }
   }
 

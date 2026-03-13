@@ -10,10 +10,10 @@ all math expression parsing and evaluation.
 The functions provided are those that are often used in math and programming:
 
 - 1-argument functions: 
-  * trigonometric: `sin`, `asin`, `cos`, `acos`, `tan`, `atan`
+  * trigonometric: `sin`, `asin`, `cos`, `acos`, `tan`, `atan`, `sec`, `csc`, `ctn`
   * hyperbolics: `sinh`, `asinh`, `cosh`, `acosh`, `tanh`, `atanh`
-  * logarithmic: `log10`, `ln` (`loge`), `log2`, `exp`, `ceil`
-  * numeric: `floor`, `round`, `sqrt` (`√`), `cbrt` (cube root), `abs`, `sgn`, `!` (factorial)
+  * logarithmics: `log10`, `ln` (`loge`), `log2`, `exp`
+  * numerics: `ceil`, `floor`, `round`, `sqrt` (`√`), `cbrt` (cube root), `abs`, `sgn`, `!` (factorial)
 - 2-argument functions: `atan2`, `hypot`, `pow`, `mod`
 
 You can also provide additional definitions or redefine the defaults by providing your own mapping function for any or

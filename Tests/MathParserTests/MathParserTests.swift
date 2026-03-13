@@ -705,6 +705,10 @@ error: unexpected input
 
   @Test
   func testMod() {
+    #expect(2 == parser.parse("5 % 3")?.value)
+    #expect(3 == parser.parse("8 + 5 % 3 - 7")?.value)
+    #expect(.pi - 3.0 == parser.parse("pi % 3")?.value)
+    #expect(2 * .pi - 6.0 == parser.parse("2 * pi % 3")?.value)
     #expect(2 == parser.parse("mod(5, 3)")?.value)
     #expect(3 == parser.parse("mod(3, 5)")?.value)
     #expect(1 == parser.parse("mod(55, 3)")?.value)
