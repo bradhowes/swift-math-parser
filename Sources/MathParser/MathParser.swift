@@ -244,9 +244,11 @@ public final class MathParser {
   // MARK: - Token Parsers
 
   // Entry point for math parsing
-  private lazy var expression: some TokenParser = Parse {
-    self.subexpression
-    End()
+  private var expression: some TokenParser {
+    Parse {
+      self.subexpression
+      End()
+    }
   }
 
   // NOTE: the chain of expression parsers from here to exponentiation causes a loop so we need to be "lazy" here.

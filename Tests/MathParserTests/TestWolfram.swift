@@ -385,12 +385,4 @@ sin(21 t + 33/13) + 269/5) θ(3 π - t) θ(t + π)) θ(sqrt(sgn(sin(t/2))))
       #expect(yv[t] == y)
     }
   }
-
-  @Test
-  func testPerformance() {
-//    let mp = MathParser(enableImpliedMultiplication: true)
-//    self.measure {
-//      XCTAssertNotNil(mp.parse(x))
-//    }
-  }
 }
