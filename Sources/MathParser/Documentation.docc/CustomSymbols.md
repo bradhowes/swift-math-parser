@@ -1,6 +1,6 @@
 # Custom Symbols
 
-The ``MathParser`` package tries to offer a great out-of-the-box experience without any configuration. It also offers
+The ``MathParser`` package tries to offer a great out-of-the-box experience without any configuration, but it also offers
 a way to integrate your own functionality by way of providing custom variables and functions which the parser and 
 evaluator can then use to successfully resolve and evaluate your math expressions.
 
@@ -9,9 +9,12 @@ all math expression parsing and evaluation.
 
 The functions provided are those that are often used in math and programming:
 
-- 1-argument functions: `sin`, `asin`, `cos`, `acos`, `tan`, `atan`, `log10`, `ln` (`loge`), `log2`, `exp`, `ceil`, 
-`floor`, `round`, `sqrt` (`√`), `cbrt` (cube root), `abs`, `sgn`
-- 2-argument functions: `atan`, `hypot`, `pow`
+- 1-argument functions: 
+  * trigonometric: `sin`, `asin`, `cos`, `acos`, `tan`, `atan`
+  * hyperbolics: `sinh`, `asinh`, `cosh`, `acosh`, `tanh`, `atanh`
+  * logarithmic: `log10`, `ln` (`loge`), `log2`, `exp`, `ceil`
+  * numeric: `floor`, `round`, `sqrt` (`√`), `cbrt` (cube root), `abs`, `sgn`, `!` (factorial)
+- 2-argument functions: `atan2`, `hypot`, `pow`, `mod`
 
 You can also provide additional definitions or redefine the defaults by providing your own mapping function for any or
 all of the three collections (variables, 1-arg (unary) functions, and 2-arg (binary) functions).
@@ -27,6 +30,9 @@ let myFunctions: [String:(Double)->Double] = ["twice": {$0 + $0}]
 let parser = MathParser(variables: myVariables.producer, unaryFunctions: myFunctions.producer)
 let evaluator = parser.parse("power(twice(foo))")
 ```
+
+> **NOTE**: the `.producer` attributes attached to the custom dictionaries `myVariables` and `myFunctions` wrap their respective
+dictionaries in a closure which is what `MathParser` expects.
 
 In the above parsed expression `power(twice(foo))` everything is resolved except for `power`. Since the expression is a
 valid one according to ``MathParser``, the returned `evaluator` is not `nil`, but asking the evaluator for a value now

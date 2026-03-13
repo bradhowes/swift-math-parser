@@ -1,6 +1,6 @@
 // Copyright © 2022-2026 Brad Howes. All rights reserved.
 
-import Foundation
+internal import Foundation
 
 @inlinable
 func factorial(_ value: Double) -> Double { (1...Int(value)).map(Double.init).reduce(1.0, *) }

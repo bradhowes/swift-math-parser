@@ -1,6 +1,6 @@
 // Copyright © 2022-2026 Brad Howes. All rights reserved.
 
-import Foundation
+internal import Foundation
 
 /**
  Enumeration of the various components identified in a parse of an expression. If an expression can be fully evaluated
@@ -162,3 +162,4 @@ public struct Unresolved {
     self.binaryFunctions = binaryFunctions
   }
 }
+

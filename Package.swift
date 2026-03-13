@@ -23,12 +23,16 @@ let package = Package(
   targets: [
     .target(
       name: "MathParser",
-      dependencies: [.product(name: "Parsing", package: "swift-parsing")]
+      dependencies: [.product(name: "Parsing", package: "swift-parsing")],
+      swiftSettings: [
+        .enableUpcomingFeature("StrictConcurrency"),
+        .enableUpcomingFeature("InternalImportsByDefault")
+      ]
     ),
     .testTarget(
       name: "MathParserTests",
       dependencies: [.product(name: "Parsing", package: "swift-parsing"), "MathParser"]
     )
   ],
-  swiftLanguageModes: [.v6]
+  swiftLanguageModes: [.v6, .v5]
 )

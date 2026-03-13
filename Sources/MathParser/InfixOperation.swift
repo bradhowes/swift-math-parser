@@ -1,6 +1,6 @@
 // Copyright © 2022-2026 Brad Howes. All rights reserved.
 
-import Parsing
+internal import Parsing
 
 /**
  Parser for left-associative infix operations. Takes a parser for operators to recognize and a parser for values to use

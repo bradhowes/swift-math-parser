@@ -1,6 +1,7 @@
 // Copyright © 2021-2026 Brad Howes. All rights reserved.
 
 import Foundation
+import Parsing
 import Testing
 @testable import MathParser
 
@@ -23,6 +24,35 @@ struct TokenTests {
                                   unaryFunctions: unaryFunctions ?? self.unaryFuncs,
                                   binaryFunctions: binaryFunctions ?? self.binaryFuncs,
                                   usingImpliedMultiplication: usingImpliedMultiplication))) ?? .nan
+  }
+
+  @Test
+  func testInfixOperationLoggingWorks() {
+    let opParser: some TokenReducerParser = Parse {
+      "$".map { { Token.reducer(lhs: $0, rhs: $1, op: (*), name: "$") } }
+    }
+
+    let tokenParser: some TokenParser = Parse {
+      Double.parser().map { Token.constant(value: $0) }
+    }
+
+    var logged = false
+    let parser = InfixOperation(
+      name: "testing", associativity: .left,
+      operator: opParser,
+      operand: tokenParser,
+      implied: nil,
+      logging: true,
+      logSink: { msg in
+        logged = true
+        print(msg)
+      }
+    )
+
+    let input = "123$456"
+    let value = try? parser.parse(input[...])
+    #expect(nil != value)
+    #expect(logged)
   }
 
   @Test

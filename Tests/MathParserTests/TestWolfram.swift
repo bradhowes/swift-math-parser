@@ -2,7 +2,7 @@
 
 import Foundation
 import Testing
-@testable import MathParser
+import MathParser
 
 @Suite
 struct TestWolfram {

@@ -1,7 +1,7 @@
 // Copyright © 2022-2026 Brad Howes. All rights reserved.
 
-import Parsing
-import Foundation
+internal import Parsing
+internal import Foundation
 
 /**
  A parser for simple math expressions made up of five common operations addition, subtraction, multiplication,
@@ -147,13 +147,14 @@ public final class MathParser {
    Note that this will be ignored if ``binaryFunctions`` is also given.
    - parameter enableImpliedMultiplication: if true treat expressions like `2π` as valid and same as `2 * π`
    */
-  public init(variables: VariableMap? = nil,
-              variableDict: VariableDict? = nil,
-              unaryFunctions: UnaryFunctionMap? = nil,
-              unaryFunctionDict: UnaryFunctionDict? = nil,
-              binaryFunctions: BinaryFunctionMap? = nil,
-              binaryFunctionDict: BinaryFunctionDict? = nil,
-              enableImpliedMultiplication: Bool = false
+  public init(
+    variables: VariableMap? = nil,
+    variableDict: VariableDict? = nil,
+    unaryFunctions: UnaryFunctionMap? = nil,
+    unaryFunctionDict: UnaryFunctionDict? = nil,
+    binaryFunctions: BinaryFunctionMap? = nil,
+    binaryFunctionDict: BinaryFunctionDict? = nil,
+    enableImpliedMultiplication: Bool = false
   ) {
     self.customVariableDict = variableDict
     self.customUnaryFunctionDict = unaryFunctionDict

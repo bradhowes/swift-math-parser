@@ -1,6 +1,6 @@
 // Copyright © 2022-2026 Brad Howes. All rights reserved.
 
-import Foundation
+internal import Foundation
 
 /**
  Error type that describes a failure in either text parsing or token evaluation.

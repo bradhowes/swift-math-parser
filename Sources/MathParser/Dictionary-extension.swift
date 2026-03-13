@@ -1,5 +1,7 @@
 // Copyright © 2022-2026 Brad Howes. All rights reserved.
 
+internal import Foundation
+
 public extension Dictionary where Key == String, Value == Double {
   /// Obtain a symbol mapping function for the dictionary
   @inlinable var producer: MathParser.VariableMap { { self[$0] } }
