@@ -25,8 +25,8 @@ let package = Package(
       name: "MathParser",
       dependencies: [.product(name: "Parsing", package: "swift-parsing")],
       swiftSettings: [
-        .enableUpcomingFeature("StrictConcurrency"),
-        .enableUpcomingFeature("InternalImportsByDefault")
+        .enableUpcomingFeature("InternalImportsByDefault"),
+        .enableUpcomingFeature("MemberImportVisibility")
       ]
     ),
     .testTarget(
