@@ -7,3 +7,4 @@ builder:
     scheme: MathParser
   - platform: watchos
     scheme: MathParser_watchOS
+  - documentation_targets: [MathParser]
