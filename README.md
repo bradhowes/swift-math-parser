@@ -9,8 +9,13 @@
 Basic math expression parser built with [Point•Free's](https://www.pointfree.co/)
 [swift-parsing](https://github.com/pointfreeco/swift-parsing) package (v0.12.0+). See the [API documentation](https://bradhowes.github.io/swift-math-parser/documentation/mathparser/) for developer info.
 
-* NOTE: v4.0.0 requires Swift 6 or greater
-* NOTE: v3.1.0 uses swift-parsing v0.12 which requires Xcode 14 and ideally Swift 5.8 
+# Change Log
+
+* v5.0.0: Reworked `MathParser` to be a `struct` instead of a `class`. Measured no performance degradation, and there should be no
+discernable behavior change for existing code.
+* v4.1.0: Add modulo (%) operator with same precendence as multiplication and division. Same behavior as existing `mod` function.
+* v4.0.0: Requires Swift 6 or greater. Fixed concurrency issues.
+* v3.1.0: uses swift-parsing v0.12 which requires Xcode 14 and ideally Swift 5.8
   (see their [What's Changed](https://github.com/pointfreeco/swift-parsing/releases/tag/0.12.0) doc for additional details).
   If you need to use an older version, use the tagged 3.0.1 release instead.
 
