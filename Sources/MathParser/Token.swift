@@ -48,7 +48,10 @@ extension Token {
       if let value = state.findVariable(name: name) { return value }
       // Attempt to convert name into combination of multiplications
       if state.usingImpliedMultiplication,
-         let result = splitIdentifier(name[...], state: state),
+         let result = splitIdentifier(
+          name,
+          state: state
+         ),
          result.remaining.isEmpty {
         return try result.token.eval(state: state)
       }
@@ -61,7 +64,11 @@ extension Token {
       if let op = state.findUnary(name: name) { return op(try arg.eval(state: state)) }
       // Attempt to convert name into combination of multiplications and perhaps a function call.
       if state.usingImpliedMultiplication,
-         let token = splitUnaryIdentifier(name[...], arg: arg, state: state) {
+         let token = splitUnaryIdentifier(
+          name,
+          arg: arg,
+          state: state
+         ) {
         return try token.eval(state: state)
       }
       throw MathParserError.unaryFunctionNotFound(name: name)

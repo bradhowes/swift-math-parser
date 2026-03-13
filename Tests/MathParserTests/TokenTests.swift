@@ -15,15 +15,23 @@ struct TokenTests {
   }
   let binaryFuncs: MathParser.BinaryFunctionMap = { _ in nil }
 
-  func evalToken(_ token: Token,
-                 variables: MathParser.VariableMap? = nil,
-                 unaryFunctions: MathParser.UnaryFunctionMap? = nil,
-                 binaryFunctions: MathParser.BinaryFunctionMap? = nil,
-                 usingImpliedMultiplication: Bool = false) -> Double {
-    (try? token.eval(state: .init(variables: variables ?? self.variables.producer,
-                                  unaryFunctions: unaryFunctions ?? self.unaryFuncs,
-                                  binaryFunctions: binaryFunctions ?? self.binaryFuncs,
-                                  usingImpliedMultiplication: usingImpliedMultiplication))) ?? .nan
+  func evalToken(
+    _ token: Token,
+    variables: MathParser.VariableMap? = nil,
+    unaryFunctions: MathParser.UnaryFunctionMap? = nil,
+    binaryFunctions: MathParser.BinaryFunctionMap? = nil,
+    usingImpliedMultiplication: Bool = false
+  ) -> Double {
+    (
+      try? token.eval(
+        state: .init(
+          variables: variables ?? self.variables.producer,
+          unaryFunctions: unaryFunctions ?? self.unaryFuncs,
+          binaryFunctions: binaryFunctions ?? self.binaryFuncs,
+          usingImpliedMultiplication: usingImpliedMultiplication
+        )
+      )
+    ) ?? .nan
   }
 
   @Test
@@ -37,20 +45,28 @@ struct TokenTests {
     }
 
     var logged = false
-    let parser = InfixOperation(
+    var parser = InfixOperation(
       name: "testing", associativity: .left,
       operator: opParser,
       operand: tokenParser,
       implied: nil,
-      logging: true,
-      logSink: { msg in
-        logged = true
-        print(msg)
-      }
+      logging: true
     )
 
     let input = "123$456"
-    let value = try? parser.parse(input[...])
+    var value = try? parser.parse(input[...])
+    #expect(nil != value)
+    #expect(!logged)
+
+    parser = InfixOperation(
+      name: "testing", associativity: .left,
+      operator: opParser,
+      operand: tokenParser,
+      implied: nil,
+      logSink: { _ in logged = true }
+    )
+
+    value = try? parser.parse("1$2$3$4")
     #expect(nil != value)
     #expect(logged)
   }
@@ -75,10 +91,11 @@ struct TokenTests {
 
   @Test
   func testImpliedMultiplicationDoesNotOverrideExistingVariable() {
-    let variable = Token.variable(name: "ab")
-    #expect(99 == evalToken(variable, usingImpliedMultiplication: true))
-    #expect(99 == evalToken(variable, usingImpliedMultiplication: false))
-    #expect(variable.unresolved.variables.contains("ab"))
+    #expect(12 == evalToken(Token.variable(name: "ba"), usingImpliedMultiplication: true))
+    #expect(99 == evalToken(Token.variable(name: "ab"), usingImpliedMultiplication: true))
+    let token = Token.variable(name: "ab")
+    #expect(99 == evalToken(token, usingImpliedMultiplication: true))
+    #expect(token.unresolved.variables.contains("ab"))
   }
 
   @Test
@@ -90,6 +107,7 @@ struct TokenTests {
 
   @Test
   func testMissingUnaryFuncGeneratesNaN() {
+    #expect(3.0 * 2.0 * 123.45 == evalToken(.unaryCall(op: nil, name: "aDOUBLE", arg: .constant(value: 123.45)), usingImpliedMultiplication: true))
     #expect(evalToken(.unaryCall(op: nil, name: "abc", arg: .constant(value: 123.45))).isNaN)
   }
 

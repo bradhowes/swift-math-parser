@@ -447,6 +447,8 @@ struct MathParserTests {
     let parser = MathParser(enableImpliedMultiplication: true)
     let token = parser.parse("6.0 / 2(1 + 2)")
     #expect(3*3 == token?.eval())
+    let token2 = parser.parse("pie")
+    #expect(Double.e * .pi == token2?.eval())
   }
 
   @Test
@@ -671,8 +673,19 @@ error: unexpected input
   }
 
   @Test
+  func parseResult() {
+    let result = parser.parseResult("4 × 7")
+    if case let .success(evaluator) = result {
+      #expect(evaluator.value == 28.0)
+    } else {
+      Issue.record("unexpected parseResult")
+    }
+  }
+
+  @Test
   func testFactorial() {
     #expect(24.0 == parser.parse("4!")?.value)
+    #expect(24.0 == parser.parse("factorial(4)")?.value)
     #expect(3 + 24.0 == parser.parse("3 + 4!")?.value)
     #expect(3 * 24.0 == parser.parse("3 * 4!")?.value)
     #expect(nil == parser.parse("3 * -4!"))

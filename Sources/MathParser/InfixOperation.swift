@@ -70,6 +70,7 @@ extension InfixOperation {
   @inlinable
   func parse(_ input: inout Input) throws -> Token {
     log("parse", rest: input.prefix(40))
+    let result: Token
     switch self.associativity {
     case .left:
       var lhs = try self.operand.parse(&input)
@@ -90,9 +91,11 @@ extension InfixOperation {
         }
         // Reset and end parse
         input = rest
-        log("done", rest: rest.prefix(40))
-        return lhs
+        log("done", lhs: lhs, rest: rest.prefix(40))
+        result = lhs
+        break
       }
+
     case .right:
 
       // Build up successive right-associative operations in a stack, which are then applied in reverse order using the
@@ -104,10 +107,14 @@ extension InfixOperation {
           let operation = try self.operator.parse(&input)
           lhs.append((operation, rhs))
         } catch {
-          return lhs.reversed().reduce(rhs) { $1.0($1.1, $0) }
+          result = lhs.reversed().reduce(rhs) { $1.0($1.1, $0) }
+          log("done", lhs: result)
+          break
         }
       }
     }
+
+    return result
   }
 
   private func log(_ msg: String, lhs: Token? = nil, rhs: Token? = nil, rest: Substring? = nil) {

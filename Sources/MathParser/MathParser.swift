@@ -81,6 +81,7 @@ public struct MathParser {
    - `cbrt` -- computes the cube-root of the given number
    - `abs` -- always return a positive value
    - `sgn` -- return -1 if the given value is negative and 1 if it is positive. If zero, return 0.
+   - `factorial` -- calculate factorial of the argument N (same as N!)
    */
   public static var defaultUnaryFunctions: UnaryFunctionDict {
     [
@@ -92,7 +93,7 @@ public struct MathParser {
       "cbrt": cbrt, // cube root,
       "abs": abs,
       "sgn": { $0 < 0 ? -1 : $0 > 0 ? 1 : 0 },
-      "!": { factorial($0) },
+      "factorial": factorial,
       "sec": { 1 / cos($0) },
       "csc": { 1 / sin($0) },
       "cot": { 1 / tan($0) }

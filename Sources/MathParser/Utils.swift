@@ -12,8 +12,8 @@ func multiply(lhs: Token, rhs: Token) -> Token { Token.reducer(lhs: lhs, rhs: rh
 typealias SplitResult = (token: Token, remaining: Substring)
 
 @inlinable
-func splitIdentifier(_ identifier: Substring, state: EvalState) -> SplitResult? {
-  if let value = state.findVariable(name: String(identifier)) {
+func splitIdentifier(_ identifier: String, state: EvalState) -> SplitResult? {
+  if let value = state.findVariable(name: identifier) {
     return (token: .constant(value: value), identifier.dropLast(identifier.count))
   }
   for count in 1..<identifier.count {
@@ -22,7 +22,7 @@ func splitIdentifier(_ identifier: Substring, state: EvalState) -> SplitResult? 
     if let value = value {
       let lhs: Token = .constant(value: value)
       let rightIdent = identifier.suffix(count)
-      if let (rhs, remaining) = splitIdentifier(rightIdent, state: state) {
+      if let (rhs, remaining) = splitIdentifier(String(rightIdent), state: state) {
         return (token: multiply(lhs: lhs, rhs: rhs), remaining: remaining)
       }
       return (token: lhs, remaining: rightIdent)
@@ -35,7 +35,7 @@ func splitIdentifier(_ identifier: Substring, state: EvalState) -> SplitResult? 
 typealias SearchResult = (op: MathParser.UnaryFunction, name: Substring)
 
 @inlinable
-func searchForUnaryIdentifier(_ identifier: Substring, state: EvalState) -> SearchResult? {
+func searchForUnaryIdentifier(_ identifier: String, state: EvalState) -> SearchResult? {
   for count in 0..<identifier.count {
     let name = identifier.dropFirst(count)
     if let op = state.findUnary(name: String(name)) {
@@ -46,9 +46,9 @@ func searchForUnaryIdentifier(_ identifier: Substring, state: EvalState) -> Sear
 }
 
 @inlinable
-func splitUnaryIdentifier(_ identifier: Substring, arg: Token, state: EvalState) -> Token? {
+func splitUnaryIdentifier(_ identifier: String, arg: Token, state: EvalState) -> Token? {
   if let op = searchForUnaryIdentifier(identifier, state: state),
-     let split = splitIdentifier(identifier.dropLast(op.name.count), state: state) {
+     let split = splitIdentifier(String(identifier.dropLast(op.name.count)), state: state) {
     if split.remaining.isEmpty {
       return multiply(lhs: split.token, rhs: .unaryCall(op: op.op, name: String(op.name), arg: arg))
     }
