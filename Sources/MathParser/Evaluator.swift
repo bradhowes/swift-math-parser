@@ -61,7 +61,7 @@ extension Evaluator {
     unaryFunctions: MathParser.UnaryFunctionMap? = nil,
     unaryFunctionDict: MathParser.UnaryFunctionDict? = nil,
     binaryFunctions: MathParser.BinaryFunctionMap? = nil,
-    binaryFunctionDict: MathParser.BinaryFunctionDict? = nil,
+    binaryFunctionDict: MathParser.BinaryFunctionDict? = nil
   ) -> Double {
     (try? token.eval(
       state: .init(
@@ -97,7 +97,7 @@ extension Evaluator {
     unaryFunctions: MathParser.UnaryFunctionMap? = nil,
     unaryFunctionDict: MathParser.UnaryFunctionDict? = nil,
     binaryFunctions: MathParser.BinaryFunctionMap? = nil,
-    binaryFunctionDict: MathParser.BinaryFunctionDict? = nil,
+    binaryFunctionDict: MathParser.BinaryFunctionDict? = nil
   ) -> Result {
     do {
       let result = try token.eval(
