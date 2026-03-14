@@ -446,6 +446,20 @@ struct MathParserTests {
     let token = parser.parse("t+4")
     #expect(7 == token?.eval("t", value: 3))
     #expect(7 == token?.eval(3))
+
+    #expect(.success(7) == token?.evalResult("t", value: 3))
+    #expect(.success(7) == token?.evalResult(3))
+  }
+
+  @Test
+  func testEvalMutipleSymbols() {
+    let parser = MathParser(enableImpliedMultiplication: false)
+    let token = parser.parse("t+u+4")!
+    #expect(token.eval("t", value: 3).isNaN)
+    #expect(token.eval(3).isNaN)
+
+    #expect(.failure(.variableNotFound(name: "u")) == token.evalResult("t", value: 3))
+    #expect(.failure(.variableNotFound(name: "u")) == token.evalResult(3))
   }
 
   @Test
