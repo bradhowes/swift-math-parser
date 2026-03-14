@@ -39,27 +39,35 @@ extension Evaluator {
   public var value: Double { return self.eval(variables: nil) }
 
   /**
-   Evaluate the token to obtain a value. By default will use symbol map and function map given to `init`.
+   Evaluate the token to obtain a value.
 
-   - parameter variables: optional mapping of names to constants to use during evaluation in addition to
-   `MathParser.defaultVariables`
-   - parameter unaryFunctions: optional mapping of names to 1 parameter functions to use during evaluation in addition
-   to `MathParser.defaultUnaryFunctions`
-   - parameter binaryFunctions: optional mapping of names to 2 parameter functions to use during evaluation in addition
-   to `MathParser.defaultBinaryFunctions`
+   - parameter variables: optional mapping of names to variables. If not given, ``defaultVariables`` will be used
+   - parameter variableDict: optional dictionary that maps a name to a constant. Note that this will be ignored if
+   ``variables`` is also given.
+   - parameter unaryFunctions: optional mapping of names to 1-ary functions. If not given, ``defaultUnaryFunctions`` will
+   be used
+   - parameter unaryFunctionsDict: optional dictionary that maps a name 1-ary function. Note that this will be ignored if
+   ``unaryFunctions`` is also given.
+   - parameter binaryFunctions: optional mapping of names to 2-ary functions. If not given, ``defaultBinaryFunctions``
+   will be used
+   - parameter binaryFunctionDict: optional dictionary that maps a name to a 2-ary function. Note that this will be ignored if
+   ``binaryFunctions`` is also given.
    - returns: Double value that is NaN when evaluation cannot finish due to unresolved symbol
    */
   @inlinable
   public func eval(
     variables: MathParser.VariableMap? = nil,
+    variablesDict: MathParser.VariableDict? = nil,
     unaryFunctions: MathParser.UnaryFunctionMap? = nil,
-    binaryFunctions: MathParser.BinaryFunctionMap? = nil
+    unaryFunctionDict: MathParser.UnaryFunctionDict? = nil,
+    binaryFunctions: MathParser.BinaryFunctionMap? = nil,
+    binaryFunctionDict: MathParser.BinaryFunctionDict? = nil,
   ) -> Double {
     (try? token.eval(
       state: .init(
-        variables: variables ?? MathParser.defaultVariables.producer,
-        unaryFunctions: unaryFunctions ?? MathParser.defaultUnaryFunctions.producer,
-        binaryFunctions: binaryFunctions ?? MathParser.defaultBinaryFunctions.producer,
+        variables: variables ?? variablesDict?.producer ?? MathParser.defaultVariables.producer,
+        unaryFunctions: unaryFunctions ?? unaryFunctionDict?.producer ?? MathParser.defaultUnaryFunctions.producer,
+        binaryFunctions: binaryFunctions ?? binaryFunctionDict?.producer ?? MathParser.defaultBinaryFunctions.producer,
         usingImpliedMultiplication: usingImpliedMultiplication
       )
     )) ?? .nan
@@ -69,26 +77,34 @@ extension Evaluator {
    Evaluate the token to obtain a `Result` value that indicates a success or failure. The `.success` case holds a valid
    `Double` value, while the `.failure` case holds a string describing the failure.
 
-   - parameter variables: optional mapping of names to constants to use during evaluation in addition to
-   `MathParser.defaultVariables`
-   - parameter unaryFunctions: optional mapping of names to 1 parameter functions to use during evaluation in addition
-   to `MathParser.defaultUnaryFunctions`
-   - parameter binaryFunctions: optional mapping of names to 2 parameter functions to use during evaluation in addition
-   to `MathParser.defaultBinaryFunctions`
+   - parameter variables: optional mapping of names to variables. If not given, ``defaultVariables`` will be used
+   - parameter variableDict: optional dictionary that maps a name to a constant. Note that this will be ignored if
+   ``variables`` is also given.
+   - parameter unaryFunctions: optional mapping of names to 1-ary functions. If not given, ``defaultUnaryFunctions`` will
+   be used
+   - parameter unaryFunctionsDict: optional dictionary that maps a name 1-ary function. Note that this will be ignored if
+   ``unaryFunctions`` is also given.
+   - parameter binaryFunctions: optional mapping of names to 2-ary functions. If not given, ``defaultBinaryFunctions``
+   will be used
+   - parameter binaryFunctionDict: optional dictionary that maps a name to a 2-ary function. Note that this will be ignored if
+   ``binaryFunctions`` is also given.
    - returns: `Result` enum which hold value on success or error description on failure.
    */
   @inlinable
   public func evalResult(
     variables: MathParser.VariableMap? = nil,
+    variablesDict: MathParser.VariableDict? = nil,
     unaryFunctions: MathParser.UnaryFunctionMap? = nil,
-    binaryFunctions: MathParser.BinaryFunctionMap? = nil
+    unaryFunctionDict: MathParser.UnaryFunctionDict? = nil,
+    binaryFunctions: MathParser.BinaryFunctionMap? = nil,
+    binaryFunctionDict: MathParser.BinaryFunctionDict? = nil,
   ) -> Result {
     do {
       let result = try token.eval(
         state: .init(
-          variables: variables ?? MathParser.defaultVariables.producer,
-          unaryFunctions: unaryFunctions ?? MathParser.defaultUnaryFunctions.producer,
-          binaryFunctions: binaryFunctions ?? MathParser.defaultBinaryFunctions.producer,
+          variables: variables ?? variablesDict?.producer ?? MathParser.defaultVariables.producer,
+          unaryFunctions: unaryFunctions ?? unaryFunctionDict?.producer ?? MathParser.defaultUnaryFunctions.producer,
+          binaryFunctions: binaryFunctions ?? binaryFunctionDict?.producer ?? MathParser.defaultBinaryFunctions.producer,
           usingImpliedMultiplication: usingImpliedMultiplication
         )
       )
@@ -103,8 +119,9 @@ extension Evaluator {
   /**
    Convenience method to evaluate an expression with one unknown symbol.
 
-   - parameter name: the name of a symbol to resolve
-   - parameter value: the value to use for the symbol
+   - parameter name: the name of a symbol to resolve.
+   - parameter value: the value to use for the symbol.
+   - returns: value of expression or `NaN` if there was an error.
    */
   @inlinable
   public func eval(_ name: String, value: Double) -> Double {
@@ -114,11 +131,47 @@ extension Evaluator {
   /**
    Convenience method to evaluate an expression with one unknown symbol.
 
-   - parameter name: the name of a symbol to resolve
-   - parameter value: the value to use for the symbol
+   - parameter name: the name of a symbol to resolve.
+   - parameter value: the value to use for the symbol.
+   - returns: `Result` enum which hold value on success or error description on failure.
    */
   @inlinable
   public func evalResult(_ name: String, value: Double) -> Result {
     evalResult(variables: {$0 == name ? value : nil})
+  }
+
+  /**
+   Convenience method to evaluate an expression with one unknown symbol.
+
+   NOTE: this is not wise to do if `usingImpliedMultiplication` is `true` as it might not be possible to identify the name of the
+   symbol to supply. For instance, in an expression like 'pi \* t' that is written 'tpi' or 'pit', is hard to resolve to 't' for
+   the symbol name to use. Better to explicitly define the symbol using `eval("t", value: value)`.
+
+   - parameter value: the value to use for the symbol.
+   - returns: value of expression or `NaN` if there was an error.
+   */
+  @inlinable
+  public func eval(_ value: Double) -> Double {
+    guard !usingImpliedMultiplication else { return .nan }
+    let names = token.unresolved.variables.map { $0 }.sorted()
+    return eval(variables: {$0 == names.first ? value: nil})
+  }
+
+  /**
+   Convenience method to evaluate an expression with one unknown symbol.
+
+   NOTE: this is not wise to do if `usingImpliedMultiplication` is `true` as it might not be possible to identify the name of the
+   symbol to supply. For instance, in an expression 'tt' is that one symbol 'tt' or a multiplication of 't' with itself?
+   Better to explicitly define the symbol using `eval("t", value: value)` which would treat 'tt' as 't \* t', or
+   `eval("tt", value: value)` to get back `value`.
+
+   - parameter value: the value to use for the symbol.
+   - returns: `Result` enum which hold value on success or error description on failure.
+   */
+  @inlinable
+  public func evalResult(_ value: Double) -> Result {
+    guard !usingImpliedMultiplication else { return .failure(.unsupportedEvalUnderImpliedMultiplication) }
+    let names = token.unresolved.variables.map { $0 }.sorted()
+    return evalResult(variables: {$0 == names.first ? value : nil})
   }
 }

@@ -12,9 +12,9 @@ struct MathParserTests {
 
   @Test
   func testIdentifiersCanHoldEmojis() {
-    #expect(sin(1.5) == parser.parse("sin(🌍)")?.eval("🌍", value: 1.5))
-    #expect(1.5 + sin(1.5) == parser.parse("🌍🌍 + sin(🌍🌍)")?.eval("🌍🌍", value: 1.5))
-    #expect(1.3 == parser.parse("💐power🤷‍♂️")?.eval("💐power🤷‍♂️", value: 1.3))
+    #expect(sin(1.5) == parser.parse("sin(🌍)")?.eval(1.5))
+    #expect(1.5 + sin(1.5) == parser.parse("🌍🌍 + sin(🌍🌍)")?.eval(1.5))
+    #expect(1.3 == parser.parse("💐power🤷‍♂️")?.eval(1.3))
   }
 
   @Test
@@ -77,7 +77,7 @@ struct MathParserTests {
     #expect(5 == parser.parse("-(-3-2)")?.eval())
     #expect(pow(2, -(1 - 8)) == parser.parse("2^-(1-8)")?.eval())
     #expect(5.0 * -.pi == parser.parse("5 * -pi")?.eval())
-    #expect(5.0 * -.pi * -3 == parser.parse("5 * -pi * -t")?.eval("t", value: 3))
+    #expect(5.0 * -.pi * -3 == parser.parse("5 * -pi * -t")?.eval(3))
   }
 
   @Test
@@ -318,15 +318,15 @@ struct MathParserTests {
   @Test
   func testEvalWithDelayedResolutionVariable() {
     let token = parser.parse("4 * sin(t * pi)")!
-    #expect(0.0 == token.eval("t", value: 0.0))
-    #expect(4.0 == token.eval("t", value: 0.5))
-    #expect(isApproximatelyEqual(0.0, token.eval("t", value: 1.0)))
+    #expect(0.0 == token.eval(0.0))
+    #expect(4.0 == token.eval(0.5))
+    #expect(isApproximatelyEqual(0.0, token.eval(1.0)))
   }
 
   @Test
   func testEvalWithDelayedResolutionVariableAndUnknownSymbolFails() {
     let token = parser.parse("4 * sin(t * pi) + u")!
-    #expect(token.eval("t", value: 0.0).isNaN)
+    #expect(token.eval(0.0).isNaN)
   }
 
   @Test
@@ -403,6 +403,10 @@ struct MathParserTests {
     #expect(proc(0.0) == token?.eval("t", value: 0.0))
     #expect(proc(0.5) == token?.eval("t", value: 0.5))
     #expect(proc(1.0) == token?.eval("t", value: 1.0))
+
+    #expect(token!.eval(0.0).isNaN)
+    #expect(token!.eval(0.5).isNaN)
+    #expect(token!.eval(1.0).isNaN)
   }
 
   @Test
@@ -433,6 +437,7 @@ struct MathParserTests {
     #expect(7 == token?.eval())
     let token2 = parser.parse("t+4")
     #expect(7 == token2?.eval("t", value: 3))
+    #expect(token2!.eval(3).isNaN)
   }
 
   @Test
@@ -440,15 +445,21 @@ struct MathParserTests {
     let parser = MathParser(enableImpliedMultiplication: false)
     let token = parser.parse("t+4")
     #expect(7 == token?.eval("t", value: 3))
+    #expect(7 == token?.eval(3))
   }
 
   @Test
   func testBuggyImpliedMultiplication() {
     let parser = MathParser(enableImpliedMultiplication: true)
-    let token = parser.parse("6.0 / 2(1 + 2)")
+    var token = parser.parse("6.0 / 2(1 + 2)")
     #expect(3*3 == token?.eval())
-    let token2 = parser.parse("pie")
-    #expect(Double.e * .pi == token2?.eval())
+    token = parser.parse("pie")
+    #expect(Double.e * .pi == token?.eval())
+    // This *should* be pi * t but with implied multiplication we treat it as one undefined symbol 'pit' unless told specifically
+    // that we are supplying 't'.
+    token = parser.parse("pit")
+    #expect(.failure(.unsupportedEvalUnderImpliedMultiplication) == token?.evalResult(1.2))
+    #expect(.success(1.2 * .pi) == token?.evalResult("t", value: 1.2))
   }
 
   @Test
@@ -493,13 +504,13 @@ struct MathParserTests {
     let parser = MathParser()
     let evaluator = parser.parse("4 × sin(t × π) + 2 × sin(t × π)")
     var t = 0.0
-    var v = evaluator!.eval("t", value: t)
+    var v = evaluator!.eval(t)
     #expect(4 * sin(t * .pi) + 2 * sin(t * .pi) == v)
     t = 0.25
-    v = evaluator!.eval("t", value: t)
+    v = evaluator!.eval(t)
     #expect(4 * sin(t * .pi) + 2 * sin(t * .pi) == v)
     t = 0.5
-    v = evaluator!.eval("t", value: t)
+    v = evaluator!.eval(t)
     #expect(4 * sin(t * .pi) + 2 * sin(t * .pi) == v)
     v = evaluator!.eval("u", value: 1.0)
     #expect(v.isNaN)

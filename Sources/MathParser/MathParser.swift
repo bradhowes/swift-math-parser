@@ -141,12 +141,12 @@ public struct MathParser {
    ``variables`` is also given.
    - parameter unaryFunctions: optional mapping of names to 1-ary functions. If not given, ``defaultUnaryFunctions`` will
    be used
-   - parameter variableDict: optional dictionary that maps a name to a closure that maps a double to another.
-   Note that this will be ignored if ``unaryFunctions`` is also given.
+   - parameter unaryFunctionsDict: optional dictionary that maps a name 1-ary function. Note that this will be ignored if
+   ``unaryFunctions`` is also given.
    - parameter binaryFunctions: optional mapping of names to 2-ary functions. If not given, ``defaultBinaryFunctions``
    will be used
-   - parameter binaryFunctionDict: optional dictionary that maps a name to a closure that maps two doubles into one.
-   Note that this will be ignored if ``binaryFunctions`` is also given.
+   - parameter binaryFunctionDict: optional dictionary that maps a name to a 2-ary function. Note that this will be ignored if
+   ``binaryFunctions`` is also given.
    - parameter enableImpliedMultiplication: if true treat expressions like `2π` as valid and same as `2 * π`
    */
   public init(

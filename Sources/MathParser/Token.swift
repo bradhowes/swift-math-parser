@@ -85,6 +85,7 @@ extension Token {
 extension Token {
 
   /// Obtain the unresolved symbols for this token an all those that it references in graph form.
+  @usableFromInline
   var unresolved: Unresolved {
     var variables: Set<String> = .init()
     var unaryFunctions: Set<String> = .init()

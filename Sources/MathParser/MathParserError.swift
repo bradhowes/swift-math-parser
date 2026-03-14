@@ -14,6 +14,8 @@ public enum MathParserError: Error, Equatable {
   case unaryFunctionNotFound(name: String)
   /// Holds error when evaluation vails to find a binary function
   case binaryFunctionNotFound(name: String)
+  /// Eval without symbol name is not supported when usingImpliedMultiplication is true
+  case unsupportedEvalUnderImpliedMultiplication
 }
 
 extension MathParserError: CustomStringConvertible {
@@ -23,6 +25,7 @@ extension MathParserError: CustomStringConvertible {
     case .variableNotFound(let name): return "Variable '\(name)' not found"
     case .unaryFunctionNotFound(let name): return "Function '\(name)' not found"
     case .binaryFunctionNotFound(let name): return "Function '\(name)' not found"
+    case .unsupportedEvalUnderImpliedMultiplication: return "Eval without symbol name when usingImpliedMultiplication is true"
     }
   }
 }
