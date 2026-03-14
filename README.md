@@ -7,7 +7,9 @@
 # swift-math-parser
 
 Basic math expression parser built with [Point•Free's](https://www.pointfree.co/)
-[swift-parsing](https://github.com/pointfreeco/swift-parsing) package (v0.12.0+). See the [API documentation](https://bradhowes.github.io/swift-math-parser/documentation/mathparser/) for developer info.
+[swift-parsing](https://github.com/pointfreeco/swift-parsing) package (v0.12.0+). See the [package
+documentation](https://swiftpackageindex.com/bradhowes/swift-math-parser/main/documentation/mathparser) for details on
+the features it offers and examples on how to use it.
 
 # Change Log
 
