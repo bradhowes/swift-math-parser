@@ -18,14 +18,15 @@ public struct Evaluator {
   /// True if using implied multiplication to resolve symbols
   @usableFromInline let usingImpliedMultiplication: Bool
 
-  /// Obtain unresolved names of symbols for variables and functions
+  /// Obtain the names of any unresolved variable and/or function symbols. In order to receive a numeric value from the
+  /// Evaulator, you must satisfy all unresolved symbols.
   public var unresolved: Unresolved { token.unresolved }
 
   /**
    Construct new evaluator. This is constructed and returned by `MathParser.parse`.
 
-   - parameter token: the token to evaluate
-   - parameter usingImpliedMultiplication: if true then try to decompose symbols into pairs that are multiplied together
+   - Parameter token: the token to evaluate
+   - Parameter usingImpliedMultiplication: if true then try to decompose symbols into pairs that are multiplied together
    */
   init(token: Token, usingImpliedMultiplication: Bool = false) {
     self.token = token
@@ -41,18 +42,18 @@ extension Evaluator {
   /**
    Evaluate the token to obtain a value.
 
-   - parameter variables: optional mapping of names to variables. If not give, `defaultVariables` will be use.
-   - parameter variablesDict: optional dictionary that maps a name to a constant. Note that this will be ignored if
+   - Parameter variables: optional mapping of names to variables. If not give, `defaultVariables` will be use.
+   - Parameter variablesDict: optional dictionary that maps a name to a constant. Note that this will be ignored if
    `variables` is also given.
-   - parameter unaryFunctions: optional mapping of names to 1-ary functions. If not given, `defaultUnaryFunctions` will
+   - Parameter unaryFunctions: optional mapping of names to 1-ary functions. If not given, `defaultUnaryFunctions` will
    be used.
-   - parameter unaryFunctionsDict: optional dictionary that maps a name 1-ary function. Note that this will be ignored if
+   - Parameter unaryFunctionsDict: optional dictionary that maps a name 1-ary function. Note that this will be ignored if
    `unaryFunctions` is also given.
-   - parameter binaryFunctions: optional mapping of names to 2-ary functions. If not given, `defaultBinaryFunctions`
+   - Parameter binaryFunctions: optional mapping of names to 2-ary functions. If not given, `defaultBinaryFunctions`
    will be used/
-   - parameter binaryFunctionsDict: optional dictionary that maps a name to a 2-ary function. Note that this will be ignored if
+   - Parameter binaryFunctionsDict: optional dictionary that maps a name to a 2-ary function. Note that this will be ignored if
    `binaryFunctions` is also given.
-   - returns: Double value that is NaN when evaluation cannot finish due to unresolved symbol
+   - Returns: Double value that is NaN when evaluation cannot finish due to unresolved symbol
    */
   @inlinable
   public func eval(
@@ -74,21 +75,21 @@ extension Evaluator {
   }
 
   /**
-   Evaluate the token to obtain a `Result` value that indicates a success or failure. The `.success` case holds a valid
-   `Double` value, while the `.failure` case holds a string describing the failure.
+   Evaluate the token to obtain a ``Result`` value that indicates a success or failure. The `.success` case holds a
+   valid `Double` value, while the `.failure` case holds a string describing the failure.
 
-   - parameter variables: optional mapping of names to variables. If not give, `defaultVariables` will be use.
-   - parameter variablesDict: optional dictionary that maps a name to a constant. Note that this will be ignored if
+   - Parameter variables: optional mapping of names to variables. If not give, `defaultVariables` will be use.
+   - Parameter variablesDict: optional dictionary that maps a name to a constant. Note that this will be ignored if
    `variables` is also given.
-   - parameter unaryFunctions: optional mapping of names to 1-ary functions. If not given, `defaultUnaryFunctions` will
+   - Parameter unaryFunctions: optional mapping of names to 1-ary functions. If not given, `defaultUnaryFunctions` will
    be used.
-   - parameter unaryFunctionsDict: optional dictionary that maps a name 1-ary function. Note that this will be ignored if
+   - Parameter unaryFunctionsDict: optional dictionary that maps a name 1-ary function. Note that this will be ignored if
    `unaryFunctions` is also given.
-   - parameter binaryFunctions: optional mapping of names to 2-ary functions. If not given, `defaultBinaryFunctions`
+   - Parameter binaryFunctions: optional mapping of names to 2-ary functions. If not given, `defaultBinaryFunctions`
    will be used/
-   - parameter binaryFunctionsDict: optional dictionary that maps a name to a 2-ary function. Note that this will be ignored if
+   - Parameter binaryFunctionsDict: optional dictionary that maps a name to a 2-ary function. Note that this will be ignored if
    `binaryFunctions` is also given.
-   - returns: `Result` enum which hold value on success or error description on failure.
+   - Returns: ``Result`` enum which hold value on success or error description on failure.
    */
   @inlinable
   public func evalResult(
@@ -119,9 +120,9 @@ extension Evaluator {
   /**
    Convenience method to evaluate an expression with one unknown symbol.
 
-   - parameter name: the name of a symbol to resolve.
-   - parameter value: the value to use for the symbol.
-   - returns: value of expression or `NaN` if there was an error.
+   - Parameter name: the name of a symbol to resolve.
+   - Parameter value: the value to use for the symbol.
+   - Returns: value of expression or `NaN` if there was an error.
    */
   @inlinable
   public func eval(_ name: String, value: Double) -> Double {
@@ -131,9 +132,9 @@ extension Evaluator {
   /**
    Convenience method to evaluate an expression with one unknown symbol.
 
-   - parameter name: the name of a symbol to resolve.
-   - parameter value: the value to use for the symbol.
-   - returns: `Result` enum which hold value on success or error description on failure.
+   - Parameter name: the name of a symbol to resolve.
+   - Parameter value: the value to use for the symbol.
+   - Returns: `Result` enum which hold value on success or error description on failure.
    */
   @inlinable
   public func evalResult(_ name: String, value: Double) -> Result {
@@ -147,8 +148,8 @@ extension Evaluator {
    symbol to supply. For instance, in an expression like 'pi \* t' that is written 'tpi' or 'pit', is hard to resolve to 't' for
    the symbol name to use. Better to explicitly define the symbol using `eval("t", value: value)`.
 
-   - parameter value: the value to use for the symbol.
-   - returns: value of expression or `NaN` if there was an error.
+   - Parameter value: the value to use for the symbol.
+   - Returns: value of expression or `NaN` if there was an error.
    */
   @inlinable
   public func eval(_ value: Double) -> Double {
@@ -165,8 +166,8 @@ extension Evaluator {
    Better to explicitly define the symbol using `eval("t", value: value)` which would treat 'tt' as 't \* t', or
    `eval("tt", value: value)` to get back `value`.
 
-   - parameter value: the value to use for the symbol.
-   - returns: `Result` enum which hold value on success or error description on failure.
+   - Parameter value: the value to use for the symbol.
+   - Returns: `Result` enum which hold value on success or error description on failure.
    */
   @inlinable
   public func evalResult(_ value: Double) -> Result {

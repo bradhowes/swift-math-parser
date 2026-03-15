@@ -22,10 +22,10 @@ evaluator.eval("x", value: 0.0) // => 0.0
 evaluator.eval("x", value: 42)  // => 126
 ```
 
-This delayed evaluations also works for functions -- you can parse an expression with 1 or 2 argument functions that are
-not known to ``MathParser``. It will perform any math operations that it can while holding off on evaluating those that
-involve unknown symbols. Like with the unknown variables, you then provide an ``Evaluator`` with the mapping of function
-names and function closures when you wish to finish a calculation and obtain a numeric result.
+This delayed evaluation also works for functions: you can parse an expression with 1 or 2 argument functions that are
+not known to ``MathParser``. It will however perform any math operations that it can while holding off on evaluating
+those that involve unknown symbols. Like the case with the unknown variables, you then provide an ``Evaluator`` with the
+mapping of function names to function closures when you wish to finish a calculation and obtain a numeric result.
 
 ```swift
 let parser = MathParser()
