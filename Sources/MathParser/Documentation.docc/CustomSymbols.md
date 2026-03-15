@@ -55,7 +55,7 @@ evaluator?.unresolved.unaryFunctions // => ['power']'
 ```
 
 Supply addition variable and methods to the evaluator's
-``Evaluator/eval(variables:variablesDict:unaryFunctions:unaryFunctionsDict:binaryFunctions:binaryFunctionsDict:)``
+``Evaluator/eval(variables:variableDict:unaryFunctions:unaryFunctionDict:binaryFunctions:binaryFunctionDict:)``
 method. Below, we supply it with a definition for `power`.
 
 ```

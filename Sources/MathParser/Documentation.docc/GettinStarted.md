@@ -48,8 +48,8 @@ function which may not align with expectations or results from other languages, 
 You can reference additional symbols or variables and functions by providing your own mapping functions. There are two
 places where this can be done:
 
-* ``MathParser/init(variables:variablesDict:unaryFunctions:unaryFunctionsDict:binaryFunctions:binaryFunctionsDict:enableImpliedMultiplication:)``
-* ``Evaluator/eval(variables:variablesDict:unaryFunctions:unaryFunctionsDict:binaryFunctions:binaryFunctionsDict:)``
+* ``MathParser/init(variables:variableDict:unaryFunctions:unaryFunctionDict:binaryFunctions:binaryFunctionDict:enableImpliedMultiplication:)``
+* ``Evaluator/eval(variables:variableDict:unaryFunctions:unaryFunctionDict:binaryFunctions:binaryFunctionDict:)``
 
 If a symbol or function does not exist during an `eval` call, the final result will be `NaN`. If a symbol is resolved
 during parsing, it will be replaced with the symbol's value, and likewise for any math expressions and function calls

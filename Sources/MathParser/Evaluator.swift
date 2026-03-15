@@ -4,7 +4,7 @@
  Evaluator of parsed tokens.
 
  An evaluator attempts to resolve any remaining symbols in order to return a value from a parsed expression. The
- ``eval(variables:variablesDict:unaryFunctions:unaryFunctionsDict:binaryFunctions:binaryFunctionsDict:)`` and
+ ``eval(variables:variableDict:unaryFunctions:unaryFunctionDict:binaryFunctions:binaryFunctionDict:)`` and
  ``evalResult(_:value:)`` methods accept additional definitions for variables and functions. If all are then
  resolved, then the evaluator can return a specific value from the parsed expression.
  */
@@ -43,32 +43,32 @@ extension Evaluator {
    Evaluate the token to obtain a value.
 
    - Parameter variables: optional mapping of names to variables. If not give, `defaultVariables` will be use.
-   - Parameter variablesDict: optional dictionary that maps a name to a constant. Note that this will be ignored if
+   - Parameter variableDict: optional dictionary that maps a name to a constant. Note that this will be ignored if
    `variables` is also given.
    - Parameter unaryFunctions: optional mapping of names to 1-ary functions. If not given, `defaultUnaryFunctions` will
    be used.
-   - Parameter unaryFunctionsDict: optional dictionary that maps a name 1-ary function. Note that this will be ignored if
+   - Parameter unaryFunctionDict: optional dictionary that maps a name 1-ary function. Note that this will be ignored if
    `unaryFunctions` is also given.
    - Parameter binaryFunctions: optional mapping of names to 2-ary functions. If not given, `defaultBinaryFunctions`
    will be used/
-   - Parameter binaryFunctionsDict: optional dictionary that maps a name to a 2-ary function. Note that this will be ignored if
+   - Parameter binaryFunctionDict: optional dictionary that maps a name to a 2-ary function. Note that this will be ignored if
    `binaryFunctions` is also given.
    - Returns: Double value that is NaN when evaluation cannot finish due to unresolved symbol
    */
   @inlinable
   public func eval(
     variables: MathParser.VariableMap? = nil,
-    variablesDict: MathParser.VariableDict? = nil,
+    variableDict: MathParser.VariableDict? = nil,
     unaryFunctions: MathParser.UnaryFunctionMap? = nil,
-    unaryFunctionsDict: MathParser.UnaryFunctionDict? = nil,
+    unaryFunctionDict: MathParser.UnaryFunctionDict? = nil,
     binaryFunctions: MathParser.BinaryFunctionMap? = nil,
-    binaryFunctionsDict: MathParser.BinaryFunctionDict? = nil
+    binaryFunctionDict: MathParser.BinaryFunctionDict? = nil
   ) -> Double {
     (try? token.eval(
       state: .init(
-        variables: variables ?? variablesDict?.producer ?? MathParser.defaultVariables.producer,
-        unaryFunctions: unaryFunctions ?? unaryFunctionsDict?.producer ?? MathParser.defaultUnaryFunctions.producer,
-        binaryFunctions: binaryFunctions ?? binaryFunctionsDict?.producer ?? MathParser.defaultBinaryFunctions.producer,
+        variables: variables ?? variableDict?.producer ?? MathParser.defaultVariables.producer,
+        unaryFunctions: unaryFunctions ?? unaryFunctionDict?.producer ?? MathParser.defaultUnaryFunctions.producer,
+        binaryFunctions: binaryFunctions ?? binaryFunctionDict?.producer ?? MathParser.defaultBinaryFunctions.producer,
         usingImpliedMultiplication: usingImpliedMultiplication
       )
     )) ?? .nan
@@ -79,33 +79,33 @@ extension Evaluator {
    valid `Double` value, while the `.failure` case holds a string describing the failure.
 
    - Parameter variables: optional mapping of names to variables. If not give, `defaultVariables` will be use.
-   - Parameter variablesDict: optional dictionary that maps a name to a constant. Note that this will be ignored if
+   - Parameter variableDict: optional dictionary that maps a name to a constant. Note that this will be ignored if
    `variables` is also given.
    - Parameter unaryFunctions: optional mapping of names to 1-ary functions. If not given, `defaultUnaryFunctions` will
    be used.
-   - Parameter unaryFunctionsDict: optional dictionary that maps a name 1-ary function. Note that this will be ignored if
+   - Parameter unaryFunctionDict: optional dictionary that maps a name 1-ary function. Note that this will be ignored if
    `unaryFunctions` is also given.
    - Parameter binaryFunctions: optional mapping of names to 2-ary functions. If not given, `defaultBinaryFunctions`
    will be used/
-   - Parameter binaryFunctionsDict: optional dictionary that maps a name to a 2-ary function. Note that this will be ignored if
+   - Parameter binaryFunctionDict: optional dictionary that maps a name to a 2-ary function. Note that this will be ignored if
    `binaryFunctions` is also given.
    - Returns: ``Result`` enum which hold value on success or error description on failure.
    */
   @inlinable
   public func evalResult(
     variables: MathParser.VariableMap? = nil,
-    variablesDict: MathParser.VariableDict? = nil,
+    variableDict: MathParser.VariableDict? = nil,
     unaryFunctions: MathParser.UnaryFunctionMap? = nil,
-    unaryFunctionsDict: MathParser.UnaryFunctionDict? = nil,
+    unaryFunctionDict: MathParser.UnaryFunctionDict? = nil,
     binaryFunctions: MathParser.BinaryFunctionMap? = nil,
-    binaryFunctionsDict: MathParser.BinaryFunctionDict? = nil
+    binaryFunctionDict: MathParser.BinaryFunctionDict? = nil
   ) -> Result {
     do {
       let result = try token.eval(
         state: .init(
-          variables: variables ?? variablesDict?.producer ?? MathParser.defaultVariables.producer,
-          unaryFunctions: unaryFunctions ?? unaryFunctionsDict?.producer ?? MathParser.defaultUnaryFunctions.producer,
-          binaryFunctions: binaryFunctions ?? binaryFunctionsDict?.producer ?? MathParser.defaultBinaryFunctions.producer,
+          variables: variables ?? variableDict?.producer ?? MathParser.defaultVariables.producer,
+          unaryFunctions: unaryFunctions ?? unaryFunctionDict?.producer ?? MathParser.defaultUnaryFunctions.producer,
+          binaryFunctions: binaryFunctions ?? binaryFunctionDict?.producer ?? MathParser.defaultBinaryFunctions.producer,
           usingImpliedMultiplication: usingImpliedMultiplication
         )
       )

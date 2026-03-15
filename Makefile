@@ -58,7 +58,7 @@ report: percentage-macos
 		echo "PERCENTAGE=$$(< percentage_macOS.txt)" >> $$GITHUB_ENV; \
 	fi
 
-docc:
+doc:
 	DOCC_JSON_PRETTYPRINT="YES" \
 	swift package \
 		--allow-writing-to-directory $(DOCC_DIR) \
@@ -68,6 +68,9 @@ docc:
 		--transform-for-static-hosting \
 		--hosting-base-path swift-math-parser \
 		--output-path $(DOCC_DIR)
+
+dws:
+	swift package --disable-sandbox preview-documentation --target MathParser
 
 lint: clean
 	@if command -v swiftlint; then swiftlint; fi
