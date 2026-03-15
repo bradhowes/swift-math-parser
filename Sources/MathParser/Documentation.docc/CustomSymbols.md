@@ -54,8 +54,9 @@ We can also ask the `evaluator` for any unresolved symbols via its ``Evaluator/u
 evaluator?.unresolved.unaryFunctions // => ['power']'
 ```
 
-Supply addition variable and methods to the evaluator's 
-``Evaluator/eval(variables:unaryFunctions:binaryFunctions:)`` method. Below, we supply it with a definition for `power`.
+Supply addition variable and methods to the evaluator's
+``Evaluator/eval(variables:variablesDict:unaryFunctions:unaryFunctionsDict:binaryFunctions:binaryFunctionsDict:)``
+method. Below, we supply it with a definition for `power`.
 
 ```
 let myEvalFuncs: [String:(Double)->Double] = ["power": {$0 * $0}]

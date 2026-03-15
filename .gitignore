@@ -10,3 +10,4 @@ xcuserdata/
 *.workspace/
 coverage*.txt
 percentage*.txt
+docs/

@@ -1,13 +1,14 @@
-# MathParser
+# ``MathParser``
 
-Powerful math expression parser built with Point•Free's swift-parsing package (v0.12.0).
+Powerful math expression parser and evaluator built with Point•Free's swift-parsing package (v0.12.0).
 
 ## Overview
 
-A ``MathParser`` parses math expressions such as `1 + 2` and returns an ``Evaluator`` that reports the immediate value
-(`3` in this case) just like in a calculator. However, it also allows for more complicated expressions with variables and
-functions that allows you to perform evaluations of a parsed expression some time in the future when you have values to give for 
-the variables and functions that were not known at the time of parsing.
+A ``MathParser`` instance parses text containing math expressions such as `1 + 2` and returns an ``Evaluator`` instance
+that reports the immediate value (`3` in this case) just like in a calculator. However, it also allows for more
+complicated expressions with variables and functions that allows you to perform evaluations of a parsed expression some
+time in the future when you have values to give for the variables and functions that were not known at the time of
+parsing.
 
 For instance, ``MathParser`` supports expressions such as `x * 3` with an unknown variable `x`. This will parse just
 fine, and the returned ``Evaluator`` can perform the multiplication when you hand it a value for the `x` placeholder.
@@ -34,5 +35,5 @@ evaluator.eval(variables: {"x": 8}.producer, unaryFunctions: {"double": {$0 + $0
 ```
 
 As one would expect, ``MathParser`` supports the standard math operators, subexpressions in parentheses, and even
-advanced math operations such as sine, cosine, cube roots and more. The full list is given in the ``CustomSymbols``
+advanced math operations such as sine, cosine, cube roots and more. The full list is given in the <doc:CustomSymbols>
 section.

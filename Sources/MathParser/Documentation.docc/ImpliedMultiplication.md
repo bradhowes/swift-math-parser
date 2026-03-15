@@ -10,7 +10,7 @@ easier to read.
 
 ``MathParser`` supports parsing of math expressions where a multiplication symbol might not be present between two
 terms. It is disabled by default, but the 
-``MathParser/init(variables:variableDict:unaryFunctions:unaryFunctionDict:binaryFunctions:binaryFunctionDict:enableImpliedMultiplication:)``
+``MathParser/init(variables:variablesDict:unaryFunctions:unaryFunctionsDict:binaryFunctions:binaryFunctionsDict:enableImpliedMultiplication:)``
 initializer allows it to be enabled via the `enableImpliedMultiplication` parameter.
 
 ## Space Oddities

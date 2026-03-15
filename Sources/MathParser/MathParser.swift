@@ -136,35 +136,35 @@ public struct MathParser {
 
    All parameters are optional; ``MathParser`` will work as you would expect without any configuration.
 
-   - parameter variables: optional mapping of names to variables. If not given, ``defaultVariables`` will be used
-   - parameter variableDict: optional dictionary that maps a name to a constant. Note that this will be ignored if
-   ``variables`` is also given.
-   - parameter unaryFunctions: optional mapping of names to 1-ary functions. If not given, ``defaultUnaryFunctions`` will
+   - parameter variables: optional mapping of names to variables. If not given, `defaultVariables` will be used
+   - parameter variablesDict: optional dictionary that maps a name to a constant. Note that this will be ignored if
+   `variables` is also given.
+   - parameter unaryFunctions: optional mapping of names to 1-ary functions. If not given, `defaultUnaryFunctions` will
    be used
    - parameter unaryFunctionsDict: optional dictionary that maps a name 1-ary function. Note that this will be ignored if
-   ``unaryFunctions`` is also given.
-   - parameter binaryFunctions: optional mapping of names to 2-ary functions. If not given, ``defaultBinaryFunctions``
+   `unaryFunctions` is also given.
+   - parameter binaryFunctions: optional mapping of names to 2-ary functions. If not given, `defaultBinaryFunctions`
    will be used
-   - parameter binaryFunctionDict: optional dictionary that maps a name to a 2-ary function. Note that this will be ignored if
-   ``binaryFunctions`` is also given.
+   - parameter binaryFunctionsDict: optional dictionary that maps a name to a 2-ary function. Note that this will be ignored if
+   `binaryFunctions` is also given.
    - parameter enableImpliedMultiplication: if true treat expressions like `2π` as valid and same as `2 * π`
    */
   public init(
     variables: VariableMap? = nil,
-    variableDict: VariableDict? = nil,
+    variablesDict: VariableDict? = nil,
     unaryFunctions: UnaryFunctionMap? = nil,
-    unaryFunctionDict: UnaryFunctionDict? = nil,
+    unaryFunctionsDict: UnaryFunctionDict? = nil,
     binaryFunctions: BinaryFunctionMap? = nil,
-    binaryFunctionDict: BinaryFunctionDict? = nil,
+    binaryFunctionsDict: BinaryFunctionDict? = nil,
     enableImpliedMultiplication: Bool = false
   ) {
-    self.customVariableDict = variableDict
-    self.customUnaryFunctionDict = unaryFunctionDict
-    self.customBinaryFunctionDict = binaryFunctionDict
+    self.customVariableDict = variablesDict
+    self.customUnaryFunctionDict = unaryFunctionsDict
+    self.customBinaryFunctionDict = binaryFunctionsDict
 
-    self.variables = variables ?? variableDict?.producer ?? Self.defaultVariables.producer
-    self.unaryFunctions = unaryFunctions ?? unaryFunctionDict?.producer ?? Self.defaultUnaryFunctions.producer
-    self.binaryFunctions = binaryFunctions ?? binaryFunctionDict?.producer ?? Self.defaultBinaryFunctions.producer
+    self.variables = variables ?? variablesDict?.producer ?? Self.defaultVariables.producer
+    self.unaryFunctions = unaryFunctions ?? unaryFunctionsDict?.producer ?? Self.defaultUnaryFunctions.producer
+    self.binaryFunctions = binaryFunctions ?? binaryFunctionsDict?.producer ?? Self.defaultBinaryFunctions.producer
     self.enableImpliedMultiplication = enableImpliedMultiplication
   }
 
