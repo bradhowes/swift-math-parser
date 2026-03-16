@@ -189,7 +189,7 @@ NaN or a `Result.failure` describing the missing function.
 [^1]: Redundant since there is already the `^` operator.
 [^2]: Exact up to 20! -- larger numbers are approximations
 
-[ci]: https://github.com/bradhowes/swift-math-parser/workflows/CI/CI.yml
+[ci]: https://github.com/bradhowes/swift-math-parser/workflows/CI.yml
 [status]: https://github.com/bradhowes/swift-math-parser/workflows/CI/badge.svg
 [cov]: https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/bradhowes/ad941184ed256708952a2057fc5d7bb4/raw/swift-math-parser-coverage.json
 [spiv]: https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fbradhowes%2Fswift-math-parser%2Fbadge%3Ftype%3Dswift-versions
