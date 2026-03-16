@@ -1,8 +1,8 @@
-[![CI](https://github.com/bradhowes/swift-math-parser/workflows/CI/badge.svg)](https://github.com/bradhowes/swift-math-parser)
-[![COV](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/bradhowes/ad941184ed256708952a2057fc5d7bb4/raw/swift-math-parser-coverage.json)](https://github.com/bradhowes/swift-math-parser/blob/main/.github/workflows/CI.yml)
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fbradhowes%2Fswift-math-parser%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/bradhowes/swift-math-parser)
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fbradhowes%2Fswift-math-parser%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/bradhowes/swift-math-parser)
-[![License: MIT](https://img.shields.io/badge/License-MIT-A31F34.svg)](https://opensource.org/licenses/MIT)
+[![CI][status]][ci]
+[![COV][cov]][ci]
+[![][spiv]][spi]
+[![][spip]][spi]
+[![][mit]][license]
 
 # swift-math-parser
 
@@ -188,3 +188,12 @@ NaN or a `Result.failure` describing the missing function.
 
 [^1]: Redundant since there is already the `^` operator.
 [^2]: Exact up to 20! -- larger numbers are approximations
+
+[ci]: https://github.com/bradhowes/swift-math-parser/workflows/CI/CI.yml
+[status]: https://github.com/bradhowes/swift-math-parser/workflows/CI/badge.svg
+[cov]: https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/bradhowes/ad941184ed256708952a2057fc5d7bb4/raw/swift-math-parser-coverage.json
+[spiv]: https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fbradhowes%2Fswift-math-parser%2Fbadge%3Ftype%3Dswift-versions
+[spi]: https://swiftpackageindex.com/bradhowes/swift-math-parser
+[spip]: https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fbradhowes%2Fswift-math-parser%2Fbadge%3Ftype%3Dplatforms
+[mit]: https://img.shields.io/badge/License-MIT-A31F34.svg
+[license]: https://opensource.org/licenses/MIT
