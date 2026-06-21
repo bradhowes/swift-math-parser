@@ -13,6 +13,7 @@ the features it offers and examples on how to use it.
 
 # Change Log
 
+* v5.0.4: Now depends on v0.15.0 of swift-parsing **without** the `CasePaths` trait.
 * v5.0.0: Reworked `MathParser` to be a `struct` instead of a `class`. Measured no performance degradation, and there should be no
 discernable behavior change for existing code.
 * v4.1.0: Add modulo (%) operator with same precendence as multiplication and division. Same behavior as existing `mod` function.
