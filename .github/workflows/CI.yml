@@ -1,21 +1,21 @@
 name: CI
+
 on:
   push:
     branches:
       - main
   pull_request:
     branches:
-    - main
+    - "*"
+  workflow_dispatch: 
 
 jobs:
-  macos15:
-    name: macOS (Swift 6)
-    runs-on: macos-15
+  macos:
+    name: macOS
     strategy:
       matrix:
-        xcode:
-          - "26.3"
-
+        xcode: ["26.2"]
+    runs-on: macos-26
     steps:
     - uses: actions/checkout@v4
     - name: Select Xcode ${{ matrix.xcode }}
@@ -33,11 +33,12 @@ jobs:
         color: success
 
   linux:
+    name: Linux
     strategy:
       matrix:
         os: [ubuntu-latest]
         swift:
-          - '6.0'
+          - "6.1"
     runs-on: ${{ matrix.os }}
     container: swift:${{ matrix.swift }}
     steps:
